@@ -1,8 +1,4 @@
-var express = require('express'),
-  routes = require('./routes'),
-  path = require('path');
-
-var app = express();
+var app = require('express')();
 app.directory = __dirname;
 
 require('./config/environments')(app);
