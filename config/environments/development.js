@@ -11,6 +11,7 @@ module.exports = function(app) {
     app.set('views', path.join(app.directory, '/app'));
     app.engine('html', require('ejs').renderFile);
     app.set('view engine', 'html');
+    app.use(express.static(app.directory + '/app'));
     app.use(express.favicon());
     app.use(express.logger('dev'));
     app.use(express.bodyParser());
