@@ -7,7 +7,8 @@ module.exports = function(app) {
       return next();
     });
 
-    app.set('port', process.env.PORT || 9000);
+    app.set('port', process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 9000);
+    app.set('ip', process.env.OPENSHIFT_NODEJS_IP || process.env.IP || '127.0.0.1');
     app.set('views', path.join(app.directory, '/app'));
     app.engine('html', require('ejs').renderFile);
     app.set('view engine', 'html');
