@@ -238,6 +238,11 @@ module.exports = function (grunt) {
         singleRun: true
       }
     },
+    simplemocha: {
+      backend: {
+        src: 'test/server/appSpec.js'
+      }
+    },
     cdnify: {
       dist: {
         html: ['<%= yeoman.dist %>/*.html']
@@ -281,7 +286,7 @@ module.exports = function (grunt) {
   grunt.registerTask('test', [
     'clean:server',
     'concurrent:test',
-    'express:test',
+    'simplemocha',
     'karma'
   ]);
 
