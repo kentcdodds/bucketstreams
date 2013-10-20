@@ -7,6 +7,7 @@ module.exports = function(app) {
   console.log('app id: ' + process.env.OPENSHIFT_APP_UUID);
   console.log('environment: ' + process.env.NODE_ENV);
   console.log('environment from express: ' + app.get('env'));
+
   var commonConfig = function() {
     console.log('common config');
     app.engine('html', require('ejs').renderFile);
@@ -18,17 +19,6 @@ module.exports = function(app) {
     app.use(express.session());
     app.use(app.router);
   };
-
-  app.configure('production', function() {
-    console.log('production config');
-    app.set('port', process.env.OPENSHIFT_NODEJS_PORT);
-    app.set('ip', process.env.OPENSHIFT_NODEJS_IP);
-    app.set('views', path.join(app.directory, '/dist'));
-    app.use(express.static(app.directory + '/dist'));
-    app.use(express.cookieParser('Rock Run Slime George'));
-    app.use(express.static(path.join(app.directory, 'dist')));
-    commonConfig();
-  });
 
   app.configure('development', function() {
     console.log('development config');
@@ -47,6 +37,17 @@ module.exports = function(app) {
     });
 
     app.use(express.errorHandler());
+    commonConfig();
+  });
+
+  app.configure('production', function() {
+    console.log('production config');
+    app.set('port', process.env.OPENSHIFT_NODEJS_PORT);
+    app.set('ip', process.env.OPENSHIFT_NODEJS_IP);
+    app.set('views', path.join(app.directory, '/dist'));
+    app.use(express.static(app.directory + '/dist'));
+    app.use(express.cookieParser('Rock Run Slime George'));
+    app.use(express.static(path.join(app.directory, 'dist')));
     commonConfig();
   });
 
