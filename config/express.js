@@ -8,8 +8,6 @@ module.exports = function(app) {
   if (process.env.OPENSHIFT_APP_UUID) {
     environment = 'production';
     environmentConfig = function productionSetup() {
-      app.set('port', process.env.OPENSHIFT_NODEJS_PORT);
-      app.set('ip', process.env.OPENSHIFT_NODEJS_IP);
       app.set('views', path.join(app.directory, '/dist'));
       app.use(express.static(app.directory + '/dist'));
       app.use(express.cookieParser('Rock Run Slime George'));
@@ -24,8 +22,6 @@ module.exports = function(app) {
         return next();
       });
 
-      app.set('port', process.env.PORT || 9000);
-      app.set('ip', process.env.IP || '127.0.0.1');
       app.set('views', path.join(app.directory, '/app'));
       app.use(express.static(app.directory + '/app'));
       app.use(express.cookieParser('Toy Lion Story King'));
@@ -42,6 +38,8 @@ module.exports = function(app) {
     environmentConfig();
 
     //Common stuff
+    app.set('port', process.env.OPENSHIFT_NODEJS_PORT || process.env.PORT || 9000);
+    app.set('ip', process.env.OPENSHIFT_NODEJS_IP || process.env.IP || '127.0.0.1');
     app.engine('html', require('ejs').renderFile);
     app.set('view engine', 'html');
     app.use(express.favicon());
