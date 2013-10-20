@@ -3,3 +3,7 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #333;
 }
+
+a {
+  text-decoration: none;
+}
