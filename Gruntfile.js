@@ -46,6 +46,10 @@ module.exports = function (grunt) {
           '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
+      },
+      backend: {
+        files: ['test/server/*Spec.js', 'config/**/*.js', 'model/**/*.js'],
+        tasks: 'simplemocha'
       }
     },
     express: {
@@ -240,7 +244,7 @@ module.exports = function (grunt) {
     },
     simplemocha: {
       backend: {
-        src: 'test/server/appSpec.js'
+        src: 'test/server/*Spec.js'
       }
     },
     cdnify: {
@@ -288,6 +292,10 @@ module.exports = function (grunt) {
     'concurrent:test',
     'simplemocha',
     'karma'
+  ]);
+
+  grunt.registerTask('btest', [
+    'simplemocha'
   ]);
 
   grunt.registerTask('build', [
