@@ -5,8 +5,10 @@ console.log('required setup-express');
 module.exports = function(app) {
   console.log('export of setup-express');
   console.log('app id: ' + process.env.OPENSHIFT_APP_UUID);
-
+  console.log('environment: ' + process.env.NODE_ENV);
+  console.log('environment from express: ' + app.get('env'));
   var commonConfig = function() {
+    console.log('common config');
     app.engine('html', require('ejs').renderFile);
     app.set('view engine', 'html');
     app.use(express.favicon());
