@@ -1,7 +1,10 @@
 var express = require('express');
 var path = require('path');
+console.log('required setup-express');
 
 module.exports = function(app) {
+  console.log('export of setup-express');
+  console.log('app id: ' + process.env.OPENSHIFT_APP_UUID);
   var environmentConfig;
   var environment;
 
