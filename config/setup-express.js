@@ -20,6 +20,7 @@ module.exports = function(app) {
   };
 
   app.configure('production', function() {
+    console.log('production config');
     app.set('port', process.env.OPENSHIFT_NODEJS_PORT);
     app.set('ip', process.env.OPENSHIFT_NODEJS_IP);
     app.set('views', path.join(app.directory, '/dist'));
@@ -30,6 +31,7 @@ module.exports = function(app) {
   });
 
   app.configure('development', function() {
+    console.log('development config');
     app.use(function staticsPlaceholder(req, res, next) {
       return next();
     });
