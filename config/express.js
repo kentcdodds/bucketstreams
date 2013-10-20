@@ -36,12 +36,9 @@ module.exports = function(app) {
 
       app.use(express.errorHandler());
     };
-
-    environmentConfigSecond = function() {
-
-    };
   }
   app.configure(environment, function() {
+    console.log('Configuring ' + environment);
     environmentConfig();
 
     //Common stuff
