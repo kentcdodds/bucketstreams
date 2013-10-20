@@ -37,7 +37,7 @@ module.exports = function(app) {
   app.configure('production', function() {
     app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 9000);
     app.set('ip', process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
-    app.use(express.static(app.directory + '/dist'));
+    app.use(express.static(app.directory + '/app'));
     app.use(express.cookieParser('Rock Run Slime George'));
     commonConfig();
   });
