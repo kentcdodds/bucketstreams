@@ -3,20 +3,17 @@ var path = require('path');
 
 module.exports = function(app) {
 
-  var commonConfig = function() {
-    app.engine('html', require('ejs').renderFile);
-    app.set('view engine', 'html');
-    app.use(express.favicon());
-    app.use(express.logger('dev'));
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-    if (!process.env.LOCAL) {
-      app.use(express.session());
+  if (process.env.NODE_ENV === 'production') {
+    app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 9000);
+    app.set('ip', process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
+    app.use(express.static(app.directory + '/app'));
+    app.use(express.cookieParser('Rock Run Slime George'));
+  } else {
+    var localConfig = require('../local/config');
+    if (localConfig) {
+      localConfig();
     }
-    app.use(app.router);
-  };
 
-  app.configure('development', function() {
     app.use(function staticsPlaceholder(req, res, next) {
       return next();
     });
@@ -31,15 +28,17 @@ module.exports = function(app) {
     });
 
     app.use(express.errorHandler());
-    commonConfig();
-  });
+  }
 
-  app.configure('production', function() {
-    app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 9000);
-    app.set('ip', process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
-    app.use(express.static(app.directory + '/app'));
-    app.use(express.cookieParser('Rock Run Slime George'));
-    commonConfig();
-  });
+  app.engine('html', require('ejs').renderFile);
+  app.set('view engine', 'html');
+  app.use(express.favicon());
+  app.use(express.logger('dev'));
+  app.use(express.bodyParser());
+  app.use(express.methodOverride());
+  if (!process.env.LOCAL) {
+    app.use(express.session());
+  }
+  app.use(app.router);
 
 };
