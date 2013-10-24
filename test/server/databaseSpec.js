@@ -1,41 +1,43 @@
 var expect = require('expect.js');
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGO_CONNECTION_STRING);
-var models = require('../../model/models');
+var data = require('../../model/data');
 
 describe('Database', function() {
-  var newUser;
+  var mockUser;
   before(function(done) {
-    newUser = new models.User({name: 'Test User'});
-    newUser.save(function(err, createdUser) {
+    mockUser = new data.models.user({
+      name: 'Test User'
+    });
+    mockUser.save(function(err, createdUser) {
       expect(err).to.be(null);
-      expect(createdUser.name).to.be(newUser.name);
+      expect(createdUser.name).to.be(mockUser.name);
       done();
     });
   });
 
   after(function(done) {
-    models.User.findByIdAndRemove(newUser.id, function(err, foundUser) {
+    data.models.user.findByIdAndRemove(mockUser.id, function(err, foundUser) {
       expect(err).to.be(null);
-      expect(foundUser.id).to.be(newUser.id);
+      expect(foundUser.id).to.be(mockUser.id);
       done();
     });
   });
 
   it('Should find user', function(done) {
-    models.User.findById(newUser.id, function(err, foundUser) {
+    data.models.user.findById(mockUser.id, function(err, foundUser) {
       expect(err).to.be(null);
-      expect(foundUser.id).to.be(newUser.id);
+      expect(foundUser.id).to.be(mockUser.id);
       done();
     });
   });
 
   it('Should create, find, and remove post', function(done) {
-    var newPost = new models.Post({content: 'Test post'});
+    var newPost = new data.models.post({content: 'Test post'});
     newPost.save(function(err, createdPost) {
       expect(err).to.be(null);
       expect(createdPost.id).to.be(newPost.id);
-      models.Post.findByIdAndRemove(createdPost.id, function(err, foundPost) {
+      data.models.post.findByIdAndRemove(createdPost.id, function(err, foundPost) {
         expect(err).to.be(null);
         expect(foundPost.id).to.be(newPost.id);
         done();
