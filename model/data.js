@@ -1,13 +1,20 @@
 var mongoose = require('mongoose');
+var mongooseTypes = require("mongoose-types");
+mongooseTypes.loadTypes(mongoose);
 
 var Schema = mongoose.Schema;
-var ObjectId = Schema.Types.ObjectId; // shortcut
+
+// shortcuts
+var ObjectId = Schema.Types.ObjectId;
+var Email = mongoose.SchemaTypes.Email;
+var Url = mongoose.SchemaTypes.Url;
 
 var ref = {
   bucket: 'bucket',
   stream: 'stream',
   user: 'user',
-  post: 'post'
+  post: 'post',
+  comment: 'comment'
 };
 
 var schemas = {};
@@ -21,8 +28,8 @@ var schemas = {};
  *   contributors: An array of user IDs of those who can post to this bucket. If empty, it's public
  */
 schemas.bucket = new Schema({
-  owner: {type: ObjectId, ref: ref.user},
-  name: { type: String, default: 'New Bucket' },
+  owner: {type: ObjectId, ref: ref.user, required: true},
+  name: {type: String, default: 'New Bucket'},
   visibility: [{type: ObjectId, ref: ref.user}],
   parent: {type: ObjectId, ref: ref.bucket},
   contributors: [{type: ObjectId, ref: ref.user}]
@@ -38,8 +45,8 @@ schemas.bucket = new Schema({
  *     streams: An array of stream IDs which feed into this stream
  */
 schemas.stream = new Schema({
-  owner: {type: ObjectId, ref: ref.user},
-  name: { type: String, default: 'New Stream' },
+  owner: {type: ObjectId, ref: ref.user, required: true},
+  name: {type: String, default: 'New Stream'},
   visibility: [{type: ObjectId, ref: ref.user}],
   contentSources: {
     buckets: [{type: ObjectId, ref: ref.bucket}],
@@ -51,19 +58,22 @@ schemas.stream = new Schema({
  * User:
  *   name: The name of the user.
  *   handle: The "unique" identifier of the user by which they are referenced in the application.
- *   registrationDate: The date the user registered.
  *   lastLoginDate: The date the user last logged in.
  *   connectedAccounts: array of connected accounts with information to pull data for user.
  */
 schemas.user = new Schema({
-  name: String,
-  handle: String,
-  registrationDate: { type: Date, default: Date.now },
-  lastLoginDate: { type: Date, default: Date.now },
+  name: {type: String, required: true},
+  handle: {type: String, unique: true, required: true},
+  profilePicture: {
+    id: ObjectId,
+    url: Url
+  },
+  email: {type: Email},
+  lastLoginDate: {type: Date, default: Date.now},
   connectedAccounts: [
     {
-      platform: String,
-      token: String,
+      platform: {type: String, default: ''},
+      token: {type: String, default: ''},
       expirationDate: Date
     }
   ]
@@ -73,28 +83,30 @@ schemas.user = new Schema({
  * Post:
  *   authorId: the ID of the user who created it
  *   content: the content of the post as a String
- *   comments: Array of comments with User IDs and String content
+ *   comments: Array of comments IDs
  *   buckets: Array of buckets in which the post is contained
- *   postDate: The date the post was created
- *   editedDate: The date the post was most recently edited
  */
 schemas.post = new Schema({
-  authorId: {type: ObjectId, ref: ref.user},
-  content: String,
-  comments: [
-    {
-      userId: {type: ObjectId, ref: ref.user},
-      content: String
-    }
-  ],
+  authorId: {type: ObjectId, ref: ref.user, required: true},
+  content: {type: String, default: '', required: true},
+  comments: [{type: ObjectId, ref: ref.comment}],
   buckets: [{type: ObjectId, ref: ref.bucket}],
-  postDate: { type: Date, default: Date.now },
-  editedDate: { type: Date, default: Date.now }
+});
+
+/**
+ * Comment:
+ *   authorId: the ID of the user who created it
+ *   content: the content of the comment as a String
+ */
+schemas.comment = new Schema({
+  authorId: {type: ObjectId, ref: ref.user},
+  content: {type: String, default: ''}
 });
 
 var models = {};
 
 for (var schema in schemas) {
+  schemas[schema].plugin(mongooseTypes.useTimestamps);
   models[schema] = mongoose.model(ref[schema], schemas[schema]);
 
   schemas[schema].methods.query = function(entities) {
