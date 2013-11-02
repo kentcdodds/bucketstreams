@@ -3,9 +3,9 @@ module.exports = function(app) {
     urlPrefix : '/api/'
   });
 
-  var data = require('../model/data');
-  for (var model in data.models) {
-    angularBridge.addResource(model, data.models[model]);
+  var dataModels = require('../model').models;
+  for (var model in dataModels) {
+    angularBridge.addResource(model, dataModels[model]);
   }
 
   app.get('/', function(req, res, next) {
