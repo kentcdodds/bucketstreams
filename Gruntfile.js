@@ -48,7 +48,7 @@ module.exports = function (grunt) {
         ]
       },
       backend: {
-        files: ['test/server/*Spec.js', 'config/**/*.js', 'model/**/*.js'],
+        files: ['test/server/**/*.js', 'config/**/*.js', 'model/**/*.js'],
         tasks: 'simplemocha'
       }
     },
@@ -244,7 +244,7 @@ module.exports = function (grunt) {
     },
     simplemocha: {
       backend: {
-        src: 'test/server/*Spec.js'
+        src: 'test/server/**/*Spec.js'
       }
     },
     cdnify: {

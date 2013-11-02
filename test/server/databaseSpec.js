@@ -1,7 +1,7 @@
 var expect = require('expect.js');
 var mongoose = require('mongoose');
 mongoose.connect(process.env.MONGO_CONNECTION_STRING + '_test');
-var data = require('../../model/data');
+var data = require('../../model');
 
 describe.skip('Database', function() {
   var mockUser;

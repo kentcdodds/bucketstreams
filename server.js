@@ -1,4 +1,4 @@
-if (process.argv.indexOf('prod')) {
+if (process.argv.indexOf('prod') > -1) {
   process.env.NODE_ENV = 'production';
   process.env.LOCAL = true;
 }

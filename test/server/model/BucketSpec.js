@@ -1,29 +1,42 @@
 var dbURI = require('./../TestHelper').db.uri;
 var should = require('chai').should();
+var expect = require('chai').expect;
 var mongoose = require('mongoose');
-var Bucket = require(__dirname + '/model/setup').models.bucket;
+var models = require('../../../model').models;
+var Bucket = models.bucket;
+var User = models.user;
 var clearDB = require('mocha-mongoose')(dbURI);
 
-describe("Example spec for a model", function() {
+describe('Bucket Model Spec', function() {
   beforeEach(function(done) {
     if (mongoose.connection.db) return done();
     mongoose.connect(dbURI, done);
   });
 
-  it("can be saved", function(done) {
+  it('Can be saved', function(done) {
     var mockUser = new User({
       name: 'Test User 1',
       handle: 'testuer1'
     });
-    new Bucket({
-      owner: mockUser.id,
+    mockUser.handle = 'testuser1';
+    expect(mockUser._doc._id).to.exist;
+    console.log(mockUser);
+    console.log(mockUser._doc._id);
+    console.log(mockUser.name);
+    var mockBucket = new Bucket({
+      owner: mockUser._id,
       name: 'Test Bucket',
       visibility: [],
-      contributors: [mockUser.id]
-    }).save(done);
+      contributors: [mockUser._id]
+    });
+    mockBucket.save(function(err) {
+      console.log(err);
+      expect(err).to.not.exist;
+      done();
+    });
   });
 
-  it.skip("can be listed", function(done) {
+  it.skip('can be listed', function(done) {
     new Dummy({a: 1}).save(function(err, model){
       if (err) return done(err);
 
