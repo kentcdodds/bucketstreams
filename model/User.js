@@ -5,6 +5,7 @@ var ref = require('./ref');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Email = mongoose.SchemaTypes.Email;
+var passportLocalMongoose = require('passport-local-mongoose');
 
 /**
  * User:
@@ -32,8 +33,8 @@ var schema = new Schema({
   ]
 });
 
-Util.addAngularBridgeFunctions(schema);
 Util.addTimestamps(schema);
+schema.plugin(passportLocalMongoose);
 
 module.exports = {
   schema: schema,

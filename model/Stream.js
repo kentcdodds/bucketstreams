@@ -24,7 +24,6 @@ var schema = new Schema({
   }
 });
 
-Util.addAngularBridgeFunctions(schema);
 Util.addTimestamps(schema);
 
 module.exports = {

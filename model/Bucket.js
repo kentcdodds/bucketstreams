@@ -12,7 +12,7 @@ var ObjectId = Schema.Types.ObjectId;
  *   parent: The parent bucket of this bucket. Can have no parent.
  *   contributors: An array of user IDs of those who can post to this bucket. If empty, it's public
  */
-var schema =  new Schema({
+var schema = new Schema({
   owner: {type: ObjectId, ref: ref.user, required: true},
   name: {type: String, default: 'New Bucket'},
   visibility: [{type: ObjectId, ref: ref.user}],
@@ -20,7 +20,15 @@ var schema =  new Schema({
   contributors: [{type: ObjectId, ref: ref.user}]
 });
 
-Util.addAngularBridgeFunctions(schema);
+schema.methods.addPost = function(post) {
+  post.buckets = post.buckets || [];
+  post.buckets.push(this.id);
+};
+
+schema.methods.getPosts = function() {
+
+};
+
 Util.addTimestamps(schema);
 
 module.exports = {

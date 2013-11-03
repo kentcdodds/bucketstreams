@@ -15,10 +15,9 @@ var ObjectId = Schema.Types.ObjectId;
 var schema = new Schema({
   authorId: {type: ObjectId, ref: ref.user, required: true},
   content: [Content],
-  buckets: [{type: ObjectId, ref: ref.bucket}]
+  buckets: [{type: ObjectId, ref: ref.bucket, required: true}]
 });
 
-Util.addAngularBridgeFunctions(schema);
 Util.addTimestamps(schema);
 
 module.exports = {

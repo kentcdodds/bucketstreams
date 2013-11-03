@@ -7,12 +7,12 @@ var Schema = mongoose.Schema;
  * Content:
  *   textString: The text content
  *   multimedia: Any multimedia associated with the content
- *     image: An array of images associated with the content
+ *     images: An array of images associated with the content
  */
 var schema = new Schema({
   textString: {type: String},
   multimedia: {
-    image: [Image]
+    images: [Image]
   }
 });
 

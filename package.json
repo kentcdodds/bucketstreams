@@ -16,7 +16,8 @@
     "mongoose-types": "1.0.3",
     "mongoose-troop": "0.0.8",
     "angular-bridge": "0.3.6",
-    "passport-local-mongoose": "0.2.5"
+    "passport-local-mongoose": "0.2.5",
+    "lodash-node": "2.2.1"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

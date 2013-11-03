@@ -18,7 +18,6 @@ var schema = new Schema({
   owningPost: {type: ObjectId, ref: ref.post}
 });
 
-Util.addAngularBridgeFunctions(schema);
 Util.addTimestamps(schema);
 
 module.exports = {

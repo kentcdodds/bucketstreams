@@ -6,11 +6,11 @@ var Url = mongoose.SchemaTypes.Url;
 
 /**
  * Image:
- *   filename: The filename of the image
+ *   name: The filename of the image
  *   url: The url of the image hosted on a cdn
  */
 var schema = new Schema({
-  filename: {type: String, default: 'Untitled'},
+  name: {type: String, default: 'Untitled'},
   url: {type: Url, required: true}
 });
 
