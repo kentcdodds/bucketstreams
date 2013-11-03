@@ -7,5 +7,4 @@ module.exports = function() {
       process.env.OPENSHIFT_APP_NAME;
   }
   require('../model');
-  var BinaryParser = require('mongoose/node_modules/mongodb/node_modules/bson').BinaryParser;
 };

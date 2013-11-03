@@ -14,6 +14,7 @@
     "mongodb": "1.3.19",
     "mongoose": "3.6.2",
     "mongoose-types": "1.0.3",
+    "mongoose-troop": "0.0.8",
     "angular-bridge": "0.3.6",
     "passport-local-mongoose": "0.2.5"
   },
