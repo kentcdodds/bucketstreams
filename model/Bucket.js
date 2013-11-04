@@ -25,8 +25,8 @@ schema.methods.addPost = function(post) {
   post.buckets.push(this.id);
 };
 
-schema.methods.getPosts = function() {
-
+schema.methods.getPosts = function(callback) {
+  require('./Post').model.find({buckets: this.id}).sort('-created').exec(callback);
 };
 
 Util.addTimestamps(schema);

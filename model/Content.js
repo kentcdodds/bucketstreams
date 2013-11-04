@@ -16,8 +16,6 @@ var schema = new Schema({
   }
 });
 
-Util.addTimestamps(schema);
-
 module.exports = {
   schema: schema
   // Intentionally no model.
