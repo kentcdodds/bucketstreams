@@ -29,22 +29,27 @@ describe('User Model Spec', function() {
     var numberOfBucketsJustContributedTo = 5;
     var totalNumberOfBuckets = numberOfBucketsJustContributedTo + numberOfBucketsOwned;
 
-    var bucketsOwned = TestHelper.data.mock.getModel('bucket', numberOfBucketsOwned);
-    _.each(bucketsOwned, function(b) {
-      mockUser.addBucketAsOwner(b);
-    });
+    function createNewBuckets(mainCallback) {
+      var bucketsOwned = TestHelper.data.mock.getModel('bucket', numberOfBucketsOwned);
 
-    var bucketsContributedTo = TestHelper.data.mock.getModel('bucket', numberOfBucketsJustContributedTo);
-    _.each(bucketsContributedTo, function(b) {
-      mockUser.addBucketAsContributor(b);
-    });
+      async.every(bucketsOwned, function(bucket, callback) {
+        mockUser.createBucket(bucket, function(err) {
+          callback(!err);
+        });
+      }, mainCallback);
+    }
 
-    async.every(bucketsOwned.concat(bucketsContributedTo), function(bucket, callback) {
-      bucket.save(function(err) {
-        callback(!err);
-      });
-    }, function(success) {
-      if (!success) return done(new Error('Not all user buckets saved!'));
+    function addAsContributor(mainCallback) {
+      var bucketsContributedTo = TestHelper.data.mock.getModel('bucket', numberOfBucketsJustContributedTo);
+
+      async.every(bucketsContributedTo, function(bucket, callback) {
+        mockUser.addBucketAsContributor(bucket, function(err) {
+          callback(!err);
+        });
+      }, mainCallback);
+    }
+
+    async.parallel([createNewBuckets, addAsContributor], function(err, results) {
 
       function checkOwnedBuckets(callback) {
         mockUser.getOwnedBuckets(function(err, savedOwnedBuckets) {
@@ -77,12 +82,9 @@ describe('User Model Spec', function() {
   it('can have streams', function(done) {
     var numberOfStreams = 5;
     var streams = TestHelper.data.mock.getModel('stream', numberOfStreams);
-    _.each(streams, function(s) {
-      mockUser.addStream(s);
-    });
 
     async.every(streams, function(stream, callback) {
-      stream.save(function(err) {
+      mockUser.addStream(stream, function(err) {
         callback(!err);
       });
     }, function(success) {
@@ -90,6 +92,24 @@ describe('User Model Spec', function() {
 
       mockUser.getStreams(function(err, savedStreams) {
         savedStreams.length.should.equal(numberOfStreams);
+        done();
+      });
+    });
+  });
+
+  it('can make a post', function(done) {
+    var numberOfPosts = 5;
+    var posts = TestHelper.data.mock.getModel('post', numberOfPosts);
+
+    async.every(posts, function(post, callback) {
+      mockUser.makePost(post, function(err) {
+        callback(!err);
+      });
+    }, function(success) {
+      if (!success) return done(new Error('Not all user streams saved!'));
+
+      mockUser.getPosts(function(err, savedPosts) {
+        savedPosts.length.should.equal(numberOfPosts);
         done();
       });
     });

@@ -40,12 +40,8 @@ describe('Bucket Model Spec', function() {
           author: mockBucket.owner
         });
 
-        _.each(posts, function(p) {
-          mockBucket.addPost(p);
-        });
-
         async.every(posts, function(post, callback) {
-          post.save(function(err) {
+          mockBucket.addPost(post, function(err) {
             post.buckets.length.should.equal(1);
             post.buckets[0].should.eql(mockBucket._id);
             callback(!err);

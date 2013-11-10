@@ -39,12 +39,14 @@ schema.plugin(passportLocalMongoose);
 /*
  * Bucket methods
  */
-schema.methods.addBucketAsOwner = function(bucket) {
+schema.methods.createBucket = function(bucket, callback) {
   bucket.owner = this.id;
+  if (callback) bucket.save(callback);
 };
 
-schema.methods.addBucketAsContributor = function(bucket) {
+schema.methods.addBucketAsContributor = function(bucket, callback) {
   bucket.contributors.push(this.id);
+  if (callback) bucket.save(callback);
 };
 
 schema.methods.getOwnedBuckets = function(callback) {
@@ -62,12 +64,25 @@ schema.methods.getNonOwnedContributingBuckets = function(callback) {
 /*
  * Stream methods
  */
-schema.methods.addStream = function(stream) {
+schema.methods.addStream = function(stream, callback) {
   stream.owner = this.id;
+  if (callback) stream.save(callback);
 };
 
 schema.methods.getStreams = function(callback) {
   require('./Stream').model.find({owner: this.id}).sort('-created').exec(callback);
+}
+
+/*
+ * Post methods
+ */
+schema.methods.makePost = function(post, callback) {
+  post.author = this.id;
+  if (callback) post.save(callback);
+};
+
+schema.methods.getPosts = function(callback) {
+  require('./Post').model.find({author: this.id}).sort('-created').exec(callback);
 }
 
 module.exports = {

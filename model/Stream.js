@@ -26,8 +26,9 @@ var schema = new Schema({
 
 Util.addTimestamps(schema);
 
-schema.methods.subscribeToBucket = function(bucket) {
+schema.methods.subscribeToBucket = function(bucket, callback) {
   this.subscriptions.buckets.push(bucket.id);
+  if (callback) this.save(callback);
 };
 
 schema.methods.getBucketSubscriptions = function(callback) {

@@ -21,8 +21,9 @@ var schema = new Schema({
   contributors: [{type: ObjectId, ref: ref.user}]
 });
 
-schema.methods.addPost = function(post) {
+schema.methods.addPost = function(post, callback) {
   post.buckets.push(this.id);
+  if (callback) post.save(callback);
 };
 
 schema.methods.getPosts = function(callback) {
