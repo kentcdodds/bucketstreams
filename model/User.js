@@ -59,6 +59,17 @@ schema.methods.getNonOwnedContributingBuckets = function(callback) {
   require('./Bucket').model.find({contributors: this.id}).sort('-created').exec(callback);
 };
 
+/*
+ * Stream methods
+ */
+schema.methods.addStream = function(stream) {
+  stream.owner = this.id;
+};
+
+schema.methods.getStreams = function(callback) {
+  require('./Stream').model.find({owner: this.id}).sort('-created').exec(callback);
+}
+
 module.exports = {
   schema: schema,
   model: mongoose.model(ref.user, schema)

@@ -39,7 +39,7 @@ data.mock.getTestDefaults = {
   },
   post: function(options) {
     return _.extend({
-      authorId: data.mock.getModel('user').id,
+      author: data.mock.getModel('user').id,
       content: [data.mock.getTestDefaults.content()],
       buckets: [data.mock.getModel('bucket').id, data.mock.getModel('bucket').id]
     }, options);

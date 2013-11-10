@@ -8,12 +8,12 @@ var ObjectId = Schema.Types.ObjectId;
 
 /**
  * Post:
- *   authorId: the ID of the user who created it
+ *   author: the ID of the user who created it
  *   content: an array that holds all the edits. The last one is the most recent edit.
  *   buckets: Array of buckets in which the post is contained
  */
 var schema = new Schema({
-  authorId: {type: ObjectId, ref: ref.user, required: true},
+  author: {type: ObjectId, ref: ref.user, required: true},
   content: [Content],
   buckets: [{type: ObjectId, ref: ref.bucket, required: true}]
 });
