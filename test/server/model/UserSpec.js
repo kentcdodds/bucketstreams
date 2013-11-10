@@ -34,29 +34,56 @@ describe('User Model Spec', function() {
     });
   });
 
-  it('can have buckets', function(done) {
-    var numberOfBuckets = 10;
+  it('can own and contribute to buckets', function(done) {
+    var numberOfBucketsOwned = 10;
+    var numberOfBucketsJustContributedTo = 5;
+    var totalNumberOfBuckets = numberOfBucketsJustContributedTo + numberOfBucketsOwned;
     TestHelper.data.mock.createInstance('user', 1, function(err, mockUser) {
       if (err) return done(err);
 
-      var buckets = TestHelper.data.mock.getModel('bucket', numberOfBuckets);
-      for (var bucket in buckets) {
-        mockUser.addBucketAsOwner(bucket);
-      }
+      var bucketsOwned = TestHelper.data.mock.getModel('bucket', numberOfBucketsOwned);
+      _.each(bucketsOwned, function(b) {
+        mockUser.addBucketAsOwner(b);
+      });
 
-      async.every(buckets, function(bucket, callback) {
+      var bucketsContributedTo = TestHelper.data.mock.getModel('bucket', numberOfBucketsJustContributedTo);
+      _.each(bucketsContributedTo, function(b) {
+        mockUser.addBucketAsContributor(b);
+      });
+
+      async.every(bucketsOwned.concat(bucketsContributedTo), function(bucket, callback) {
         bucket.save(function(err) {
           callback(!err);
         });
       }, function(success) {
-        if (!success) return done(new Error("Not all user buckets saved!"));
+        if (!success) return done(new Error('Not all user buckets saved!'));
 
-        mockUser.getContributingBuckets(function(savedBuckets) {
-          if (!savedBuckets) return done(err);
+        function checkOwnedBuckets(callback) {
+          mockUser.getOwnedBuckets(function(err, savedOwnedBuckets) {
+            savedOwnedBuckets.length.should.equal(numberOfBucketsOwned);
+            callback(null, !!savedOwnedBuckets);
+          });
+        }
 
-          savedBuckets.length.should.equal(numberOfBuckets);
+        function checkNonOwnedContributingBuckets(callback) {
+          mockUser.getNonOwnedContributingBuckets(function(err, savedContributingBuckets) {
+            savedContributingBuckets.length.should.equal(numberOfBucketsJustContributedTo);
+            callback(null, !!savedContributingBuckets);
+          });
+        }
+
+        function checkTotalBuckets(callback) {
+          mockUser.getContributingBuckets(function(err, savedTotalBuckets) {
+            savedTotalBuckets.length.should.equal(totalNumberOfBuckets);
+            callback(null, !!savedTotalBuckets);
+          });
+        }
+
+        async.parallel([checkOwnedBuckets, checkNonOwnedContributingBuckets, checkTotalBuckets], function(err, results) {
+          if (err) return done(err);
           done();
         });
+
       });
     });
   });

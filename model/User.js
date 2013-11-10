@@ -36,6 +36,9 @@ var schema = new Schema({
 Util.addTimestamps(schema);
 schema.plugin(passportLocalMongoose);
 
+/*
+ * Bucket methods
+ */
 schema.methods.addBucketAsOwner = function(bucket) {
   bucket.owner = this.id;
 };
@@ -50,6 +53,10 @@ schema.methods.getOwnedBuckets = function(callback) {
 
 schema.methods.getContributingBuckets = function(callback) {
   require('./Bucket').model.find({$or: [ {owner: this.id}, {contributors: this.id} ] }).sort('-created').exec(callback);
+};
+
+schema.methods.getNonOwnedContributingBuckets = function(callback) {
+  require('./Bucket').model.find({contributors: this.id}).sort('-created').exec(callback);
 };
 
 module.exports = {
