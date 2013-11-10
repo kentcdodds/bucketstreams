@@ -13,7 +13,7 @@ data.mock.getTestDefaults = {
   user: function(options) {
     return _.extend({
       name: 'Test User 1',
-      handle: 'testuser1' + Math.floor(Math.random()*1001)
+      handle: 'testuser1' + Math.floor(Math.random()*100001)
     }, options);
   },
   bucket: function(options) {

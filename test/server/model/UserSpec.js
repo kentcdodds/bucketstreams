@@ -38,7 +38,7 @@ describe('User Model Spec', function() {
     var numberOfBucketsOwned = 10;
     var numberOfBucketsJustContributedTo = 5;
     var totalNumberOfBuckets = numberOfBucketsJustContributedTo + numberOfBucketsOwned;
-    TestHelper.data.mock.createInstance('user', 1, function(err, mockUser) {
+    TestHelper.data.mock.createInstance('user', function(err, mockUser) {
       if (err) return done(err);
 
       var bucketsOwned = TestHelper.data.mock.getModel('bucket', numberOfBucketsOwned);
