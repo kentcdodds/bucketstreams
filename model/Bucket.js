@@ -10,7 +10,8 @@ var ObjectId = Schema.Types.ObjectId;
  *   name: The name of the bucket
  *   visibility: An array of IDs of users who can view it. If the array is empty, it's public
  *   parent: The parent bucket of this bucket. Can have no parent.
- *   contributors: An array of user IDs of those who can post to this bucket. If empty, it's public
+ *   contributors: An array of user IDs of those who can post to this bucket. If empty, it's public.
+ *     NOTE: The owner will not be in this list! They are inferred as a contributor.
  */
 var schema = new Schema({
   owner: {type: ObjectId, ref: ref.user, required: true},
@@ -21,7 +22,6 @@ var schema = new Schema({
 });
 
 schema.methods.addPost = function(post) {
-  post.buckets = post.buckets || [];
   post.buckets.push(this.id);
 };
 

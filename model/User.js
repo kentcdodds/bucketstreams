@@ -36,6 +36,22 @@ var schema = new Schema({
 Util.addTimestamps(schema);
 schema.plugin(passportLocalMongoose);
 
+schema.methods.addBucketAsOwner = function(bucket) {
+  bucket.owner = this.id;
+};
+
+schema.methods.addBucketAsContributor = function(bucket) {
+  bucket.contributors.push(this.id);
+};
+
+schema.methods.getOwnedBuckets = function(callback) {
+  require('./Bucket').model.find({owner: this.id}).sort('-created').exec(callback);
+};
+
+schema.methods.getContributingBuckets = function(callback) {
+  require('./Bucket').model.find({$or: [ {owner: this.id}, {contributors: this.id} ] }).sort('-created').exec(callback);
+};
+
 module.exports = {
   schema: schema,
   model: mongoose.model(ref.user, schema)
