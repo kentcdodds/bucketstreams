@@ -25,6 +25,18 @@ data.mock.getTestDefaults = {
       contributors: [mockUserId]
     }, options);
   },
+  stream: function(options) {
+    var mockUserId = data.mock.getModel('user').id;
+    return _.extend({
+      owner: mockUserId,
+      name: 'Test Stream',
+      visibility: [mockUserId],
+        subscriptions: {
+        buckets: [],
+          streams: []
+      }
+    }, options);
+  },
   post: function(options) {
     return _.extend({
       authorId: data.mock.getModel('user').id,

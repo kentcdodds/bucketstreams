@@ -18,13 +18,24 @@ var schema = new Schema({
   owner: {type: ObjectId, ref: ref.user, required: true},
   name: {type: String, default: 'New Stream'},
   visibility: [{type: ObjectId, ref: ref.user}],
-  contentSources: {
+  subscriptions: {
     buckets: [{type: ObjectId, ref: ref.bucket}],
     streams: [{type: ObjectId, ref: ref.stream}]
   }
 });
 
 Util.addTimestamps(schema);
+
+schema.methods.subscribeToBucket = function(bucket) {
+  this.subscriptions.buckets.push(bucket.id);
+};
+
+schema.methods.getBucketSubscriptions = function(callback) {
+  this.model(this.constructor.modelName).findById(this).populate('subscriptions.buckets').exec(function(err, populated) {
+    populated = populated || {subscriptions: { buckets: [] }};
+    callback(err, populated.subscriptions.buckets);
+  });
+};
 
 module.exports = {
   schema: schema,
