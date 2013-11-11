@@ -1,7 +1,15 @@
 var ref = require('./ref');
 
 var mongoose = require('mongoose');
-var mongooseTypes = require("mongoose-types");
+mongoose.connect(process.env.MONGO_CONNECTION_STRING, function(err) {
+  if (err) {
+    console.log('Error connecting to database!', err);
+  } else {
+    console.log('Connected to Mongo Database: ', process.env.MONGO_CONNECTION_STRING);
+  }
+});
+
+var mongooseTypes = require('mongoose-types'); // For Email and Url types.
 mongooseTypes.loadTypes(mongoose);
 
 // Non-model (Embedded)

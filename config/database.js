@@ -7,4 +7,5 @@ module.exports = function() {
       process.env.OPENSHIFT_APP_NAME;
   }
   require('../model');
+
 };

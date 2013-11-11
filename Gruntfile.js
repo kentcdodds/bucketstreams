@@ -48,7 +48,7 @@ module.exports = function (grunt) {
         ]
       },
       backend: {
-        files: ['test/server/**/*.js', 'config/**/*.js', 'model/**/*.js'],
+        files: ['test/**/**/*.js', 'config/**/*.js', 'model/**/*.js'],
         tasks: 'simplemocha'
       }
     },
@@ -79,7 +79,7 @@ module.exports = function (grunt) {
     },
     open: {
       server: {
-        url: 'http://localhost:<%= express.options.port %>'
+        url: 'http://local.bucketstreams.com:<%= express.options.port %>'
       }
     },
     clean: {
