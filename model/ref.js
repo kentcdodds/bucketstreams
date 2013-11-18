@@ -1,7 +1,7 @@
 module.exports = {
-  bucket: 'bucket',
-  stream: 'stream',
-  user: 'user',
-  post: 'post',
-  comment: 'comment'
+  bucket: 'buckets',
+  stream: 'streams',
+  user: 'users',
+  post: 'posts',
+  comment: 'comments'
 };

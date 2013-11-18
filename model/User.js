@@ -5,36 +5,132 @@ var ref = require('./ref');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Email = mongoose.SchemaTypes.Email;
-var passportLocalMongoose = require('passport-local-mongoose');
+
+var mongooseAuth = require('mongoose-auth');
+var everyauth = require('everyauth');
+var Promise = everyauth.Promise;
 
 /**
  * User:
- *   name: The name of the user.
- *   handle: The "unique" identifier of the user by which they are referenced in the application.
  *   profilePicture: An array of profile pictures of the user where the last one is the current profile picture.
- *   email: The email address of the user.
- *   phone: The phone number of the user.
  *   lastLoginDate: The date the user last logged in.
- *   connectedAccounts: array of connected accounts with information to pull/push data for user.
  */
 var schema = new Schema({
-  name: {type: String, required: true},
-  handle: {type: String, unique: true, required: true},
   profilePicture: [Image],
-  email: {type: Email},
-  phone: {type: String},
-  lastLoginDate: {type: Date, default: Date.now},
-  connectedAccounts: [
-    {
-      platform: {type: String, default: ''},
-      token: {type: String, default: ''},
-      expirationDate: Date
-    }
-  ]
+  lastLoginDate: {type: Date, default: Date.now}
 });
 
+var model;
+
 Util.addTimestamps(schema);
-schema.plugin(passportLocalMongoose);
+schema.plugin(mongooseAuth, {
+  everymodule: {
+    everyauth: {
+      User: function () {
+        return model;
+      }
+    }
+  },
+  facebook: {
+    everyauth: {
+      myHostname: process.env.BASE_URL,
+      appId: process.env.VENDOR_FACEBOOK_APP_ID,
+      appSecret: process.env.VENDOR_FACEBOOK_SECRET,
+      redirectPath: '/',
+      findOrCreateUser: function(session, accessTok, accessTokExtra, fbUser) {
+        return findOrCreateUser(this, 'facebook', session, accessTok, accessTokExtra, fbUser);
+      }
+    }
+  },
+  google: {
+    everyauth: {
+      myHostname: process.env.BASE_URL,
+      appId: process.env.GOOGLE_CLIENT_ID,
+      appSecret: process.env.GOOGLE_CLIENT_SECRET,
+      scope: 'https://www.googleapis.com/auth/plus.login',
+      redirectPath: '/',
+      findOrCreateUser: function(session, accessTok, accessTokExtra, user) {
+        return findOrCreateUser(this, 'google', session, accessTok, accessTokExtra, user);
+      }
+    }
+  },
+  twitter: {
+    everyauth: {
+      myHostname: process.env.BASE_URL,
+      consumerKey: process.env.TWITTER_CONSUMER_KEY,
+      consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+      redirectPath: '/',
+      findOrCreateUser: function(session, accessTok, accessTokExtra, user) {
+        return findOrCreateUser(this, 'twitter', session, accessTok, accessTokExtra, user);
+      }
+    }
+  },
+  password: {
+    extraParams: {
+      phone: String,
+      email: Email,
+      name: {
+        first: String,
+        last: String
+      }
+    },
+    everyauth: {
+      getLoginPath: '/',
+      postLoginPath: '/login',
+      loginView: 'index',
+      getRegisterPath: '/',
+      postRegisterPath: '/register',
+      registerView: 'index',
+      loginSuccessRedirect: '/',
+      registerSuccessRedirect: '/'
+    }
+  }
+});
+
+function findOrCreateUser(context, type, session, accessTok, accessTokExtra, providedUser) {
+  console.log('finding or creating user of type ' + type, ' auth: ', session.auth);
+  var promise = context.Promise();
+  var User = context.User()();
+
+  if (!session.auth || !session.auth.userId || !session.auth.loggedIn) {
+    promise.fail(new Error('User not logged in'));
+  }
+
+  User.findById(session.auth.userId, function (err, user) {
+    if (err) return promise.fail(err);
+
+    if (!user) {
+      promise.fail(new Error('No existing user in database'));
+    } else {
+      assignDataToUser[type](user, accessTok, accessTokExtra, providedUser);
+
+      // Save the new data to the user doc in the db
+      user.save(function (err, user) {
+        if (err) return promise.fail(err);
+
+        promise.fuilfill(user);
+      });
+    }
+
+  });
+  return promise; // Make sure to return the promise that promises the user
+}
+
+var assignDataToUser = {
+  google: function(user, accessTok, accessTokExtra, googleUser) {
+    // TODO implementation
+  },
+  twitter: function(user, accessTok, accessTokExtra, googleUser) {
+    // TODO implementation
+  },
+  facebook: function(user, accessTok, accessTokExtra, fbUser) {
+    user.fb.accessToken = accessTok;
+    user.fb.expires = accessTokExtra.expires;
+    user.fb.id = fbUser.id;
+    user.fb.name.first = fbUser.first_name;
+    // etc. more assigning...
+  }
+};
 
 /*
  * Bucket methods
@@ -83,9 +179,11 @@ schema.methods.makePost = function(post, callback) {
 
 schema.methods.getPosts = function(callback) {
   require('./Post').model.find({author: this.id}).sort('-created').exec(callback);
-}
+};
+
+model = mongoose.model(ref.user, schema);
 
 module.exports = {
   schema: schema,
-  model: mongoose.model(ref.user, schema)
-}
+  model: model
+};
