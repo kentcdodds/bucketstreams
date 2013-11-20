@@ -5,35 +5,31 @@
   <div>
     <h2>Login:</h2>
     <form action="/login" method="POST">
-      <div id="login-username">
-        <label for="everyauth.password.loginFormFieldName">Username</label>
-        <input type="text" id="everyauth.password.loginFormFieldName" name="everyauth.password.loginFormFieldName">
+      <div>
+        <label for="login-username">Username</label>
+        <input type="text" id="login-username" name="username" placeholder="Username">
       </div>
-      <div id="login-password">
-        <label for="everyauth.password.passwordFormFieldName">Password</label>
-        <input type="text" id="everyauth.password.passwordFormFieldName" name="everyauth.password.passwordFormFieldName">
+
+      <div>
+        <label for="login-password">Password</label>
+        <input type="password" id="login-password" name="password" placeholder="Password">
       </div>
-      <div id="login-submit">
-        <input type="submit">Login
-      </div>
+
+      <input type="submit">Login
     </form>
     <h2>Sign Up:</h2>
     <form action="/register" method="POST">
       <div>
         <label for="register-login">Username</label>
-        <input type="text" id="register-login" name="login">
+        <input type="text" id="register-login" name="username" placeholder="Username">
       </div>
+
       <div>
         <label for="register-password">Password</label>
-        <input type="text" id="register-password" name="password">
+        <input type="password" id="register-password" name="password" placeholder="Password">
       </div>
-      <div>
-        <label for="register-phone">Phone</label>
-        <input type="text" id="register-phone" name="phone">
-      </div>
-      <div id="register-submit">
-        <input type="submit">Login
-      </div>
+
+      <input type="submit">Register
     </form>
   </div>
 </div>
