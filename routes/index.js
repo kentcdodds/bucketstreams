@@ -27,29 +27,20 @@ module.exports = function(app) {
     });
   });
 
-  app.post('/login', passport.authenticate('local'), function(req, res) {
-    return res.json(200, req.user);
-  });
+  app.post('/login', function(req, res, next) {
+    passport.authenticate('local', function(err, user, info) {
+      if (err) return next(err);
 
-//  app.post('/login', function(req, res, next) {
-//    passport.authenticate('local', function(err, user, info) {
-//      if (err) return next(err);
-//
-//      if (!user) {
-//        return ErrorController.sendErrorJson(401, 'No such user exists');
-//      }
-//
-//      req.logIn(user, function(err) {
-//        if (err) return next(err);
-//
-//        return res.json(200, req.user);
-//      });
-//    })(req, res, next);
-//  });
+      if (!user) {
+        return ErrorController.sendErrorJson(401, 'No such user exists');
+      }
 
-  app.get('/logout', function(req, res) {
-    req.logout();
-    return res.json(200, {success: 'Logout successful'});
+      req.logIn(user, function(err) {
+        if (err) return next(err);
+
+        return res.json(200, req.user);
+      });
+    })(req, res, next);
   });
 
   app.get('/', function(req, res, next) {

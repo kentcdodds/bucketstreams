@@ -2,6 +2,7 @@ var Util = require('./Util');
 var Image = require('./Image').schema;
 var ref = require('./ref');
 
+var _ = require('lodash-node');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Email = mongoose.SchemaTypes.Email;
@@ -22,12 +23,43 @@ var schema = new Schema({
     last: String
   },
   profilePicture: [Image],
-  lastLoginDate: {type: Date, default: Date.now}
+  lastLoginDate: {type: Date, default: Date.now},
+  connectedAccounts: [
+    {
+      provider: String,
+      accessToken: String,
+      refreshToken: String
+    }
+  ]
 });
 
 Util.addTimestamps(schema);
 
 schema.plugin(passportLocalMongoose);
+
+/*
+ * Third-party account methods
+ */
+schema.methods.connect = function(provider, accessToken, refreshToken, profile, callback) {
+  var connectedAccount = _.find(this.connectedAccounts, {provider: provider});
+  if (connectedAccount) {
+    connectedAccount.provider = provider;
+    connectedAccount.accessToken = accessToken;
+    connectedAccount.refreshToken = refreshToken;
+  } else {
+    this.connectedAccounts.push({
+      provider: provider,
+      accessToken: accessToken,
+      refreshToken: refreshToken
+    });
+  }
+  console.log();
+  console.log(provider);
+  console.log(arguments);
+  console.log();
+
+  if (callback) this.save(callback);
+}
 
 /*
  * Bucket methods

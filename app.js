@@ -1,10 +1,15 @@
+var app = require('express')();
+
 var localConfig = require('./local/config');
 var mongoose = require('mongoose');
+
+app.directory = __dirname;
 
 if (localConfig) {
   localConfig();
 }
 
+// Setup mongo connection string
 if (process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
   process.env.MONGO_CONNECTION_STRING = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
     process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
@@ -14,7 +19,7 @@ if (process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
 }
 
 require('./model');
-require('./config/passport');
+require('./controller/AuthenticationController').setupPassport();
 
 // Connect to database
 mongoose.connect(process.env.MONGO_CONNECTION_STRING, function(err) {
@@ -25,11 +30,8 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING, function(err) {
   }
 });
 
-
-var app = require('express')();
-app.directory = __dirname;
-
 require('./config/setup-express')(app);
 require('./routes')(app);
+require('./routes/AuthenticationRoutes').setupRoutes(app);
 
 module.exports = app;
