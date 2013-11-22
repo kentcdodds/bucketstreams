@@ -24,14 +24,23 @@ var schema = new Schema({
   },
   profilePicture: [Image],
   lastLoginDate: {type: Date, default: Date.now},
-  connectedAccounts: [
-    {
-      provider: String,
+  connectedAccounts: {
+    facebook: {
       accountId: String,
-      accessToken: String,
-      refreshToken: String
+      token: String
+    },
+    twitter: {
+      accountId: String,
+      token: String,
+      secret: String,
+      lastImportedTweetId: String
+    },
+    google: {
+      accountId: String,
+      token: String,
+      secret: String
     }
-  ]
+  }
 });
 
 Util.addTimestamps(schema);
@@ -41,27 +50,13 @@ schema.plugin(passportLocalMongoose);
 /*
  * Third-party account methods
  */
-schema.methods.connect = function(provider, accessToken, refreshToken, profile, callback) {
-  var connectedAccount = _.find(this.connectedAccounts, {provider: provider});
-  if (connectedAccount) {
-    connectedAccount.provider = provider;
-    connectedAccount.accessToken = accessToken;
-    connectedAccount.refreshToken = refreshToken;
-  } else {
-    this.connectedAccounts.push({
-      provider: provider,
-      accessToken: accessToken,
-      refreshToken: refreshToken,
-      accountId: profile.id
-    });
-  }
-  console.log();
-  console.log(provider);
-  console.log(arguments);
-  console.log();
-
+schema.methods.connect = function(provider, token, secret, profile, callback) {
+  this.connectedAccounts[provider] = this.connectedAccounts[provider] || {};
+  this.connectedAccounts[provider].token = token;
+  this.connectedAccounts[provider].secret = secret;
+  this.connectedAccounts[provider].accountId = profile.id;
   if (callback) this.save(callback);
-}
+};
 
 /*
  * Bucket methods

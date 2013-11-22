@@ -22,7 +22,10 @@
     "passport-local": "0.1.6",
     "passport-local-mongoose": "0.2.5",
     "passport-facebook": "1.0.2",
+
+    "twitter": "0.2.5",
     "passport-twitter": "1.0.2",
+
     "passport-google-oauth": "0.1.5",
 
     "lodash-node": "2.2.1",

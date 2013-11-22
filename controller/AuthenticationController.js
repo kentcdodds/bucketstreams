@@ -51,11 +51,12 @@ var AuthenticationController = (function() {
   };
 
 
-  handleAuthenticatedUser = function(provider, req, accessToken, refreshToken, profile, done) {
+  handleAuthenticatedUser = function(provider, req, token, secret, profile, done) {
     if (!req.isAuthenticated()) {
-      console.log(provider, profile.id);
-//      User.findOne({'connectedAccounts.provider': 'facebook', 'connectedAccounts.accessToken': 'CAAIto8YHkMsBADK4zwqHCBLsl9GAXknH2JMqrLGav0yzKYZBgGPZCLIwIBPCQJflJdGMYRJf3ZAehJVB5RkLB0s0phispOSTsaUrVlZCJ2ia8JZBgCEFFVkQI4MwddLZAgGCZCchGeDa4NvpGR3dZCpaPbVpfUsnFFD6W65vIBJ3P3Y0kl3j4TZBA1uiZCDpxdcLEZD'}, function(err, user) {
-      User.findOne({'connectedAccounts.provider': provider, 'connectedAccounts.accountId': profile.id}, function(err, user) {
+      var query = {};
+      query['connectedAccounts.' + provider + '.accountId'] = { $exists: true };
+      console.log(query);
+      User.findOne(query, function(err, user) {
         if (err) return done(err);
         if (!user) return done(new Error('User does not exist. Cannot connect account.'));
 
@@ -66,7 +67,7 @@ var AuthenticationController = (function() {
         });
       });
     } else {
-      req.user.connect(provider, accessToken, refreshToken, profile, function(err, user) {
+      req.user.connect(provider, token, secret, profile, function(err, user) {
         if (err) return done(err);
 
         return done(null, user);
