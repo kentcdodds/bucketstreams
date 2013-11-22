@@ -4,6 +4,7 @@ var AuthenticationController = (function() {
   var logger = require('winston');
   var passport = require('passport');
   var ErrorController = require('./ErrorController');
+  var User = require('../model/User').model;
 
   var authenticateTo;
   var callbackFrom;
@@ -51,8 +52,19 @@ var AuthenticationController = (function() {
 
 
   handleAuthenticatedUser = function(provider, req, accessToken, refreshToken, profile, done) {
-    if (!req.user) {
-      done(new Error('User not logged in. Cannot connect account.'));
+    if (!req.isAuthenticated()) {
+      console.log(provider, profile.id);
+//      User.findOne({'connectedAccounts.provider': 'facebook', 'connectedAccounts.accessToken': 'CAAIto8YHkMsBADK4zwqHCBLsl9GAXknH2JMqrLGav0yzKYZBgGPZCLIwIBPCQJflJdGMYRJf3ZAehJVB5RkLB0s0phispOSTsaUrVlZCJ2ia8JZBgCEFFVkQI4MwddLZAgGCZCchGeDa4NvpGR3dZCpaPbVpfUsnFFD6W65vIBJ3P3Y0kl3j4TZBA1uiZCDpxdcLEZD'}, function(err, user) {
+      User.findOne({'connectedAccounts.provider': provider, 'connectedAccounts.accountId': profile.id}, function(err, user) {
+        if (err) return done(err);
+        if (!user) return done(new Error('User does not exist. Cannot connect account.'));
+
+        req.login(user, function(err) {
+          if (err) return done(err);
+
+          return done(null, user);
+        });
+      });
     } else {
       req.user.connect(provider, accessToken, refreshToken, profile, function(err, user) {
         if (err) return done(err);

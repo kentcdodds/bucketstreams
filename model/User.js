@@ -27,6 +27,7 @@ var schema = new Schema({
   connectedAccounts: [
     {
       provider: String,
+      accountId: String,
       accessToken: String,
       refreshToken: String
     }
@@ -50,7 +51,8 @@ schema.methods.connect = function(provider, accessToken, refreshToken, profile, 
     this.connectedAccounts.push({
       provider: provider,
       accessToken: accessToken,
-      refreshToken: refreshToken
+      refreshToken: refreshToken,
+      accountId: profile.id
     });
   }
   console.log();
