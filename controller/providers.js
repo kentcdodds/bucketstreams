@@ -1,10 +1,13 @@
-'use strict';
+var twitter = require('twitter');
 
-var TwitterController = (function() {
-  var twitter = require('twitter');
+module.exports = {
+  facebook: {
+    getPosts: function(user, callback) {
 
-  return {
-    importTweets: function(user, callback) {
+    }
+  },
+  twitter: {
+    getPosts: function(user, callback) {
       var userTwitterInfo = user.connectedAccounts.twitter;
       var twit = new twitter({
         consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -22,7 +25,10 @@ var TwitterController = (function() {
         callback(data);
       });
     }
-  };
-})();
+  },
+  google: {
+    getPosts: function(user, callback) {
 
-module.exports = TwitterController;
+    }
+  }
+};

@@ -1,4 +1,3 @@
-var Util = require('./Util');
 var Image = require('./Image').schema;
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;

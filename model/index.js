@@ -8,6 +8,7 @@ mongooseTypes.loadTypes(mongoose);
 // Non-model (Embedded)
 var Image = require('./Image');
 var Content = require('./Content');
+var Rule = require('./Rule');
 
 // Model
 var Bucket = require('./Bucket');

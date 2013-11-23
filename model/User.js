@@ -1,6 +1,12 @@
 var Util = require('./Util');
-var Image = require('./Image').schema;
+var Image = require('./Image');
+var Rule = require('./Rule');
+var Post = require('./Post');
 var ref = require('./ref');
+var async = require('async');
+var logger = require('winston');
+
+var providers = require('../controller/providers');
 
 var _ = require('lodash-node');
 var mongoose = require('mongoose');
@@ -22,23 +28,27 @@ var schema = new Schema({
     first: String,
     last: String
   },
-  profilePicture: [Image],
+  profilePicture: [Image.schema],
   lastLoginDate: {type: Date, default: Date.now},
+  rules: [Rule.schema],
   connectedAccounts: {
     facebook: {
       accountId: String,
-      token: String
+      token: String,
+      rules: [Rule.schema]
     },
     twitter: {
       accountId: String,
       token: String,
       secret: String,
-      lastImportedTweetId: String
+      lastImportedTweetId: String,
+      rules: [Rule.schema]
     },
     google: {
       accountId: String,
       token: String,
-      secret: String
+      secret: String,
+      rules: [Rule.schema]
     }
   }
 });
@@ -58,6 +68,107 @@ schema.methods.connect = function(provider, token, secret, profile, callback) {
   if (callback) this.save(callback);
 };
 
+schema.methods.isConnected = function(provider) {
+  return !!this.connectedAccounts[provider];
+};
+
+/*
+ * Rule methods
+ */
+var getPostContent = {
+  twitter: function(data) {
+    return data.text;
+  },
+  facebook: function(data) {
+    return 'Facebook is not supported...';
+  },
+  google: function(data) {
+    return 'Google is not supported...';
+  }
+};
+
+var createPost = {
+  twitter: function(user, data, content) {
+    user.connectedAccounts.twitter.lastImportedTweetId = data.id;
+    return new Post({
+      author: this.id,
+      content: content,
+      sourceData: {
+        tweetId: data['id_str'],
+        createdAt: data['created_at']
+      }
+    });
+  },
+  facebook: function(user, data, content) {
+
+  },
+  google: function(user, data, content) {
+
+  }
+};
+
+var hashtagRegex = /\S*#(?:\[[^\]]+\]|\S+)/gi;
+
+function getBucketsToPostTo(postContent, rules) {
+  var bucketIds = [];
+  _.each(rules, function(rule) {
+    if (rule.type !== 'inbound') {
+      return;
+    }
+    var hashtags = postContent.match(hashtagRegex) || [];
+    var ruleTags = rule.constraints.hashtags;
+    var containsAny = !ruleTags.any || ruleTags.any.length === 0; // true if this is empty
+    var containsAll = true;
+    var containsNone = false;
+
+    for (var i = 0; i < hashtags.length; i++) {
+      var hashtag = hashtags[i];
+      if (ruleTags.none.length && _.contains(ruleTags.none, hashtag)) {
+        containsNone = true;
+        return;
+      }
+      if (ruleTags.any.length && _.contains(ruleTags.any, hashtag)) {
+        containsAny = true;
+      }
+      if (ruleTags.all.length && !_.contains(ruleTags.all, hashtag)) {
+        containsAll = false;
+        return;
+      }
+    }
+    if (containsAll && containsAny && !containsNone) {
+      bucketIds = bucketIds.concat(rule.buckets.all);
+    }
+  });
+  return bucketIds;
+}
+
+schema.methods.importPosts = function(callback) {
+  var allPosts = [];
+  var self = this;
+  _.each(['facebook', 'twitter', 'google'], function(providerName) {
+    providers[providerName].getPosts(self, function(postDataArray) {
+      for (var i = 0; i < postDataArray.length; i++) {
+        var postData = postDataArray[i];
+        var content = getPostContent[providerName](postData);
+        var bucketsToPostTo = getBucketsToPostTo(content, self.connectedAccounts[providerName].rules);
+
+        if (bucketsToPostTo.length) {
+          var post = createPost[providerName](self, postData, content);
+          post.buckets = (post.buckets || []).concat(bucketsToPostTo);
+          allPosts.push(post);
+        }
+      }
+    });
+  });
+
+  async.every(allPosts, function(post, saveCallback) {
+    post.save(function(err) {
+      if (err) logger.error(err);
+
+      saveCallback(!err);
+    });
+  }, callback);
+};
 /*
  * Bucket methods
  */

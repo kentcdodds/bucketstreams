@@ -1,7 +1,6 @@
 var _ = require('lodash-node');
 var dataModels = require('../model').models;
 var ErrorController = require('../controller/ErrorController');
-var TwitterController = require('../controller/providers/TwitterController');
 var User = dataModels.user;
 var passport = require('passport');
 
@@ -69,10 +68,10 @@ module.exports = function(app) {
     return res.render('index', {});
   });
 
-  app.get('/import/twitter', function(req, res, next) {
-    if (req.user && req.user.connectedAccounts.twitter) {
-      TwitterController.importTweets(req.user, function(data) {
-        res.json(data);
+  app.get('/import', function(req, res, next) {
+    if (req.user) {
+      req.user.importPosts(function() {
+        res.json({complete: 'yes'});
       });
     }
   });
