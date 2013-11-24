@@ -1,4 +1,5 @@
 var twitter = require('twitter');
+var logger = require('winston');
 
 module.exports = {
   facebook: {
@@ -21,7 +22,7 @@ module.exports = {
         params['since_id'] = userTwitterInfo.lastImportedTweetId;
       }
       twit.get('/statuses/user_timeline.json', params, function(data) {
-        console.log(data);
+        logger.info(data);
         callback(data);
       });
     }

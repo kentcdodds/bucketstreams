@@ -8,6 +8,14 @@ angular.module('bucketstreamsApp', [])
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
+      .when('/:username/buckets/:id?', {
+        templateUrl: 'views/buckets.html',
+        controller: 'BucketCtrl'
+      })
+      .when('/:username/streams/:id?', {
+        templateUrl: 'views/streams.html',
+        controller: 'StreamCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
