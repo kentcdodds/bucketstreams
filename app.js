@@ -6,12 +6,17 @@ var logger = require('winston');
 
 // local vars
 var localConfig = require('./local/config');
+var HelperRoutes = require('./local/HelperRoutes');
 var app = require('express')();
 
 app.directory = __dirname;
 
 if (localConfig) {
   localConfig();
+}
+
+if (HelperRoutes) {
+  HelperRoutes(app);
 }
 
 // Setup mongo connection string
