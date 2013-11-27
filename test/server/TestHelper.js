@@ -20,7 +20,7 @@ data.mock.getTestDefaults = {
     var mockUserId = data.mock.getModel('user').id;
     return _.extend({
       owner: mockUserId,
-      name: 'Test Bucket',
+      name: 'Test Bucket ' + Math.floor(Math.random()*100001),
       visibility: [],
       contributors: [mockUserId]
     }, options);
@@ -55,6 +55,24 @@ data.mock.getTestDefaults = {
       textString: 'This is the latest content with multimedia',
       multimedia: {
         images: [data.mock.getTestDefaults.image()]
+      }
+    }, options);
+  },
+  rule: function(options) {
+    var mockBucketId = data.mock.getModel('bucket').id;
+    return _.extend({
+      type: 'inbound',
+      constraints: {
+        hashtags: {
+          any: [ 'any' ],
+          all: [ 'all' ],
+          none: [ 'none' ]
+        },
+        buckets: {
+          any: [  ],
+          all: [ mockBucketId ],
+          none: [  ]
+        }
       }
     }, options);
   }

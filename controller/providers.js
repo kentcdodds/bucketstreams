@@ -4,7 +4,7 @@ var logger = require('winston');
 module.exports = {
   facebook: {
     getPosts: function(user, callback) {
-
+      callback([]);
     }
   },
   twitter: {
@@ -29,7 +29,7 @@ module.exports = {
   },
   google: {
     getPosts: function(user, callback) {
-
+      callback([]);
     }
   }
 };

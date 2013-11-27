@@ -33,7 +33,7 @@ describe('User Model Spec', function() {
       var bucketsOwned = TestHelper.data.mock.getModel('bucket', numberOfBucketsOwned);
 
       async.every(bucketsOwned, function(bucket, callback) {
-        mockUser.createBucket(bucket, function(err) {
+        mockUser.ownBucket(bucket, function(err) {
           callback(!err);
         });
       }, mainCallback);

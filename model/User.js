@@ -1,7 +1,7 @@
 var Util = require('./Util');
 var Image = require('./Image');
 var Rule = require('./Rule');
-var Post = require('./Post');
+var Post = require('./Post').model;
 var ref = require('./ref');
 var async = require('async');
 var logger = require('winston');
@@ -41,7 +41,7 @@ var schema = new Schema({
       accountId: String,
       token: String,
       secret: String,
-      lastImportedTweetId: String,
+      lastImportedTweetId: Number,
       rules: [Rule.schema]
     },
     google: {
@@ -89,12 +89,18 @@ var getPostContent = {
 
 var createPost = {
   twitter: function(user, data, content) {
-    user.connectedAccounts.twitter.lastImportedTweetId = data.id;
+    if (!user.connectedAccounts.twitter.lastImportedTweetId || data.id > user.connectedAccounts.twitter.lastImportedTweetId) {
+      user.connectedAccounts.twitter.lastImportedTweetId = data.id;
+    }
     return new Post({
-      author: this.id,
-      content: content,
+      author: user.id,
+      content: [
+        {
+          textString: content
+        }
+      ],
       sourceData: {
-        tweetId: data['id_str'],
+        tweetId: data.id,
         createdAt: data['created_at']
       }
     });
@@ -122,7 +128,7 @@ function getBucketsToPostTo(postContent, rules) {
     var containsNone = false;
 
     for (var i = 0; i < hashtags.length; i++) {
-      var hashtag = hashtags[i];
+      var hashtag = hashtags[i].substring(1);
       if (ruleTags.none.length && _.contains(ruleTags.none, hashtag)) {
         containsNone = true;
         return;
@@ -136,7 +142,7 @@ function getBucketsToPostTo(postContent, rules) {
       }
     }
     if (containsAll && containsAny && !containsNone) {
-      bucketIds = bucketIds.concat(rule.buckets.all);
+      bucketIds = bucketIds.concat(rule.constraints.buckets.all);
     }
   });
   return bucketIds;
@@ -145,34 +151,62 @@ function getBucketsToPostTo(postContent, rules) {
 schema.methods.importPosts = function(callback) {
   var allPosts = [];
   var self = this;
-  _.each(['facebook', 'twitter', 'google'], function(providerName) {
-    providers[providerName].getPosts(self, function(postDataArray) {
+  var theProviders = [
+    {
+      name: 'facebook',
+      finishedImporting: false
+    },
+    {
+      name: 'twitter',
+      finishedImporting: false
+    },
+    {
+      name: 'google',
+      finishedImporting: false
+    }
+  ];
+  _.each(theProviders, function(theProvider) {
+    providers[theProvider.name].getPosts(self, function(postDataArray) {
       for (var i = 0; i < postDataArray.length; i++) {
         var postData = postDataArray[i];
-        var content = getPostContent[providerName](postData);
-        var bucketsToPostTo = getBucketsToPostTo(content, self.connectedAccounts[providerName].rules);
+        var content = getPostContent[theProvider.name](postData);
+        var bucketsToPostTo = getBucketsToPostTo(content, self.connectedAccounts[theProvider.name].rules);
 
         if (bucketsToPostTo.length) {
-          var post = createPost[providerName](self, postData, content);
+          var post = createPost[theProvider.name](self, postData, content);
           post.buckets = (post.buckets || []).concat(bucketsToPostTo);
           allPosts.push(post);
         }
       }
+      theProvider.finishedImporting = true;
+      maybeSaveAll();
     });
   });
 
-  async.every(allPosts, function(post, saveCallback) {
-    post.save(function(err) {
-      if (err) logger.error(err);
+  function maybeSaveAll() {
+    if (!_.every(theProviders, 'finishedImporting')) {
+      return;
+    }
+    var errors = [];
+    async.every(allPosts, function(post, saveCallback) {
+      post.save(function(err) {
+        if (err) errors.push(err);
 
-      saveCallback(!err);
+        saveCallback(!err);
+      });
+    }, function(result) {
+      if (result) {
+        self.save(callback);
+      } else {
+        callback(new Error('Problem saving posts.' + JSON.stringify(errors)));
+      }
     });
-  }, callback);
+  }
 };
 /*
  * Bucket methods
  */
-schema.methods.createBucket = function(bucket, callback) {
+schema.methods.ownBucket = function(bucket, callback) {
   bucket.owner = this.id;
   if (callback) bucket.save(callback);
 };
