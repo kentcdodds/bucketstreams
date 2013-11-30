@@ -1,5 +1,5 @@
 var Util = require('./Util');
-var Content = require('./Content').schema;
+var Image = require('./Image').schema;
 var ref = require('./ref');
 
 var mongoose = require('mongoose');
@@ -14,32 +14,24 @@ var ObjectId = Schema.Types.ObjectId;
  */
 var schema = new Schema({
   author: {type: ObjectId, ref: ref.user, required: true},
-  content: [Content],
-  sourceData: {},
+  content: [
+    {
+      textString: {type: String},
+      multimedia: {
+        images: [Image]
+      }
+    }
+  ],
+  sourceData: {
+    source: String,
+    id: {type: String, unique: true},
+    createdAt: Date,
+    metadata: {}
+  },
   buckets: [{type: ObjectId, ref: ref.bucket, required: true}]
 });
 
 Util.addTimestamps(schema);
-
-var setSourceFrom = {
-  twitter: function(data) {
-    return {
-      source: 'twitter',
-      id: data['id_str']
-    };
-  }
-};
-
-schema.methods.importFromSource = function(source, data) {
-  this.sourceData = setSourceFrom[source](data);
-  this.markModified('sourceData');
-};
-
-schema.methods.createPostFromTwitter = function(user, data) {
-  this.author = user.id;
-  this.content = data.text;
-  var rules = user.connectedAccounts.twitter.rules;
-};
 
 module.exports = {
   schema: schema,

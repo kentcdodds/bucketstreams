@@ -1,5 +1,4 @@
 var Util = require('./Util');
-var Content = require('./Content').schema;
 var ref = require('./ref');
 
 var mongoose = require('mongoose');
@@ -14,7 +13,7 @@ var ObjectId = Schema.Types.ObjectId;
  */
 var schema = new Schema({
   authorId: {type: ObjectId, ref: ref.user},
-  content: [Content],
+  content: {type: String, required: true},
   owningPost: {type: ObjectId, ref: ref.post}
 });
 

@@ -40,7 +40,12 @@ data.mock.getTestDefaults = {
   post: function(options) {
     return _.extend({
       author: data.mock.getModel('user').id,
-      content: [data.mock.getTestDefaults.content()],
+      content: [{
+        textString: 'This is the latest content with multimedia',
+        multimedia: {
+          images: [data.mock.getTestDefaults.image()]
+        }
+      }],
       buckets: [data.mock.getModel('bucket').id, data.mock.getModel('bucket').id]
     }, options);
   },
@@ -48,14 +53,6 @@ data.mock.getTestDefaults = {
     return _.extend({
       name: 'GoogleLogo.png',
       url: 'https://www.google.com/images/srpr/logo11w.png'
-    }, options);
-  },
-  content: function(options) {
-    return _.extend({
-      textString: 'This is the latest content with multimedia',
-      multimedia: {
-        images: [data.mock.getTestDefaults.image()]
-      }
     }, options);
   },
   rule: function(options) {
