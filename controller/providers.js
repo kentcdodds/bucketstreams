@@ -87,14 +87,16 @@ module.exports = {
       }
 
       async.parallel([getFeedPosts, getLinkPosts, getPostPosts], function(err, results) {
-        var posts = [].concat(results[0]).concat(results[1]).concat(results[2]);
-        posts = _.uniq(posts, function(post) {
-          return post.sourceData.id.replace(/\d+_/, '');
-        });
-        posts = _.sortBy(posts, function(post) {
-          return post.sourceData.createdAt;
-        });
-        callback(posts);
+        if (!err) {
+          var posts = [].concat(results[0]).concat(results[1]).concat(results[2]);
+          posts = _.uniq(posts, function(post) {
+            return post.sourceData.id.replace(/\d+_/, '');
+          });
+          posts = _.sortBy(posts, function(post) {
+            return post.sourceData.createdAt;
+          });
+        }
+        callback(err, posts);
       });
 
     }
@@ -134,13 +136,13 @@ module.exports = {
             }
           }));
         });
-        callback(posts);
+        callback(null, posts);
       });
     }
   },
   google: {
     getPosts: function(user, callback) {
-      callback([]);
+      callback(null, []);
     }
   }
 };

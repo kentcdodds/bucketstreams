@@ -15,6 +15,7 @@ var Email = mongoose.SchemaTypes.Email;
 
 var passportLocalMongoose = require('passport-local-mongoose');
 
+var minute = 1000 * 60;
 
 /**
  * User:
@@ -36,6 +37,7 @@ var schema = new Schema({
       accountId: String,
       token: String,
       lastImportEpoch: Number,
+      timeBetweenImports: {type: Number, default: 5 * minute},
       rules: [Rule.schema]
     },
     twitter: {
@@ -43,12 +45,16 @@ var schema = new Schema({
       token: String,
       secret: String,
       lastImportedTweetId: Number,
+      lastImportEpoch: Number,
+      timeBetweenImports: {type: Number, default: 5 * minute},
       rules: [Rule.schema]
     },
     google: {
       accountId: String,
       token: String,
       secret: String,
+      lastImportEpoch: Number,
+      timeBetweenImports: {type: Number, default: 5 * minute},
       rules: [Rule.schema]
     }
   }
@@ -120,29 +126,39 @@ var updateUser = {
       }
     });
     accountInfo.lastImportedTweetId = largestId;
+    accountInfo.lastImportEpoch = new Date().getTime();
   },
   google: function(accountInfo, posts) {
-
+    accountInfo.lastImportEpoch = new Date().getTime();
   }
-}
+};
 
 schema.methods.importPosts = function(callback) {
   var allPosts = [];
   var self = this;
   var theProviders = [ 'facebook', 'twitter', 'google' ];
   async.every(theProviders, function(aProvider, done) {
-    providers[aProvider].getPosts(self, function(posts) {
-      updateUser[aProvider](self.connectedAccounts[aProvider], posts);
-      _.each(posts, function(post) {
-        var postContent = post.content[post.content.length - 1].textString;
-        var bucketsToPostTo = getBucketsToPostTo(postContent, self.connectedAccounts[aProvider].rules);
+    var providerInfo = self.connectedAccounts[aProvider];
+    var timeSinceLastImport = new Date().getTime() - providerInfo.lastImportEpoch;
+    var readyForImport = timeSinceLastImport > providerInfo.timeBetweenImports;
 
-        if (bucketsToPostTo.length) {
-          post.buckets = (post.buckets || []).concat(bucketsToPostTo);
-          allPosts.push(post);
-        }
-      });
-      done(true);
+    if (!readyForImport) {
+      return done(true);
+    }
+    providers[aProvider].getPosts(self, function(err, posts) {
+      if (!err) {
+        updateUser[aProvider](providerInfo, posts);
+        _.each(posts, function(post) {
+          var postContent = post.content[post.content.length - 1].textString;
+          var bucketsToPostTo = getBucketsToPostTo(postContent, providerInfo.rules);
+
+          if (bucketsToPostTo.length) {
+            post.buckets = (post.buckets || []).concat(bucketsToPostTo);
+            allPosts.push(post);
+          }
+        });
+      }
+      done(!err);
     });
   }, function finishedCreatingPosts(allPostsGotten) {
     if (allPostsGotten) {
