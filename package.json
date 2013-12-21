@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "forever": "forever start server.js -m 50 --minUptime 2000 --spinSleepTime 2000",
     "start": "node server.js"
   },
   "engines": {
