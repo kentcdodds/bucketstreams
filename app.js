@@ -9,9 +9,8 @@ app.directory = __dirname;
 var config = require('./config');
 config.configAll(app);
 
-var HelperRoutes = require('./local/HelperRoutes');
-if (HelperRoutes) {
-  HelperRoutes(app);
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'local') {
+  require('./local/HelperRoutes')(app);
 }
 
 module.exports = app;
