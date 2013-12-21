@@ -139,6 +139,9 @@ schema.methods.importPosts = function(callback) {
   var theProviders = [ 'facebook', 'twitter', 'google' ];
   async.every(theProviders, function(aProvider, done) {
     var providerInfo = self.connectedAccounts[aProvider];
+    if (!providerInfo || !providerInfo.token) {
+      return done(true);
+    }
     var timeSinceLastImport = new Date().getTime() - providerInfo.lastImportEpoch;
     var readyForImport = timeSinceLastImport > providerInfo.timeBetweenImports;
 
