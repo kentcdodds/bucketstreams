@@ -4,10 +4,6 @@ var logger = require('winston');
 
 module.exports = function(app) {
 
-  app.get('/', function(req, res, next) {
-    return res.render('index', {});
-  });
-
   var angularBridge = new (require('angular-bridge'))(app, {
     urlPrefix : '/api/v1/',
     requestPrehandler: function(req, res, next) {
@@ -65,4 +61,5 @@ module.exports = function(app) {
     ],
     query: '{  }'
   });
-}
+
+};

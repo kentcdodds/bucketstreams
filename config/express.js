@@ -1,5 +1,7 @@
 var passport = require('passport');
 var express = require('express');
+var path = require('path');
+var MongoStore = require('connect-mongo')(express);
 
 module.exports = function(app) {
 
@@ -8,27 +10,34 @@ module.exports = function(app) {
     process.env.BASE_URL = 'http://www.bucketstreams.com';
     app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 9000);
     app.set('ip', process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
-  //    app.use(express.cookieParser('Rock Run Slime George'));
+    app.use(express.cookieParser('Rock Run Slime George'));
+    app.use(express.session({
+      secret: 'Emily X-men Team Elephant Water',
+      store: new MongoStore({
+        url: process.env.MONGO_CONNECTION_STRING
+      })
+    }));
   } else {
     app.set('port', process.env.PORT || 9000);
     app.set('ip', process.env.IP || '127.0.0.1');
     app.use(express.errorHandler());
+    app.use(express.cookieParser('Toy Lion Story King'));
+    app.use(express.session({secret: 'medusa red podium'}));
+    app.use(express.logger('dev'));
   }
 
-  app.set('views', app.directory + '/app');
+  app.set('views', app.get('directory') + '/app');
   app.engine('html', require('ejs').renderFile);
   app.set('view engine', 'html');
 
-  app.use(express.favicon());
-  app.use(express.logger('dev'));
+  app.use(express.favicon(app.get('directory') + '/app/images/favicon.png'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
 
-  app.use(express.cookieParser('Toy Lion Story King'));
-  app.use(express.session({secret: 'medusa red podium'}));
-
-  app.use(express.static(app.directory + '/app'));
+//  app.use(express.static(app.get('directory') + '/app'));
+  app.use(express.static(path.join(app.get('directory'), 'app')));
 
   app.use(passport.initialize());
   app.use(passport.session());
+  app.use(app.router);
 }
