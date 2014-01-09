@@ -7,15 +7,19 @@
     $locationProvider.html5Mode(true);
 
     $stateProvider
-      .state('main', {
+      .state('anon', {
         url: '/',
-        templateUrl: '/views/main.html',
+        templateUrl: '/views/anon.html',
         controller: 'MainCtrl'
       })
-      .state('main.test', {
-        template: '<div><h2>I\'m here!</h2></div>',
-        url: '/here'
+      .state('anon.signup', {
+        url: 'signup',
+        templateUrl: '/views/anon.signup.html'
       });
 
+  });
+  app.run(function($state){
+    var href = $state.href('anon.home');
+    console.log(href);
   });
 })();
