@@ -1,22 +1,29 @@
+html, body {
+  height: 100%;
+}
+
 body {
-  background-color: #FAFCF9
+  background-color: #FAFCF9;
 }
 
 /* Fix for ui-bootstrap */
 .nav, .pagination, .carousel a { cursor: pointer; }
 
+#top-content {
+  min-height: 100%;
+  height: auto;
+  margin: -20px auto -20px;
+  padding: 20px 0 20px 0;
+}
+
 #centered-container {
-  margin-top: 20px;
-  min-height: 600px;
 }
 
 #top-bar {
-  background-color: #4980BD;
+  background-color: #64A1C3;
   width: 100%;
   height: 76px;
-  border-bottom-color: #A5742A;
-  border-bottom-style: solid;
-  border-width: 4px;
+  border-bottom:solid 4px #A5742A;
 }
 
 #sign-up-form {
@@ -47,8 +54,6 @@ body {
 }
 
 #footer-container {
-  position: fixed;
-  bottom: 0;
   width: 100%;
   background-color: #A5742A;
   height: 40px;
