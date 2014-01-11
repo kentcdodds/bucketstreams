@@ -28,14 +28,6 @@ module.exports = function (grunt) {
   grunt.initConfig({
     yeoman: yeomanConfig,
     watch: {
-      coffee: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
-        tasks: ['coffee:dist']
-      },
-      coffeeTest: {
-        files: ['test/spec/{,*/}*.coffee'],
-        tasks: ['coffee:test']
-      },
       livereload: {
         options: {
           livereload: LIVERELOAD_PORT
@@ -50,6 +42,10 @@ module.exports = function (grunt) {
       backend: {
         files: ['test/**/**/*.js', 'config/**/*.js', 'model/**/*.js'],
         tasks: 'simplemocha'
+      },
+      stylus: {
+        files: ['stylus/*.styl'],
+        tasks: 'stylus'
       }
     },
     express: {
@@ -103,26 +99,6 @@ module.exports = function (grunt) {
         'Gruntfile.js',
         '<%= yeoman.app %>/scripts/{,*/}*.js'
       ]
-    },
-    coffee: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/scripts',
-          src: '{,*/}*.coffee',
-          dest: '.tmp/scripts',
-          ext: '.js'
-        }]
-      },
-      test: {
-        files: [{
-          expand: true,
-          cwd: 'test/spec',
-          src: '{,*/}*.coffee',
-          dest: '.tmp/spec',
-          ext: '.js'
-        }]
-      }
     },
     // not used since Uglify task does concat,
     // but still available if needed
@@ -223,19 +199,6 @@ module.exports = function (grunt) {
         }]
       }
     },
-    concurrent: {
-      server: [
-        'coffee:dist'
-      ],
-      test: [
-        'coffee'
-      ],
-      dist: [
-        'coffee',
-        'imagemin',
-        'htmlmin'
-      ]
-    },
     karma: {
       unit: {
         configFile: 'karma.conf.js',
@@ -270,8 +233,24 @@ module.exports = function (grunt) {
           ]
         }
       }
+    },
+    stylus: {
+      compile: {
+        options: {
+          linenos: true
+        },
+        files: {
+          'app/styles/styles.css': [
+            'stylus/main.style',
+            'stylus/anon.style',
+            'stylus/*.styl'
+          ]
+        }
+      }
     }
   });
+
+  grunt.loadNpmTasks('grunt-contrib-stylus');
 
   grunt.registerTask('server', function (target) {
     if (target === 'dist') {
@@ -280,7 +259,6 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      'concurrent:server',
       'express:livereload',
       'open',
       'watch'
@@ -289,7 +267,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
-    'concurrent:test',
     'simplemocha',
     'karma'
   ]);
@@ -301,7 +278,6 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'useminPrepare',
-    'concurrent:dist',
     'concat',
     'copy',
     'cdnify',
