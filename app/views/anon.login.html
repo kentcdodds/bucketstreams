@@ -1,0 +1,28 @@
+<div class="center-block form-flow">
+  <img src="../images/logo-small.png">
+  <h1>Login with...</h1>
+
+  <h3>Username and password...</h3>
+  <div id="email-sign-up">
+    <form name="emailSignUpForm" role="form" ng-submit="login()">
+      <div class="form-group" ng-class="{'has-error': showEmailError('username')}">
+        <label class="sr-only" for="login-username">Username</label>
+        <input type="text" ng-model="userInfo.username" name="username" class="form-control" id="login-username" placeholder="Username or Email">
+      </div>
+      <div class="form-group">
+        <label class="sr-only" for="sign-up-password1">Password</label>
+        <input type="password" class="form-control" ng-model="userInfo.password" id="sign-up-password1" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-primary pull-right"><i class="glyphicon glyphicon-lock"></i> Login</button>
+    </form>
+  </div>
+
+  <div class="clear-both">
+    <h3>... or another account</h3>
+    <div class="third-party-buttons">
+      <button class="btn btn-default btn-block btn-lg button-facebook third-party-button"><i class="fa fa-facebook margin-right-medium"></i> Facebook</button>
+      <button class="btn btn-default btn-block btn-lg button-twitter third-party-button"><i class="fa fa-twitter margin-right-medium"></i> Twitter</button>
+      <button class="btn btn-default btn-block btn-lg button-google-plus third-party-button"><i class="fa fa-google-plus margin-right-medium"></i> Google+</button>
+    </div>
+  </div>
+</div>

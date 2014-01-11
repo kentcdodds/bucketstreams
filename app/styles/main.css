@@ -9,6 +9,28 @@ body {
 /* Fix for ui-bootstrap */
 .nav, .pagination, .carousel a { cursor: pointer; }
 
+.opacity1 {
+  opacity: 1;
+  z-index: 1;
+}
+
+.opacity0 {
+  opacity: 0;
+  z-index: -1;
+}
+
+.transition-all-fast {
+  transition: all .25s ease-in-out;
+}
+
+.transition-all-slow {
+  transition: all 1s ease-in-out;
+}
+
+.transition-all-medium {
+  transition: all .5s ease-in-out;
+}
+
 #top-content {
   min-height: 100%;
   height: auto;
@@ -16,33 +38,17 @@ body {
   padding: 20px 0 20px 0;
 }
 
-#centered-container {
-}
-
 #top-bar {
-  background-color: #64A1C3;
+  background-color: #2C4286;
   width: 100%;
   height: 76px;
-  border-bottom:solid 4px #A5742A;
+  border-bottom: solid 4px #693A1B;
 }
 
-#sign-up-form {
+.form-flow {
+  width: 400px;
   margin-top: 40px;
   margin-bottom: 100px;
-  width: 400px;
-}
-
-#sign-up-container h3 {
-  margin-left: 20px;
-}
-
-#login-container {
-  width: 500px;
-  margin: 20px;
-}
-
-#login-username {
-  width: 240px;
 }
 
 #logo-container {
@@ -55,13 +61,45 @@ body {
 
 #footer-container {
   width: 100%;
-  background-color: #A5742A;
+  background-color: #693A1B;
   height: 40px;
 }
 
 #footer-container > div {
   margin-top: 10px;
 }
+
+.third-party-button {
+  color: white;
+  font-size: 30px;
+}
+
+.button-facebook {
+  background-color: #3B5998;
+}
+
+.button-facebook:hover {
+  color: #3B5998;
+}
+
+.button-twitter {
+  background-color: #4099FF;
+}
+
+.button-twitter:hover {
+  color: #4099FF;
+}
+
+.button-google-plus {
+  background-color: #D34836;
+}
+
+.button-google-plus:hover {
+  color: #D34836;
+}
+
+
+/* Colors */
 
 .color-white {
   color: white;
@@ -76,7 +114,88 @@ a.color-white:visited {
   color: #FFFFFF;
 }
 
-.center {
-  float: none;
-  margin: 0 auto;
+.color-facebook {
+  color: #3B5998;
+}
+
+.color-twitter {
+  color: #4099FF;
+}
+
+.color-google-plus {
+  color: #D34836;
+}
+
+.background-color-facebook {
+  background-color: #3B5998;
+}
+
+.color-twitter {
+  background-color: #4099FF;
+}
+
+.color-google-plus {
+  background-color: #D34836;
+}
+
+/*
+ *
+ * layout helpers
+ *
+ */
+
+/*
+ * margins
+ */
+
+/* margin-right */
+.margin-right-xsmall {
+  margin-right: 5px;
+}
+
+.margin-right-small {
+  margin-right: 10px;
+}
+
+.margin-right-medium {
+  margin-right: 15px;
+}
+
+.margin-right-large {
+  margin-right: 20px;
+}
+
+.margin-right-xlarge {
+  margin-right: 25px;
+}
+
+/* margin-left */
+
+.margin-left-xsmall {
+  margin-left: 5px;
+}
+
+.margin-left-small {
+  margin-left: 10px;
+}
+
+.margin-left-medium {
+  margin-left: 15px;
+}
+
+.margin-left-large {
+  margin-left: 20px;
+}
+
+.margin-left-xlarge {
+  margin-left: 25px;
+}
+
+/*
+ *
+ * Other
+ *
+ */
+.clear-both {
+  clear: both;
 }
