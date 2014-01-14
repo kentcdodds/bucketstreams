@@ -7,49 +7,18 @@
 /*
  * margins
  */
+for side in 'top' 'right' 'bottom' 'left'
+  for size in (xsmall 5) (small 10) (medium 15) (large 20) (xlarge 25)
+    .margin-{side}-{size[0]}
+      margin-{side} size[1]px
 
-/* margin-right */
-.margin-right-xsmall {
-  margin-right: 5px;
-}
-
-.margin-right-small {
-  margin-right: 10px;
-}
-
-.margin-right-medium {
-  margin-right: 15px;
-}
-
-.margin-right-large {
-  margin-right: 20px;
-}
-
-.margin-right-xlarge {
-  margin-right: 25px;
-}
-
-/* margin-left */
-
-.margin-left-xsmall {
-  margin-left: 5px;
-}
-
-.margin-left-small {
-  margin-left: 10px;
-}
-
-.margin-left-medium {
-  margin-left: 15px;
-}
-
-.margin-left-large {
-  margin-left: 20px;
-}
-
-.margin-left-xlarge {
-  margin-left: 25px;
-}
+/*
+ * paddings
+ */
+for side in 'top' 'right' 'bottom' 'left'
+  for size in (xsmall 5) (small 10) (medium 15) (large 20) (xlarge 25)
+    .padding-{side}-{size[0]}
+      padding-{side} size[1]px
 
 /*
  *
