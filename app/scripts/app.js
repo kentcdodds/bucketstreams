@@ -9,23 +9,43 @@
     $stateProvider
       .state('anon', {
         url: '/',
-        templateUrl: '/views/anon.html',
-        controller: 'MainCtrl'
+        templateUrl: 'scripts/components/home/index.html',
+        controller: 'MainCtrl',
+        onEnter: function() {
+          console.log('anon');
+        }
       })
       .state('anon.signup', {
         url: 'signup',
-        templateUrl: '/views/anon.signup.html',
-        controller: 'RegistrationCtrl'
+        templateUrl: 'scripts/components/home/signup.html',
+        controller: 'RegistrationCtrl',
+        onEnter: function() {
+          console.log('anon.signup');
+        }
       })
       .state('anon.login', {
         url: 'login',
-        templateUrl: '/views/anon.login.html',
-        controller: 'LoginCtrl'
-      });
+        templateUrl: 'scripts/components/home/login.html',
+        controller: 'LoginCtrl',
+        onEnter: function() {
+          console.log('anon.login');
+        }
+      })
+      .state('component', {
+        url: '/component',
+        templateUrl: '/scripts/components/wrapper/index.html',
+        onEnter: function() {
+          console.log('component');
+        }
+      })
+      .state('component.post', {
+        url: '/post',
+        templateUrl: '/scripts/components/post/post.html',
+        controller: 'PostCtrl',
+        onEnter: function() {
+          console.log('component.post');
+        }
 
-  });
-  app.run(function($state){
-    var href = $state.href('anon.home');
-    console.log(href);
+      });
   });
 })();

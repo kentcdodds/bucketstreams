@@ -33,10 +33,7 @@ module.exports = function (grunt) {
           livereload: LIVERELOAD_PORT
         },
         files: [
-          '<%= yeoman.app %>/{,*/}*.html',
-          '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
-          '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+          'app/**/**/*.*',
         ]
       },
       backend: {
@@ -44,7 +41,7 @@ module.exports = function (grunt) {
         tasks: 'simplemocha'
       },
       stylus: {
-        files: ['stylus/*.styl'],
+        files: ['stylus/**/*.styl', 'stylus/*.styl'],
         tasks: 'stylus'
       }
     },
@@ -241,9 +238,7 @@ module.exports = function (grunt) {
         },
         files: {
           'app/styles/styles.css': [
-            'stylus/main.style',
-            'stylus/anon.style',
-            'stylus/*.styl'
+            'stylus/imports.styl'
           ]
         }
       }

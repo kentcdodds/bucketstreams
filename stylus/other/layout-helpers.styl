@@ -1,0 +1,27 @@
+/*
+ *
+ * layout helpers
+ *
+ */
+
+/*
+ * margins & paddings
+ */
+for size in (xxsmall 6) (xsmall 12) (small 18) (medium 24) (large 30) (xlarge 36) (xxlarge 42)
+  for type in 'margin' 'padding'
+    .{type}-{size[0]}
+      {type} size[1]px
+    for side in 'top' 'right' 'bottom' 'left'
+      .{type}-{side}-{size[0]}
+        {type}-{side} size[1]px
+
+/*
+ *
+ * Other
+ *
+ */
+.clear-both
+  clear both
+
+.height-100
+  height 100%
