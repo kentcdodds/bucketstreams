@@ -23,6 +23,7 @@ var minute = 1000 * 60;
  *   lastLoginDate: The date the user last logged in.
  */
 var schema = new Schema({
+  username: {type: String, unique: true},
   phone: String,
   email: Email,
   name: {

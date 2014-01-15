@@ -1,4 +1,4 @@
-angular.module('bucketstreamsApp').controller('RegistrationCtrl', function ($scope) {
+angular.module('bsApp').controller('RegistrationCtrl', function ($scope) {
   $scope.step = 1;
   $scope.userLeft = {
     username: false,

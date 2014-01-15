@@ -1,7 +1,7 @@
 'use strict';
 
 (function() {
-  var app = angular.module('bucketstreamsApp', ['ngAnimate', 'ui.router', 'ui.bootstrap']);
+  var app = angular.module('bsApp', ['ngAnimate', 'ui.router', 'ui.bootstrap', 'pasvaz.bindonce']);
 
   app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
@@ -31,21 +31,13 @@
           console.log('anon.login');
         }
       })
-      .state('component', {
-        url: '/component',
-        templateUrl: '/scripts/components/wrapper/index.html',
+      .state('components', {
+        url: '/components',
+        templateUrl: 'componentWrapper/componentWrapper.html',
+        controller: 'ComponentWrapperCtrl',
         onEnter: function() {
-          console.log('component');
+          console.log('components');
         }
-      })
-      .state('component.post', {
-        url: '/post',
-        templateUrl: '/scripts/components/post/post.html',
-        controller: 'PostCtrl',
-        onEnter: function() {
-          console.log('component.post');
-        }
-
       });
   });
 })();

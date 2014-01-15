@@ -27,7 +27,7 @@
     }
   </script>
 </head>
-<body ng-app="bucketstreamsApp">
+<body ng-app="bsApp">
 <!--[if lt IE 10]>
 <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser
   today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better
@@ -63,6 +63,7 @@
 <script src="/bower_components/angular-resource/angular-resource.js"></script>
 <script src="/bower_components/angular-cookies/angular-cookies.js"></script>
 <script src="/bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="/bower_components/angular-bindonce/bindonce.js"></script>
 <!-- endbuild -->
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -70,7 +71,8 @@
 <script src="/scripts/components/home/HomeCtrl.js"></script>
 <script src="/scripts/components/home/LoginCtrl.js"></script>
 <script src="/scripts/components/home/RegistrationCtrl.js"></script>
-<script src="/scripts/components/post/PostCtrl.js"></script>
+<script src="/componentWrapper/ComponentWrapperCtrl.js"></script>
+<script src="/scripts/components/post/bsPost.js"></script>
 <!-- endbuild -->
 </body>
 </html>

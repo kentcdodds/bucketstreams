@@ -256,13 +256,40 @@ body{background-color:#fafcf9}
 /* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-left-xxlarge{padding-left:42px}
 
-/* line 23 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
-.clear-both{clear:both}
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+.vertical-align-middle{vertical-align:middle}
 
 /* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+.vertical-align-top{vertical-align:top}
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+.vertical-align-bottom{vertical-align:bottom}
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+.display-inline-block{display:inline-block}
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+.display-block{display:block}
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+.display-none{display:none}
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+.position-absolute{position:absolute}
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+.position-relative{position:relative}
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+.position-fixed{position:fixed}
+
+/* line 34 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+.clear-both{clear:both}
+
+/* line 37 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .height-100{height:100%}
 
-/* line 28 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+/* line 39 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
 .opacity1{opacity:1;z-index:1}
@@ -279,7 +306,10 @@ body{background-color:#fafcf9}
 /* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
 .transition-all-medium{transition:all .5s ease-in-out}
 
-/* line 21 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+/* line 23 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.cursor-pointer{cursor:pointer}
+
+/* line 25 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
 
 /* line 68 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 
@@ -404,3 +434,17 @@ body{background-color:#fafcf9}
 
 /* line 66 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 .button-google-plus:hover{color:#d34836}
+
+/* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+
+/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post{width:400px;}
+
+/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .post-meta{height:80px;}
+
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .post-meta .post-info{margin-left:64px}
+
+/* line 7 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .share-post{height:40px}

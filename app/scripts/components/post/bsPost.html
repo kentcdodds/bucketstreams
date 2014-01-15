@@ -1,0 +1,21 @@
+<div class="post panel panel-default" bindonce="post">
+  <div class="post-meta panel-heading position-relative">
+    <a bo-href="'/' + post.author.username">
+      <img bo-src="post.author.profilePicture.url" class="padding-xxsmall img-circle position-absolute">
+    </a>
+    <div class="post-info display-inline-block padding-xxsmall vertical-align-top">
+      <a bo-href="'/' + post.author.username">
+        <strong class="post-user" bo-text="post.author.name.first + ' ' + post.author.name.last"></strong>
+      </a>
+      - <small><a bo-href="'/' + post.author.username + '/' + post.id" bo-text="post.modified | date:'short'"></a></small>
+    </div>
+  </div>
+  <div class="post-content panel-body" bo-text="post.content[post.content.length - 1].textContent"></div>
+  <div class="share-post panel-footer">
+    <div class="pull-right">
+      <a class="padding-xsmall cursor-pointer" ng-click="share(post)"><i class="fa fa-share"></i></a>
+      <a class="padding-xsmall cursor-pointer" ng-click="comment(post)"><i class="fa fa-comment"></i></a>
+      <a class="padding-xsmall cursor-pointer" ng-click="star(post)"><i class="fa fa-star"></i></a>
+    </div>
+  </div>
+</div>
