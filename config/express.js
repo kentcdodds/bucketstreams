@@ -33,5 +33,6 @@ module.exports = function(app) {
   app.use(express.static(path.join(app.get('directory'), 'app')));
 
   app.use(passport.initialize());
+  app.use(passport.session());
   app.use(app.router);
 }

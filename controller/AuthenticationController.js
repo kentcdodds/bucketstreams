@@ -6,7 +6,7 @@ var User = require('../model/User').model;
 
 var authenticateTo = {
   facebook: function(req, res, next) {
-    passport.authenticate('facebook')(req, res, next);
+    passport.authenticate('facebook', {scope: 'read_stream'})(req, res, next);
   },
   twitter: function(req, res, next) {
     passport.authenticate('twitter')(req, res, next);

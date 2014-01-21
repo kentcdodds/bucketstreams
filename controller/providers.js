@@ -99,6 +99,12 @@ module.exports = {
         callback(err, posts);
       });
 
+    },
+    getFeed: function(user, callback) {
+      var accountId = user.connectedAccounts.facebook.accountId;
+      var token = user.connectedAccounts.facebook.token;
+      var queryParams = '?access_token=' + token;
+      facebook.get(accountId + '/home' + queryParams, callback);
     }
   },
   twitter: {
@@ -138,10 +144,28 @@ module.exports = {
         });
         callback(null, posts);
       });
+    },
+    getFeed: function(user, callback) {
+      var userTwitterInfo = user.connectedAccounts.twitter;
+      var twit = new twitter({
+        consumer_key: process.env.TWITTER_CONSUMER_KEY,
+        consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+        access_token_key: userTwitterInfo.token,
+        access_token_secret: userTwitterInfo.secret
+      });
+      var params = {};
+      params['user_id'] = userTwitterInfo.accountId;
+
+      twit.get('/statuses/home_timeline.json', params, function(data) {
+        callback(null, data);
+      });
     }
   },
   google: {
     getPosts: function(user, callback) {
+      callback(null, []);
+    },
+    getFeed: function(user, callback) {
       callback(null, []);
     }
   }
