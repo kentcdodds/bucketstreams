@@ -1,4 +1,4 @@
-angular.module('bsApp').controller('ComponentWrapperCtrl', function($scope) {
+angular.module('bs.componentWrapper').controller('ComponentWrapperCtrl', function($scope) {
   $scope.post = {
     author: {
       username: 'testuser',

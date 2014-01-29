@@ -1,7 +1,10 @@
 'use strict';
 
 (function() {
-  var app = angular.module('bsApp', ['ngAnimate', 'ui.router', 'ui.bootstrap', 'pasvaz.bindonce']);
+  var thirdParties = ['ui.router', 'ui.bootstrap', 'pasvaz.bindonce'];
+  var angularMods = ['ngAnimate'];
+  var internalMods = ['bs.directives'];
+  var app = angular.module('bs.anonymous', thirdParties.concat(angularMods.concat(internalMods)));
 
   app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
@@ -9,7 +12,7 @@
     $stateProvider
       .state('anon', {
         url: '/',
-        templateUrl: 'scripts/components/home/index.html',
+        templateUrl: 'anonymous/index.html',
         controller: 'MainCtrl',
         onEnter: function() {
           console.log('anon');
@@ -17,7 +20,7 @@
       })
       .state('anon.signup', {
         url: 'signup',
-        templateUrl: 'scripts/components/home/signup.html',
+        templateUrl: 'anonymous/signup.html',
         controller: 'RegistrationCtrl',
         onEnter: function() {
           console.log('anon.signup');
@@ -25,19 +28,13 @@
       })
       .state('anon.login', {
         url: 'login',
-        templateUrl: 'scripts/components/home/login.html',
+        templateUrl: 'anonymous/login.html',
         controller: 'LoginCtrl',
         onEnter: function() {
           console.log('anon.login');
         }
-      })
-      .state('components', {
-        url: '/components',
-        templateUrl: 'componentWrapper/componentWrapper.html',
-        controller: 'ComponentWrapperCtrl',
-        onEnter: function() {
-          console.log('components');
-        }
       });
+
+    $urlRouterProvider.otherwise('/');
   });
 })();

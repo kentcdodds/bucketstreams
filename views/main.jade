@@ -1,0 +1,19 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
+    title= "Bucket Streams"
+    meta(name="description", content="")
+    meta(name="viewport", content="width=device-width")
+
+    for href in stylesheets
+      link(rel="stylesheet", href="#{href}")
+    for script in topScripts
+      script(src="#{script}")
+  body(ng-app="#{appName}")
+    
+    div(ui-view, class="height-100")
+
+    for script in scripts
+      script(src="#{script}")

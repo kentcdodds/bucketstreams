@@ -28,7 +28,9 @@
     "lodash-node": "2.2.1",
     "async": "0.2.9",
     "winston": "0.7.2",
-    "forever": "~0.10.11"
+    "forever": "~0.10.11",
+    "jade": "~1.1.5",
+    "glob": "~3.2.8"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

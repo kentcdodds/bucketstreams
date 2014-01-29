@@ -1,4 +1,4 @@
-angular.module('bsApp').controller('LoginCtrl', function ($scope, $http) {
+angular.module('bs.anonymous').controller('LoginCtrl', function ($scope, $http) {
   $scope.login = function() {
     console.log('logging in with ', $scope.userInfo);
     $http({

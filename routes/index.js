@@ -6,8 +6,21 @@ module.exports = function(app) {
     require('../local/HelperRoutes')(app);
   }
 
+  var config = require('../views/config');
+
+  app.get('/components', function(req, res) {
+    console.log('rendering components page');
+    console.log(config.components);
+    res.render('main', config.components);
+  });
+
   app.get('*', function(req, res) {
     console.log('catch all: ' + req.params);
-    res.sendfile(app.get('directory') + '/app/index.html');
+    var configuration = config.authenticated;
+    if (!req.isAuthenticated()) {
+      console.log('sending anonymous');
+      configuration = config.anonymous;
+    }
+    res.render('main', configuration);
   });
 };

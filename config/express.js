@@ -24,7 +24,12 @@ module.exports = function(app) {
     app.use(express.cookieParser('Toy Lion Story King'));
     app.use(express.session({secret: 'medusa red podium'}));
     app.use(express.logger('dev'));
+    app.locals.pretty = true;
   }
+
+  app.set('view engine', 'jade');
+  app.engine('jade', require('jade').__express);
+  app.set('views', app.get('directory') + '/views');
 
   app.use(express.favicon(app.get('directory') + '/app/images/favicon.png'));
   app.use(express.bodyParser());

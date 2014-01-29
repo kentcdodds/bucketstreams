@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('bsApp').controller('MainCtrl', function ($scope) {
+angular.module('bs.anonymous').controller('MainCtrl', function ($scope) {
   $scope.awesomeThings = [
     'Producing Specific Content',
     'Following Specific Content',

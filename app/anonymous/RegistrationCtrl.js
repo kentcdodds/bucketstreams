@@ -1,4 +1,4 @@
-angular.module('bsApp').controller('RegistrationCtrl', function ($scope, $http) {
+angular.module('bs.anonymous').controller('RegistrationCtrl', function ($scope, $http) {
   $scope.step = 1;
   $scope.userLeft = {
     username: false,
