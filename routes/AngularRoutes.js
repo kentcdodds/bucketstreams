@@ -1,6 +1,7 @@
 var dataModels = require('../model').models;
 var _ = require('lodash-node');
 var logger = require('winston');
+var ErrorController = require('../controller/ErrorController');
 
 module.exports = function(app) {
 
@@ -20,6 +21,14 @@ module.exports = function(app) {
       '_id'
     ],
     query: '{  }'
+  });
+
+  app.get('/api/v1/users/me', function(req, res) {
+    if (req.isAuthenticated()) {
+      res.json(req.user);
+    } else {
+      return ErrorController.sendErrorJson(401);
+    }
   });
 
   angularBridge.addResource('posts', dataModels.post, {

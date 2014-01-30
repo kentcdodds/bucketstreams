@@ -23,7 +23,7 @@ module.exports = function(app) {
       if (err) return next(err);
 
       if (!user) {
-        return ErrorController.sendErrorJson(401, 'No such user exists');
+        return ErrorController.sendErrorJson(403, 'No such user exists');
       }
 
       req.logIn(user, function(err) {
@@ -36,13 +36,14 @@ module.exports = function(app) {
 
   app.get('/auth/logout', function(req, res) {
     req.logout();
+    console.log('logged out, redirecting');
     res.redirect('/');
   });
 
   app.get('/auth/:provider', AuthenticationController.authenticate);
   app.get('/auth/:provider/callback', AuthenticationController.callback);
 
-  app.get('/#_=_', function(req, res, next) {
-    return res.render('index', {});
+  app.get('/#_=_', function(req, res) {
+    res.redirect('/');
   });
 };

@@ -1,4 +1,4 @@
-angular.module('bs.anonymous').controller('RegistrationCtrl', function ($scope, $http) {
+angular.module('bs.frontPage').controller('RegistrationCtrl', function ($scope, $http, $window) {
   $scope.step = 1;
   $scope.userLeft = {
     username: false,
@@ -38,6 +38,8 @@ angular.module('bs.anonymous').controller('RegistrationCtrl', function ($scope, 
         username: username,
         password: password
       }
+    }).success(function() {
+      $window.location.href = '/';
     });
   };
 });

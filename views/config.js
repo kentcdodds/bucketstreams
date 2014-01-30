@@ -36,26 +36,28 @@ module.exports = (function() {
   };
 
   function getAppSection(name) {
-    return _.union(getFilesInPath('./app/' + name + '/app.js', './app'), getFilesInPath('./app/' + name + '/**/*.js', './app'));
+    var appJs = getFilesInPath('./app/' + name + '/app.js', './app');
+    var otherJsFiles = getFilesInPath('./app/' + name + '/**/*.js', './app');
+    return _.union(appJs, otherJsFiles);
   }
 
-  var anonymousScripts = getAppSection('anonymous');
-  var authenticatedScripts = getAppSection('authenticated');
+  var frontPageScripts = getAppSection('front-page');
+  var mainScripts = getAppSection('main');
   var componentWrapperScripts = getAppSection('componentWrapper');
   var componentScripts = getAppSection('components');
 
   return {
-    anonymous: {
+    frontPage: {
       stylesheets: commonConfig.stylesheets,
       topScripts: commonConfig.topScripts,
-      appName: 'bs.anonymous',
-      scripts: commonConfig.scripts.concat(anonymousScripts.concat(componentScripts))
+      appName: 'bs.frontPage',
+      scripts: commonConfig.scripts.concat(frontPageScripts.concat(componentScripts))
     },
-    authenticated: {
+    main: {
       stylesheets: commonConfig.stylesheets,
       topScripts: commonConfig.topScripts,
       appName: 'bs.app',
-      scripts: commonConfig.scripts.concat(authenticatedScripts.concat(componentScripts))
+      scripts: commonConfig.scripts.concat(mainScripts.concat(componentScripts))
     },
     components: {
       stylesheets: commonConfig.stylesheets,

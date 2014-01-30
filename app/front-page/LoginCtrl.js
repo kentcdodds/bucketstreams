@@ -1,4 +1,4 @@
-angular.module('bs.anonymous').controller('LoginCtrl', function ($scope, $http) {
+angular.module('bs.frontPage').controller('LoginCtrl', function ($scope, $http, $window) {
   $scope.login = function() {
     console.log('logging in with ', $scope.userInfo);
     $http({
@@ -8,6 +8,8 @@ angular.module('bs.anonymous').controller('LoginCtrl', function ($scope, $http) 
         username: $scope.userInfo.username,
         password: $scope.userInfo.password
       }
+    }).success(function() {
+      $window.location.href = '/';
     });
   }
 });
