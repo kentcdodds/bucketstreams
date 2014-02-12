@@ -9,32 +9,59 @@
   app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
 
-    $stateProvider
-      .state('anon', {
+    var frontPageTemplates = 'front-page/';
+    var frontPageUrl = '/';
+
+    $stateProvider.
+      state('frontPage', {
         url: '/',
-        templateUrl: 'front-page/index.html',
+        templateUrl: frontPageTemplates + 'index.html',
         controller: 'MainCtrl',
         onEnter: function() {
-          console.log('anon');
+          console.log('frontPage');
         }
-      })
-      .state('anon.signup', {
+      }).
+      state('frontPage.signup', {
         url: 'signup',
-        templateUrl: 'front-page/signup.html',
+        templateUrl: frontPageTemplates + 'signup.html',
         controller: 'RegistrationCtrl',
         onEnter: function() {
-          console.log('anon.signup');
+          console.log('frontPage.signup');
         }
-      })
-      .state('anon.login', {
+      }).
+      state('frontPage.login', {
         url: 'login',
-        templateUrl: 'front-page/login.html',
+        templateUrl: frontPageTemplates + 'login.html',
         controller: 'LoginCtrl',
         onEnter: function() {
-          console.log('anon.login');
+          console.log('frontPage.login');
+        }
+      }).
+      state('frontPage.facebook', {
+        url: 'facebook',
+        templateUrl: frontPageTemplates + 'interest-game/game.html',
+        controller: 'GameCtrl',
+        onEnter: function() {
+          console.log('frontPage')
+        }
+      }).
+      state('frontPage.interestGame', {
+        url: 'interest',
+        templateUrl: frontPageTemplates + 'interest-game/index.html',
+        controller: 'GameCtrl',
+        onEnter: function() {
+          console.log('frontPage.interestGame');
+        }
+      }).
+      state('frontPage.interestGame.game', {
+        url: '{facebook|twitter|google}',
+        templateUrl: frontPageTemplates + 'interest-game/game.html',
+        controller: 'GameCtrl',
+        onEnter: function() {
+          console.log('frontPage.interestGame.game');
         }
       });
 
-    $urlRouterProvider.otherwise('/');
+//    $urlRouterProvider.otherwise('/');
   });
 })();

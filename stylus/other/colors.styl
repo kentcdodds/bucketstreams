@@ -1,9 +1,26 @@
-facebook = #3B5998
-twitter = #4099FF
-googlePlus = #D34836
+/*
+ * Bucket Streams colors
+ * .bs-blue-0
+ * .bs-brown-1
+ */
 
-.color-white
-  color: white;
+for color, i in #03426A #24587A #0A67A3 #3E97D1 #65A6D1
+  .bs-blue-{i}
+    color color
+
+for color, i in #A65C00 #BF8030 #FF8E00 #FFAA40 #FFC173
+  .bs-brown-{i}
+    color color
+
+for color in (#3B5998 facebook) (#4099FF twitter) (#D34836 google-plus)
+  .color-{color[1]}
+    color color[0]
+  .background-color-{color[1]}
+    background-color color[0]
+
+for color in ('red' red) ('blue' blue) ('green' green) ('white' white) ('yellow' yellow)
+  .color-{color[0]}
+    color color[1]
 
 .color-white > a:hover,
 .color-white > a:active,
@@ -11,22 +28,5 @@ googlePlus = #D34836
 a.color-white:hover,
 a.color-white:active,
 a.color-white:visited
-  color: white;
+  color white;
 
-.color-facebook
-  color: facebook
-
-.color-twitter
-  color: twitter
-
-.color-google-plus
-  color: googlePlus
-
-.background-color-facebook
-  background-color: facebook
-
-.color-twitter
-  background-color: twitter
-
-.color-google-plus
-  background-color: googlePlus

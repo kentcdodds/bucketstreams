@@ -1,8 +1,12 @@
 <div class="height-100 margin-xxlarge">
   <p>This is where you can test out the different components. Give it a shot!</p>
   <div class="center-block padding-xxlarge">
+    <div id="create-post-preview">
+      <div bs-post="newPost" current-user="user" mode="create"></div>
+    </div>
+
     <div id="post-preview">
-      <bs-post></bs-post>
+      <div bs-post="post" current-user="user"></div>
     </div>
   </div>
 </div>

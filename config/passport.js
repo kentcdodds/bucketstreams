@@ -1,11 +1,18 @@
-var passport = require('passport');
-
 module.exports = function() {
 
+  var passport = require('passport');
   var User = require('../model/User').model;
 
   function handleAuthenticatedUser(provider, req, token, secret, profile, done) {
     if (!req.isAuthenticated()) {
+      if (req.params.temp) {
+        profile.temp = true;
+        req.login(profile, function(err) {
+          if (err) return done(err);
+
+          return done(null, profile);
+        });
+      }
       var query = {};
       query['connectedAccounts.' + provider + '.accountId'] = { $exists: true };
       User.findOne(query, function(err, user) {
@@ -33,7 +40,7 @@ module.exports = function() {
       passport.use(new FacebookStrategy({
           clientID: process.env.FACEBOOK_APP_ID,
           clientSecret: process.env.FACEBOOK_SECRET,
-          callbackURL: process.env.BASE_URL + "/auth/facebook/callback",
+          callbackURL: process.env.BASE_URL + '/auth/facebook/callback',
           passReqToCallback: true
         },
         function(req, accessToken, refreshToken, profile, done) {
@@ -45,7 +52,7 @@ module.exports = function() {
       passport.use(new TwitterStrategy({
           consumerKey: process.env.TWITTER_CONSUMER_KEY,
           consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-          callbackURL: process.env.BASE_URL + "/auth/twitter/callback",
+          callbackURL: process.env.BASE_URL + '/auth/twitter/callback',
           passReqToCallback: true
         },
         function(req, accessToken, refreshToken, profile, done) {
@@ -57,7 +64,7 @@ module.exports = function() {
       passport.use(new GoogleStrategy({
           clientID: process.env.GOOGLE_CLIENT_ID,
           clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-          callbackURL: process.env.BASE_URL + "/auth/google/callback",
+          callbackURL: process.env.BASE_URL + '/auth/google/callback',
           passReqToCallback: true
         },
         function(req, accessToken, refreshToken, profile, done) {

@@ -17,6 +17,6 @@
         }
       });
 
-//    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/');
   });
 })();

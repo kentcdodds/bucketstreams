@@ -42,8 +42,4 @@ module.exports = function(app) {
 
   app.get('/auth/:provider', AuthenticationController.authenticate);
   app.get('/auth/:provider/callback', AuthenticationController.callback);
-
-  app.get('/#_=_', function(req, res) {
-    res.redirect('/');
-  });
 };

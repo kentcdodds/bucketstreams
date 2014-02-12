@@ -43,26 +43,8 @@
   font-size: 30px;
 }
 
-.button-facebook {
-  background-color: #3B5998;
-}
-
-.button-facebook:hover {
-  color: #3B5998;
-}
-
-.button-twitter {
-  background-color: #4099FF;
-}
-
-.button-twitter:hover {
-  color: #4099FF;
-}
-
-.button-google-plus {
-  background-color: #D34836;
-}
-
-.button-google-plus:hover {
-  color: #D34836;
-}
+for provider in facebook twitter google-plus
+  .button-{provider}
+    @extend .background-color-{provider}
+  .button-{provider}:hover
+    @extend .color-{provider}

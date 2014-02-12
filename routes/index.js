@@ -19,8 +19,10 @@ module.exports = function(app) {
     res.render('main', config.components);
   });
 
-  app.get('/', function(req, res, next) {
-    if (!req.isAuthenticated()) {
+  var unauthFrontPages = ['', 'signup', 'login'];
+
+  app.get('(/' + unauthFrontPages.join('|/') + ')', function(req, res, next) {
+    if (!req.isAuthenticated() || req.session.visitor) {
       console.log('sending front-page');
       res.render('main', config.frontPage);
     } else {
@@ -28,8 +30,24 @@ module.exports = function(app) {
     }
   });
 
+  var anyFrontPages = ['interest', 'interest/:provider'];
+
+  app.get('(/' + anyFrontPages.join('|/') + ')', function(req, res) {
+    console.log('sending frontPage for interest game', req.params);
+    if (req.isAuthenticated()) {
+      console.log('even though the user is authenticated');
+    }
+    res.render('main', config.frontPage);
+  });
+
   app.get('*', function(req, res) {
-    console.log('catch all: ' + req.params, 'sending main');
-    res.render('main', config.main);
+    console.log('catch all: ' + req.params);
+    if (req.session.visitor) {
+      console.log('sending frontPage');
+      res.render('main', config.frontPage);
+    } else {
+      console.log('sending main');
+      res.render('main', config.main);
+    }
   });
 };

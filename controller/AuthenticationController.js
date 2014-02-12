@@ -21,32 +21,41 @@ var authenticateTo = {
   }
 };
 
+var providers = ['facebook', 'twitter', 'google'];
+
 var callbackFrom = {
   facebook: function(req, res, next) {
+    var redirect = req.params.destination || '/';
+    console.log(redirect);
     passport.authenticate('facebook', {
-      successRedirect: '/',
-      failureRedirect: '/facebook-failure'
+      successRedirect: redirect,
+      failureRedirect: '/login'
     })(req, res, next);
   },
   twitter: function(req, res, next) {
+    var redirect = req.params.destination || '/';
+    console.log(redirect);
     passport.authenticate('twitter', {
-      successRedirect: '/',
-      failureRedirect: '/twitter-failure'
+      successRedirect: redirect,
+      failureRedirect: '/login'
     })(req, res, next);
   },
   google: function(req, res, next) {
+    var redirect = req.params.destination || '/';
     passport.authenticate('google', {
-      successRedirect: '/',
-      failureRedirect: '/google-failure'
+      successRedirect: redirect,
+      failureRedirect: '/login'
     })(req, res, next);
   }
 };
 
 
-function sendUnsupportedProviderError(res, provider) {
-  var message = 'The third-party provider "' + provider + '" is not supported';
-  var code = 400;
-  ErrorController.sendErrorJson(res, code, message);
+function checkUnsupportedProvider(res, provider) {
+  if (providers.indexOf(provider) === -1) {
+    var message = 'The third-party provider "' + provider + '" is not supported';
+    var code = 400;
+    ErrorController.sendErrorJson(res, code, message);
+  }
 }
 
 /*
@@ -54,19 +63,25 @@ function sendUnsupportedProviderError(res, provider) {
  */
 module.exports = {
   authenticate: function(req, res, next) {
-    var authFunction = authenticateTo[req.params.provider];
-    if (authFunction) {
-      authFunction(req, res, next);
-    } else {
-      sendUnsupportedProviderError(res, req.params.provider);
+    var provider = req.params.provider;
+    checkUnsupportedProvider(res, provider);
+    if (req.query.destination) {
+      req.session.destination = req.query.destination;
     }
+    if (req.query.visitor) {
+      req.session.visitor = true;
+    }
+    authenticateTo[provider](req, res, next);
   },
   callback: function(req, res, next) {
-    var callbackFunction = callbackFrom[req.params.provider];
-    if (callbackFunction) {
-      callbackFunction(req, res, next);
-    } else {
-      sendUnsupportedProviderError(res, req.params.provider);
-    }
+    var provider = req.params.provider;
+    checkUnsupportedProvider(res, provider);
+
+    var redirect = req.session.destination || '/';
+    console.log('redirect', redirect);
+    passport.authenticate(provider, {
+      successRedirect: redirect,
+      failureRedirect: '/login'
+    })(req, res, next);
   }
 };

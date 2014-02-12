@@ -16,280 +16,325 @@ body{background-color:#fafcf9}
 /* line 10 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
 .nav,.pagination,.carousel a{cursor:pointer}
 
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
+/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
+.ng-cloak{display:none}
 
-/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
-
-/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
-.color-white{color:#fff}
-
-/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
-.color-white > a:hover,.color-white > a:active,.color-white > a:visited,a.color-white:hover,a.color-white:active,a.color-white:visited{color:#fff}
-
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
-.color-facebook{color:#3b5998}
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
 
 /* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
-.color-twitter{color:#4099ff}
 
-/* line 17 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
-.color-google-plus{color:#d34836}
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.bs-blue-0{color:#03426a}
 
-/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
-.background-color-facebook{background-color:#3b5998}
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.bs-blue-1{color:#24587a}
 
-/* line 23 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
-.color-twitter{background-color:#4099ff}
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.bs-blue-2{color:#0a67a3}
 
-/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
-.color-google-plus{background-color:#d34836}
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.bs-blue-3{color:#3e97d1}
 
-/* line 28 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.bs-blue-4{color:#65a6d1}
 
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.bs-brown-0{color:#a65c00}
+
+/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.bs-brown-1{color:#bf8030}
+
+/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.bs-brown-2{color:#ff8e00}
+
+/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.bs-brown-3{color:#ffaa40}
+
+/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.bs-brown-4{color:#ffc173}
+
+/* line 16 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.color-facebook,.button-facebook:hover{color:#3b5998}
+
+/* line 18 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.background-color-facebook,.button-facebook{background-color:#3b5998}
+
+/* line 16 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.color-twitter,.button-twitter:hover{color:#4099ff}
+
+/* line 18 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.background-color-twitter,.button-twitter{background-color:#4099ff}
+
+/* line 16 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.color-google-plus,.button-google-plus:hover{color:#d34836}
+
+/* line 18 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.background-color-google-plus,.button-google-plus{background-color:#d34836}
+
+/* line 22 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.color-red{color:#f00}
+
+/* line 22 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.color-blue{color:#00f}
+
+/* line 22 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.color-green{color:#008000}
+
+/* line 22 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.color-white{color:#fff}
+
+/* line 22 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.color-yellow{color:#ff0}
+
+/* line 25 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+.color-white > a:hover,.color-white > a:active,.color-white > a:visited,a.color-white:hover,a.color-white:active,a.color-white:visited{color:#fff}
+
+/* line 27 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-xxsmall{margin:6px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-top-xxsmall{margin-top:6px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-right-xxsmall{margin-right:6px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-bottom-xxsmall{margin-bottom:6px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-left-xxsmall{margin-left:6px}
 
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-xxsmall{padding:6px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-top-xxsmall{padding-top:6px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-right-xxsmall{padding-right:6px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-bottom-xxsmall{padding-bottom:6px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-left-xxsmall{padding-left:6px}
 
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-xsmall{margin:12px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-top-xsmall{margin-top:12px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
-.margin-right-xsmall{margin-right:12px}
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+.margin-right-xsmall,.post .comments .add-comment img.add-comment-photo,.post .comments img.comment-photo{margin-right:12px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-bottom-xsmall{margin-bottom:12px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-left-xsmall{margin-left:12px}
 
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-xsmall{padding:12px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-top-xsmall{padding-top:12px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-right-xsmall{padding-right:12px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-bottom-xsmall{padding-bottom:12px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-left-xsmall{padding-left:12px}
 
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-small{margin:18px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
-.margin-top-small{margin-top:18px}
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+.margin-top-small,.post .comments .comment{margin-top:18px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-right-small{margin-right:18px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-bottom-small{margin-bottom:18px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-left-small{margin-left:18px}
 
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-small{padding:18px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-top-small{padding-top:18px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-right-small{padding-right:18px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-bottom-small{padding-bottom:18px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-left-small{padding-left:18px}
 
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-medium{margin:24px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-top-medium{margin-top:24px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-right-medium{margin-right:24px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-bottom-medium{margin-bottom:24px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-left-medium{margin-left:24px}
 
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-medium{padding:24px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-top-medium{padding-top:24px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-right-medium{padding-right:24px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-bottom-medium{padding-bottom:24px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-left-medium{padding-left:24px}
 
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-large{margin:30px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-top-large{margin-top:30px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-right-large{margin-right:30px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-bottom-large{margin-bottom:30px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-left-large{margin-left:30px}
 
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-large{padding:30px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-top-large{padding-top:30px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-right-large{padding-right:30px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-bottom-large{padding-bottom:30px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-left-large{padding-left:30px}
 
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-xlarge{margin:36px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-top-xlarge{margin-top:36px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-right-xlarge{margin-right:36px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-bottom-xlarge{margin-bottom:36px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-left-xlarge{margin-left:36px}
 
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-xlarge{padding:36px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-top-xlarge{padding-top:36px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-right-xlarge{padding-right:36px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-bottom-xlarge{padding-bottom:36px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-left-xlarge{padding-left:36px}
 
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-xxlarge{margin:42px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-top-xxlarge{margin-top:42px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-right-xxlarge{margin-right:42px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-bottom-xxlarge{margin-bottom:42px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .margin-left-xxlarge{margin-left:42px}
 
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-xxlarge{padding:42px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-top-xxlarge{padding-top:42px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-right-xxlarge{padding-right:42px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-bottom-xxlarge{padding-bottom:42px}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .padding-left-xxlarge{padding-left:42px}
 
-/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .vertical-align-middle{vertical-align:middle}
 
-/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .vertical-align-top{vertical-align:top}
 
-/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .vertical-align-bottom{vertical-align:bottom}
 
-/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .display-inline-block{display:inline-block}
 
-/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .display-block{display:block}
 
-/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .display-none{display:none}
 
-/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .position-absolute{position:absolute}
 
-/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .position-relative{position:relative}
 
-/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .position-fixed{position:fixed}
 
-/* line 34 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 28 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .clear-both{clear:both}
 
-/* line 37 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+/* line 31 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .height-100{height:100%}
 
-/* line 39 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+/* line 33 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
 .opacity1{opacity:1;z-index:1}
@@ -309,11 +354,34 @@ body{background-color:#fafcf9}
 /* line 23 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
 .cursor-pointer{cursor:pointer}
 
-/* line 25 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 
-/* line 68 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxsmall{font-size:.7em}
 
-/* line 68 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xsmall{font-size:.8em}
+
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-small{font-size:.9em}
+
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-medium{font-size:1em}
+
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-large{font-size:1.1em}
+
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xlarge{font-size:1.2em}
+
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxlarge{font-size:1.3em}
+
+/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+
+/* line 51 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+
+/* line 51 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 
 /* line 14 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/index.styl */
 
@@ -363,25 +431,30 @@ body{background-color:#fafcf9}
 
 /* line 67 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/reset.styl */
 
-/* line 5 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/text/index.styl */
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 
-/* line 5 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/text/index.styl */
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxsmall{font-size:.7em}
 
-/* line 2 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/text/aliases.styl */
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xsmall{font-size:.8em}
 
-/* line 14 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/text/aliases.styl */
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-small{font-size:.9em}
 
-/* line 2 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/text/ellipsis.styl */
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-medium{font-size:1em}
 
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/text/ellipsis.styl */
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-large{font-size:1.1em}
 
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/text/hide-text.styl */
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xlarge{font-size:1.2em}
 
-/* line 9 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/text/hide-text.styl */
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxlarge{font-size:1.3em}
 
-/* line 9 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/text/replace-text.styl */
-
-/* line 10 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/text/replace-text.styl */
+/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 
 /* line undefined : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/vendor.styl */
 
@@ -417,34 +490,55 @@ body{background-color:#fafcf9}
 /* line 41 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 .third-party-button{color:#fff;font-size:30px}
 
-/* line 46 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-.button-facebook{background-color:#3b5998}
+/* line 47 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 
-/* line 50 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-.button-facebook:hover{color:#3b5998}
+/* line 49 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 
-/* line 54 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-.button-twitter{background-color:#4099ff}
+/* line 47 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 
-/* line 58 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-.button-twitter:hover{color:#4099ff}
+/* line 49 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 
-/* line 62 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-.button-google-plus{background-color:#d34836}
+/* line 47 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 
-/* line 66 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-.button-google-plus:hover{color:#d34836}
+/* line 49 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 
 /* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
 .post{width:400px;}
 
-/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
 .post .post-meta{height:80px;}
 
-/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
-.post .post-meta .post-info{margin-left:64px}
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .post-meta .post-author-photo{max-height:64px;max-width:64px}
 
-/* line 7 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
-.post .share-post{height:40px}
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .post-meta .post-info{padding-left:72px}
+
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+
+/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .post-meta .post-content textarea{max-width:400px}
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .share-post{height:40px;border-bottom:solid 1px #ddd;border-bottom-left-radius:initial;border-bottom-right-radius:initial}
+
+/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .comments{padding:10px;}
+
+/* line 22 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+
+/* line 23 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .comments .add-comment img.add-comment-photo{max-height:32px;max-width:32px;}
+
+/* line 27 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .comments .add-comment .add-comment-field{padding-left:46px;width:100%}
+
+/* line 30 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+
+/* line 32 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .comments img.comment-photo{max-height:32px;max-width:32px;}
+
+/* line 36 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .comments .comment-info{padding-left:46px}

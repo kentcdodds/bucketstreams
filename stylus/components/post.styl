@@ -1,8 +1,37 @@
 .post
   width 400px
+
   .post-meta
     height 80px
+    .post-author-photo
+      max-height 64px
+      max-width 64px
     .post-info
-      margin-left 64px
+      padding-left 72px
+    .post-content
+      textarea
+        max-width 400px
   .share-post
     height 40px
+    border-bottom solid 1px #DDD
+    border-bottom-left-radius initial
+    border-bottom-right-radius initial
+
+  .comments
+    padding 10px
+    .add-comment
+      img.add-comment-photo
+        max-height 32px
+        max-width 32px
+        @extend .margin-right-xsmall
+      .add-comment-field
+        padding-left 46px
+        width 100%
+    .comment
+      @extend .margin-top-small
+    img.comment-photo
+      max-height 32px
+      max-width 32px
+      @extend .margin-right-xsmall
+    .comment-info
+      padding-left 46px
