@@ -8,7 +8,7 @@
         Comment: Comment,
         Post: Post,
         Stream: Stream,
-        User: User,
+        User: User
       };
       $window.BS.CurrentUser = CurrentUser;
     });
