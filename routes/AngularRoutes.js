@@ -5,6 +5,15 @@ var ErrorController = require('../controller/ErrorController');
 
 module.exports = function(app) {
 
+  app.get('/api/v1/users/me', function(req, res, next) {
+    if (req.isAuthenticated()) {
+      req.url = '/api/v1/users/' + req.user.id;
+      next();
+    } else {
+      return ErrorController.sendErrorJson(res, 401);
+    }
+  });
+
   var angularBridge = new (require('angular-bridge'))(app, {
     urlPrefix : '/api/v1/',
     requestPrehandler: function(req, res, next) {
@@ -14,21 +23,9 @@ module.exports = function(app) {
   });
 
   angularBridge.addResource('users', dataModels.user, {
-    hide: [
-      ''
-    ],
-    readOnly: [
-      '_id'
-    ],
+    hide: [ 'hash', 'salt' ],
+    readOnly: [ '_id', 'modified', 'lastLoginDate'],
     query: '{  }'
-  });
-
-  app.get('/api/v1/users/me', function(req, res) {
-    if (req.isAuthenticated()) {
-      res.json(req.user);
-    } else {
-      return ErrorController.sendErrorJson(401);
-    }
   });
 
   angularBridge.addResource('posts', dataModels.post, {

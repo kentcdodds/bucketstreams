@@ -1,4 +1,4 @@
-angular.module('bs.componentWrapper').controller('ComponentWrapperCtrl', function($scope) {
+angular.module('bs.componentWrapper').controller('ComponentWrapperCtrl', function($scope, CurrentUser, Stream, Bucket, Comment, Post, User) {
 
   function getRandomProfilePhoto(height, width) {
     return 'http://lorempixel.com/' + (height || 64) + '/' + (width || 64) + '/technics/?random=' + Math.floor(Math.random() * 1000);
@@ -90,5 +90,54 @@ angular.module('bs.componentWrapper').controller('ComponentWrapperCtrl', functio
         name: 'Bucket Streams Rocks'
       }
     ]
+  };
+
+  $scope.stream = {
+    owner: $scope.user,
+    name: 'Way Cool Stuff',
+    visibility: [],
+    subscriptions: {
+      buckets: [],
+      streams: []
+    }
+  };
+
+  function setupUser() {
+    if (CurrentUser) {
+      console.log(CurrentUser);
+    } else {
+      console.log('no current user');
+    }
   }
+
+  function setupStream() {
+    Stream.get({id: '52fc4bc876166acc37000009'}).then(function(stream) {
+      if (stream) {
+        $scope.stream = stream;
+      } else {
+        $scope.stream = new Stream({
+          owner: '52ddf43125cb9d9b71000009',
+          name: 'Way Cool Stuff'
+        });
+        stream.$save();
+      }
+    });
+  }
+
+
+  $scope.createNewStream = function() {
+    var newStream = new Stream({
+      owner: '52ddf43125cb9d9b71000009',
+      name: 'Way Cool Stuff'
+    });
+    newStream.$save(function(theSavedStream) {
+      console.log('Success stream - ', theSavedStream);
+      Stream.get({id : theSavedStream._id}, function(theGottenStream) {
+        theGottenStream.name = 'Way Cooler Stuff';
+        theGottenStream.$save(function(secondSavedStream) {
+          console.log('Success stream (again) - ', secondSavedStream);
+        });
+      });
+    });
+  };
 });

@@ -45,25 +45,31 @@ module.exports = (function() {
   var mainScripts = getAppSection('main');
   var componentWrapperScripts = getAppSection('componentWrapper');
   var componentScripts = getAppSection('components');
+  var modelScripts = getAppSection('models');
+
+  var isDev = process.env.NODE_ENV === 'development';
 
   return {
     frontPage: {
       stylesheets: commonConfig.stylesheets,
       topScripts: commonConfig.topScripts,
       appName: 'bs.frontPage',
-      scripts: commonConfig.scripts.concat(frontPageScripts.concat(componentScripts))
+      scripts: _.union(commonConfig.scripts, frontPageScripts, componentScripts, modelScripts),
+      isDev: isDev
     },
     main: {
       stylesheets: commonConfig.stylesheets,
       topScripts: commonConfig.topScripts,
       appName: 'bs.app',
-      scripts: commonConfig.scripts.concat(mainScripts.concat(componentScripts))
+      scripts: _.union(commonConfig.scripts, mainScripts, componentScripts, modelScripts),
+      isDev: isDev
     },
     components: {
       stylesheets: commonConfig.stylesheets,
       topScripts: commonConfig.topScripts,
       appName: 'bs.componentWrapper',
-      scripts: commonConfig.scripts.concat(componentWrapperScripts.concat(componentScripts))
+      scripts: _.union(commonConfig.scripts, componentWrapperScripts, componentScripts, modelScripts),
+      isDev: isDev
     }
   };
 })();

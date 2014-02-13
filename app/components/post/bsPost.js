@@ -2,6 +2,14 @@ angular.module('bs.directives').directive('bsPost', function() {
   var modes = {
     create: 'create'
   };
+  var placeholders = [
+    'What are you thinking?',
+    'Anything cool happen today?',
+    'What\'s your favorite color?',
+    'What did you do today?',
+    'What funny joke did you hear today?',
+    'What made today so awesome?'
+  ];
 
   return {
     restrict: 'A',
@@ -16,6 +24,9 @@ angular.module('bs.directives').directive('bsPost', function() {
       if (scope.mode === modes.create) {
         return;
       }
+
+      // TODO: Figure out why the view isn't rendering this...
+      scope.randomPlaceholder = placeholders[Math.floor(Math.random() * placeholders.length)];
       scope.commentToAdd = '';
       scope.addComment = function(event) {
         if (event.keyCode != 13) return;

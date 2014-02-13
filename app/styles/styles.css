@@ -516,29 +516,48 @@ body{background-color:#fafcf9}
 /* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
 .post .post-meta .post-info{padding-left:72px}
 
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
-
 /* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
-.post .post-meta .post-content textarea{max-width:400px}
 
-/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
-.post .share-post{height:40px;border-bottom:solid 1px #ddd;border-bottom-left-radius:initial;border-bottom-right-radius:initial}
+/* line 13 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .post-content textarea{height:74px;resize:vertical}
 
-/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
-.post .comments{padding:10px;}
+/* line 16 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .panel-footer{height:40px}
+
+/* line 18 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .share-post{border-bottom:solid 1px #ddd;border-bottom-left-radius:initial;border-bottom-right-radius:initial}
 
 /* line 22 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .mode-create{padding:6px 15px 6px 6px}
 
-/* line 23 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
-.post .comments .add-comment img.add-comment-photo{max-height:32px;max-width:32px;}
+/* line 24 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+
+/* line 25 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .create-footer .create-post-icons{margin-top:4px}
 
 /* line 27 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .create-footer .post-button{width:60px;padding:3px}
+
+/* line 31 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .comments{padding:10px;}
+
+/* line 33 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+
+/* line 34 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+.post .comments .add-comment img.add-comment-photo{max-height:32px;max-width:32px;}
+
+/* line 38 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
 .post .comments .add-comment .add-comment-field{padding-left:46px;width:100%}
 
-/* line 30 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+/* line 41 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
 
-/* line 32 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+/* line 43 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
 .post .comments img.comment-photo{max-height:32px;max-width:32px;}
 
-/* line 36 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+/* line 47 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
 .post .comments .comment-info{padding-left:46px}
+
+/* line 49 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/stream.styl */
+
+/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/stream.styl */
+.stream{background-color:#fefefe}

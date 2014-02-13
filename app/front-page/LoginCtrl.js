@@ -1,15 +1,10 @@
-angular.module('bs.frontPage').controller('LoginCtrl', function ($scope, $http, $window) {
+angular.module('bs.frontPage').controller('LoginCtrl', function ($scope, User, $window) {
   $scope.login = function() {
-    console.log('logging in with ', $scope.userInfo);
-    $http({
-      method: 'POST',
-      url: '/login',
-      data: {
-        username: $scope.userInfo.username,
-        password: $scope.userInfo.password
-      }
-    }).success(function() {
+    var promise = User.login($scope.userInfo.username, $scope.userInfo.password);
+    promise.success(function() {
       $window.location.href = '/';
+    }).error(function() {
+      $scope.errorLoggingIn =  true;
     });
   }
 });

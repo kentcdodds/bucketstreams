@@ -36,10 +36,10 @@ module.exports = function (grunt) {
           'app/**/**/*.*',
         ]
       },
-      backend: {
-        files: ['test/**/**/*.js', 'config/**/*.js', 'model/**/*.js'],
-        tasks: 'simplemocha'
-      },
+//      backend: {
+//        files: ['test/**/**/*.js', 'config/**/*.js', 'model/**/*.js'],
+//        tasks: 'simplemocha'
+//      },
       stylus: {
         files: ['stylus/**/*.styl', 'stylus/*.styl'],
         tasks: 'stylus'

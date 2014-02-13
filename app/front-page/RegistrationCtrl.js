@@ -1,4 +1,4 @@
-angular.module('bs.frontPage').controller('RegistrationCtrl', function ($scope, $http, $window) {
+angular.module('bs.frontPage').controller('RegistrationCtrl', function ($scope, User, $window) {
   $scope.step = 1;
   $scope.userLeft = {
     username: false,
@@ -31,15 +31,10 @@ angular.module('bs.frontPage').controller('RegistrationCtrl', function ($scope, 
   };
 
   $scope.register = function(username, password) {
-    $http({
-      method: 'POST',
-      url: '/register',
-      data: {
-        username: username,
-        password: password
-      }
-    }).success(function() {
+    User.register(username, password).success(function() {
       $window.location.href = '/';
+    }).error(function() {
+      $scope.errorRegistering = true;
     });
   };
 });

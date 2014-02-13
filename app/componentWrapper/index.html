@@ -1,12 +1,24 @@
 <div class="height-100 margin-xxlarge">
   <p>This is where you can test out the different components. Give it a shot!</p>
   <div class="center-block padding-xxlarge">
-    <div id="create-post-preview">
-      <div bs-post="newPost" current-user="user" mode="create"></div>
+    <div>
+      <h1>Streams</h1>
+      <button class="btn btn-default" ng-click="debug()">Debug</button>
+      <div id="stream-preview">
+        <div bs-stream="stream" current-user="user"></div>
+      </div>
     </div>
+    <div>
+      <h1>Posts</h1>
+      <h2>Create New Post</h2>
+      <div id="create-post-preview">
+        <div bs-post="newPost" current-user="user" mode="create"></div>
+      </div>
 
-    <div id="post-preview">
-      <div bs-post="post" current-user="user"></div>
+      <h2>View Post & Comments</h2>
+      <div id="post-preview">
+        <div bs-post="post" current-user="user"></div>
+      </div>
     </div>
   </div>
 </div>

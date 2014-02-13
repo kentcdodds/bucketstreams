@@ -18,17 +18,19 @@
   </div>
   <div class="post-content panel-body font-size-large">
     <div ng-hide="mode === 'create'" bo-text="post.content[post.content.length - 1].textContent"></div>
-    <textarea ng-show="mode === 'create'" class="form-control" ng-model="post.content[0].textContent"></textarea>
+    <textarea ng-show="mode === 'create'" class="form-control" placeholder="{{randomPlaceholder || 'What\'s up?'}}" ng-model="post.content[0].textContent"></textarea>
   </div>
-  <div class="share-post panel-footer">
-    <div class="pull-right">
-      <div ng-hide="mode === 'create'">
-        <a class="padding-xsmall cursor-pointer" ng-click="share(post)" bs-icon after="fa fa-share"></a>
-        <a class="padding-xsmall cursor-pointer" ng-click="star(post)" bs-icon after="fa fa-star"></a>
+  <div class="panel-footer mode-{{mode}}">
+    <div ng-if="mode !== 'create'" class="pull-right share-post">
+      <a class="padding-xsmall cursor-pointer" ng-click="share(post)" bs-icon after="fa fa-share"></a>
+      <a class="padding-xsmall cursor-pointer" ng-click="star(post)" bs-icon after="fa fa-star"></a>
+    </div>
+    <div ng-if="mode === 'create'" class="create-footer">
+      <div class="pull-left create-post-icons">
+        <a class="padding-xsmall cursor-pointer" ng-click="attachPhoto(post)" bs-icon after="fa fa-camera"></a>
+        <a class="padding-xsmall cursor-pointer" ng-click="addBucket(post)" bs-icon after="fa fa-bitbucket"></a>
       </div>
-      <div ng-show="mode === 'create'">
-        <button class="btn btn-primary btn-sm">Post</button>
-      </div>
+      <button class="pull-right btn btn-primary btn-sm post-button">Post</button>
     </div>
   </div>
   <div ng-hide="mode === 'create'">
