@@ -1,15 +1,15 @@
-angular.module('bs.frontPage').controller('LoginCtrl', function ($scope, User, $window) {
-  $scope.login = function() {
-    if ($scope.loginForm.$invalid) {
+angular.module('bs.frontPage').controller('LoginCtrl', function ($scope, User, $window, toastr) {
+  $scope.login = function(userInfo) {
+    if (!userInfo || $scope.loginForm.$invalid) {
       return;
     }
     $scope.loggingIn = true;
-    var promise = User.login($scope.userInfo.username, $scope.userInfo.password);
+    var promise = User.login(userInfo.username, userInfo.password);
     promise.success(function() {
       $window.location.href = '/';
-    }).error(function() {
+    }).error(function(err) {
       $scope.loggingIn = false;
-      $scope.errorLoggingIn =  true;
+      toastr.error('Please try again. There was a problem logging in: ' + err.message);
     });
   }
 });

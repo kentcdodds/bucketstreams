@@ -15,17 +15,20 @@ module.exports = (function() {
   var customStyles = getFilesInPath('./app/styles/*.css', './app');
   var thirdPartyStyles = [
     '/bower_components/bootstrap/dist/css/bootstrap.min.css',
-    '/non_bower_components/font-awesome-4.0.3/css/font-awesome.min.css'
+    '/non_bower_components/font-awesome-4.0.3/css/font-awesome.min.css',
+    '/bower_components/toastr/toastr.min.css'
   ];
 
   var commonConfig = {
-    stylesheets: thirdPartyStyles.concat(customStyles),
+    stylesheets: _.union(thirdPartyStyles, customStyles),
     topScripts: [
       '/bower_components/angular/angular.js',
       '/scripts/facebook-fix.js'
     ],
     scripts: _.union([
+      '/bower_components/jquery/jquery.js',
       '/bower_components/lodash/dist/lodash.js',
+      '/bower_components/toastr/toastr.js',
       '/bower_components/angular-ui-router/release/angular-ui-router.js',
       '/non_bower_components/ui-bootstrap-tpls-0.9.0.js',
       '/bower_components/angular-animate/angular-animate.js',

@@ -1,4 +1,4 @@
-angular.module('bs.frontPage').controller('RegistrationCtrl', function ($scope, User, $window) {
+angular.module('bs.frontPage').controller('SignUpCtrl', function ($scope, User, $window, toastr) {
   $scope.register = function(userInfo) {
     if ($scope.signUpForm.$invalid) {
       return;
@@ -6,9 +6,9 @@ angular.module('bs.frontPage').controller('RegistrationCtrl', function ($scope, 
     $scope.registering = true;
     User.register(userInfo.email, userInfo.password).success(function() {
       $window.location.href = '/';
-    }).error(function() {
+    }).error(function(err) {
       $scope.registering = false;
-      $scope.errorRegistering = true;
+      toastr.error('There was a problem signing up: ' + err.message);
     });
   };
 });

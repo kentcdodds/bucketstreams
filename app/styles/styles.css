@@ -1,27 +1,11 @@
 
-/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/imports.styl */
+/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/imports.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/node_modules/stylus/lib/functions/index.styl */
 
 /* line 284 : /Users/kentcdodds/Developer/bucketstreams/node_modules/stylus/lib/functions/index.styl */
 
-/* line 284 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
-
-/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
-html,body{height:100%}
-
-/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
-body{background-color:bodyBackground}
-
-/* line 10 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
-.nav,.pagination,.carousel a{cursor:pointer}
-
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
-.ng-cloak{display:none}
-
-/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
-
-/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+/* line 284 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
 
 /* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
 .color-bs-blue-0{color:#03426a}
@@ -535,9 +519,16 @@ body{background-color:bodyBackground}
 
 /* line 21 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 
-/* line 51 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 21 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/alert.styl */
 
-/* line 51 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/alert.styl */
+
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/alert.styl */
+#alert-container .alert{box-shadow:4px 4px 20px #969696;position:absolute;width:640px;z-index:5}
+
+/* line 55 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+
+/* line 55 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 
 /* line 14 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/index.styl */
 
@@ -737,34 +728,37 @@ body{background-color:bodyBackground}
 #top-bar{width:100%;height:76px;border-bottom:solid 4px #6e3700;background-color:#03426a}
 
 /* line 17 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+#alert-container{width:640px}
+
+/* line 21 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 .form-flow{width:400px;margin-top:40px;margin-bottom:100px}
 
-/* line 23 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 27 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 #logo-container{width:800px}
 
-/* line 27 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 31 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 #logo-container > img{width:800px}
 
-/* line 31 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 35 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 #footer-container{width:100%;background-color:#6e3700;height:40px}
 
-/* line 37 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 41 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 #footer-container > div{margin-top:10px}
 
-/* line 41 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 45 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 .third-party-button{color:#fff;font-size:30px}
 
-/* line 47 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 51 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 
-/* line 49 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 53 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 
-/* line 47 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 51 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 
-/* line 49 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 53 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 
-/* line 47 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 51 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 
-/* line 49 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 53 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 
 /* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
 
@@ -832,3 +826,19 @@ body{background-color:bodyBackground}
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/stream.styl */
 .stream{background-color:#fefefe}
+
+/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/stream.styl */
+
+/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
+
+/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
+html,body{height:100%}
+
+/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
+body{background-color:#fafcf9}
+
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
+.nav,.pagination,.carousel a{cursor:pointer}
+
+/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
+.ng-cloak{display:none}

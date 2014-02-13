@@ -15,7 +15,7 @@
       state('frontPage', {
         url: '/',
         templateUrl: frontPageTemplates + 'index.html',
-        controller: 'MainCtrl',
+        controller: 'FrontPageCtrl',
         onEnter: function() {
           console.log('frontPage');
         }
@@ -23,7 +23,7 @@
       state('frontPage.signup', {
         url: 'signup',
         templateUrl: frontPageTemplates + 'signup.html',
-        controller: 'RegistrationCtrl',
+        controller: 'SignUpCtrl',
         onEnter: function() {
           console.log('frontPage.signup');
         }
