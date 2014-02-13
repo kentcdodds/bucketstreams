@@ -5,7 +5,7 @@ var ErrorController = require('../controller/ErrorController');
 
 module.exports = function(app) {
 
-  app.get('/api/v1/users/me', function(req, res, next) {
+  app.all('/api/v1/users/me', function(req, res, next) {
     if (req.isAuthenticated()) {
       req.url = '/api/v1/users/' + req.user.id;
       next();

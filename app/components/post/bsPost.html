@@ -22,13 +22,13 @@
   </div>
   <div class="panel-footer mode-{{mode}}">
     <div ng-if="mode !== 'create'" class="pull-right share-post">
-      <a class="padding-xsmall cursor-pointer" ng-click="share(post)" bs-icon after="fa fa-share"></a>
-      <a class="padding-xsmall cursor-pointer" ng-click="star(post)" bs-icon after="fa fa-star"></a>
+      <a class="padding-xsmall cursor-pointer" ng-click="share(post)" fa-icon="share"></a>
+      <a class="padding-xsmall cursor-pointer" ng-click="star(post)" fa-icon="star"></a>
     </div>
     <div ng-if="mode === 'create'" class="create-footer">
       <div class="pull-left create-post-icons">
-        <a class="padding-xsmall cursor-pointer" ng-click="attachPhoto(post)" bs-icon after="fa fa-camera"></a>
-        <a class="padding-xsmall cursor-pointer" ng-click="addBucket(post)" bs-icon after="fa fa-bitbucket"></a>
+        <a class="padding-xsmall cursor-pointer" ng-click="attachPhoto(post)" fa-icon="camera"></a>
+        <a class="padding-xsmall cursor-pointer" ng-click="addBucket(post)" fa-icon="bitbucket"></a>
       </div>
       <button class="pull-right btn btn-primary btn-sm post-button">Post</button>
     </div>

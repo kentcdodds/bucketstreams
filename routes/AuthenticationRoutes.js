@@ -7,7 +7,7 @@ var passport = require('passport');
 
 module.exports = function(app) {
   app.post('/register', function(req, res) {
-    User.register(new User({ username : req.body.username }), req.body.password, function(err, user) {
+    User.register(new User({ email : req.body.email }), req.body.password, function(err, user) {
       if (err) return ErrorController.sendErrorJson(res, 400, 'Problem registering user. Error:\n' + JSON.stringify(err, null, 2));
 
       req.login(user, function(err) {
@@ -18,20 +18,33 @@ module.exports = function(app) {
     });
   });
 
+  function convertUsernameToEmail(username, cb) {
+    if (/@/.test(username)) {
+      cb(null, username);
+    } else {
+      User.findOne({ username: username }, 'email', function (err, user) {
+        cb(err, (user ? user.email : null));
+      });
+    }
+  }
+
   app.post('/login', function(req, res, next) {
-    passport.authenticate('local', function(err, user, info) {
-      if (err) return next(err);
-
-      if (!user) {
-        return ErrorController.sendErrorJson(403, 'No such user exists');
-      }
-
-      req.logIn(user, function(err) {
+    convertUsernameToEmail(req.body.username, function(err, email) {
+      req.body.email = email;
+      passport.authenticate('local', function(err, user, info) {
         if (err) return next(err);
 
-        return res.json(200, req.user);
-      });
-    })(req, res, next);
+        if (!user) {
+          return ErrorController.sendErrorJson(res, 403, 'No such user exists');
+        }
+
+        req.logIn(user, function(err) {
+          if (err) return next(err);
+
+          return res.json(200, req.user);
+        });
+      })(req, res, next);
+    });
   });
 
   app.get('/auth/logout', function(req, res) {

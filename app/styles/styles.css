@@ -311,6 +311,9 @@ body{background-color:#fafcf9}
 .vertical-align-bottom{vertical-align:bottom}
 
 /* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
+.display-inline{display:inline}
+
+/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
 .display-inline-block{display:inline-block}
 
 /* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/layout-helpers.styl */
@@ -359,25 +362,133 @@ body{background-color:#fafcf9}
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 .font-size-xxsmall{font-size:.7em}
 
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxsmall-2x{font-size:1.4em}
+
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxsmall-3x{font-size:2.0999999999999996em}
+
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxsmall-4x{font-size:2.8em}
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxsmall-5x{font-size:3.5em}
+
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 .font-size-xsmall{font-size:.8em}
+
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xsmall-2x{font-size:1.6em}
+
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xsmall-3x{font-size:2.4000000000000004em}
+
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xsmall-4x{font-size:3.2em}
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xsmall-5x{font-size:4em}
 
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 .font-size-small{font-size:.9em}
 
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-small-2x{font-size:1.8em}
+
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-small-3x{font-size:2.7em}
+
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-small-4x{font-size:3.6em}
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-small-5x{font-size:4.5em}
+
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 .font-size-medium{font-size:1em}
+
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-medium-2x{font-size:2em}
+
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-medium-3x{font-size:3em}
+
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-medium-4x{font-size:4em}
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-medium-5x{font-size:5em}
 
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 .font-size-large{font-size:1.1em}
 
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-large-2x{font-size:2.2em}
+
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-large-3x{font-size:3.3000000000000003em}
+
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-large-4x{font-size:4.4em}
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-large-5x{font-size:5.5em}
+
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 .font-size-xlarge{font-size:1.2em}
+
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xlarge-2x{font-size:2.4em}
+
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xlarge-3x{font-size:3.5999999999999996em}
+
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xlarge-4x{font-size:4.8em}
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xlarge-5x{font-size:6em}
 
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 .font-size-xxlarge{font-size:1.3em}
 
-/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxlarge-2x{font-size:2.6em}
+
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxlarge-3x{font-size:3.9000000000000004em}
+
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxlarge-4x{font-size:5.2em}
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxlarge-5x{font-size:6.5em}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-align-center{text-align:center}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-align-end{text-align:end}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-align-inherit{text-align:inherit}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-align-initial{text-align:initial}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-align-justify{text-align:justify}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-align-left{text-align:left}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-align-right{text-align:right}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-align-start{text-align:start}
+
+/* line 21 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 
 /* line 51 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
 
@@ -436,25 +547,133 @@ body{background-color:#fafcf9}
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 .font-size-xxsmall{font-size:.7em}
 
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxsmall-2x{font-size:1.4em}
+
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxsmall-3x{font-size:2.0999999999999996em}
+
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxsmall-4x{font-size:2.8em}
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxsmall-5x{font-size:3.5em}
+
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 .font-size-xsmall{font-size:.8em}
+
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xsmall-2x{font-size:1.6em}
+
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xsmall-3x{font-size:2.4000000000000004em}
+
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xsmall-4x{font-size:3.2em}
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xsmall-5x{font-size:4em}
 
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 .font-size-small{font-size:.9em}
 
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-small-2x{font-size:1.8em}
+
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-small-3x{font-size:2.7em}
+
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-small-4x{font-size:3.6em}
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-small-5x{font-size:4.5em}
+
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 .font-size-medium{font-size:1em}
+
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-medium-2x{font-size:2em}
+
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-medium-3x{font-size:3em}
+
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-medium-4x{font-size:4em}
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-medium-5x{font-size:5em}
 
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 .font-size-large{font-size:1.1em}
 
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-large-2x{font-size:2.2em}
+
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-large-3x{font-size:3.3000000000000003em}
+
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-large-4x{font-size:4.4em}
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-large-5x{font-size:5.5em}
+
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 .font-size-xlarge{font-size:1.2em}
+
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xlarge-2x{font-size:2.4em}
+
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xlarge-3x{font-size:3.5999999999999996em}
+
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xlarge-4x{font-size:4.8em}
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xlarge-5x{font-size:6em}
 
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 .font-size-xxlarge{font-size:1.3em}
 
-/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxlarge-2x{font-size:2.6em}
+
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxlarge-3x{font-size:3.9000000000000004em}
+
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxlarge-4x{font-size:5.2em}
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.font-size-xxlarge-5x{font-size:6.5em}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-align-center{text-align:center}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-align-end{text-align:end}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-align-inherit{text-align:inherit}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-align-initial{text-align:initial}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-align-justify{text-align:justify}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-align-left{text-align:left}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-align-right{text-align:right}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-align-start{text-align:start}
+
+/* line 21 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 
 /* line undefined : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/vendor.styl */
 
@@ -557,7 +776,14 @@ body{background-color:#fafcf9}
 /* line 47 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
 .post .comments .comment-info{padding-left:46px}
 
-/* line 49 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/stream.styl */
+/* line 49 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/signup.styl */
+
+/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/signup.styl */
+
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/signup.styl */
+#registration-form .loading-spinner{font-size:5em}
+
+/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/stream.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/stream.styl */
 .stream{background-color:#fefefe}

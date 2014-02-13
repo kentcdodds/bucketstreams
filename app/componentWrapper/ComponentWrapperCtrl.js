@@ -1,4 +1,19 @@
-angular.module('bs.componentWrapper').controller('ComponentWrapperCtrl', function($scope, CurrentUser, Stream, Bucket, Comment, Post, User) {
+angular.module('bs.componentWrapper').controller('ComponentWrapperCtrl', function($scope, $timeout, CurrentUser, Stream, Bucket, Comment, Post, User) {
+
+  $scope.show = {
+    spinners: true,
+    streams: false,
+    posts: false
+  };
+
+  /*
+   * Spinner
+   */
+  $scope.spinners = {
+    blink: {
+      visible: true
+    }
+  };
 
   function getRandomProfilePhoto(height, width) {
     return 'http://lorempixel.com/' + (height || 64) + '/' + (width || 64) + '/technics/?random=' + Math.floor(Math.random() * 1000);

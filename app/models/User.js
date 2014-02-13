@@ -1,11 +1,11 @@
 angular.module('bs.models').factory('User', function($resource, $http) {
   var User = $resource('/api/v1/users/:id', { id: '@_id' });
-  User.register = function(username, password) {
+  User.register = function(email, password) {
     return $http({
       method: 'POST',
       url: '/register',
       data: {
-        username: username,
+        email: email,
         password: password
       }
     });

@@ -24,7 +24,8 @@ module.exports = (function() {
       '/bower_components/angular/angular.js',
       '/scripts/facebook-fix.js'
     ],
-    scripts: [
+    scripts: _.union([
+      '/bower_components/lodash/dist/lodash.js',
       '/bower_components/angular-ui-router/release/angular-ui-router.js',
       '/non_bower_components/ui-bootstrap-tpls-0.9.0.js',
       '/bower_components/angular-animate/angular-animate.js',
@@ -32,7 +33,7 @@ module.exports = (function() {
       '/bower_components/angular-cookies/angular-cookies.js',
       '/bower_components/angular-sanitize/angular-sanitize.js',
       '/bower_components/angular-bindonce/bindonce.js'
-    ]
+    ], getAppSection('constants'))
   };
 
   function getAppSection(name) {

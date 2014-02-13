@@ -63,7 +63,14 @@ var schema = new Schema({
 
 Util.addTimestamps(schema);
 
-schema.plugin(passportLocalMongoose);
+schema.plugin(passportLocalMongoose, {
+  usernameField: 'email',
+  usernameLowerCase: true
+});
+
+schema.path('username').validate(function (value) {
+  return /[a-zA-Z]|_|\d/i.test(value);
+}, 'Username can only contain numbers, letters, and underscores.');
 
 /*
  * Third-party account methods
@@ -224,7 +231,7 @@ schema.methods.addStream = function(stream, callback) {
 
 schema.methods.getStreams = function(callback) {
   require('./Stream').model.find({owner: this.id}).sort('-created').exec(callback);
-}
+};
 
 /*
  * Post methods
