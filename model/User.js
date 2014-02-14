@@ -32,6 +32,7 @@ var schema = new Schema({
   },
   profilePicture: [Image.schema],
   lastLoginDate: {type: Date, default: Date.now},
+  setupReminderDate: {type: Date},
   rules: [Rule.schema],
   connectedAccounts: {
     facebook: {
@@ -58,7 +59,8 @@ var schema = new Schema({
       timeBetweenImports: {type: Number, default: 5 * minute},
       rules: [Rule.schema]
     }
-  }
+  },
+  dontRemind: [String]
 });
 
 Util.addTimestamps(schema);
@@ -69,7 +71,7 @@ schema.plugin(passportLocalMongoose, {
 });
 
 schema.path('username').validate(function (value) {
-  return /[a-zA-Z]|_|\d/i.test(value);
+  return !!value.match(/^([a-zA-Z]|_|\d){2,12}$/);
 }, 'Username can only contain numbers, letters, and underscores.');
 
 /*
@@ -196,6 +198,12 @@ schema.methods.importPosts = function(callback) {
     }
   });
 };
+
+schema.methods.updateLastLoginTime = function(callback) {
+  this.lastLoginDate = new Date();
+  this.save(callback);
+};
+
 /*
  * Bucket methods
  */

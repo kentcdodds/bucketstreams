@@ -3,7 +3,7 @@
 (function() {
   var thirdParties = ['ui.router', 'ui.bootstrap', 'pasvaz.bindonce'];
   var angularMods = ['ngAnimate'];
-  var internalMods = ['bs.directives', 'bs.models'];
+  var internalMods = ['bs.directives', 'bs.models', 'bs.services'];
   var app = angular.module('bs.frontPage', thirdParties.concat(angularMods.concat(internalMods)));
 
   app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {

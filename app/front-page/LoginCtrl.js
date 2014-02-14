@@ -1,4 +1,4 @@
-angular.module('bs.frontPage').controller('LoginCtrl', function ($scope, User, $window, toastr) {
+angular.module('bs.frontPage').controller('LoginCtrl', function ($scope, User, $window, AlertService) {
   $scope.login = function(userInfo) {
     if (!userInfo || $scope.loginForm.$invalid) {
       return;
@@ -9,7 +9,7 @@ angular.module('bs.frontPage').controller('LoginCtrl', function ($scope, User, $
       $window.location.href = '/';
     }).error(function(err) {
       $scope.loggingIn = false;
-      toastr.error('Please try again. There was a problem logging in: ' + err.message);
+      AlertService.error('Please try again. There was a problem logging in: ' + err.message);
     });
   }
 });

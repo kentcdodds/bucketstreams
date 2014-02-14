@@ -1,0 +1,6 @@
+<form name="usernameForm" role="form">
+  <div class="form-group">
+    <label for="username-field">Username</label>
+    <input ng-pattern="/^([a-zA-Z]|_|\d){2,12}$/" class="form-control" ng-model="currentUser.username" ng-change="onFormUpdate(usernameForm)" id="username-field" placeholder="awesome" autofocus>
+  </div>
+</form>

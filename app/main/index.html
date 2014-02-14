@@ -1,10 +1,10 @@
 <div id="main-container" class="height-100">
   <div class="top-bar">
     <div class="col-xs-4 text-left">
-
+      <a href="/"><img src="/images/logo-small.png" class="bs-logo"></a>
     </div>
-    <div class="col-xs-4 text-center">
-
+    <div class="col-xs-4 text-center margin-top-xxsmall">
+      <strong class="color-white font-size-xxsmall-2x">{{context}}</strong>
     </div>
     <div class="col-xs-4 text-right">
       <div class="dropdown margin-xxsmall">
@@ -14,8 +14,8 @@
         </a>
         <ul class="dropdown-menu pull-right">
           <li>
-            <a ng-click="signOut()" class="cursor-pointer">Sign Out</a>
             <a class="cursor-pointer">Update Profile Photo</a>
+            <a ng-click="signOut()" class="cursor-pointer">Sign Out</a>
           </li>
         </ul>
       </div>

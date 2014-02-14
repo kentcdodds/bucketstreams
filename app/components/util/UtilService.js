@@ -1,0 +1,43 @@
+angular.module('bs.services').factory('UtilService', function(_) {
+  function testPath(object, path) {
+    var props = path.split('.');
+    var value = object;
+    _.each(props, function(prop) {
+      value = value[prop];
+      return !_.isUndefined(value);
+    });
+    return value;
+  }
+  var util = {
+    testHasPosterity: function(object, paths, atLeastOne) {
+      if (!object) {
+        return false;
+      }
+      var hasPosterity = false;
+      paths = _.isArray(paths) ? paths : [paths];
+      _.each(paths, function(path) {
+        hasPosterity = !_.isUndefined(testPath(object, path));
+        if (hasPosterity && atLeastOne) {
+          return false;
+        }
+        return hasPosterity;
+      });
+      return hasPosterity;
+    },
+    getGrandchild: function(object, paths) {
+      if (!object) {
+        return false;
+      }
+      var values = [];
+      paths = _.isArray(paths) ? paths : [paths];
+      _.each(paths, function(path) {
+        values.push(testPath(object, path));
+      });
+      if (values.length === 1) {
+        return values[0];
+      }
+      return values;
+    }
+  };
+  return util;
+});

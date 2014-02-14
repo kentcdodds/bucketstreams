@@ -5,7 +5,20 @@
 
 /* line 284 : /Users/kentcdodds/Developer/bucketstreams/node_modules/stylus/lib/functions/index.styl */
 
-/* line 284 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+/* line 284 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
+
+/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
+html,body{height:100%}
+
+/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
+body{background-color:#fafcf9}
+
+/* line 7 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
+.ng-cloak{display:none}
+
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
+
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
 
 /* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
 .color-bs-blue-0{color:#03426a}
@@ -526,9 +539,17 @@
 /* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 
-/* line 28 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+/* line 28 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/ui-bootstrap-fixes.styl */
 
-/* line 28 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/common-page.styl */
+/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/ui-bootstrap-fixes.styl */
+.panel-title>a:hover{text-decoration:none}
+
+/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/ui-bootstrap-fixes.styl */
+.nav,.pagination,.carousel a{cursor:pointer}
+
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/ui-bootstrap-fixes.styl */
+
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/common-page.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/common-page.styl */
 .top-bar{width:100%;border-bottom:solid 4px #6e3700;background-color:#03426a}
@@ -563,12 +584,15 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
 
 /* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
-#main-container .top-bar{height:40px}
+#main-container .top-bar{height:40px;}
 
 /* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
-#main-container .user-photo{max-height:26px;max-width:26px;background-color:#fafcf9}
+#main-container .top-bar .bs-logo{max-height:36px;padding:2px}
 
-/* line 10 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+/* line 10 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+#main-container .top-bar .user-photo{max-height:26px;max-width:26px;background-color:#fafcf9}
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
 .post{width:400px;}
@@ -648,15 +672,3 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/stream.styl */
 .stream{background-color:#fefefe}
-
-/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/stream.styl */
-
-/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
-
-/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
-
-/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
-#main-container .top-bar{height:40px}
-
-/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
-#main-container .user-photo{max-height:26px;max-width:26px;background-color:#fafcf9}

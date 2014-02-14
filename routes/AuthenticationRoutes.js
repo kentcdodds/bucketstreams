@@ -40,8 +40,9 @@ module.exports = function(app) {
 
         req.logIn(user, function(err) {
           if (err) return next(err);
-
-          return res.json(200, req.user);
+          req.user.updateLastLoginTime(function() {
+            return res.json(200, req.user);
+          });
         });
       })(req, res, next);
     });
