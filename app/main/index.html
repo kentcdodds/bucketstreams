@@ -1,5 +1,27 @@
-<div class="container">
-  {{greeting}}
-  <button class="btn btn-danger" ng-click="logout()">Logout</button>
+<div id="main-container" class="height-100">
+  <div class="top-bar">
+    <div class="col-xs-4 text-left">
 
+    </div>
+    <div class="col-xs-4 text-center">
+
+    </div>
+    <div class="col-xs-4 text-right">
+      <div class="dropdown margin-xxsmall">
+        <a class="dropdown-toggle color-white cursor-pointer text-decoration-none">
+          <span class="margin-right-xxsmall">{{currentUser.getDisplayName()}}</span>
+          <img class="user-photo img-circle" ng-src="{{currentUser.getProfilePicture()}}">
+        </a>
+        <ul class="dropdown-menu pull-right">
+          <li>
+            <a ng-click="signOut()" class="cursor-pointer">Sign Out</a>
+            <a class="cursor-pointer">Update Profile Photo</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="center-block" ui-view>
+  </div>
 </div>

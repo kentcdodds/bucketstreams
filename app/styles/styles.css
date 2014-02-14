@@ -517,250 +517,58 @@
 /* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 .text-align-start{text-align:start}
 
-/* line 21 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+/* line 23 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-decoration-none{text-decoration:none}
 
-/* line 21 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/alert.styl */
+/* line 23 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+.text-decoration-underline{text-decoration:underline}
 
-/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/alert.styl */
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
+a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 
-/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/alert.styl */
-#alert-container .alert{box-shadow:4px 4px 20px #969696;position:absolute;width:640px;z-index:5}
+/* line 28 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 
-/* line 55 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 28 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/common-page.styl */
 
-/* line 55 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
+/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/common-page.styl */
+.top-bar{width:100%;border-bottom:solid 4px #6e3700;background-color:#03426a}
 
-/* line 14 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/index.styl */
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
 
-/* line 14 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/index.styl */
+/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
 
-/* line 2 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/border.styl */
+/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+#front-page-container .top-content{min-height:100%;height:auto;margin:-20px auto -20px;padding:20px 0 20px 0;}
 
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/border.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+#front-page-container .top-content .top-bar{height:76px}
 
-/* line 2 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/clearfix.styl */
+/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+#front-page-container .top-content .form-flow{width:400px;margin-top:40px;margin-bottom:100px}
 
-/* line 30 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/clearfix.styl */
+/* line 17 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+#front-page-container .top-content .logo-container{width:800px}
 
-/* line 2 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/color-image.styl */
+/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+#front-page-container .top-content .logo-container > img{width:800px}
 
-/* line 6 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/color-image.styl */
+/* line 23 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+#front-page-container .footer-container{width:100%;background-color:#6e3700;height:40px}
 
-/* line 6 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/flex.styl */
+/* line 28 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+#front-page-container .footer-container > div{margin-top:10px}
 
-/* line 197 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/flex.styl */
+/* line 30 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
 
-/* line 92 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/gradients.styl */
+/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
 
-/* line 92 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/gradients.styl */
+/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+#main-container .top-bar{height:40px}
 
-/* line 92 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/config.styl */
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+#main-container .user-photo{max-height:26px;max-width:26px;background-color:#fafcf9}
 
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/config.styl */
-
-/* line 2 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/iconic.styl */
-
-/* line 9 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/iconic.styl */
-
-/* line 2 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/image.styl */
-
-/* line 27 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/image.styl */
-
-/* line 27 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/overflow.styl */
-
-/* line 21 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/overflow.styl */
-
-/* line 3 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/positions.styl */
-
-/* line 67 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/positions.styl */
-
-/* line 3 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/reset.styl */
-
-/* line 67 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/reset.styl */
-
-/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-
-/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xxsmall{font-size:.7em}
-
-/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xxsmall-2x{font-size:1.4em}
-
-/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xxsmall-3x{font-size:2.0999999999999996em}
-
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xxsmall-4x{font-size:2.8em}
-
-/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xxsmall-5x{font-size:3.5em}
-
-/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xsmall{font-size:.8em}
-
-/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xsmall-2x{font-size:1.6em}
-
-/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xsmall-3x{font-size:2.4000000000000004em}
-
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xsmall-4x{font-size:3.2em}
-
-/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xsmall-5x{font-size:4em}
-
-/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-small{font-size:.9em}
-
-/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-small-2x{font-size:1.8em}
-
-/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-small-3x{font-size:2.7em}
-
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-small-4x{font-size:3.6em}
-
-/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-small-5x{font-size:4.5em}
-
-/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-medium{font-size:1em}
-
-/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-medium-2x{font-size:2em}
-
-/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-medium-3x{font-size:3em}
-
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-medium-4x{font-size:4em}
-
-/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-medium-5x{font-size:5em}
-
-/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-large{font-size:1.1em}
-
-/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-large-2x{font-size:2.2em}
-
-/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-large-3x{font-size:3.3000000000000003em}
-
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-large-4x{font-size:4.4em}
-
-/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-large-5x{font-size:5.5em}
-
-/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xlarge{font-size:1.2em}
-
-/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xlarge-2x{font-size:2.4em}
-
-/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xlarge-3x{font-size:3.5999999999999996em}
-
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xlarge-4x{font-size:4.8em}
-
-/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xlarge-5x{font-size:6em}
-
-/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xxlarge{font-size:1.3em}
-
-/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xxlarge-2x{font-size:2.6em}
-
-/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xxlarge-3x{font-size:3.9000000000000004em}
-
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xxlarge-4x{font-size:5.2em}
-
-/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.font-size-xxlarge-5x{font-size:6.5em}
-
-/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.text-align-center{text-align:center}
-
-/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.text-align-end{text-align:end}
-
-/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.text-align-inherit{text-align:inherit}
-
-/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.text-align-initial{text-align:initial}
-
-/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.text-align-justify{text-align:justify}
-
-/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.text-align-left{text-align:left}
-
-/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.text-align-right{text-align:right}
-
-/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-.text-align-start{text-align:start}
-
-/* line 21 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
-
-/* line undefined : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/vendor.styl */
-
-/* line 574 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/vendor.styl */
-
-/* line 574 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/config.styl */
-
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/config.styl */
-
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/node_modules/grunt-contrib-stylus/node_modules/nib/lib/nib/size.styl */
-
-/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-#top-content{min-height:100%;height:auto;margin:-20px auto -20px;padding:20px 0 20px 0}
-
-/* line 10 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-#top-bar{width:100%;height:76px;border-bottom:solid 4px #6e3700;background-color:#03426a}
-
-/* line 17 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-#alert-container{width:640px}
-
-/* line 21 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-.form-flow{width:400px;margin-top:40px;margin-bottom:100px}
-
-/* line 27 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-#logo-container{width:800px}
-
-/* line 31 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-#logo-container > img{width:800px}
-
-/* line 35 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-#footer-container{width:100%;background-color:#6e3700;height:40px}
-
-/* line 41 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-#footer-container > div{margin-top:10px}
-
-/* line 45 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-.third-party-button{color:#fff;font-size:30px}
-
-/* line 51 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-
-/* line 53 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-
-/* line 51 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-
-/* line 53 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-
-/* line 51 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-
-/* line 53 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/home.styl */
-
-/* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
+/* line 10 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
 .post{width:400px;}
@@ -815,7 +623,21 @@
 /* line 47 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post.styl */
 .post .comments .comment-info{padding-left:46px}
 
-/* line 49 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/signup.styl */
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
+
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
+
+/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
+
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
+
+/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
+
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
+
+/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
+
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/signup.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/signup.styl */
 
@@ -829,16 +651,12 @@
 
 /* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/stream.styl */
 
-/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
+/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
 
-/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
-html,body{height:100%}
+/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
 
-/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
-body{background-color:#fafcf9}
+/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+#main-container .top-bar{height:40px}
 
-/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
-.nav,.pagination,.carousel a{cursor:pointer}
-
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
-.ng-cloak{display:none}
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+#main-container .user-photo{max-height:26px;max-width:26px;background-color:#fafcf9}

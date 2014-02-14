@@ -16,7 +16,7 @@ html(lang="en")
       link(rel="stylesheet", href="#{href}")
     for script in topScripts
       script(src="#{script}")
-  body(ng-app="#{appName}")
+  body(ng-app="#{appName}", class="height-100")
     
     div(ui-view, class="height-100")
 

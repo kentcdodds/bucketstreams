@@ -18,3 +18,11 @@ for size in (.7 xxsmall) (.8 xsmall) (.9 small) (1 medium) (1.1 large) (1.2 xlar
 for alignment in center end inherit initial justify left right start
   .text-align-{alignment}
     text-align alignment
+
+for type in none underline
+  .text-decoration-{type}
+    text-decoration type
+
+a.text-decoration-none,
+a.text-decoration-none:hover
+  text-decoration none
