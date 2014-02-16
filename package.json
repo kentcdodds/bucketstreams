@@ -30,7 +30,10 @@
     "winston": "0.7.2",
     "forever": "~0.10.11",
     "jade": "~1.1.5",
-    "glob": "~3.2.8"
+    "glob": "~3.2.8",
+    "knox": "~0.8.9",
+    "multiparty": "~3.2.2",
+    "batch": "~0.5.0"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

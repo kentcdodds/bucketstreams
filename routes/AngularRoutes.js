@@ -17,7 +17,7 @@ module.exports = function(app) {
   var angularBridge = new (require('angular-bridge'))(app, {
     urlPrefix : '/api/v1/',
     requestPrehandler: function(req, res, next) {
-      logger.info(req);
+//      logger.info(req);
       next();
     }
   });

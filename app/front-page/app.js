@@ -61,6 +61,6 @@
         }
       });
 
-//    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/');
   });
 })();

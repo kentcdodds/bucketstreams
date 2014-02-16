@@ -384,20 +384,23 @@ body{background-color:#fafcf9}
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
 .opacity1{opacity:1;z-index:1}
 
-/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
 .opacity0{opacity:0;z-index:-1}
 
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
 .transition-all-fast{transition:all .25s ease-in-out}
 
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
 .transition-all-slow{transition:all 1s ease-in-out}
 
-/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
 .transition-all-medium{transition:all .5s ease-in-out}
 
-/* line 23 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+/* line 18 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
 .cursor-pointer{cursor:pointer}
+
+/* line 21 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.label-container{min-height:20px}
 
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 

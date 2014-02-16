@@ -37,6 +37,46 @@ angular.module('bs.services').factory('UtilService', function(_) {
         return values[0];
       }
       return values;
+    },
+    testGrandchild: function(object, paths, fn) {
+      if (!object) {
+        return false;
+      }
+      var values = [];
+      paths = _.isArray(paths) ? paths : [paths];
+      _.each(paths, function(path) {
+        values.push(fn(testPath(object, path)));
+      });
+      if (values.length === 1) {
+        return values[0];
+      }
+      return values;
+    },
+    testAllItems: function(arry, test) {
+      var pass = false;
+      _.each(arry, function(item) {
+        pass = test(item);
+        return pass;
+      });
+      return pass;
+    },
+    testAnyItems: function(arry, test) {
+      var pass = false;
+      _.each(arry, function(item) {
+        pass = test(item);
+        if (pass) {
+          return false;
+        }
+      });
+      return pass;
+    },
+    testNoItems: function(arry, test) {
+      var pass = false;
+      _.each(arry, function(item) {
+        pass = test(item);
+        return pass;
+      });
+      return !pass;
     }
   };
   return util;

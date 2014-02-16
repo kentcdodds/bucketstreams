@@ -1,29 +1,48 @@
 <div class="getting-started-container modal-content">
   <div class="modal-header">
-    <button type="button" class="close" ng-click="dismiss()">&times;</button>
+    <button type="button" class="close" ng-click="dismiss()" ng-show="currentUser.username">&times;</button>
     <h4 class="modal-title">Welcome to Bucket Streams!</h4>
   </div>
-  <div class="modal-body">
-    <div ng-hide="currentUser.username">
+  <div ng-hide="currentUser.username">
+    <div class="modal-body">
       First thing's first! What would you like your username to be?
-      <form name="usernameForm" role="form">
-        <div class="form-group">
+      <form name="usernameForm" id="usernameForm" role="form" ng-submit="saveUsername(tempUsername)">
+        <div class="form-group" ng-class="{'has-warning': usernameStates.usernameInUse, 'has-error': (usernameStates.invalid || usernameStates.tooShort)}">
           <label for="username-field">Username</label>
-          <input ng-pattern="/^([a-zA-Z]|_|\d){2,12}$/" class="form-control" ng-model="tempUsername" ng-change="checkUniqueUsername(tempUsername)" id="username-field" placeholder="awesome" autofocus>
+          <input
+              placeholder="awesome"
+              ng-pattern="/^([a-zA-Z]|_|\d){0,12}$/"
+              class="form-control"
+              ng-model="tempUsername"
+              ng-change="onUsernameChange(!usernameForm.$invalid, tempUsername)"
+              id="username-field"
+              autofocus>
+        </div>
+        <div class="label-container">
+          <span ng-show="usernameStates.valid" class="label label-success">Username Available</span>
+          <span ng-show="usernameStates.usernameInUse" class="label label-warning">Username not available</span>
+          <span ng-show="usernameStates.invalid" class="label label-danger">Invalid Username: can only be letters, numbers, and underscores</span>
+          <span ng-show="usernameStates.tooShort" class="label label-danger">Invalid Username: must be at least 3 characters long</span>
         </div>
       </form>
+      <div class="clearfix"></div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" form="usernameForm" ng-disabled="!usernameStates.valid">Save</button>
+      </div>
     </div>
-    <div ng-show="currentUser.username">
+  </div>
+  <div ng-show="currentUser.username">
+    <div class="modal-body">
       Here's what's left to setup:
       <accordion close-others="true">
         <accordion-group ng-repeat="field in fieldsToFill">
           <accordion-heading>
-            <div class="cursor-pointer" ng-class="{'text-muted': field.dontRemind}">
-              <i ng-if="field.filledIn" class="fa fa-check-circle color-green"></i>
+            <div class="cursor-pointer" ng-class="{'text-muted': currentUser.isDontRemind(field.displayName) && !currentUser[field.filledInFn](field.filledInFnArg)}">
+              <i ng-if="currentUser[field.filledInFn](field.filledInFnArg)" class="fa fa-check-circle color-green"></i>
               <span>{{field.displayName}}</span>
-              <small class="pull-right cursor-pointer" ng-click="dontRemind($event, field)">
+              <small class="pull-right cursor-pointer" ng-click="dontRemind($event, field.displayName)" ng-hide="currentUser[field.filledInFn](field.filledInFnArg)">
                 Don't remind me
-                <i class="fa" ng-class="{'fa-check-circle': field.dontRemind, 'fa-circle': !field.dontRemind}"></i>
+                <i class="fa" ng-class="{'fa-check-circle': currentUser.isDontRemind(field.displayName), 'fa-circle': !currentUser.isDontRemind(field.displayName)}"></i>
               </small>
             </div>
           </accordion-heading>
@@ -31,8 +50,8 @@
         </accordion-group>
       </accordion>
     </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-default" ng-click="dismiss()">Remind Me Later</button>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" ng-click="dismiss()">Remind Me Later</button>
+    </div>
   </div>
 </div>

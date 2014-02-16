@@ -9,7 +9,10 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, moment, $sta
   if ($scope.currentUser.setupReminderDate) {
     daysSinceLastReminder = moment().diff($scope.currentUser.setupReminderDate, 'days');
   }
-  if (daysSinceLastReminder > 1) {
+
+  if (_.isUndefined($scope.currentUser.username)) {
+    $state.transitionTo('home.gettingStarted');
+  } else if (daysSinceLastReminder > 1) {
     var userFieldsToFill = _.find($scope.currentUser.getFieldsToFill(), {filledIn: false, dontRemind: false});
     if (!userFieldsToFill || !userFieldsToFill.length) {
       $state.transitionTo('home.gettingStarted');

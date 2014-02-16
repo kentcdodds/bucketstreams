@@ -1,11 +1,11 @@
 module.exports = function(app) {
   require('./AngularRoutes')(app);
   require('./AuthenticationRoutes')(app);
+  require('./UtilRoutes')(app);
 
   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'local') {
     require('../local/HelperRoutes')(app);
   }
-
 
   var config = require('../views/config');
 
@@ -42,7 +42,7 @@ module.exports = function(app) {
 
   app.get('*', function(req, res) {
     console.log('catch all: ' + req.params);
-    if (req.session.visitor) {
+    if (req.session.visitor || !req.isAuthenticated()) {
       console.log('sending frontPage');
       res.render('main', config.frontPage);
     } else {

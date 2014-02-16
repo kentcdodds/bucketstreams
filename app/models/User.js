@@ -32,6 +32,29 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
     }
   };
 
+  User.prototype.isDontRemind = function(fieldDisplayName) {
+    return this.dontRemind && _.contains(this.dontRemind, fieldDisplayName);
+  };
+
+  User.prototype.addDontRemind = function(fieldDisplayName) {
+    this.dontRemind = this.dontRemind || [];
+    this.dontRemind.push(fieldDisplayName);
+  };
+
+  User.prototype.removeDontRemind = function(fieldDisplayName) {
+    _.remove(this.dontRemind, function(item) {
+      return item === fieldDisplayName;
+    });
+  };
+
+  User.prototype.toggleDontRemind = function(fieldDisplayName) {
+    if (this.isDontRemind(fieldDisplayName)) {
+      this.removeDontRemind(fieldDisplayName);
+    } else {
+      this.addDontRemind(fieldDisplayName);
+    }
+  };
+
   User.prototype.hasUsername = function() {
     return !_.isEmpty(this.username);
   };
@@ -41,11 +64,11 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
   };
 
   User.prototype.hasFullName = function() {
-    return UtilService.testHasPosterity(this.name, ['first', 'last']);
+    return !_.isEmpty(this.name) && !_.isEmpty(this.name.first) && !_.isEmpty(this.name.last);
   };
 
-  User.prototype.hasPhoneNumber = function() {
-    return !_.isEmpty(this.phoneNumber);
+  User.prototype.hasPhone = function() {
+    return !_.isEmpty(this.phone);
   };
 
   User.prototype.hasOutboundRules = function() {
@@ -60,10 +83,6 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
     return UtilService.testHasPosterity(this.connectedAccounts, provider + '.token');
   };
 
-  User.prototype.isDontRemind = function(field) {
-    return this.dontRemind && _.contains(this.dontRemind, field);
-  };
-
   User.prototype.getProfilePicture = function() {
     var profilePicture = '/images/guest-photo.png';
     if (this.hasProfilePicture()) {
@@ -74,27 +93,23 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
 
   User.prototype.getFieldsToFill = function() {
     var fields = [];
-    var self = this;
-    function assignField(filledIn, displayName) {
+    function assignField(displayName, filledInFn, filledInFnArg) {
       fields.push({
+        filledInFn: filledInFn,
+        filledInFnArg: filledInFnArg,
         displayName: displayName,
-        dontRemind: self.isDontRemind(displayName),
-        filledIn: filledIn,
         formName: displayName.replace(/ /g, '-').toLowerCase()
       });
     }
 
-    assignField(this.hasProfilePicture(), 'Profile Picture');
-    assignField(this.hasFullName(), 'Full Name');
-    assignField(this.hasPhoneNumber(), 'Phone Number');
-    assignField(this.hasOutboundRules(), 'Inbound Rules');
-    assignField(this.isConnectedTo('facebook'), 'Facebook Connection');
-    assignField(this.hasInboundRules('facebook'), 'Inbound Facebook Rules');
-    assignField(this.isConnectedTo('twitter'), 'Twitter Connection');
-    assignField(this.hasInboundRules('twitter'), 'Inbound Twitter Rules');
-    assignField(this.isConnectedTo('google'), 'Google Connection');
-    assignField(this.hasInboundRules('google'), 'Inbound Google Rules');
-
+    assignField('Profile Picture', 'hasProfilePicture');
+    assignField('Full Name', 'hasFullName');
+    assignField('Phone Number', 'hasPhone');
+    assignField('Inbound Rules', 'hasOutboundRules');
+    _.each(['Facebook', 'Twitter', 'Google'], function(provider) {
+      assignField(provider + ' Connection', 'isConnectedTo', provider.toLowerCase());
+      assignField('Inbound ' + provider + ' Rules', 'hasInboundRules', provider.toLowerCase());
+    });
     return fields;
   };
 
