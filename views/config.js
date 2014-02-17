@@ -22,6 +22,7 @@ module.exports = (function() {
   var commonConfig = {
     stylesheets: _.union(thirdPartyStyles, customStyles),
     topScripts: [
+      '/bower_components/ng-file-upload/angular-file-upload-shim.js',
       '/bower_components/angular/angular.js',
       '/scripts/facebook-fix.js'
     ],
@@ -30,6 +31,7 @@ module.exports = (function() {
       '/bower_components/lodash/dist/lodash.js',
       '/bower_components/toastr/toastr.js',
       '/bower_components/momentjs/moment.js',
+      '/bower_components/ng-file-upload/angular-file-upload.js',
       '/bower_components/angular-ui-router/release/angular-ui-router.js',
       '/non_bower_components/ui-bootstrap-tpls-0.9.0.js',
       '/bower_components/angular-animate/angular-animate.js',

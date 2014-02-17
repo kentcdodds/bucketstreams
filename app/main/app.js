@@ -1,5 +1,5 @@
 (function() {
-  var thirdParties = ['ui.router', 'ui.bootstrap', 'pasvaz.bindonce'];
+  var thirdParties = ['ui.router', 'ui.bootstrap', 'pasvaz.bindonce', 'angularFileUpload'];
   var angularMods = ['ngAnimate'];
   var internalMods = ['bs.directives', 'bs.models', 'bs.services'];
   var app = angular.module('bs.app', thirdParties.concat(angularMods.concat(internalMods)));
@@ -13,8 +13,8 @@
         templateUrl: '/main/index.html',
         controller: 'MainCtrl',
         resolve: {
-          currentUser: function(CurrentUser) {
-            return CurrentUser.$promise;
+          currentUser: function(CurrentUserService) {
+            return CurrentUserService.getUser().$promise;
           }
         },
         onEnter: function() {

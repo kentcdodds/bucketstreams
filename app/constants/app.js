@@ -1,6 +1,11 @@
 (function() {
   var app = angular.module('bs.constants', []);
-  app.constant('_', _);
-  app.constant('toastr', toastr);
-  app.constant('moment', moment);
+  function addConstant(name) {
+    if (window[name]) {
+      app.constant(name, window[name]);
+    }
+  }
+  addConstant('_');
+  addConstant('toastr');
+  addConstant('moment');
 })();

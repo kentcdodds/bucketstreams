@@ -105,11 +105,13 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
     assignField('Profile Picture', 'hasProfilePicture');
     assignField('Full Name', 'hasFullName');
     assignField('Phone Number', 'hasPhone');
+    /* TODO: Make these fields rock.
     assignField('Inbound Rules', 'hasOutboundRules');
     _.each(['Facebook', 'Twitter', 'Google'], function(provider) {
       assignField(provider + ' Connection', 'isConnectedTo', provider.toLowerCase());
       assignField('Inbound ' + provider + ' Rules', 'hasInboundRules', provider.toLowerCase());
     });
+    */
     return fields;
   };
 

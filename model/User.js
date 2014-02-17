@@ -71,8 +71,8 @@ schema.plugin(passportLocalMongoose, {
 });
 
 schema.path('username').validate(function (value) {
-  return !!value.match(/^([a-zA-Z]|_|\d){2,12}$/);
-}, 'Username can only contain numbers, letters, and underscores.');
+  return !!value.match(/^([a-zA-Z]|_|\d){3,16}$/);
+}, 'Username must be between 3 - 16 characters and can only contain numbers, letters, and underscores.');
 
 /*
  * Third-party account methods

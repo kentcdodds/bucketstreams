@@ -5,16 +5,16 @@
   </div>
   <div ng-hide="currentUser.username">
     <div class="modal-body">
-      First thing's first! What would you like your username to be?
+      First thing's first! What would you like your <strong>username</strong> to be?
       <form name="usernameForm" id="usernameForm" role="form" ng-submit="saveUsername(tempUsername)">
-        <div class="form-group" ng-class="{'has-warning': usernameStates.usernameInUse, 'has-error': (usernameStates.invalid || usernameStates.tooShort)}">
-          <label for="username-field">Username</label>
+        <div class="form-group margin-top-small" ng-class="{'has-warning': usernameStates.usernameInUse, 'has-error': (usernameStates.invalid || usernameStates.wrongLength)}">
+          <label class="sr-only" for="username-field">Username</label>
           <input
-              placeholder="awesome"
-              ng-pattern="/^([a-zA-Z]|_|\d){0,12}$/"
+              placeholder="username"
+              type="text"
               class="form-control"
               ng-model="tempUsername"
-              ng-change="onUsernameChange(!usernameForm.$invalid, tempUsername)"
+              ng-change="onUsernameChange(tempUsername)"
               id="username-field"
               autofocus>
         </div>
@@ -22,7 +22,7 @@
           <span ng-show="usernameStates.valid" class="label label-success">Username Available</span>
           <span ng-show="usernameStates.usernameInUse" class="label label-warning">Username not available</span>
           <span ng-show="usernameStates.invalid" class="label label-danger">Invalid Username: can only be letters, numbers, and underscores</span>
-          <span ng-show="usernameStates.tooShort" class="label label-danger">Invalid Username: must be at least 3 characters long</span>
+          <span ng-show="usernameStates.wrongLength" class="label label-danger">Invalid Username: must be between 3 and 16 characters long</span>
         </div>
       </form>
       <div class="clearfix"></div>
@@ -40,7 +40,7 @@
             <div class="cursor-pointer" ng-class="{'text-muted': currentUser.isDontRemind(field.displayName) && !currentUser[field.filledInFn](field.filledInFnArg)}">
               <i ng-if="currentUser[field.filledInFn](field.filledInFnArg)" class="fa fa-check-circle color-green"></i>
               <span>{{field.displayName}}</span>
-              <small class="pull-right cursor-pointer" ng-click="dontRemind($event, field.displayName)" ng-hide="currentUser[field.filledInFn](field.filledInFnArg)">
+              <small class="pull-right cursor-pointer" ng-click="toggleDontRemind($event, field.displayName)" ng-hide="currentUser[field.filledInFn](field.filledInFnArg)">
                 Don't remind me
                 <i class="fa" ng-class="{'fa-check-circle': currentUser.isDontRemind(field.displayName), 'fa-circle': !currentUser.isDontRemind(field.displayName)}"></i>
               </small>

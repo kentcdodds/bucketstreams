@@ -8,10 +8,10 @@ var passport = require('passport');
 module.exports = function(app) {
   app.post('/register', function(req, res) {
     User.register(new User({ email : req.body.email }), req.body.password, function(err, user) {
-      if (err) return ErrorController.sendErrorJson(res, 400, 'Problem registering user. Error:\n' + JSON.stringify(err, null, 2));
+      if (err) return ErrorController.sendErrorJson(res, 400, 'Sign Up Error: ' + err.message);
 
       req.login(user, function(err) {
-        if (err) return ErrorController.sendErrorJson(res, 400, 'Problem automatically logging in user. Error: \n' + JSON.stringify(err, null, 2));
+        if (err) return ErrorController.sendErrorJson(res, 500, 'Login Error: ' + err.message);
 
         return res.json(200, user);
       });

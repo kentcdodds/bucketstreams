@@ -1,6 +1,7 @@
 module.exports = function(app) {
   require('./AngularRoutes')(app);
   require('./AuthenticationRoutes')(app);
+//  require('./PhotoRoutes')(app);
   require('./UtilRoutes')(app);
 
   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'local') {

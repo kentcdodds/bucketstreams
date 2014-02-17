@@ -1,5 +1,10 @@
-angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $timeout, _, UtilService, CurrentUser, AlertService, $http) {
-  $scope.currentUser = CurrentUser;
+angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $timeout, _, $upload, UtilService, CurrentUserService, AlertService, $http) {
+
+  $scope.currentUser = CurrentUserService.getUser();
+  $scope.$on(CurrentUserService.userUpdateEvent, function(updatedUser) {
+    $scope.currentUser = updatedUser;
+  });
+
   $scope.fieldsToFill = $scope.currentUser.getFieldsToFill();
   $scope.dismiss = function() {
     $scope.currentUser.setupReminderDate = new Date();
@@ -7,8 +12,8 @@ angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $time
     $scope.$close();
   };
 
-  $scope.dontRemind = function($event, fieldDisplayName) {
-    $scope.currentUser.toggleDontRemind(fieldDisplayName)
+  $scope.toggleDontRemind = function($event, fieldDisplayName) {
+    $scope.currentUser.toggleDontRemind(fieldDisplayName);
     $scope.currentUser.$save();
 
     if ($event.stopPropagation) $event.stopPropagation();
@@ -21,27 +26,24 @@ angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $time
   };
 
   $scope.usernameStates = {
-    valid: false,
     invalid: false,
     usernameInUse: false,
     empty: true,
-    tooShort: false
+    wrongLength: false
   };
 
-  var checkFilledInUsername = _.debounce(function(valid, username) {
-    $scope.usernameStates.invalid = !valid;
-    if (valid) {
-      checkUniqueUsername(username).then(function(result) {
-        $scope.usernameStates.valid = result.data.isUnique;
-        $scope.usernameStates.usernameInUse = !result.data.isUnique;
-      });
-    }
-  }, 250);
+  var checkFilledInUsername = _.debounce(function(username) {
+    checkUniqueUsername(username).then(function(result) {
+      $scope.usernameStates.usernameInUse = !result.data.isUnique;
+      var s = $scope.usernameStates;
+      $scope.usernameStates.valid = !(s.invalid || s.usernameInUse || s.empty || s.wrongLength);
+    });
+  }, 400);
 
-  var usernameShortFunction = null;
-  function setUsernameTooShort() {
-    usernameShortFunction = $timeout(function() {
-      $scope.usernameStates.tooShort = true;
+  var usernameLengthIssueFunction = null;
+  function setUsernameWrongLength() {
+    usernameLengthIssueFunction = $timeout(function() {
+      $scope.usernameStates.wrongLength = true;
     }, 500);
   }
 
@@ -51,17 +53,23 @@ angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $time
     });
   }
 
-  $scope.onUsernameChange = function(valid, username) {
+  $scope.onUsernameChange = function(username) {
     resetUsernameStates();
-    $timeout.cancel(usernameShortFunction);
+    $timeout.cancel(usernameLengthIssueFunction);
+    if (_.isEmpty(username)) {
+      $scope.usernameStates.empty = true;
+      return;
+    }
+    var wrongLength = username.length < 3 || username.length > 16;
+
+    if (wrongLength) {
+      setUsernameWrongLength();
+    }
+    var valid = /^([a-zA-Z]|_|\d)*$/.test(username);
     if (!valid) {
       $scope.usernameStates.invalid = true;
-    } else if (_.isEmpty(username)) {
-      $scope.usernameStates.empty = true;
-    } else if (username.length > 2) {
-      checkFilledInUsername(valid, username);
-    } else {
-      setUsernameTooShort();
+    } else if (!wrongLength) {
+      checkFilledInUsername(username);
     }
   };
 
@@ -72,6 +80,27 @@ angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $time
         $scope.currentUser.username = username;
         saveUser();
       }
+    });
+  };
+
+  $scope.onFileSelect = function(file) {
+    $scope.uploadInProgress = true;
+    $scope.upload = $upload.upload({
+      url: '/upload/image',
+      method: 'POST',
+      data: {
+        type: 'profile',
+        user: $scope.currentUser.username
+      },
+      file: file
+    }).progress(function(event) {
+      $scope.uploadProgress = parseInt(100.0 * event.loaded / event.total);
+    }).success(function(data, status, headers, config) {
+      $scope.uploadInProgress = false;
+      AlertService.success('Saved');
+    }).error(function(err) {
+      $scope.uploadInProgress = false;
+      AlertService.error('Error uploading file: ' + err.message || err);
     });
   };
 

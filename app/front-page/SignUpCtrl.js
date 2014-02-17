@@ -8,7 +8,7 @@ angular.module('bs.frontPage').controller('SignUpCtrl', function ($scope, User, 
       $window.location.href = '/';
     }).error(function(err) {
       $scope.registering = false;
-      AlertService.error('There was a problem signing up: ' + err.message);
+      AlertService.error(err.message);
     });
   };
 });
