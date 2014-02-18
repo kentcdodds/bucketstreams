@@ -23,7 +23,7 @@
       })
       .state('home.gettingStarted', {
         url: 'getting-started',
-        onEnter: function($stateParams, $state, $modal) {
+        onEnter: function($state, $modal) {
           $modal.open({
             templateUrl: '/main/getting-started/index.html',
             controller: 'GettingStartedCtrl',
@@ -31,6 +31,12 @@
           }).result.then(function() {
               return $state.transitionTo('home');
             });
+        }
+      })
+      .state('home.userPage', {
+        url: ':username',
+        onEnter: function($stateParams) {
+          console.log($stateParams);
         }
       });
 

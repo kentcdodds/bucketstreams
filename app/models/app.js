@@ -12,7 +12,7 @@
       };
       $window.BS.CurrentUser = CurrentUserService.getUser();
 
-      $rootScope.$on(CurrentUserService.userUpdateEvent, function(updatedUser) {
+      $rootScope.$on(CurrentUserService.userUpdateEvent, function(event, updatedUser) {
         $rootScope.currentUser = updatedUser;
       });
 

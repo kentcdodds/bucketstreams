@@ -22,31 +22,32 @@ angular.module('bs.directives').directive('bsPost', function() {
     },
     link: function(scope, el) {
       if (scope.mode === modes.create) {
-        return;
-      }
-
-      // TODO: Figure out why the view isn't rendering this...
-      scope.randomPlaceholder = placeholders[Math.floor(Math.random() * placeholders.length)];
-      scope.commentToAdd = '';
-      scope.addComment = function(event) {
-        if (event.keyCode != 13) return;
-        scope.post.comments.push({
-          author: scope.currentUser,
-          content: scope.commentToAdd,
-          modified: new Date()
-        });
+        scope.makePost = function(content) {
+          scope.post.addContent(content);
+        };
+        scope.randomPlaceholder = placeholders[Math.floor(Math.random() * placeholders.length)];
+      } else {
         scope.commentToAdd = '';
-      };
+        scope.addComment = function(event) {
+          if (event.keyCode != 13) return;
+          scope.post.comments.push({
+            author: scope.currentUser,
+            content: scope.commentToAdd,
+            modified: new Date()
+          });
+          scope.commentToAdd = '';
+        };
 
-      scope.showOrHideComment = function(comment) {
-        comment.showDelete = comment.author.username === scope.currentUser.username;
-      };
+        scope.showOrHideComment = function(comment) {
+          comment.showDelete = comment.author.username === scope.currentUser.username;
+        };
 
-      scope.deleteComment = function(comment) {
-        if (comment.author.username === scope.currentUser.username) {
-          var index = scope.post.comments.indexOf(comment);
-          if (index > -1) {
-            scope.post.comments.splice(index, 1);
+        scope.deleteComment = function(comment) {
+          if (comment.author.username === scope.currentUser.username) {
+            var index = scope.post.comments.indexOf(comment);
+            if (index > -1) {
+              scope.post.comments.splice(index, 1);
+            }
           }
         }
       }

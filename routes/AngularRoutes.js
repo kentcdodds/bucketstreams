@@ -1,17 +1,29 @@
 var dataModels = require('../model').models;
 var _ = require('lodash-node');
 var logger = require('winston');
-var ErrorController = require('../controller/ErrorController');
 
 module.exports = function(app) {
 
-  app.all('/api/v1/users/me', function(req, res, next) {
-    if (req.isAuthenticated()) {
-      req.url = '/api/v1/users/' + req.user.id;
+  function addConversionRoute(resourceName, simpleName, getReplacement) {
+    var regexRoute = new RegExp('^(\\/api\\/v1\\/' + resourceName + '\\/)(' + simpleName + ')(.*?)');
+    app.all(regexRoute,
+      function(req, res, next) {
+
+      req.url = req.url.replace(regexRoute, '$1' + getReplacement(req) + '$3');
       next();
-    } else {
-      return ErrorController.sendErrorJson(res, 401);
-    }
+    });
+  }
+
+  addConversionRoute('users', 'me', function(req) {
+    return req.user ? req.user.id : 'undefined';
+  });
+
+  addConversionRoute('buckets', 'main', function(req) {
+    return req.user ? req.user.mainBucket : 'undefined';
+  });
+
+  addConversionRoute('streams', 'main', function(req) {
+    return req.user ? req.user.mainStream : 'undefined';
   });
 
   var angularBridge = new (require('angular-bridge'))(app, {

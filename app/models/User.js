@@ -32,6 +32,10 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
     }
   };
 
+  User.prototype.getProfilePicture = function() {
+    return UtilService.getGrandchild(this, 'profilePicture.0.url') || '/images/guest-photo.png';
+  };
+
   User.prototype.isDontRemind = function(fieldDisplayName) {
     return this.dontRemind && _.contains(this.dontRemind, fieldDisplayName);
   };

@@ -118,7 +118,7 @@ angular.module('bs.componentWrapper').controller('ComponentWrapperCtrl', functio
   };
 
   $scope.currentUser = CurrentUserService.getUser();
-  $scope.$on(CurrentUserService.userUpdateEvent, function(updatedUser) {
+  $scope.$on(CurrentUserService.userUpdateEvent, function(event, updatedUser) {
     $scope.currentUser = updatedUser;
   });
 

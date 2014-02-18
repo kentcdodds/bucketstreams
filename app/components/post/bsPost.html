@@ -1,63 +1,53 @@
 <div class="post panel panel-default" bindonce="post">
   <div class="post-meta panel-heading position-relative">
-    <a bo-href="'/' + post.author.username">
-      <img bo-src="post.author.profilePicture.url" class="post-author-photo padding-xxsmall img-circle position-absolute">
+    <a ng-href="/{{post.getAuthor().username}}">
+      <img ng-src="{{post.getAuthor().getProfilePicture()}}" class="post-author-photo padding-xxsmall img-circle position-absolute">
     </a>
     <div class="post-info display-inline-block padding-xxsmall vertical-align-top">
       <div>
-        <a bo-href="'/' + post.author.username">
-          <strong class="post-user font-size-xlarge" bo-text="post.author.name.first + ' ' + post.author.name.last"></strong>
+        <a ng-href="/{{post.getAuthor().username}}">
+          <strong class="post-user font-size-xlarge">{{post.getAuthor().getDisplayName()}}</strong>
         </a>
       </div>
       <div>
         <small>
-          <a bo-href="'/' + post.author.username + '/' + post.id" bo-text="post.modified | date:'short'"></a>
+          <a ng-href="/{{post.getAuthor().username}}/{{post.id}}" bo-text="post.modified | date:'short'"></a>
         </small>
       </div>
     </div>
   </div>
   <div class="post-content panel-body font-size-large">
-    <div ng-hide="mode === 'create'" bo-text="post.content[post.content.length - 1].textContent"></div>
-    <textarea ng-show="mode === 'create'" class="form-control" placeholder="{{randomPlaceholder || 'What\'s up?'}}" ng-model="post.content[0].textContent"></textarea>
+    <div bo-text="post.content[post.content.length - 1].textContent"></div>
   </div>
-  <div class="panel-footer mode-{{mode}}">
-    <div ng-if="mode !== 'create'" class="pull-right share-post">
+  <div class="panel-footer">
+    <div class="pull-right share-post">
       <a class="padding-xsmall cursor-pointer" ng-click="share(post)" fa-icon="share"></a>
       <a class="padding-xsmall cursor-pointer" ng-click="star(post)" fa-icon="star"></a>
     </div>
-    <div ng-if="mode === 'create'" class="create-footer">
-      <div class="pull-left create-post-icons">
-        <a class="padding-xsmall cursor-pointer" ng-click="attachPhoto(post)" fa-icon="camera"></a>
-        <a class="padding-xsmall cursor-pointer" ng-click="addBucket(post)" fa-icon="bitbucket"></a>
-      </div>
-      <button class="pull-right btn btn-primary btn-sm post-button">Post</button>
-    </div>
   </div>
-  <div ng-hide="mode === 'create'">
-    <div class="comments">
-      <div class="add-comment position-relative">
-        <a bo-href="'/' + currentUser.username">
-          <img bo-src="currentUser.profilePicture.url" class="add-comment-photo img-circle display-inline position-absolute">
-        </a>
-        <div class="add-comment-field display-inline-block">
-          <input class="form-control" type="text" placeholder="Add comment..." ng-model="commentToAdd" ng-keydown="addComment($event)">
-        </div>
+  <div class="comments">
+    <div class="add-comment position-relative">
+      <a bo-href="'/' + currentUser.username">
+        <img bo-src="currentUser.getProfilePicture()" class="add-comment-photo img-circle display-inline position-absolute">
+      </a>
+      <div class="add-comment-field display-inline-block">
+        <input class="form-control" type="text" placeholder="Add comment..." ng-model="commentToAdd" ng-keydown="addComment($event)">
       </div>
-      <div class="comment position-relative font-size-small" ng-repeat="comment in post.comments | orderBy:comment.modified" ng-mouseenter="showOrHideComment(comment)" ng-mouseleave="comment.showDelete=false">
-        <a bo-href="'/' + comment.author.username">
-          <img bo-src="comment.author.profilePicture.url" class="comment-photo img-circle display-inline position-absolute">
-        </a>
-        <div class="comment-info display-inline-block vertical-align-top">
-          <div>
-            <a bo-href="'/' + comment.author.username">
-              <strong class="comment-user" bo-text="comment.author.name.first + ' ' + comment.author.name.last"></strong>
-            </a>
-            -
-            <small bo-text="post.modified | date:'short'"></small>
-            <i ng-show="comment.showDelete" class="fa fa-trash-o color-red cursor-pointer" ng-click="deleteComment(comment)"></i>
-          </div>
-          <div class="comment-content" bo-text="comment.content"></div>
+    </div>
+    <div class="comment position-relative font-size-small" ng-repeat="comment in post.comments" ng-mouseenter="showOrHideComment(comment)" ng-mouseleave="comment.showDelete=false">
+      <a ng-href="/{{comment.getAuthor().username}}">
+        <img ng-src="{{comment.getAuthor().getProfilePicture()}}" class="comment-photo img-circle display-inline position-absolute">
+      </a>
+      <div class="comment-info display-inline-block vertical-align-top">
+        <div>
+          <a ng-href="/{{comment.getAuthor().username}}">
+            <strong class="comment-user">{{comment.getAuthor().getDisplayName()}}</strong>
+          </a>
+          -
+          <small bo-text="post.modified | date:'short'"></small>
+          <i ng-show="comment.showDelete" class="fa fa-trash-o color-red cursor-pointer" ng-click="deleteComment(comment)"></i>
         </div>
+        <div class="comment-content" bo-text="comment.content"></div>
       </div>
     </div>
   </div>

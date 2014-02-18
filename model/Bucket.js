@@ -18,7 +18,8 @@ var schema = new Schema({
   name: {type: String, default: 'New Bucket'},
   visibility: [{type: ObjectId, ref: ref.user}],
   parent: {type: ObjectId, ref: ref.bucket},
-  contributors: [{type: ObjectId, ref: ref.user}]
+  contributors: [{type: ObjectId, ref: ref.user}],
+  isMain: {type: Boolean, required: false}
 });
 
 schema.methods.addPost = function(post, callback) {
@@ -32,7 +33,15 @@ schema.methods.getPosts = function(callback) {
 
 Util.addTimestamps(schema);
 
+schema.pre('save', function (next) {
+  if (!this.isNew && this.isMain) {
+    next(new Error('Cannot change main bucket'));
+  } else {
+    next();
+  }
+});
+
 module.exports = {
   schema: schema,
   model: mongoose.model(ref.bucket, schema)
-}
+};

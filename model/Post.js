@@ -24,7 +24,7 @@ var schema = new Schema({
   ],
   sourceData: {
     source: String,
-    id: {type: String, unique: true},
+    id: String,
     createdAt: Date,
     metadata: {}
   },

@@ -12,6 +12,7 @@ var _ = require('lodash-node');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Email = mongoose.SchemaTypes.Email;
+var ObjectId = Schema.Types.ObjectId;
 
 var passportLocalMongoose = require('passport-local-mongoose');
 
@@ -23,16 +24,18 @@ var minute = 1000 * 60;
  *   lastLoginDate: The date the user last logged in.
  */
 var schema = new Schema({
-  username: {type: String, unique: true},
+  username: {type: String, required: false},
   phone: String,
-  email: Email,
+  email: {type: Email, unique: true, required: true},
   name: {
     first: String,
     last: String
   },
   profilePicture: [Image.schema],
   lastLoginDate: {type: Date, default: Date.now},
-  setupReminderDate: {type: Date},
+  setupReminderDate: {type: Date, required: false},
+  mainStream: {type: ObjectId, ref: ref.stream},
+  mainBucket: {type: ObjectId, ref: ref.bucket},
   rules: [Rule.schema],
   connectedAccounts: {
     facebook: {
@@ -60,7 +63,7 @@ var schema = new Schema({
       rules: [Rule.schema]
     }
   },
-  dontRemind: [String]
+  dontRemind: [{type: String, required: false}]
 });
 
 Util.addTimestamps(schema);
@@ -252,6 +255,31 @@ schema.methods.makePost = function(post, callback) {
 schema.methods.getPosts = function(callback) {
   require('./Post').model.find({author: this.id}).sort('-created').exec(callback);
 };
+
+schema.statics.getByUsername = function(username, callback) {
+  this.model(ref.user).find({username: new RegExp('^' + username + '$', 'i')}, callback);
+};
+
+schema.pre('save', function (next) {
+  var self = this;
+  if (self.username) {
+    this.model(ref.user).getByUsername(self.username, function(err, result) {
+      if (err) return next(err);
+
+      if (result.length > 0) {
+        var others = _.find(result, function(user) {
+          return self.id !== user.id;
+        });
+        if (others && others.length) {
+          err = new Error('The username: ' + self.username + ' already in use');
+        }
+      }
+      next(err);
+    });
+  } else {
+    next();
+  }
+});
 
 module.exports = {
   schema: schema,

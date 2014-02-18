@@ -28,4 +28,4 @@ function getAllProps(property) {
 module.exports = {
   models: getAllProps('model'),
   schemas: getAllProps('schema')
-}
+};

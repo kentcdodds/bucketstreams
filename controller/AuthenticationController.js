@@ -83,5 +83,12 @@ module.exports = {
       successRedirect: redirect,
       failureRedirect: '/login'
     })(req, res, next);
+  },
+  checkAuthenticated: function(req, res, next) {
+    if (req.isAuthenticated) {
+      next();
+    } else {
+      ErrorController.sendErrorJson(res, 401);
+    }
   }
 };

@@ -15,7 +15,7 @@
         <ul class="dropdown-menu pull-right">
           <li>
             <a ui-sref="home.gettingStarted" class="cursor-pointer">Getting Started</a>
-            <a class="cursor-pointer">Update Profile Photo</a>
+            <a ui-sref="home.userPage({username: currentUser.username})" class="cursor-pointer">Profile</a>
             <a ng-click="signOut()" class="cursor-pointer">Sign Out</a>
           </li>
         </ul>
@@ -24,5 +24,11 @@
   </div>
 
   <div class="center-block" ui-view>
+    <div id="post-field">
+      <div bs-new-post on-post-click="makePost(content)"></div>
+    </div>
+    <div class="stream">
+      This is the stream: {{mainStream.name}}
+    </div>
   </div>
 </div>

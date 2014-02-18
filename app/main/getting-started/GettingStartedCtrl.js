@@ -1,7 +1,7 @@
 angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $timeout, _, $upload, UtilService, CurrentUserService, AlertService, $http) {
 
   $scope.currentUser = CurrentUserService.getUser();
-  $scope.$on(CurrentUserService.userUpdateEvent, function(updatedUser) {
+  $scope.$on(CurrentUserService.userUpdateEvent, function(event, updatedUser) {
     $scope.currentUser = updatedUser;
   });
 
