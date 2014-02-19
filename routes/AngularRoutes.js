@@ -37,7 +37,7 @@ module.exports = function(app) {
   angularBridge.addResource('users', dataModels.user, {
     hide: [ 'hash', 'salt' ],
     readOnly: [ '_id', 'modified', 'lastLoginDate'],
-    query: '{  }'
+    query: 'req.query'
   });
 
   angularBridge.addResource('posts', dataModels.post, {
@@ -47,7 +47,7 @@ module.exports = function(app) {
     readOnly: [
       '_id'
     ],
-    query: '{  }'
+    query: 'req.query'
   });
 
   angularBridge.addResource('buckets', dataModels.bucket, {
@@ -57,7 +57,7 @@ module.exports = function(app) {
     readOnly: [
       '_id'
     ],
-    query: '{  }'
+    query: 'req.query'
   });
 
   angularBridge.addResource('streams', dataModels.stream, {
@@ -67,7 +67,7 @@ module.exports = function(app) {
     readOnly: [
       '_id'
     ],
-    query: '{  }'
+    query: 'req.query'
   });
 
   angularBridge.addResource('comments', dataModels.comment, {
@@ -77,7 +77,7 @@ module.exports = function(app) {
     readOnly: [
       '_id'
     ],
-    query: '{  }'
+    query: 'req.query'
   });
 
 };

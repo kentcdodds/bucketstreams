@@ -32,20 +32,28 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, moment, $sta
   $scope.mainStream = Stream.get({id: 'main'});
   $scope.mainStream.$promise.then(function(stream) {
     if (stream._id) {
-      $scope.mainStream.getPosts().then(function(response) {
-        $scope.posts = response.data;
+      $scope.mainStream.getPostData().then(function(posts) {
+        $scope.posts = posts;
       });
     }
   });
 
+  $scope.removePost = function(post) {
+    $scope.posts = $scope.posts || [];
+    var index = $scope.posts.indexOf(post);
+    if (index > -1) {
+      $scope.posts.splice(index, 1);
+    }
+  };
+
   $scope.makePost = function(content) {
     var post = new Post({
       author: $scope.currentUser._id,
-      content: content,
+      content: [content],
       buckets: []
     });
     post.$save();
-
+    $scope.posts.unshift(post);
   };
 
 });

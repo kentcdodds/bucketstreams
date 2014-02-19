@@ -14,9 +14,9 @@
         </a>
         <ul class="dropdown-menu pull-right">
           <li>
-            <a ui-sref="home.gettingStarted" class="cursor-pointer">Getting Started</a>
-            <a ui-sref="home.userPage({username: currentUser.username})" class="cursor-pointer">Profile</a>
-            <a ng-click="signOut()" class="cursor-pointer">Sign Out</a>
+            <a ui-sref="home.gettingStarted">Getting Started</a>
+            <a ui-sref="home.userPage({username: currentUser.username})">Profile</a>
+            <a ng-click="signOut()">Sign Out</a>
           </li>
         </ul>
       </div>
@@ -29,6 +29,9 @@
     </div>
     <div class="stream">
       This is the stream: {{mainStream.name}}
+      <div>
+        <div ng-repeat="post in posts" bs-post="post" on-removed="removePost(post)"></div>
+      </div>
     </div>
   </div>
 </div>

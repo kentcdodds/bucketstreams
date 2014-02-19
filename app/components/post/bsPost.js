@@ -1,55 +1,63 @@
-angular.module('bs.directives').directive('bsPost', function() {
-  var modes = {
-    create: 'create'
-  };
-  var placeholders = [
-    'What are you thinking?',
-    'Anything cool happen today?',
-    'What\'s your favorite color?',
-    'What did you do today?',
-    'What funny joke did you hear today?',
-    'What made today so awesome?'
-  ];
-
+angular.module('bs.directives').directive('bsPost', function(CurrentUserService, User, Comment) {
   return {
     restrict: 'A',
     templateUrl: '/components/post/bsPost.html',
     replace: true,
     scope: {
       post: '=bsPost',
-      currentUser: '=?',
-      mode: '@'
+      onRemoved: '&'
     },
     link: function(scope, el) {
-      if (scope.mode === modes.create) {
-        scope.makePost = function(content) {
-          scope.post.addContent(content);
-        };
-        scope.randomPlaceholder = placeholders[Math.floor(Math.random() * placeholders.length)];
+      scope.currentUser = null;
+      scope.author = User.get({id: scope.post.author});
+      scope.currentUser = CurrentUserService.getUser();
+      if (!scope.post.comments) {
+        scope.comments = Comment.query({owningPost: scope.post._id});
       } else {
+        scope.comments = scope.post.comments;
+      }
+      scope.$on(CurrentUserService.userUpdateEvent, function(event, user) {
+        scope.currentUser = user;
+      });
+
+      scope.removePost = function() {
+        scope.post.$remove();
+        scope.onRemoved();
+      };
+
+      scope.commentToAdd = '';
+      scope.addComment = function(event) {
+        if (event.keyCode != 13) return;
+        var comment = new Comment({
+          author: scope.currentUser._id,
+          content: scope.commentToAdd,
+          modified: new Date(),
+          owningPost: scope.post._id
+        });
+        comment.$save();
+        addComment(comment);
         scope.commentToAdd = '';
-        scope.addComment = function(event) {
-          if (event.keyCode != 13) return;
-          scope.post.comments.push({
-            author: scope.currentUser,
-            content: scope.commentToAdd,
-            modified: new Date()
-          });
-          scope.commentToAdd = '';
-        };
+      };
 
-        scope.showOrHideComment = function(comment) {
-          comment.showDelete = comment.author.username === scope.currentUser.username;
-        };
-
-        scope.deleteComment = function(comment) {
-          if (comment.author.username === scope.currentUser.username) {
-            var index = scope.post.comments.indexOf(comment);
-            if (index > -1) {
-              scope.post.comments.splice(index, 1);
-            }
-          }
+      function removeComment(comment) {
+        scope.comments = scope.comments || [];
+        var index = scope.comments.indexOf(comment);
+        if (index > -1) {
+          scope.comments.splice(index, 1);
         }
+      }
+
+      function addComment(comment) {
+        scope.comments = scope.comments || [];
+        scope.comments.push(comment);
+      }
+
+      scope.showOrHideComment = function(comment) {
+        comment.showDelete = comment.author.username === scope.currentUser.username;
+      };
+
+      scope.deleteComment = function(comment) {
+        removeComment(comment);
       }
     }
   }

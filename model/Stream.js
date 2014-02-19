@@ -2,6 +2,8 @@ var Util = require('./Util');
 var ref = require('./ref');
 
 var Post = require('./Post').model;
+var User = require('./User').model;
+var Comment = require('./Comment').model;
 var Bucket = require('./Bucket').model;
 
 var _ = require('lodash-node');
@@ -108,10 +110,15 @@ schema.methods.getPosts = function(callback) {
         }, done);
       });
     }
-    async.parallel([getUsersPosts, getAllStreamSubscriptionPosts], function(err, result) {
-      debugger;
-      result = _(result).flatten().unique().value();
-      callback(err, result);
+    async.parallel([getUsersPosts, getAllStreamSubscriptionPosts], function(err, posts) {
+      if (err) return callback(err);
+      posts = _(posts).flatten().unique().value();
+      Comment.find({owningPost: {$in: _.pluck(posts, '_id')}}, function(err, comments) {
+        _.each(posts, function(post) {
+          post.comments = _.find(comments, {owningPost: post._id});
+        });
+        callback(null, posts);
+      });
     });
   } else {
     self.getBucketSubscriptions(addAllPosts);

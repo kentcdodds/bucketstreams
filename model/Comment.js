@@ -12,7 +12,7 @@ var ObjectId = Schema.Types.ObjectId;
  *   post: The post on which the comment is found
  */
 var schema = new Schema({
-  authorId: {type: ObjectId, ref: ref.user},
+  author: {type: ObjectId, ref: ref.user},
   content: {type: String, required: true},
   owningPost: {type: ObjectId, ref: ref.post}
 });
@@ -22,4 +22,4 @@ Util.addTimestamps(schema);
 module.exports = {
   schema: schema,
   model: mongoose.model(ref.comment, schema)
-}
+};
