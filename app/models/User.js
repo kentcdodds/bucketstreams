@@ -75,6 +75,10 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
     return !_.isEmpty(this.phone);
   };
 
+  User.prototype.hasEmail = function() {
+    return !_.isEmpty(this.email);
+  };
+
   User.prototype.hasOutboundRules = function() {
     return !_.isEmpty(this.rules) && this.rules.length > 0;
   };
@@ -109,6 +113,7 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
     assignField('Profile Picture', 'hasProfilePicture');
     assignField('Full Name', 'hasFullName');
     assignField('Phone Number', 'hasPhone');
+    assignField('Email', 'hasEmail');
     /* TODO: Make these fields rock.
     assignField('Inbound Rules', 'hasOutboundRules');
     _.each(['Facebook', 'Twitter', 'Google'], function(provider) {
