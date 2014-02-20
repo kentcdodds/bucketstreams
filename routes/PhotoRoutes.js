@@ -1,4 +1,5 @@
 var ErrorController = require('../controller/ErrorController');
+var AuthenticationController = require('../controller/AuthenticationController');
 var logger = require('winston');
 
 var http = require('http');
@@ -11,7 +12,7 @@ var s3Client = knox.createClient({
   secure: false,
   key: process.env.S3_KEY,
   secret: process.env.S3_SECRET,
-  bucket: process.env.S3_BUCKET
+  bucket: process.env.S3_BUCKET_IMAGES
 });
 
 var Writable = require('readable-stream').Writable;
@@ -32,9 +33,9 @@ var supportedTypes = {
 };
 
 module.exports = function(app) {
-  app.post('/upload/image', function(req, res) {
-    var type = req.query.type;
-    var username = req.query.user;
+  app.post('/upload/image', AuthenticationController.checkAuthenticated, function(req, res) {
+    var type = req.body.type;
+    var userId = req.user._id;
     if (!supportedTypes[type]) {
       return ErrorController.sendErrorJson(res, 401, 'Unsupported image upload type: ' + type);
     }
@@ -43,6 +44,9 @@ module.exports = function(app) {
       'x-amz-acl': 'public-read'
     };
     var form = new multiparty.Form();
+    form.parse(req, function(err, fields, files) {
+
+    });
     var batch = new Batch();
     batch.push(function(cb) {
       form.on('field', function(name, value) {
@@ -61,10 +65,10 @@ module.exports = function(app) {
       });
     });
 
-    batch.end(function(err, results) {
+    batch.end(function uploadToS3(err, results) {
       if (err) throw err;
       form.removeListener('close', onEnd);
-      var destPath = results[0];
+      var destPath = '/' + userId + results[0];
       var part = results[1];
 
       var counter = new ByteCounter();
@@ -74,7 +78,7 @@ module.exports = function(app) {
         if (err) throw err;
         res.statusCode = s3Response.statusCode;
         s3Response.pipe(res);
-        console.log('https://s3.amazonaws.com/' + process.env.S3_BUCKET + destPath);
+        console.log('https://s3.amazonaws.com/' + process.env.S3_BUCKET_IMAGES + destPath);
       });
       part.on('end', function() {
         console.log('part end');

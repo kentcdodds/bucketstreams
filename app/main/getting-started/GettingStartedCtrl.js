@@ -22,7 +22,7 @@ angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $time
   };
 
   var checkUniqueUsername = function(username) {
-    return $http.get('/api/v1/util/username-unique?username=' + username);
+    return $http.get('/api/v1/unique/user?field=username&value=' + username);
   };
 
   $scope.usernameStates = {

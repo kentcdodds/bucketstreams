@@ -589,21 +589,24 @@ ul.dropdown-menu li{cursor:pointer}
 #front-page-container .top-content .top-bar{height:76px}
 
 /* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-#front-page-container .top-content .form-flow{width:400px;margin-top:40px;margin-bottom:100px}
+#front-page-container .top-content #center-content{width:400px;margin-top:40px;margin-bottom:100px}
 
 /* line 17 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-#front-page-container .top-content .logo-container{width:800px}
+#front-page-container .top-content #login-form{width:250px}
 
 /* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-#front-page-container .top-content .logo-container > img{width:800px}
+#front-page-container .top-content .logo-container{width:800px}
 
 /* line 23 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+#front-page-container .top-content .logo-container > img{width:800px}
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
 #front-page-container .footer-container{width:100%;background-color:#6e3700;height:40px}
 
-/* line 28 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+/* line 31 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
 #front-page-container .footer-container > div{margin-top:10px}
 
-/* line 30 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+/* line 33 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
 
