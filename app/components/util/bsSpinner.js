@@ -4,7 +4,7 @@ angular.module('bs.directives').directive('bsSpinner', function(_) {
     scope: {
       bsSpinner: '='
     },
-    replace: true,
+    transclude: true,
     template: function(el, attr) {
       switch (attr.size) {
         case 'small':
@@ -37,7 +37,7 @@ angular.module('bs.directives').directive('bsSpinner', function(_) {
         second = span;
       }
       var ngShow = _.isEmpty(attr.bsSpinner) ? '' : ' ng-show="bsSpinner"';
-      return '<div' + ngShow + ' class="loading-spinner text-align-center">' + first + second + '</div>';
+      return '<div' + ngShow + ' class="loading-spinner text-align-center">' + first + second + '<div ng-transclude></div></div>';
     }
   };
 });
