@@ -19,6 +19,16 @@
         onEnter: function() {
           console.log('frontPage');
         }
+      }).
+      state('frontPage.loginTrouble', {
+        url: 'login-trouble',
+        templateUrl: frontPageTemplates + 'login-trouble.html',
+        controller: function($scope) {
+          $scope.message = 'Too bad...';
+        },
+        onEnter: function() {
+          console.log('too bad...');
+        }
       });
 
     $urlRouterProvider.otherwise('/');

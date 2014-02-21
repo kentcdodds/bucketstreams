@@ -14,9 +14,8 @@
         </a>
         <ul class="dropdown-menu pull-right">
           <li>
-            <a ui-sref="home.gettingStarted">Getting Started</a>
             <a ui-sref="home.userPage({username: currentUser.username})">Profile</a>
-            <a ng-click="signOut()">Sign Out</a>
+            <a ng-click="currentUser.logout()">Sign Out</a>
           </li>
         </ul>
       </div>

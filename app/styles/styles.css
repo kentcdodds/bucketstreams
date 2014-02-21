@@ -592,7 +592,7 @@ ul.dropdown-menu li{cursor:pointer}
 #front-page-container .top-content #center-content{width:400px;margin-top:40px;margin-bottom:100px}
 
 /* line 17 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-#front-page-container .top-content #login-form{width:250px}
+#front-page-container .top-content #front-page-forms{width:350px}
 
 /* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
 #front-page-container .top-content .logo-container{width:800px}

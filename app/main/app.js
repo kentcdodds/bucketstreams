@@ -23,7 +23,11 @@
       })
       .state('home.gettingStarted', {
         url: 'getting-started',
-        onEnter: function($state, $modal) {
+        onEnter: function($state, $modal, CurrentUserService) {
+          var currentUser = CurrentUserService.getUser();
+          if (currentUser.hasUsername() && currentUser.hasProfilePicture()) {
+            return $state.transitionTo('home');
+          }
           $modal.open({
             templateUrl: '/main/getting-started/index.html',
             controller: 'GettingStartedCtrl',

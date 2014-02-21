@@ -5,53 +5,61 @@
   </div>
   <div ng-hide="currentUser.username">
     <div class="modal-body">
-      First thing's first! What would you like your <strong>username</strong> to be?
-      <form name="usernameForm" id="usernameForm" role="form" ng-submit="saveUsername(tempUsername)">
-        <div class="form-group margin-top-small" ng-class="{'has-warning': usernameStates.usernameInUse, 'has-error': (usernameStates.invalid || usernameStates.wrongLength)}">
-          <label class="sr-only" for="username-field">Username</label>
-          <input
-              placeholder="username"
-              type="text"
-              class="form-control"
-              ng-model="tempUsername"
-              ng-change="onUsernameChange(tempUsername)"
-              id="username-field"
-              autofocus>
+      <div>Just need to know a few things to be awesome for you</div>
+      <form name="form" id="info-form" role="form" ng-submit="onSaveClicked(form.username.$valid, tempUsername, firstName, lastName)">
+        <div class="form-group margin-top-small" ng-class="{'has-warning': !!tempUsername && form.username.$error.unique, 'has-error': !!tempUsername && (form.username.$error.valid || form.username.$error.length)}">
+          <label for="username-field">Username</label>
+          <span class="label-container">
+            <span ng-show="tempUsername && form.username.$valid" class="label label-success">Username available! :-)</span>
+            <span ng-show="form.username.$error.unique" class="label label-warning">Username taken! :-(</span>
+            <span ng-show="form.username.$error.valid" class="label label-danger">Can only be letters, numbers, and underscores</span>
+            <span ng-show="form.username.$error.length" class="label label-danger">Must be between 3 and 16 characters long</span>
+          </span>
+          <input id="username-field" name="username" class="form-control" bs-username-input bs-autofocus="true" placeholder="awesome_username" ng-model="tempUsername" required>
         </div>
-        <div class="label-container">
-          <span ng-show="usernameStates.valid" class="label label-success">Username Available</span>
-          <span ng-show="usernameStates.usernameInUse" class="label label-warning">Username not available</span>
-          <span ng-show="usernameStates.invalid" class="label label-danger">Invalid Username: can only be letters, numbers, and underscores</span>
-          <span ng-show="usernameStates.wrongLength" class="label label-danger">Invalid Username: must be between 3 and 16 characters long</span>
+        <div class="form-group">
+          <label for="first-name-field">First Name</label>
+          <input type="text" ng-model="firstName" name="first-name" class="form-control" id="first-name-field" placeholder="Joe" ng-maxlength="24" ng-minlength="2" required>
+        </div>
+        <div class="form-group">
+          <label for="last-name-field">Last Name</label>
+          <input type="text" class="form-control" ng-model="lastName" id="last-name-field" placeholder="Anderson"  ng-maxlength="24" ng-minlength="2" required>
         </div>
       </form>
       <div class="clearfix"></div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" form="usernameForm" ng-disabled="!usernameStates.valid">Save</button>
+        <button type="submit" class="btn btn-primary" form="info-form" >Save</button>
+        <button type="button" class="pull-left btn btn-default" ng-click="currentUser.logout()">Logout</button>
       </div>
     </div>
   </div>
-  <div ng-show="currentUser.username">
-    <div class="modal-body">
-      Here's what's left to setup:
-      <accordion close-others="true">
-        <accordion-group ng-repeat="field in fieldsToFill">
-          <accordion-heading>
-            <div class="cursor-pointer" ng-class="{'text-muted': currentUser.isDontRemind(field.displayName) && !currentUser[field.filledInFn](field.filledInFnArg)}">
-              <i ng-if="currentUser[field.filledInFn](field.filledInFnArg)" class="fa fa-check-circle color-green"></i>
-              <span>{{field.displayName}}</span>
-              <small class="pull-right cursor-pointer" ng-click="toggleDontRemind($event, field.displayName)" ng-hide="currentUser[field.filledInFn](field.filledInFnArg)">
-                Don't remind me
-                <i class="fa" ng-class="{'fa-check-circle': currentUser.isDontRemind(field.displayName), 'fa-circle': !currentUser.isDontRemind(field.displayName)}"></i>
-              </small>
-            </div>
-          </accordion-heading>
-          <div ng-include="'/main/getting-started/partials/' + field.formName + '.html'"></div>
-        </accordion-group>
-      </accordion>
-    </div>
+
+  <div ng-show="currentUser.username" class="padding-large">
+    <form name="profilePicturePhoto" role="form">
+      <div ng-file-drop-available="dropSupported=true"
+           ng-show="dropSupported"
+           ng-file-drop="onFileSelect($files)"
+           ng-file-drag-over-class="file-hovering"
+           class="drag-drop-area">
+        <div ng-hide="uploadInProgress">
+          <div>
+            Drag and drop profile picture
+          </div>
+          <button class="choose-file-button btn btn-primary btn-file">
+            Choose Picture
+            <input type="file" ng-file-select="onFileSelect($files)">
+          </button>
+        </div>
+        <div ng-show="uploadInProgress">
+          <div>
+            Upload in progress...
+          </div>
+          <button ng-click="upload.abort()" class="btn btn-warning">Cancel Upload</button>
+        </div>
+      </div>
+    </form>
     <div class="modal-footer">
-      <button type="button" class="btn btn-default" ng-click="dismiss()">Remind Me Later</button>
+      <button type="button" class="btn btn-primary" ng-click="$close()">Done</button>
     </div>
   </div>
 </div>

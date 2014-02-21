@@ -1,4 +1,4 @@
-angular.module('bs.models').factory('User', function($resource, $http, _, UtilService) {
+angular.module('bs.models').factory('User', function($resource, $http, _, UtilService, $window) {
   var User = $resource('/api/v1/users/:id', { id: '@_id' });
   User.register = function(email, password) {
     return $http({
@@ -20,6 +20,14 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
         password: password
       }
     });
+  };
+
+  User.logout = function() {
+    $window.location.href = '/auth/logout';
+  };
+
+  User.prototype.logout = function() {
+    User.logout();
   };
 
   User.prototype.getDisplayName = function() {
@@ -113,7 +121,6 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
     assignField('Profile Picture', 'hasProfilePicture');
     assignField('Full Name', 'hasFullName');
     assignField('Phone Number', 'hasPhone');
-    assignField('Email', 'hasEmail');
     /* TODO: Make these fields rock.
     assignField('Inbound Rules', 'hasOutboundRules');
     _.each(['Facebook', 'Twitter', 'Google'], function(provider) {

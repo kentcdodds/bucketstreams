@@ -18,32 +18,48 @@
       </div>
     </div>
 
-    <div id="center-content" class="center-block">
+    <div id="center-content" class="center-block" ui-view>
       <img src="../images/logo-small.png">
-      <div class="margin-top-small text-align-center">
-        <div ng-hide="loggingIn || registering">
-          <h1>Login or Sign Up</h1>
-          <form id="login-form" name="loginForm" role="form" ng-submit="loginOrRegister(email, password)" class="margin-top-small center-block">
+      <div id="front-page-forms" class="center-block">
+
+        <div ng-show="action === 'Login'">
+          <form id="login-form" name="loginForm" role="form" ng-submit="login(username, loginPassword)" class="center-block">
             <div class="form-group">
-              <label class="sr-only" for="login-email">Email</label>
-              <input type="text" ng-model="email" name="emailField" class="form-control" id="login-email" placeholder="Email" autofocus ng-change="onInputChange(email, loginForm.hiddenEmailField.$valid)">
+              <label class="sr-only" for="login-email">Email or Username</label>
+              <input type="text" ng-model="username" name="username" class="form-control" id="login-email" placeholder="Email or Username" bs-autofocus="action === 'Login'" ng-change="onLoginChange(username)">
             </div>
-            <div class="form-group display-none">
-              <label for="login-email-hidden">Hidden Email</label>
-              <input type="email" ng-model="email" name="hiddenEmailField" id="login-email-hidden">
+            <div class="form-group">
+              <label class="sr-only" for="login-password">Password</label>
+              <input type="password" class="form-control" ng-model="loginPassword" name="password" id="login-password" placeholder="Password">
+            </div>
+            <div class="pull-left">
+              <a class="text-muted cursor-pointer" ng-click="action = 'Sign Up'">New here?</a><br />
+              <a class="text-muted cursor-pointer" ui-sref="frontPage.loginTrouble">Trouble?</a>
+            </div>
+            <div class="pull-right text-align-right">
+              <button type="submit" class="btn btn-primary"><i class="fa fa-{{going ? 'spinner fa-spin' : 'lock'}}"></i> Login</button><br />
+              <small class="checkbox cursor-pointer text-muted" ng-click="rememberMe=!rememberMe">
+                <label>
+                  Remember Me <i class="fa fa-{{rememberMe ? 'check-circle-o' : 'circle-o'}}"></i>
+                </label>
+              </small>
+            </div>
+          </form>
+        </div>
+
+        <div ng-show="action === 'Sign Up'">
+          <form id="sign-up-form" name="signUpForm" role="form" ng-submit="signUp(email, signUpPassword)" class="center-block">
+            <div class="form-group">
+              <label class="sr-only" for="sign-up-email">Email</label>
+              <input type="email" ng-model="email" name="email" class="form-control" id="sign-up-email" placeholder="Email" bs-autofocus="action === 'Sign Up'" >
             </div>
             <div class="form-group">
               <label class="sr-only" for="sign-up-password">Password</label>
-              <input type="password" class="form-control" ng-model="password" name="password" id="sign-up-password" placeholder="Password" ng-change="onInputChange(email, loginForm.hiddenEmailField.$valid)">
+              <input type="password" class="form-control" ng-model="signUpPassword" name="password" id="sign-up-password" placeholder="Password">
             </div>
-            <button type="submit" class="btn btn-primary pull-right" ng-disabled="invalidInput" fa-icon="lock" icon-before> {{action}}</button>
+            <a class="text-muted cursor-pointer" ng-click="action = 'Login'">Login instead</a>
+            <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-{{going ? 'spinner fa-spin' : 'lock'}}"></i> Join</button>
           </form>
-        </div>
-        <div bs-spinner="loggingIn" size="large" spinner-text="Logging In..." text-position="top">
-          <small ng-show="isValidEmail">Tip: You can login with your username as well...</small>
-        </div>
-        <div bs-spinner="registering" size="large" spinner-text="Signing Up..." text-position="top">
-          <small>One moment please, while we get stuff setup for you...</small>
         </div>
       </div>
     </div>

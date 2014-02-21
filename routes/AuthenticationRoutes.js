@@ -90,7 +90,7 @@ module.exports = function(app) {
         if (err) return next(err);
 
         if (!user) {
-          return ErrorController.sendErrorJson(res, 403, 'No such user exists');
+          return ErrorController.sendErrorJson(res, 403, 'Username or Password incorrect.');
         }
 
         req.logIn(user, function(err) {

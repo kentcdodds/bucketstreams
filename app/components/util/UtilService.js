@@ -1,4 +1,4 @@
-angular.module('bs.services').factory('UtilService', function(_) {
+angular.module('bs.services').factory('UtilService', function(_, $http) {
   function testPath(object, path) {
     var props = path.split('.');
     var value = object;
@@ -9,6 +9,16 @@ angular.module('bs.services').factory('UtilService', function(_) {
     return value;
   }
   var util = {
+    testUniqueness: function(model, field, value) {
+      return $http({
+        url: '/api/v1/unique/' + model,
+        method: 'GET',
+        params: {
+          field: field,
+          value: value
+        }
+      });
+    },
     testHasPosterity: function(object, paths, atLeastOne) {
       if (!object) {
         return false;

@@ -1,4 +1,4 @@
-angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $timeout, _, $upload, UtilService, CurrentUserService, AlertService, $http) {
+angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $timeout, _, $upload, UtilService, CurrentUserService, AlertService) {
 
   $scope.currentUser = CurrentUserService.getUser();
   $scope.$on(CurrentUserService.userUpdateEvent, function(event, updatedUser) {
@@ -21,66 +21,17 @@ angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $time
     $event.cancelBubble = true;
   };
 
-  var checkUniqueUsername = function(username) {
-    return $http.get('/api/v1/unique/user?field=username&value=' + username);
-  };
+  $scope.form = null;
 
-  $scope.usernameStates = {
-    invalid: false,
-    usernameInUse: false,
-    empty: true,
-    wrongLength: false
-  };
-
-  var checkFilledInUsername = _.debounce(function(username) {
-    checkUniqueUsername(username).then(function(result) {
-      $scope.usernameStates.usernameInUse = !result.data.isUnique;
-      var s = $scope.usernameStates;
-      $scope.usernameStates.valid = !(s.invalid || s.usernameInUse || s.empty || s.wrongLength);
-    });
-  }, 400);
-
-  var usernameLengthIssueFunction = null;
-  function setUsernameWrongLength() {
-    usernameLengthIssueFunction = $timeout(function() {
-      $scope.usernameStates.wrongLength = true;
-    }, 500);
-  }
-
-  function resetUsernameStates() {
-    _.each($scope.usernameStates, function(val, prop) {
-      $scope.usernameStates[prop] = false;
-    });
-  }
-
-  $scope.onUsernameChange = function(username) {
-    resetUsernameStates();
-    $timeout.cancel(usernameLengthIssueFunction);
-    if (_.isEmpty(username)) {
-      $scope.usernameStates.empty = true;
-      return;
+  $scope.onSaveClicked = function(validUsername, username, firstName, lastName) {
+    var valid = validUsername && firstName && lastName;
+    if (valid) {
+      $scope.currentUser.username = username;
+      $scope.currentUser.name = $scope.currentUser.name || {};
+      $scope.currentUser.name.first = firstName;
+      $scope.currentUser.name.last = lastName;
+      saveUser();
     }
-    var wrongLength = username.length < 3 || username.length > 16;
-
-    if (wrongLength) {
-      setUsernameWrongLength();
-    }
-    var valid = /^([a-zA-Z]|_|\d)*$/.test(username);
-    if (!valid) {
-      $scope.usernameStates.invalid = true;
-    } else if (!wrongLength) {
-      checkFilledInUsername(username);
-    }
-  };
-
-  $scope.saveUsername = function(username) {
-    checkUniqueUsername(username).then(function(result) {
-      $scope.usernameStates.valid = result.data.isUnique;
-      if ($scope.usernameStates.valid) {
-        $scope.currentUser.username = username;
-        saveUser();
-      }
-    });
   };
 
   $scope.onFileSelect = function(file) {
@@ -105,7 +56,7 @@ angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $time
   };
 
   var saveUser = function() {
-    $scope.currentUser.$save(function() {
+    return $scope.currentUser.$save(function() {
       AlertService.success('Saved');
     }, function(err) {
       AlertService.error('Error Saving: ' + err.message);
