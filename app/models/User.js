@@ -99,14 +99,6 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
     return UtilService.testHasPosterity(this.connectedAccounts, provider + '.token');
   };
 
-  User.prototype.getProfilePicture = function() {
-    var profilePicture = '/images/guest-photo.png';
-    if (this.hasProfilePicture()) {
-      profilePicture = this.profilePicture.url;
-    }
-    return profilePicture;
-  };
-
   User.prototype.getFieldsToFill = function() {
     var fields = [];
     function assignField(displayName, filledInFn, filledInFnArg) {

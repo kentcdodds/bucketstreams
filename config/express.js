@@ -32,7 +32,8 @@ module.exports = function(app) {
   app.set('views', app.get('directory') + '/views');
 
   app.use(express.favicon(app.get('directory') + '/app/images/favicon.png'));
-  app.use(express.bodyParser());
+  app.use(express.urlencoded());
+  app.use(express.json());
   app.use(express.methodOverride());
 
   app.use(express.static(path.join(app.get('directory'), 'app')));

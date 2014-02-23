@@ -207,6 +207,16 @@ schema.methods.updateLastLoginTime = function(callback) {
   this.save(callback);
 };
 
+schema.methods.addProfilePicture = function(name, url, callback) {
+  this.profilePicture = this.profilePicture || [];
+  var newPicture = {
+    name: name,
+    url: url
+  };
+  this.profilePicture.unshift(newPicture);
+  callback && this.save(callback);
+};
+
 /*
  * Bucket methods
  */

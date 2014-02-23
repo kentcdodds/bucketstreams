@@ -1,7 +1,8 @@
 var errorCodeMap = {
   400: 'Bad Request',
   401: 'Unauthorized',
-  403: 'Insufficient Privileges'
+  403: 'Insufficient Privileges',
+  500: 'Internal Server Error'
 };
 
 function getErrorJSON(code, message) {

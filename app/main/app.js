@@ -7,8 +7,8 @@
   app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
 
-    $stateProvider
-      .state('home', {
+    $stateProvider.
+      state('home', {
         url: '/',
         templateUrl: '/main/index.html',
         controller: 'MainCtrl',
@@ -20,8 +20,8 @@
         onEnter: function() {
           console.log('home');
         }
-      })
-      .state('home.gettingStarted', {
+      }).
+      state('home.gettingStarted', {
         url: 'getting-started',
         onEnter: function($state, $modal, CurrentUserService) {
           var currentUser = CurrentUserService.getUser();
@@ -36,9 +36,20 @@
               return $state.transitionTo('home');
             });
         }
-      })
-      .state('home.userPage', {
+      }).
+      state('home.userPage', {
         url: ':username',
+        controller: 'ProfileCtrl',
+        templateUrl: '/main/profile/index.html',
+        resolve: {
+          profileUser: function($q, $stateParams, User) {
+            var deferred = $q.defer();
+            User.query({username: $stateParams.username}).$promise.then(function(data) {
+              deferred.resolve(data[0]);
+            }, deferred.reject);
+            return deferred.promise;
+          }
+        },
         onEnter: function($stateParams) {
           console.log($stateParams);
         }

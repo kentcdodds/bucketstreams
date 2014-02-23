@@ -18,4 +18,4 @@ module.exports = {
   schema: schema
   // Intentionally no model.
   // This is meant to be embedded.
-}
+};

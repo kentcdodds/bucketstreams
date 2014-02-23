@@ -34,7 +34,8 @@
     "knox": "~0.8.9",
     "multiparty": "~3.2.2",
     "batch": "~0.5.0",
-    "readable-stream": "~1.1.10"
+    "readable-stream": "~1.1.10",
+    "node-uuid": "~1.4.1"
   },
   "devDependencies": {
     "grunt": "~0.4.1",
