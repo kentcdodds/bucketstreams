@@ -1,5 +1,4 @@
 var Util = require('./Util');
-var Image = require('./Image');
 var Rule = require('./Rule');
 var Post = require('./Post').model;
 var ref = require('./ref');
@@ -12,6 +11,7 @@ var _ = require('lodash-node');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Email = mongoose.SchemaTypes.Email;
+var Url = mongoose.SchemaTypes.Url;
 var ObjectId = Schema.Types.ObjectId;
 
 var passportLocalMongoose = require('passport-local-mongoose');
@@ -31,7 +31,10 @@ var schema = new Schema({
     first: String,
     last: String
   },
-  profilePicture: [Image.schema],
+  profilePicture: [{
+    name: {type: String, default: 'Untitled'},
+    url: {type: Url, required: true}
+  }],
   lastLoginDate: {type: Date, default: Date.now},
   setupReminderDate: {type: Date, required: false},
   mainStream: {type: ObjectId, ref: ref.stream},

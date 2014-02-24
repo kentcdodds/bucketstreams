@@ -1,9 +1,9 @@
 var Util = require('./Util');
-var Image = require('./Image').schema;
 var ref = require('./ref');
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var Url = mongoose.SchemaTypes.Url;
 var ObjectId = Schema.Types.ObjectId;
 
 /**
@@ -18,7 +18,10 @@ var schema = new Schema({
     {
       textString: {type: String},
       multimedia: {
-        images: [Image]
+        images: [{
+          name: {type: String, default: 'Untitled'},
+          url: {type: Url, required: true}
+        }]
       }
     }
   ],

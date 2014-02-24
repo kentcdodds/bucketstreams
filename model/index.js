@@ -5,9 +5,6 @@ var mongoose = require('mongoose');
 var mongooseTypes = require('mongoose-types'); // For Email and Url types.
 mongooseTypes.loadTypes(mongoose);
 
-// Non-model (Embedded)
-var Image = require('./Image');
-
 // Model
 var Bucket = require('./Bucket');
 var Stream = require('./Stream');

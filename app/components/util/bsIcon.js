@@ -3,11 +3,7 @@
   function getIconWithClass(classPrefix, iconAttr) {
     return function(scope, el, attrs) {
       var icon = '<i class="' + classPrefix + attrs[iconAttr] + '"></i>';
-      if (attrs.hasOwnProperty('iconBefore')) {
-        el.prepend(icon + ' ')
-      } else {
-        el.append(' ' + icon)
-      }
+      el[attrs.hasOwnProperty('iconAfter') ? 'append' : 'prepend'](icon);
     };
   }
 

@@ -4,6 +4,7 @@ var multiparty = require('multiparty');
 var knox = require('knox');
 var logger = require('winston');
 var uuid = require('node-uuid');
+var _ = require('lodash-node');
 
 var ErrorController = require('../controller/ErrorController');
 
@@ -15,10 +16,9 @@ var photoClient = knox.createClient({
 });
 var imageUrlPrefix = 'https://s3.amazonaws.com/' + process.env.S3_BUCKET_IMAGES;
 
-var supportedTypes = {
-  profile: true,
-  post: true
-};
+var supportedImageUploadTypes = [ 'profile', 'post' ];
+
+var supportedImageContentTypes = [ 'image/gif', 'image/jpeg', 'image/png', 'image/jpg' ];
 
 module.exports = {
   uploadPhoto: function uploadPhoto(req, res) {
@@ -46,17 +46,23 @@ module.exports = {
 
     form.on('close', function() {
       var type = fields.type;
-      if (!supportedTypes[type]) {
+      if (!_.contains(supportedImageUploadTypes, type)) {
         return ErrorController.sendErrorJson(res, 400, 'Unsupported image upload type: ' + type);
       }
 
-      var name = fields.name || 'Untitled';
       var part = partsArry[0];
+      var contentType = part.headers['content-type'];
+      if (!_.contains(supportedImageContentTypes, contentType)) {
+        return ErrorController.sendErrorJson(res, 400, 'Unsupported image type: ' + contentType);
+      }
+
+      var name = fields.name || 'Untitled Image';
       var destPath = '/' + userId + '/' + type + '/' + uuid.v4() + '-' + part.filename.replace(' ', '-');
 
       var headers = {
         'x-amz-acl': 'public-read',
-        'Content-Length': part.byteCount
+        'Content-Length': part.byteCount,
+        'Content-Type': contentType
       };
       photoClient.putStream(part, destPath, headers, function(err, s3Response) {
         if (err) return ErrorController.sendErrorJson(res, 500, err.message);

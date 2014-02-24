@@ -1,7 +1,7 @@
 /*
  * margins & paddings
  */
-for size in (xxsmall 6) (xsmall 12) (small 18) (medium 24) (large 30) (xlarge 36) (xxlarge 42)
+for size in ('0' 0) (xxsmall 6) (xsmall 12) (small 18) (medium 24) (large 30) (xlarge 36) (xxlarge 42)
   for type in 'margin' 'padding'
     .{type}-{size[0]}
       {type} size[1]px
