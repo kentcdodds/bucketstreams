@@ -1,5 +1,7 @@
 @import "nib"
 
+speed = 0.3s
+
 .bs-menu-wrapper
   height 100%
   position relative
@@ -12,21 +14,17 @@
       padding 2px
   .bs-menu-options-wrapper
     width 60px
-    bottom 0
-    color bsOffWhite
-    background-color bsBlue0
-    font-size 1.6em
     position fixed
+    bottom 0
     left 0
     top 40px
     z-index 1000
     transform translateX(-60px)
-    transition transform 0.2s, width 0.2s
+    transition transform speed, width speed
     overflow-y scroll
 
     &.large-options,
     &.small-options
-      -webkit-transform: translateX(0px)
       transform translateX(0px)
 
     &.small-options
@@ -36,22 +34,52 @@
     &.large-options
       width 300px
 
-  .bs-menu-options
-    width 300px
-    a
+    .bs-menu-options
       color bsOffWhite
-      text-decoration none
-      cursor pointer
-
-    ul
-      list-style none
-      padding-left 0px
-    li
-      cursor pointer
-      padding 0px 24px
-      line-height 3.4
       background-color bsBlue0
-      color bsOffWhite
+      font-size 1.6em
+      height 100%
 
-      i
-        padding-right 14px
+      a
+        color bsOffWhite
+        text-decoration none
+        cursor pointer
+
+      ul
+        list-style none
+        padding-left 0px
+      li
+        cursor pointer
+        padding 0px 24px
+        line-height 3.4
+        background-color bsBlue0
+        color bsOffWhite
+
+    .bs-main-menu
+      width 300px
+
+
+    .bs-sub-menu
+      width 300px
+      bottom 0
+      top 0
+      left 0
+      position fixed
+      transform translateX(-300px)
+      transition transform speed * 1.35
+
+      &.show
+        transform translateX(0px)
+
+      .menu-options
+        width 260px
+        height 100%
+        float left
+      .parent-icon
+        width 40px
+        padding 10px
+        height 100%
+        text-align center
+        float right
+        cursor pointer
+        background-color rgba(0, 0, 0, .15)

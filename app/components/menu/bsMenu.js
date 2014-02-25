@@ -1,4 +1,16 @@
-angular.module('bs.directives').directive('bsMenu', function($document) {
+angular.module('bs.directives').directive('bsMenu', function($document, $timeout) {
+
+  function isChild(el, anEl) {
+    var parent = anEl;
+    while (parent) {
+      if (parent === el) {
+        return true;
+      }
+      parent = parent.parentNode;
+    }
+    return false;
+  }
+
   return {
     restrict: 'A',
     templateUrl: '/components/menu/bsMenu.html',
@@ -6,48 +18,35 @@ angular.module('bs.directives').directive('bsMenu', function($document) {
       options: '=bsMenu'
     },
     link: function(scope, el, attrs) {
-      scope.$watch('small + large', function() {
-        console.log('small', scope.small);
-        console.log('large', scope.large);
-      });
 
-      scope.opener = {
-        onClick: function() {
-          scope.small = false;
-          scope.large = !scope.large;
-        },
-        onMouseEnter: function() {
-          if (!scope.large) {
-            scope.small = true;
-          }
-        },
-        onMouseLeave: function() {
-          scope.small = false;
-        }
+      scope.onItemClicked = function(item) {
+        scope.selectedItem = item;
+        scope.showSubMenu = true;
+        item.onClick && item.onClick();
       };
 
-      scope.menu = {
-        onMouseEnter: function() {
-          scope.small = false;
-          scope.large = true;
-        }
+      scope.hideSubMenu = function() {
+        scope.showSubMenu = false;
+        $timeout(function() {
+          scope.selectedItem = null;
+        }, 200);
       };
 
-      function isChild(anEl) {
-        var parent = anEl;
-        while (parent) {
-          if (parent === el[0]) {
-            return true;
-          }
-          parent = parent.parentNode;
+      /*
+       * Handle opening and closing the menu
+       */
+      scope.onMouseEnterOpener = function() {
+        if (!scope.large) {
+          scope.small = true;
         }
-        return false;
-      }
+      };
 
       $document.on('click', function(event) {
-        if ((scope.large || scope.small) && !isChild(event.srcElement)) {
+        if ((scope.large || scope.small) && !isChild(el[0], event.srcElement)) {
           scope.large = false;
           scope.small = false;
+          scope.hideSubMenu();
+          console.log('clicked');
           scope.$apply();
         }
       });

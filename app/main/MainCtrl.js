@@ -32,12 +32,14 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, moment, $sta
     this.children = children;
   }
 
-  var search = new MenuItem('Search', 'search');
-  var sub1 = new MenuItem('Twitter', 'twitter');
-  var sub2 = new MenuItem('GitHub', 'github');
-  var parent = new MenuItem('Parent Menu', 'facebook', null, [sub1, sub2]);
-  var settings = new MenuItem('Settings', 'gear');
-  $scope.menuItems = [search, parent, settings];
+  var newStream = new MenuItem('New Stream', 'plus', 'home.newStream');
+  var streams = new MenuItem('Streams', 'smile-o', null, [newStream]);
+
+  var newBucket = new MenuItem('New Bucket', 'plus', 'home.newBucket');
+  var buckets = new MenuItem('Buckets', 'bitbucket', null, [newBucket]);
+
+  var settings = new MenuItem('Settings', 'gear', 'home.settings');
+  $scope.menuItems = [streams, buckets, settings];
 
   $scope.mainStream = Stream.get({id: 'main'});
   $scope.mainStream.$promise.then(function(stream) {

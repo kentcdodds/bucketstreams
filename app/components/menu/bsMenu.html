@@ -1,15 +1,29 @@
 <div class="bs-menu-wrapper">
-  <div class="bs-menu-opener" ng-mouseenter="opener.onMouseEnter()" ng-mouseleave="opener.onMouseLeave()" ng-click="opener.onClick()">
+  <div class="bs-menu-opener" ng-mouseenter="onMouseEnterOpener()" ng-mouseleave="small=false" ng-click="small=false;large=!large">
     <span class="bs-menu-opener-icon" fa-icon="bars cursor-pointer"></span>
-    <div class="bs-menu-options-wrapper" ng-class="{'small-options': small, 'large-options': large}" ng-mouseenter="menu.onMouseEnter()">
-      <div class="bs-menu-options">
+  </div>
+  <div class="bs-menu-options-wrapper" ng-class="{'small-options': small, 'large-options': large}" ng-mouseenter="small=false;large=true">
+    <div class="bs-menu-options bs-main-menu">
+      <ul>
+        <li ng-repeat="item in options" bs-invert i-background="#03426A" i-color="#FAFCF9" ng-click="onItemClicked(item)">
+          <a sref="item.sref" fa-icon="{{item.icon}} padding-right-medium">
+            <span class="hide-on-small"> {{item.text}}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="bs-menu-options bs-sub-menu" ng-class="{'show': showSubMenu && selectedItem.children.length}">
+      <div class="menu-options">
         <ul>
-          <li ng-repeat="item in options" bs-invert i-background="#03426A" i-color="#FAFCF9">
-            <a sref="item.sref" fa-icon="{{item.icon}}">
-              <span class="hide-on-small"> {{item.text}}</span>
+          <li ng-repeat="child in selectedItem.children" bs-invert i-background="#03426A" i-color="#FAFCF9">
+            <a sref="child.sref" fa-icon="{{child.icon}} padding-right-medium">
+              <span class="hide-on-small"> {{child.text}}</span>
             </a>
           </li>
         </ul>
+      </div>
+      <div class="parent-icon" ng-click="hideSubMenu()">
+        <i class="fa fa-{{selectedItem.icon}}"></i>
       </div>
     </div>
   </div>
