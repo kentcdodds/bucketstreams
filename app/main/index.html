@@ -1,7 +1,13 @@
 <div id="main-container" class="height-100">
+
   <div class="top-bar">
     <div class="col-xs-4 text-left">
-      <a href="/"><img src="/images/logo-small.png" class="bs-logo"></a>
+      <div class="position-absolute">
+        <div bs-menu="menuItems"></div>
+      </div>
+      <a href="/" class="margin-left-xxlarge">
+        <img src="/images/logo-small.png" class="bs-logo display-inline">
+      </a>
     </div>
     <div class="col-xs-4 text-center margin-top-xxsmall">
       <strong class="color-white font-size-xxsmall-2x">{{context}}</strong>

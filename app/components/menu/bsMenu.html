@@ -1,0 +1,16 @@
+<div class="bs-menu-wrapper">
+  <div class="bs-menu-opener" ng-mouseenter="opener.onMouseEnter()" ng-mouseleave="opener.onMouseLeave()" ng-click="opener.onClick()">
+    <span class="bs-menu-opener-icon" fa-icon="bars cursor-pointer"></span>
+    <div class="bs-menu-options-wrapper" ng-class="{'small-options': small, 'large-options': large}" ng-mouseenter="menu.onMouseEnter()">
+      <div class="bs-menu-options">
+        <ul>
+          <li ng-repeat="item in options" bs-invert i-background="#03426A" i-color="#FAFCF9">
+            <a sref="item.sref" fa-icon="{{item.icon}}">
+              <span class="hide-on-small"> {{item.text}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

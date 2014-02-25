@@ -25,6 +25,20 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, moment, $sta
 
   CurrentContext.context('Main Stream');
 
+  function MenuItem(text, icon, sref, children) {
+    this.text = text;
+    this.icon = icon;
+    this.sref = sref;
+    this.children = children;
+  }
+
+  var search = new MenuItem('Search', 'search');
+  var sub1 = new MenuItem('Twitter', 'twitter');
+  var sub2 = new MenuItem('GitHub', 'github');
+  var parent = new MenuItem('Parent Menu', 'facebook', null, [sub1, sub2]);
+  var settings = new MenuItem('Settings', 'gear');
+  $scope.menuItems = [search, parent, settings];
+
   $scope.mainStream = Stream.get({id: 'main'});
   $scope.mainStream.$promise.then(function(stream) {
     if (stream._id) {

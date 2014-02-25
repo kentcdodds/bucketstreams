@@ -1,0 +1,57 @@
+@import "nib"
+
+.bs-menu-wrapper
+  height 100%
+  position relative
+  overflow hidden
+  .bs-menu-opener
+    color bsOffWhite
+    height 40px
+    .bs-menu-opener-icon
+      font-size 24px
+      padding 2px
+  .bs-menu-options-wrapper
+    width 60px
+    bottom 0
+    color bsOffWhite
+    background-color bsBlue0
+    font-size 1.6em
+    position fixed
+    left 0
+    top 40px
+    z-index 1000
+    transform translateX(-60px)
+    transition transform 0.2s, width 0.2s
+    overflow-y scroll
+
+    &.large-options,
+    &.small-options
+      -webkit-transform: translateX(0px)
+      transform translateX(0px)
+
+    &.small-options
+      .hide-on-small
+        display none
+
+    &.large-options
+      width 300px
+
+  .bs-menu-options
+    width 300px
+    a
+      color bsOffWhite
+      text-decoration none
+      cursor pointer
+
+    ul
+      list-style none
+      padding-left 0px
+    li
+      cursor pointer
+      padding 0px 24px
+      line-height 3.4
+      background-color bsBlue0
+      color bsOffWhite
+
+      i
+        padding-right 14px
