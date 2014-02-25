@@ -20,16 +20,19 @@ angular.module('bs.directives').directive('bsMenu', function($document, $timeout
     link: function(scope, el, attrs) {
 
       scope.onItemClicked = function(item) {
+        $timeout.cancel(clearSelectedItem);
         scope.selectedItem = item;
         scope.showSubMenu = true;
         item.onClick && item.onClick();
       };
 
+      var clearSelectedItem = null;
+
       scope.hideSubMenu = function() {
         scope.showSubMenu = false;
-        $timeout(function() {
+        clearSelectedItem = $timeout(function() {
           scope.selectedItem = null;
-        }, 200);
+        }, 1000);
       };
 
       /*

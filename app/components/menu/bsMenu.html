@@ -15,15 +15,19 @@
     <div class="bs-menu-options bs-sub-menu" ng-class="{'show': showSubMenu && selectedItem.children.length}">
       <div class="menu-options">
         <ul>
+          <li class="sub-menu-context">
+            <i class="fa fa-{{selectedItem.icon}}"></i>
+            <span> {{selectedItem.text}}</span>
+          </li>
           <li ng-repeat="child in selectedItem.children" bs-invert i-background="#03426A" i-color="#FAFCF9">
-            <a sref="child.sref" fa-icon="{{child.icon}} padding-right-medium">
+            <a sref="child.sref" fa-icon="{{child.icon}} padding-right-xsmall">
               <span class="hide-on-small"> {{child.text}}</span>
             </a>
           </li>
         </ul>
       </div>
-      <div class="parent-icon" ng-click="hideSubMenu()">
-        <i class="fa fa-{{selectedItem.icon}}"></i>
+      <div class="back-icon" ng-click="hideSubMenu()">
+        <span fa-icon="chevron-left"></span>
       </div>
     </div>
   </div>
