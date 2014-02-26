@@ -17,6 +17,7 @@
             <input type="file" name="upload" ng-file-select="onFileSelect($files)">
           </i>
         </div>
+        <div bs-progress="uploadProgress" image="fileBeingUploaded"></div>
       </div>
     </div>
     <div class="col-xs-4 text-right">
@@ -54,4 +55,5 @@
       </div>
     </form>
   </div>
+  <canvas id="can" width="900px" height="900px"></canvas>
 </div>

@@ -5,28 +5,33 @@ angular.module('bs.app').controller('ProfileCtrl', function($scope, currentUser,
   $scope.streams = streams;
 
   CurrentContext.context(profileUser.getDisplayName());
+  $scope.uploadProgress = -1;
 
   $scope.onFileSelect = function(file) {
     $scope.uploadInProgress = true;
-    $scope.upload = $upload.upload({
-      url: '/upload/image',
-      method: 'POST',
-      data: {
-        type: 'profile',
-        name: $scope.photoName,
-        user: $scope.currentUser.username
-      },
-      file: file
-    }).progress(function(event) {
-      $scope.uploadProgress = parseInt(100.0 * event.loaded / event.total);
-    }).success(function(data, status, headers, config) {
-      $scope.uploadInProgress = false;
-      AlertService.success('Saved');
-      CurrentUserService.refreshUser();
-    }).error(function(err) {
-      $scope.uploadInProgress = false;
-      AlertService.error('Error uploading file: ' + err.message || err);
-    });
+    $scope.uploadProgress = 0;
+    $scope.fileBeingUploaded = file;
+//    $scope.upload = $upload.upload({
+//      url: '/upload/image',
+//      method: 'POST',
+//      data: {
+//        type: 'profile',
+//        name: $scope.photoName,
+//        user: $scope.currentUser.username
+//      },
+//      file: file
+//    }).progress(function(event) {
+//      $scope.uploadProgress = Math.floor(event.loaded / event.total);
+//      console.log($scope.uploadProgress);
+//      $scope.$apply();
+//    }).success(function(data, status, headers, config) {
+//      $scope.uploadInProgress = false;
+//      AlertService.success('Saved');
+//      CurrentUserService.refreshUser();
+//    }).error(function(err) {
+//      $scope.uploadInProgress = false;
+//      AlertService.error('Error uploading file: ' + err.message || err);
+//    });
   };
 
 });

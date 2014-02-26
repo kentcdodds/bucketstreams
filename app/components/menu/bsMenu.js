@@ -49,7 +49,6 @@ angular.module('bs.directives').directive('bsMenu', function($document, $timeout
           scope.large = false;
           scope.small = false;
           scope.hideSubMenu();
-          console.log('clicked');
           scope.$apply();
         }
       });
