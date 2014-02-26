@@ -1,6 +1,8 @@
-angular.module('bs.app').controller('ProfileCtrl', function($scope, currentUser, profileUser, CurrentUserService, CurrentContext, $upload, AlertService) {
+angular.module('bs.app').controller('ProfileCtrl', function($scope, currentUser, profileUser, buckets, streams, CurrentUserService, CurrentContext, $upload, AlertService) {
   $scope.currentUser = currentUser;
   $scope.profileUser = profileUser;
+  $scope.buckets = buckets;
+  $scope.streams = streams;
 
   CurrentContext.context(profileUser.getDisplayName());
 

@@ -1,0 +1,19 @@
+<div class="new-stream modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="$close()">&times;</button>
+    <h4 class="modal-title">New Bucket</h4>
+  </div>
+  <div class="modal-body">
+    <form name="form" id="bucket-form" role="form" ng-submit="onSubmit()">
+      <div class="form-group">
+        <label for="name-field">Name</label>
+        <input type="text" class="form-control" ng-model="bucket.name" id="name-field" placeholder="Funny Memes" bs-autofocus="true">
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="$close()">Cancel</button>
+    <button type="submit" class="btn btn-primary" form="bucket-form">Save</button>
+  </div>
+</div>
+</div>

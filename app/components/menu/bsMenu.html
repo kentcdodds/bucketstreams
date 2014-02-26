@@ -6,7 +6,7 @@
     <div class="bs-menu-options bs-main-menu">
       <ul>
         <li ng-repeat="item in options" bs-invert i-background="#03426A" i-color="#FAFCF9" ng-click="onItemClicked(item)">
-          <a sref="item.sref" fa-icon="{{item.icon}} padding-right-medium">
+          <a fa-icon="{{item.icon}} padding-right-medium">
             <span class="hide-on-small"> {{item.text}}</span>
           </a>
         </li>
@@ -19,8 +19,8 @@
             <i class="fa fa-{{selectedItem.icon}}"></i>
             <span> {{selectedItem.text}}</span>
           </li>
-          <li ng-repeat="child in selectedItem.children" bs-invert i-background="#03426A" i-color="#FAFCF9">
-            <a sref="child.sref" fa-icon="{{child.icon}} padding-right-xsmall">
+          <li ng-repeat="child in selectedItem.children" bs-invert i-background="#03426A" i-color="#FAFCF9" ng-click="onItemClicked(child)">
+            <a fa-icon="{{child.icon}} padding-right-xsmall">
               <span class="hide-on-small"> {{child.text}}</span>
             </a>
           </li>

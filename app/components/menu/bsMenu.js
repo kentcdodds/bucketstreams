@@ -1,4 +1,4 @@
-angular.module('bs.directives').directive('bsMenu', function($document, $timeout) {
+angular.module('bs.directives').directive('bsMenu', function($document, $timeout, $state) {
 
   function isChild(el, anEl) {
     var parent = anEl;
@@ -20,19 +20,19 @@ angular.module('bs.directives').directive('bsMenu', function($document, $timeout
     link: function(scope, el, attrs) {
 
       scope.onItemClicked = function(item) {
-        $timeout.cancel(clearSelectedItem);
         scope.selectedItem = item;
         scope.showSubMenu = true;
-        item.onClick && item.onClick();
+        if (item.onClick) {
+          if (angular.isString(item.onClick)) {
+            $state.transitionTo(item.onClick);
+          } else {
+            item.onClick();
+          }
+        }
       };
-
-      var clearSelectedItem = null;
 
       scope.hideSubMenu = function() {
         scope.showSubMenu = false;
-        clearSelectedItem = $timeout(function() {
-          scope.selectedItem = null;
-        }, 1000);
       };
 
       /*

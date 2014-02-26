@@ -24,6 +24,7 @@ var ObjectId = Schema.Types.ObjectId;
 var schema = new Schema({
   owner: {type: ObjectId, ref: ref.user, required: true},
   name: {type: String, default: 'New Stream'},
+  description: String,
   visibility: [{type: ObjectId, ref: ref.user}],
   subscriptions: {
     buckets: [{type: ObjectId, ref: ref.bucket}],

@@ -1,6 +1,7 @@
 var dataModels = require('../model').models;
 var _ = require('lodash-node');
 var logger = require('winston');
+var ErrorController = require('../controller/ErrorController');
 
 module.exports = function(app) {
 
@@ -26,10 +27,43 @@ module.exports = function(app) {
     return req.user ? req.user.mainStream : 'undefined';
   });
 
+  /*
+   * Helper routes
+   */
+  function convertUsernameQueryToId(req, newName, callback) {
+    if (req.query.username) {
+      dataModels.user.getByUsername(req.query.username, function(err, user) {
+        if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+        if (!user || !user[0]) return ErrorController.sendErrorJson(res, 400, 'No user with username ' + req.query.username);
+        delete req.query.username;
+        req.query[newName] = user[0].id;
+        callback();
+      });
+    } else {
+      callback();
+    }
+  }
+
+  app.get('/api/v1/buckets', function(req, res, next) {
+    if (req.query.bucketName) {
+      req.query.name = req.query.bucketName;
+      delete req.query.bucketName;
+    }
+    convertUsernameQueryToId(req, 'owner', next);
+  });
+
+  app.get('/api/v1/streams', function(req, res, next) {
+    if (req.query.streamName) {
+      req.query.name = req.query.streamName;
+      delete req.query.streamName;
+    }
+    convertUsernameQueryToId(req, 'owner', next);
+  });
+
   var angularBridge = new (require('angular-bridge'))(app, {
     urlPrefix : '/api/v1/',
     requestPrehandler: function(req, res, next) {
-//      logger.info(req);
+      logger.info('resource request url', req.url);
       next();
     }
   });
