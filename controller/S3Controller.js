@@ -23,6 +23,7 @@ var supportedImageContentTypes = [ 'image/gif', 'image/jpeg', 'image/png', 'imag
 module.exports = {
   uploadPhoto: function uploadPhoto(req, res) {
     var userId = req.user._id;
+    logger.info('Preparing to receive uploaded photo');
 
     var form = new multiparty.Form();
     var fields = {};
@@ -40,7 +41,7 @@ module.exports = {
     });
 
     form.on('error', function(err) {
-      logger.error(arguments);
+      logger.error('Error parsing form: ', err);
       return ErrorController.sendErrorJson(res, 500, err.message);
     });
 
@@ -64,8 +65,10 @@ module.exports = {
         'Content-Length': part.byteCount,
         'Content-Type': contentType
       };
+      logger.info('Uploading profile photo');
       photoClient.putStream(part, destPath, headers, function(err, s3Response) {
         if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+        logger.info('photo uploaded, setting as profile picture');
         var imageUrl = imageUrlPrefix + destPath;
         req.user.addProfilePicture(name, imageUrl, function(err, user) {
           res.statusCode = s3Response.statusCode;

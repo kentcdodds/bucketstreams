@@ -1,37 +1,8 @@
-angular.module('bs.app').controller('ProfileCtrl', function($scope, currentUser, profileUser, buckets, streams, CurrentUserService, CurrentContext, $upload, AlertService) {
+angular.module('bs.app').controller('ProfileCtrl', function($scope, currentUser, profileUser, buckets, streams, CurrentUserService, CurrentContext) {
   $scope.currentUser = currentUser;
   $scope.profileUser = profileUser;
   $scope.buckets = buckets;
   $scope.streams = streams;
 
   CurrentContext.context(profileUser.getDisplayName());
-  $scope.uploadProgress = -1;
-
-  $scope.onFileSelect = function(file) {
-    $scope.uploadInProgress = true;
-    $scope.uploadProgress = 0;
-    $scope.fileBeingUploaded = file;
-//    $scope.upload = $upload.upload({
-//      url: '/upload/image',
-//      method: 'POST',
-//      data: {
-//        type: 'profile',
-//        name: $scope.photoName,
-//        user: $scope.currentUser.username
-//      },
-//      file: file
-//    }).progress(function(event) {
-//      $scope.uploadProgress = Math.floor(event.loaded / event.total);
-//      console.log($scope.uploadProgress);
-//      $scope.$apply();
-//    }).success(function(data, status, headers, config) {
-//      $scope.uploadInProgress = false;
-//      AlertService.success('Saved');
-//      CurrentUserService.refreshUser();
-//    }).error(function(err) {
-//      $scope.uploadInProgress = false;
-//      AlertService.error('Error uploading file: ' + err.message || err);
-//    });
-  };
-
 });

@@ -7,17 +7,11 @@
       </div>
     </div>
     <div class="col-xs-4 text-center">
-      <div class="profile-picture center-block" ng-mouseenter="showChangePhoto=true" ng-mouseleave="showChangePhoto=false">
-        <img class="user-photo img-circle" ng-src="{{currentUser.getProfilePicture()}}">
-        <div class="change-photo" ng-class="{visible: showChangePhoto}"
-            ng-file-drop-available="dropSupported=true"
-            ng-file-drop="onFileSelect($files)"
-            ng-file-drage-over-class="file-hovering">
-          <i class="fa fa-camera btn-file">
-            <input type="file" name="upload" ng-file-select="onFileSelect($files)">
-          </i>
+      <div class="profile-picture">
+        <bs-profile-picture-upload ng-if="profileUser._id === currentUser._id"></bs-profile-picture-upload>
+        <div ng-if="profileUser._id !== currentUser._id" class="center-block">
+          <img class="user-photo img-circle" ng-src="{{profileUser.getProfilePicture()}}">
         </div>
-        <div bs-progress="uploadProgress" image="fileBeingUploaded"></div>
       </div>
     </div>
     <div class="col-xs-4 text-right">
