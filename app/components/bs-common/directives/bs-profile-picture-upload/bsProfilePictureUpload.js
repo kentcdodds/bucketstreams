@@ -5,6 +5,10 @@ angular.module('bs.directives').directive('bsProfilePictureUpload', function(Cur
     scope: {},
     link: function(scope, el, attrs) {
       scope.currentUser = CurrentUserService.getUser();
+      scope.$on(CurrentUserService.userUpdateEvent, function(event, user) {
+        scope.currentUser = user;
+      });
+
       var width = el.parent()[0].offsetWidth;
       var newImageEl = angular.element(el.find('img')[1]);
       var newImageElWrapper = newImageEl.parent();
@@ -19,6 +23,7 @@ angular.module('bs.directives').directive('bsProfilePictureUpload', function(Cur
           if (scope.uploadInProgress) {
             if (scope.error) {
               newImageElWrapper.css('opacity', '0');
+              newImageElWrapper.css('z-index', '-1');
             } else {
               newImageElWrapper.css('opacity', '1');
             }
@@ -46,12 +51,16 @@ angular.module('bs.directives').directive('bsProfilePictureUpload', function(Cur
         scope.fileBeingUploaded = image;
         scope.error = null;
 
-        // crop file
         if (angular.isArray(image)) {
           image = image[0];
         }
+
         cropPhoto(image, function(croppedImage) {
-          fadeInNewPhoto();
+//          fadeInNewPhoto();
+          uploadImage(image);
+        });
+
+        function uploadImage(imageToUpload) {
           scope.upload = $upload.upload({
             url: '/upload/image',
             method: 'POST',
@@ -60,7 +69,7 @@ angular.module('bs.directives').directive('bsProfilePictureUpload', function(Cur
               name: scope.photoName,
               user: scope.currentUser.username
             },
-            file: image
+            file: imageToUpload
           }).progress(function(event) {
             scope.uploadProgress = Math.floor(event.loaded / event.total);
             console.log('progress', scope.uploadProgress);
@@ -74,7 +83,7 @@ angular.module('bs.directives').directive('bsProfilePictureUpload', function(Cur
             scope.error = err;
             AlertService.error('Error uploading file: ' + err.message || err);
           });
-        });
+        }
 
       };
 
