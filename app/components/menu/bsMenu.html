@@ -2,11 +2,12 @@
   <div class="bs-menu-opener" ng-mouseenter="onMouseEnterOpener()" ng-mouseleave="small=false" ng-click="small=false;large=!large">
     <span class="bs-menu-opener-icon" fa-icon="bars cursor-pointer"></span>
   </div>
-  <div class="bs-menu-options-wrapper" ng-class="{'small-options': small, 'large-options': large}" ng-mouseenter="small=false;large=true">
+  <div class="bs-menu-options-wrapper" ng-class="{'small-options': small, 'large-options': large, 'sub-menu-open': showSubMenu && selectedItem.children.length}" ng-mouseenter="small=false;large=true">
     <div class="bs-menu-options bs-main-menu">
       <ul>
-        <li ng-repeat="item in options" bs-invert i-background="#03426A" i-color="#FAFCF9" ng-click="onItemClicked(item)">
-          <a fa-icon="{{item.icon}} padding-right-medium">
+        <li ng-repeat="item in options" bs-invert i-background="{{iBackground}}" i-color="{{iColor}}" ng-click="onItemClicked(item)">
+          <a class="option-link">
+            <i class="fa fa-{{item.icon}}"></i>
             <span class="hide-on-small"> {{item.text}}</span>
           </a>
         </li>
@@ -15,19 +16,17 @@
     <div class="bs-menu-options bs-sub-menu" ng-class="{'show': showSubMenu && selectedItem.children.length}">
       <div class="menu-options">
         <ul>
-          <li class="sub-menu-context">
-            <i class="fa fa-{{selectedItem.icon}}"></i>
+          <li class="sub-menu-context" ng-click="hideSubMenu()">
+            <i class="back-icon fa fa-chevron-left"></i>
+            <i class="selected-icon fa fa-{{selectedItem.icon}}"></i>
             <span> {{selectedItem.text}}</span>
           </li>
-          <li ng-repeat="child in selectedItem.children" bs-invert i-background="#03426A" i-color="#FAFCF9" ng-click="onItemClicked(child)">
-            <a fa-icon="{{child.icon}} padding-right-xsmall">
+          <li ng-repeat="child in selectedItem.children" bs-invert i-background="{{iBackground}}" i-color="{{iColor}}" ng-click="onItemClicked(child)">
+            <a fa-icon="{{child.icon}}">
               <span class="hide-on-small"> {{child.text}}</span>
             </a>
           </li>
         </ul>
-      </div>
-      <div class="back-icon" ng-click="hideSubMenu()">
-        <span fa-icon="chevron-left"></span>
       </div>
     </div>
   </div>

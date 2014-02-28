@@ -31,6 +31,9 @@ angular.module('bs.directives').directive('bsMenu', function($document, $timeout
         }
       };
 
+      scope.iBackground = '#03426A';
+      scope.iColor = '#FAFCF9';
+
       scope.hideSubMenu = function() {
         scope.showSubMenu = false;
       };

@@ -1,4 +1,4 @@
-angular.module('bs.directives').directive('bsInvert', function($window) {
+angular.module('bs.directives').directive('bsInvert', function() {
   return function(scope, el, attrs) {
     var background = attrs.iBackground;
     var color = attrs.iColor;
