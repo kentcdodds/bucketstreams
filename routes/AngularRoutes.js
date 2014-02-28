@@ -16,14 +16,17 @@ module.exports = function(app) {
   }
 
   addConversionRoute('users', 'me', function(req) {
+    // /api/v1/users/me
     return req.user ? req.user.id : 'undefined';
   });
 
   addConversionRoute('buckets', 'main', function(req) {
+    // /api/v1/buckets/main
     return req.user ? req.user.mainBucket : 'undefined';
   });
 
   addConversionRoute('streams', 'main', function(req) {
+    // /api/v1/streams/main
     return req.user ? req.user.mainStream : 'undefined';
   });
 
@@ -50,6 +53,30 @@ module.exports = function(app) {
       delete req.query.bucketName;
     }
     convertUsernameQueryToId(req, 'owner', next);
+  });
+
+  app.get('/api/v1/streams', function(req, res, next) {
+    console.log('I am here!');
+    if (req.query.streamName && req.query.username && req.query.posts) {
+      delete req.query.posts;
+      req.query.name = req.query.streamName;
+      delete req.query.streamName;
+      convertUsernameQueryToId(req, 'owner', function() {
+        dataModels.stream.findOne(req.query, function(err, stream) {
+          if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+          if (!stream) return ErrorController.sendErrorJson(res, 400, 'No stream with the name ' + req.query.name);
+          stream.getPosts(function(err, posts) {
+            if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+            res.json({
+              stream: stream,
+              posts: posts
+            });
+          });
+        });
+      });
+    } else {
+      next();
+    }
   });
 
   app.get('/api/v1/streams', function(req, res, next) {

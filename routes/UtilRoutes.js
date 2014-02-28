@@ -1,9 +1,11 @@
 
 var models = require('../model').models;
+var schemas = require('../model').schemas;
 var ref = require('../model/ref');
 var User = models[ref.user];
 var Stream = models[ref.stream];
 var Bucket = models[ref.bucket];
+var StreamSchema = schemas[ref.stream];
 
 var ErrorController = require('../controller/ErrorController');
 
@@ -25,13 +27,9 @@ module.exports = function(app) {
   });
 
   app.get('/api/v1/streams/:id/posts', function(req, res, next) {
-    Stream.findOne({_id: req.params.id}, function(err, stream) {
-      if (err) return ErrorController.sendErrorJson(res, 500, 'Problem getting stream: ' + err.message);
-      if (!stream) return ErrorController.sendErrorJson(res, 400, 'No stream with the id of ' + req.params.id);
-      stream.getPosts(function(err, posts) {
-        if (err) return ErrorController.sendErrorJson(res, 500, 'Problem getting stream posts: ' + err.message);
-        res.json(200, posts);
-      })
+    StreamSchema.getPostsById(req.params.id, function(err, posts) {
+      if (err) return ErrorController.sendErrorJson(res, 500, 'Problem getting stream posts: ' + err.message);
+      res.json(200, posts);
     });
   });
 };

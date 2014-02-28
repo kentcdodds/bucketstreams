@@ -51,6 +51,14 @@ schema.static.getStreamsByUserId = function(userId, callback) {
   this.model(this.constructor.modelName).find({owner: userId}, callback);
 };
 
+schema.static.getPostsById = function(id, callback) {
+  this.model(this.constructor.modelName).findOne({_id: id}, function(err, stream) {
+    if (err) return callback(err);
+    if (!stream) return callback('No stream with the id of ' + id);
+    stream.getPosts(callback);
+  });
+};
+
 schema.methods.getPosts = function(callback) {
   var allPosts = [];
   var self = this;

@@ -96,12 +96,9 @@
         controller: 'StreamCtrl',
         templateUrl: '/main/streams/stream.html',
         resolve: {
-          stream: function($q, $state, $stateParams, Stream) {
+          streamData: function($q, $state, $stateParams, Stream) {
             var deferred = $q.defer();
-            Stream.query({
-              username: $stateParams.username,
-              streamName: $stateParams.streamName
-            }).$promise.then(function(data) {
+            Stream.getStreamData($stateParams.username, $stateParams.streamName).then(function(data) {
                 if (data && data.length) {
                   deferred.resolve(data[0]);
                 } else {

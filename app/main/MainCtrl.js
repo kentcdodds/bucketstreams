@@ -97,15 +97,15 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
 
 
   (function setupStream() {
-
-    $scope.mainStream = Stream.get({id: 'main'});
-    $scope.mainStream.$promise.then(function(stream) {
-      if (stream._id) {
-        $scope.mainStream.getPostData().then(function(posts) {
-          $scope.posts = posts;
-        });
-      }
-    });
+//
+//    $scope.mainStream = Stream.get({id: 'main'});
+//    $scope.mainStream.$promise.then(function(stream) {
+//      if (stream._id) {
+//        $scope.mainStream.getPostData().then(function(posts) {
+//          $scope.posts = posts;
+//        });
+//      }
+//    });
 
   })();
 
