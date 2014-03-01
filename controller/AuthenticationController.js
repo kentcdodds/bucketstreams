@@ -26,25 +26,23 @@ var providers = ['facebook', 'twitter', 'google'];
 var callbackFrom = {
   facebook: function(req, res, next) {
     var redirect = req.params.destination || '/';
-    console.log(redirect);
     passport.authenticate('facebook', {
       successRedirect: redirect,
-      failureRedirect: '/login'
+      failureRedirect: redirect
     })(req, res, next);
   },
   twitter: function(req, res, next) {
     var redirect = req.params.destination || '/';
-    console.log(redirect);
     passport.authenticate('twitter', {
       successRedirect: redirect,
-      failureRedirect: '/login'
+      failureRedirect: redirect
     })(req, res, next);
   },
   google: function(req, res, next) {
     var redirect = req.params.destination || '/';
     passport.authenticate('google', {
       successRedirect: redirect,
-      failureRedirect: '/login'
+      failureRedirect: redirect
     })(req, res, next);
   }
 };
@@ -78,10 +76,9 @@ module.exports = {
     checkUnsupportedProvider(res, provider);
 
     var redirect = req.session.destination || '/';
-    console.log('redirect', redirect);
     passport.authenticate(provider, {
       successRedirect: redirect,
-      failureRedirect: '/login'
+      failureRedirect: redirect
     })(req, res, next);
   },
   checkAuthenticated: function(req, res, next) {

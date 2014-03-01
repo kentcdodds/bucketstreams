@@ -8,10 +8,11 @@ angular.module('bs.services').factory('UtilService', function(_, $http) {
     });
     return value;
   }
+  //noinspection UnnecessaryLocalVariableJS
   var util = {
     testUniqueness: function(model, field, value) {
       return $http({
-        url: '/api/v1/unique/' + model,
+        url: '/api/v1/util/unique/' + model,
         method: 'GET',
         params: {
           field: field,

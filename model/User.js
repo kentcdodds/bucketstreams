@@ -82,7 +82,9 @@ schema.path('username').validate(function (value) {
 
 var reservedUsernames = [
   'settings',
-  'getting-started'
+  'getting-started',
+  'auth',
+  'api'
 ];
 
 schema.path('username').validate(function (value) {

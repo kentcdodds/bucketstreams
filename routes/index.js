@@ -1,8 +1,9 @@
 module.exports = function(app) {
-  require('./AngularRoutes')(app);
+  require('./CustomMiddleware')(app);
+  require('./UtilRoutes')(app);
   require('./AuthenticationRoutes')(app);
   require('./PhotoRoutes')(app);
-  require('./UtilRoutes')(app);
+  require('./RestRoutes')(app);
 
   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'local') {
     require('../local/HelperRoutes')(app);

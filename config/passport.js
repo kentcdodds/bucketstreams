@@ -2,6 +2,7 @@ module.exports = function() {
 
   var passport = require('passport');
   var User = require('../model/User').model;
+  var prefix = require('../routes/prefixes');
 
   function handleAuthenticatedUser(provider, req, token, secret, profile, done) {
     if (!req.isAuthenticated()) {
@@ -40,7 +41,7 @@ module.exports = function() {
       passport.use(new FacebookStrategy({
           clientID: process.env.FACEBOOK_APP_ID,
           clientSecret: process.env.FACEBOOK_SECRET,
-          callbackURL: process.env.BASE_URL + '/auth/facebook/callback',
+          callbackURL: process.env.BASE_URL + prefix.auth + '/facebook/callback',
           passReqToCallback: true
         },
         function(req, accessToken, refreshToken, profile, done) {
@@ -52,7 +53,7 @@ module.exports = function() {
       passport.use(new TwitterStrategy({
           consumerKey: process.env.TWITTER_CONSUMER_KEY,
           consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-          callbackURL: process.env.BASE_URL + '/auth/twitter/callback',
+          callbackURL: process.env.BASE_URL + prefix.auth + '/twitter/callback',
           passReqToCallback: true
         },
         function(req, accessToken, refreshToken, profile, done) {
@@ -64,7 +65,7 @@ module.exports = function() {
       passport.use(new GoogleStrategy({
           clientID: process.env.GOOGLE_CLIENT_ID,
           clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-          callbackURL: process.env.BASE_URL + '/auth/google/callback',
+          callbackURL: process.env.BASE_URL + prefix.auth + '/google/callback',
           passReqToCallback: true
         },
         function(req, accessToken, refreshToken, profile, done) {

@@ -1,9 +1,10 @@
 angular.module('bs.models').factory('User', function($resource, $http, _, UtilService, $window) {
-  var User = $resource('/api/v1/users/:id', { id: '@_id' });
+  var User = $resource('/api/v1/rest/users/:id', { id: '@_id' });
+  var authPrefix = '/api/v1/auth';
   User.register = function(email, password) {
     return $http({
       method: 'POST',
-      url: '/register',
+      url: authPrefix + '/register',
       data: {
         email: email,
         password: password
@@ -14,7 +15,7 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
   User.login = function(username, password) {
     return $http({
       method: 'POST',
-      url: '/login',
+      url: authPrefix + '/login',
       data: {
         username: username,
         password: password
@@ -23,7 +24,7 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
   };
 
   User.logout = function() {
-    $window.location.href = '/auth/logout';
+    $window.location.href = authPrefix + '/logout';
   };
 
   User.prototype.logout = function() {

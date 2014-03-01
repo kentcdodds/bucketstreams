@@ -4,6 +4,7 @@ var AuthenticationController = require('../controller/AuthenticationController')
 var ErrorController = require('../controller/ErrorController');
 var async = require('async');
 var passport = require('passport');
+var prefix = require('./prefixes');
 
 var models = require('../model').models;
 var ref = require('../model/ref');
@@ -12,7 +13,7 @@ var Stream = models[ref.stream];
 var Bucket = models[ref.bucket];
 
 module.exports = function(app) {
-  app.post('/register', function(req, res) {
+  app.post(prefix.auth + '/register', function(req, res) {
     function sendError(err) {
       ErrorController.sendErrorJson(res, 400, 'Sign Up Error: ' + err.message);
     }
@@ -40,7 +41,6 @@ module.exports = function(app) {
           isMain: true
         }).save(function(err, mainBucket) {
             if (err) return done(err);
-
             user.mainBucket = mainBucket.id;
             done();
           });
@@ -51,16 +51,11 @@ module.exports = function(app) {
       }
 
       function runParallel(done) {
-        async.parallel([createMainStream, createMainBucket, login], function(err) {
-          if (err) return done(err);
-          done();
-        });
+        async.parallel([createMainStream, createMainBucket, login], done);
       }
 
       function saveUser(done) {
-        user.save(function(err, savedUser) {
-          done(err, savedUser);
-        });
+        user.save(done);
       }
 
       async.series([runParallel, saveUser], function(err, results) {
@@ -72,7 +67,7 @@ module.exports = function(app) {
   });
 
 
-  app.post('/login', function(req, res, next) {
+  app.post(prefix.auth + '/login', function(req, res, next) {
 
     function convertUsernameToEmail(username, cb) {
       if (/@/.test(username)) {
@@ -103,12 +98,12 @@ module.exports = function(app) {
     });
   });
 
-  app.get('/auth/logout', function(req, res) {
+  app.get(prefix.auth + '/logout', function(req, res) {
     req.logout();
     console.log('logged out, redirecting');
     res.redirect('/');
   });
 
-  app.get('/auth/:provider', AuthenticationController.authenticate);
-  app.get('/auth/:provider/callback', AuthenticationController.callback);
+  app.get(prefix.auth + '/third-party/:provider', AuthenticationController.authenticate);
+  app.get(prefix.auth + '/third-party/:provider/callback', AuthenticationController.callback);
 };

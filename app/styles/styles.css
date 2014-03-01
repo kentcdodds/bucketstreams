@@ -843,7 +843,7 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 /* line 39 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
 
 /* line 40 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
-.bs-menu-wrapper .bs-menu-options-wrapper.sub-menu-open .bs-menu-options .option-link i{padding-right:0;-webkit-transform:translateX(250px);-moz-transform:translateX(250px);-o-transform:translateX(250px);-ms-transform:translateX(250px);transform:translateX(250px);-webkit-transition:-webkit-transform 0.36s linear 0.05s;-moz-transition:-moz-transform 0.36s linear 0.05s;-o-transition:-o-transform 0.36s linear 0.05s;-ms-transition:-ms-transform 0.36s linear 0.05s;transition:transform 0.36s linear 0.05s}
+.bs-menu-wrapper .bs-menu-options-wrapper.sub-menu-open .bs-menu-options .option-link i{padding-right:0;-webkit-transform:translateX(250px);-moz-transform:translateX(250px);-o-transform:translateX(250px);-ms-transform:translateX(250px);transform:translateX(250px);-webkit-transition:-webkit-transform 0.36s linear 0.2s;-moz-transition:-moz-transform 0.36s linear 0.2s;-o-transition:-o-transform 0.36s linear 0.2s;-ms-transition:-ms-transform 0.36s linear 0.2s;transition:transform 0.36s linear 0.2s}
 
 /* line 45 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
 .bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-options{width:300px;-webkit-transition:-webkit-transform 0.3s;-moz-transition:-moz-transform 0.3s;-o-transition:-o-transform 0.3s;-ms-transition:-ms-transform 0.3s;transition:transform 0.3s;color:#fafcf9;background-color:#03426a;font-size:1.6em;height:100%;}
