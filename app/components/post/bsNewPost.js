@@ -1,4 +1,4 @@
-angular.module('bs.directives').directive('bsNewPost', function() {
+angular.module('bs.directives').directive('bsNewPost', function(CurrentUserService) {
   var placeholders = [
     'What are you thinking?',
     'Anything cool happen today?',
@@ -16,6 +16,11 @@ angular.module('bs.directives').directive('bsNewPost', function() {
       onPostClick: '&'
     },
     link: function(scope, el) {
+      scope.currentUser = CurrentUserService.getUser();
+      scope.$on(CurrentUserService.userUpdateEvent, function(user) {
+        scope.currentUser = user;
+      });
+
       scope.makePost = function() {
         scope.onPostClick({content: scope.content});
       };

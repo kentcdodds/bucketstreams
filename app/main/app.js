@@ -99,8 +99,8 @@
           streamData: function($q, $state, $stateParams, Stream) {
             var deferred = $q.defer();
             Stream.getStreamData($stateParams.username, $stateParams.streamName).then(function(data) {
-                if (data && data.length) {
-                  deferred.resolve(data[0]);
+                if (data) {
+                  deferred.resolve(data);
                 } else {
                   deferred.reject('No stream');
                   $state.go('home');

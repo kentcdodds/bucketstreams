@@ -1,0 +1,16 @@
+<div class="bs-bucket-chooser dropdown" ng-class="{'open': menuOpen}" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()">
+  <i class="fa fa-bitbucket cursor-pointer"></i>
+  <div class="selected-buckets">
+    <div class="display-inline" ng-repeat="bucket in buckets" ng-if="bucket.isSelected">
+      <span class="label label-{{labelTypes[$index % labelTypes.length]}}">
+        {{bucket.name}}
+        <span class="cursor-pointer" ng-click="bucket.isSelected = false">&times;</span>
+      </span>
+    </div>
+  </div>
+  <ul class="dropdown-menu">
+    <li ng-repeat="bucket in buckets" ng-click="toggleBucket($event, bucket)">
+      <i class="fa fa-{{bucket.isSelected ? 'check-' : ''}}circle-o"></i> {{bucket.name}}
+    </li>
+  </ul>
+</div>

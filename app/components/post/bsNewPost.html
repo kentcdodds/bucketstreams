@@ -1,9 +1,15 @@
-<div class="new-post-form">
-  <form name="postForm" role="form" ng-submit="makePost()">
-    <div class="form-group">
-      <label class="sr-only" for="post-content-field">{{randomPlaceholder}}</label>
-      <textarea ng-model="content.textString" name="newPostContent" class="form-control" id="post-content-field" placeholder="{{randomPlaceholder}}" autofocus></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Post</button>
-  </form>
+<div class="new-post-form clearfix center-block position-relative">
+  <bs-profile-picture user="currentUser" class="position-absolute" size="80" hide-hover="true"></bs-profile-picture>
+  <div class="new-post-form-wrapper">
+    <form name="postForm" role="form" ng-submit="makePost()">
+      <div class="form-group">
+        <label class="sr-only" for="post-content-field">{{randomPlaceholder || 'What\'s up?'}}</label>
+        <textarea ng-model="content.textString" name="newPostContent" class="form-control" id="post-content-field" placeholder="{{randomPlaceholder}}" bs-autofocus="true"></textarea>
+      </div>
+      <div class="bs-bucket-chooser-wrapper">
+        <bs-bucket-chooser user="currentUser"></bs-bucket-chooser>
+      </div>
+      <button type="submit" class="btn btn-primary pull-right">Post</button>
+    </form>
+  </div>
 </div>
