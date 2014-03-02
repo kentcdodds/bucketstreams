@@ -14,24 +14,23 @@ var ObjectId = Schema.Types.ObjectId;
  */
 var schema = new Schema({
   author: {type: ObjectId, ref: ref.user, required: true},
-  content: [
-    {
-      textString: {type: String},
-      multimedia: {
-        images: [{
-          name: {type: String, default: 'Untitled'},
-          url: {type: Url, required: true}
-        }]
-      }
+  content: {
+    textString: {type: String},
+    multimedia: {
+      images: [{
+        name: {type: String, default: 'Untitled'},
+        url: {type: Url, required: true}
+      }]
     }
-  ],
+  },
   sourceData: {
     source: String,
     id: String,
     createdAt: Date,
     metadata: {}
   },
-  buckets: [{type: ObjectId, ref: ref.bucket, required: true}]
+  buckets: [{type: ObjectId, ref: ref.bucket, required: true}],
+  previousVersion: {type: ObjectId, ref: ref.post, required: false}
 });
 
 Util.addTimestamps(schema);

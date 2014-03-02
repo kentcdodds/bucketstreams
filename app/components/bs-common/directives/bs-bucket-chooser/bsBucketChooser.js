@@ -1,17 +1,12 @@
-angular.module('bs.directives').directive('bsBucketChooser', function(Bucket, $timeout, $filter) {
+angular.module('bs.directives').directive('bsBucketChooser', function($timeout, $filter) {
   return {
     restrict: 'E',
     templateUrl: '/components/bs-common/directives/bs-bucket-chooser/bsBucketChooser.html',
     replace: true,
     scope: {
-      user: '=?',
-      userId: '@?'
+      buckets: '=?'
     },
     link: function(scope, el) {
-      scope.buckets = Bucket.query({
-        owner: scope.user ? scope.user._id : scope.userId
-      });
-
       var opening = null;
       var closing = null;
 
@@ -60,6 +55,12 @@ angular.module('bs.directives').directive('bsBucketChooser', function(Bucket, $t
           case 27:
             cancelTimeouts();
             scope.menuOpen = false;
+            break;
+          case 38:
+            // TODO arrow down in the list
+            break;
+          case 40:
+            // TODO arrow up in the list
             break;
         }
       };

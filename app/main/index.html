@@ -17,7 +17,6 @@
         <a class="dropdown-toggle color-white cursor-pointer text-decoration-none">
           <span class="margin-right-xxsmall">{{currentUser.getDisplayName()}}</span>
           <bs-profile-picture user="currentUser" class="user-photo" size="26" hide-hover="true"></bs-profile-picture>
-          <!--<img class="user-photo img-circle" ng-src="{{currentUser.getProfilePicture()}}">-->
         </a>
         <ul class="dropdown-menu pull-right">
           <li>
@@ -30,7 +29,7 @@
   </div>
   <div class="main-content padding-xxlarge">
     <div id="post-field">
-      <div bs-new-post on-post-click="makePost(content)"></div>
+      <div bs-new-post></div>
     </div>
     <div class="center-block margin-small" ui-view>
       <h1>Welcome to Bucket Streams!</h1>
