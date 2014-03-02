@@ -1,7 +1,26 @@
 .bs-bucket-chooser
+  .bs-bucket-chooser-icon
+    font-size 1.4em
   .selected-buckets
     display inline
+    position absolute
+    left 20px
     .label
       margin .2em
   .dropdown-menu
-    padding 8px
+    max-height 160px
+    overflow-y scroll
+    width 240px
+    overflow-x hidden
+    opacity 0
+    transition opacity 0.3s
+    display block
+    z-index -1
+    &.open
+      opacity 1
+      z-index 999
+    .search-item
+      padding 6px 16px 0px 16px
+      input
+        line-height 0.8
+        height 28px

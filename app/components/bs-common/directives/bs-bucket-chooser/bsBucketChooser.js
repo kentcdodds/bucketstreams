@@ -1,4 +1,4 @@
-angular.module('bs.directives').directive('bsBucketChooser', function(Bucket, $timeout) {
+angular.module('bs.directives').directive('bsBucketChooser', function(Bucket, $timeout, $filter) {
   return {
     restrict: 'E',
     templateUrl: '/components/bs-common/directives/bs-bucket-chooser/bsBucketChooser.html',
@@ -39,18 +39,38 @@ angular.module('bs.directives').directive('bsBucketChooser', function(Bucket, $t
         $timeout.cancel(closing);
       }
 
-      scope.toggleBucket = function($event, bucket) {
-        bucket.isSelected = !bucket.isSelected;
+      scope.noBubbles = function($event) {
         $event.stopPropagation();
+      };
+
+      scope.toggleBucket = function(bucket) {
+        bucket.isSelected = !bucket.isSelected;
+      };
+
+      scope.toggleFirstBucket = function($event, search) {
+        switch ($event.keyCode) {
+          case 13:
+            var buckets = _.filter(scope.buckets, function(bucket) { return !bucket.isMain });
+            buckets = $filter('filter')(buckets, search);
+            if (buckets && buckets.length) {
+              scope.toggleBucket(buckets[0]);
+              scope.search = '';
+            }
+            break;
+          case 27:
+            cancelTimeouts();
+            scope.menuOpen = false;
+            break;
+        }
       };
 
       scope.labelTypes = [
         'default',
-        'primary',
         'success',
         'info',
         'warning',
-        'danger'
+        'danger',
+        'primary'
       ];
 
     }

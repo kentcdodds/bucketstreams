@@ -1,16 +1,19 @@
-<div class="bs-bucket-chooser dropdown" ng-class="{'open': menuOpen}" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()">
-  <i class="fa fa-bitbucket cursor-pointer"></i>
+<div class="bs-bucket-chooser dropdown" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()">
+  <i class="fa fa-bitbucket cursor-pointer bs-bucket-chooser-icon"></i>
   <div class="selected-buckets">
-    <div class="display-inline" ng-repeat="bucket in buckets" ng-if="bucket.isSelected">
-      <span class="label label-{{labelTypes[$index % labelTypes.length]}}">
-        {{bucket.name}}
-        <span class="cursor-pointer" ng-click="bucket.isSelected = false">&times;</span>
-      </span>
+    <span class="label label-{{labelTypes[labelTypes.length - 1]}}">Main Bucket</span>
+    <div class="display-inline" ng-repeat="bucket in buckets | filter:{isSelected: true}">
+      <span class="label label-{{labelTypes[$index % labelTypes.length]}} cursor-pointer"
+            ng-click="bucket.isSelected = false">{{bucket.name}} &times;</span>
     </div>
+    <ul class="dropdown-menu" ng-class="{'open': menuOpen}" ng-click="noBubbles($event)">
+      <li class="search-item">
+        <input type="search" ng-model="search" class="form-control" role="search" ng-keydown="toggleFirstBucket($event, search)" bs-autofocus="menuOpen" refocus="true">
+      </li>
+      <li role="presentation" class="divider"></li>
+      <li ng-repeat="bucket in buckets | filter:search" ng-if="!bucket.isMain" ng-click="toggleBucket(bucket)">
+        <a><i class="fa fa-{{bucket.isSelected ? 'check-' : ''}}circle-o"></i> {{bucket.name}}</a>
+      </li>
+    </ul>
   </div>
-  <ul class="dropdown-menu">
-    <li ng-repeat="bucket in buckets" ng-click="toggleBucket($event, bucket)">
-      <i class="fa fa-{{bucket.isSelected ? 'check-' : ''}}circle-o"></i> {{bucket.name}}
-    </li>
-  </ul>
 </div>

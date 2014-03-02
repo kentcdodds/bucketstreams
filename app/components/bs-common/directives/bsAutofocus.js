@@ -1,14 +1,24 @@
-angular.module('bs.directives').directive('bsAutofocus', function($timeout) {
+angular.module('bs.directives').directive('bsAutofocus', function($timeout, $document) {
   return {
     scope: {
-      bsAutofocus: '='
+      bsAutofocus: '=',
+      refocus: '@'
     },
     link: function(scope, element, attrs) {
+      var previousEl = null;
+      var el = element[0];
+      var doc = $document[0];
       scope.$watch('bsAutofocus', function(value) {
         if(value) {
           $timeout(function() {
-            element[0].focus();
+            previousEl = doc.activeElement;
+            el.focus();
           });
+        } else {
+          if (previousEl && attrs.refocus && doc.activeElement === el) {
+            el.blur();
+            previousEl.focus();
+          }
         }
       });
     }

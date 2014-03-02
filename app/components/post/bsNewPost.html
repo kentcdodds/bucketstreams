@@ -6,10 +6,10 @@
         <label class="sr-only" for="post-content-field">{{randomPlaceholder || 'What\'s up?'}}</label>
         <textarea ng-model="content.textString" name="newPostContent" class="form-control" id="post-content-field" placeholder="{{randomPlaceholder}}" bs-autofocus="true"></textarea>
       </div>
-      <div class="bs-bucket-chooser-wrapper">
-        <bs-bucket-chooser user="currentUser"></bs-bucket-chooser>
-      </div>
       <button type="submit" class="btn btn-primary pull-right">Post</button>
     </form>
+    <div class="bs-bucket-chooser-wrapper">
+      <bs-bucket-chooser user="currentUser"></bs-bucket-chooser>
+    </div>
   </div>
 </div>

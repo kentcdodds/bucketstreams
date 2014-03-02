@@ -613,13 +613,25 @@ ul.dropdown-menu li{cursor:pointer}
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketChooser.styl */
 
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketChooser.styl */
-.bs-bucket-chooser .selected-buckets{display:inline;}
+.bs-bucket-chooser .bs-bucket-chooser-icon{font-size:1.4em}
 
 /* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketChooser.styl */
+.bs-bucket-chooser .selected-buckets{display:inline;position:absolute;left:20px;}
+
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketChooser.styl */
 .bs-bucket-chooser .selected-buckets .label{margin:.2em}
 
-/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketChooser.styl */
-.bs-bucket-chooser .dropdown-menu{padding:8px}
+/* line 10 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketChooser.styl */
+.bs-bucket-chooser .dropdown-menu{max-height:160px;overflow-y:scroll;width:240px;overflow-x:hidden;opacity:0;transition:opacity .3s;display:block;z-index:-1;}
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketChooser.styl */
+.bs-bucket-chooser .dropdown-menu.open{opacity:1;z-index:999}
+
+/* line 22 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketChooser.styl */
+.bs-bucket-chooser .dropdown-menu .search-item{padding:6px 16px 0 16px;}
+
+/* line 24 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketChooser.styl */
+.bs-bucket-chooser .dropdown-menu .search-item input{line-height:.8;height:28px}
 
 /* line 102 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
 

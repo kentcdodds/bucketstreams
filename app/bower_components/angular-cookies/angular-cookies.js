@@ -1,5 +1,5 @@
 /**
- * @license AngularJS v1.2.14-build.2283+sha.cbcfaa2
+ * @license AngularJS v1.2.14
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -14,7 +14,6 @@
  *
  * The `ngCookies` module provides a convenient wrapper for reading and writing browser cookies.
  *
- * {@installModule cookies}
  *
  * <div doc-module-components="ngCookies"></div>
  *
