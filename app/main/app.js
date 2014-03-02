@@ -7,6 +7,24 @@
   app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
 
+    function getLoadData(type) {
+      console.log('getting the function for ' + type);
+      return function loadStreamOrBucketPageData($q, $state, $stateParams, UtilService, Bucket, Stream) {
+        var deferred = $q.defer();
+        console.log('running the thing');
+        var model = (type === 'stream' ? Stream : Bucket);
+        UtilService.loadData(type, $stateParams.username, $stateParams.itemName, model).then(function(data) {
+          if (data) {
+            deferred.resolve(data);
+          } else {
+            deferred.reject('No ' + type);
+            $state.go('home');
+          }
+        }, deferred.reject);
+        return deferred.promise;
+      }
+    }
+
     $stateProvider.
       state('home', {
         url: '/',
@@ -66,51 +84,54 @@
           console.log($stateParams);
         }
       }).
-      state('home.bucketPage', {
-        url: ':username/buckets/:bucketName',
-        controller: 'BucketCtrl',
-        templateUrl: '/main/buckets/bucket.html',
+      state('home.postStreamPage', {
+        url: ':username/:type/:itemName',
+        controller: 'PostStreamPageCtrl',
+        templateUrl: '/main/post-stream-page/postStreamPage.html',
         resolve: {
-          bucket: function($q, $state, $stateParams, Bucket) {
+          data: function loadStreamOrBucketPageData($q, $state, $stateParams, UtilService, Bucket, Stream) {
             var deferred = $q.defer();
-            Bucket.query({
-              username: $stateParams.username,
-              bucketName: $stateParams.bucketName
-            }).$promise.then(function(data) {
-                if (data && data.length) {
-                  deferred.resolve(data[0]);
-                } else {
-                  deferred.reject('No bucket');
-                  $state.go('home');
-                }
-              }, deferred.reject);
+            console.log('running the thing');
+            var type = $stateParams.type;
+            var model = (type === 'stream' ? Stream : Bucket);
+            UtilService.loadData(type, $stateParams.username, $stateParams.itemName, model).then(function(data) {
+              if (data) {
+                data.type = type;
+                deferred.resolve(data);
+              } else {
+                deferred.reject('No ' + type);
+                $state.go('home');
+              }
+            }, deferred.reject);
             return deferred.promise;
           }
         },
+        onEnter: function($state, $stateParams) {
+//          console.log($stateParams);
+        }
+      }).
+      state('home.postStreamPage.bucket', {
+        controller: 'BucketCtrl',
+        templateUrl: '/main/buckets/bucket.html',
         onEnter: function($stateParams) {
           console.log($stateParams);
         }
       }).
-      state('home.streamPage', {
-        url: ':username/streams/:streamName',
+      state('home.postStreamPage.stream', {
         controller: 'StreamCtrl',
         templateUrl: '/main/streams/stream.html',
-        resolve: {
-          streamData: function($q, $state, $stateParams, Stream) {
-            var deferred = $q.defer();
-            Stream.getStreamData($stateParams.username, $stateParams.streamName).then(function(data) {
-                if (data) {
-                  deferred.resolve(data);
-                } else {
-                  deferred.reject('No stream');
-                  $state.go('home');
-                }
-              }, deferred.reject);
-            return deferred.promise;
-          }
-        },
         onEnter: function($stateParams) {
           console.log($stateParams);
+        }
+      }).
+      state('home.postPage', {
+        controller: 'PostPageCtrl',
+        templateUrl: '/main/post-page/post-page.html',
+        url: ':username/:postId',
+        resolve: {
+          post: function($q, UtilService, $stateParams) {
+            return UtilService.loadPost($stateParams.postId);
+          }
         }
       });
 

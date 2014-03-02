@@ -41,7 +41,7 @@ module.exports = {
     });
 
     form.on('error', function(err) {
-      logger.error('Error parsing form: ', err);
+      logger.error('Error parsing form: ', err.message);
       return ErrorController.sendErrorJson(res, 500, err.message);
     });
 

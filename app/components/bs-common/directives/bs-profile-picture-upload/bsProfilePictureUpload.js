@@ -62,7 +62,7 @@ angular.module('bs.directives').directive('bsProfilePictureUpload', function(Cur
 
         function uploadImage(imageToUpload) {
           scope.upload = $upload.upload({
-            url: '/upload/image',
+            url: '/api/v1/upload/image',
             method: 'POST',
             data: {
               type: 'profile',

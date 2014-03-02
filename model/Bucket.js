@@ -1,5 +1,8 @@
 var Util = require('./Util');
 var ref = require('./ref');
+var Post = require('./Post').model;
+var Comment = require('./Comment').model;
+var _ = require('lodash-node');
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
@@ -29,7 +32,16 @@ schema.methods.addPost = function(post, callback) {
 };
 
 schema.methods.getPosts = function(callback) {
-  require('./Post').model.find({buckets: this.id}).sort('-created').exec(callback);
+  Post.find({buckets: this.id}).sort('modified').exec(function(err, posts) {
+    if (err) return callback(err);
+    Comment.find({owningPost: {$in: _.pluck(posts, '_id')}}, function(err, comments) {
+      if (err) return callback(err);
+      _.each(posts, function(post) {
+        post._doc.comments = _.where(comments, {owningPost: post._id});
+      });
+      callback(null, posts);
+    });
+  });
 };
 
 Util.addTimestamps(schema);

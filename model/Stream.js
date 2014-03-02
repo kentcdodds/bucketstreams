@@ -17,7 +17,7 @@ var ObjectId = Schema.Types.ObjectId;
  *   owner: an ID of the owner user
  *   name: The name of the stream
  *   visibility: An array of IDs of users who can view it. If the array is empty, it's public
- *   contentSources:
+ *   subscriptions:
  *     buckets: An array of bucket IDs which feed into this stream
  *     streams: An array of stream IDs which feed into this stream
  */
@@ -76,8 +76,6 @@ schema.methods.getPosts = function(callback) {
   }
 
   if (self.isMain) {
-
-
     function getUsersPosts(done) {
       Post.find({
         author: self.owner
@@ -123,6 +121,7 @@ schema.methods.getPosts = function(callback) {
       if (err) return callback(err);
       posts = _(posts).flatten().unique().value();
       Comment.find({owningPost: {$in: _.pluck(posts, '_id')}}, function(err, comments) {
+        if (err) return callback(err);
         _.each(posts, function(post) {
           post.comments = _.find(comments, {owningPost: post._id});
         });

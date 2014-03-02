@@ -18,6 +18,7 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
 
   (function setupMenu() {
 
+    // TODO Refactor the stream and bucket menu options. Abstract it a bit...
     function MenuItem(text, icon, onClick, children) {
       this.text = text;
       this.icon = icon;
@@ -47,10 +48,11 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
       _.each(streams, function(stream) {
         var params = {
           username: currentUser.username,
-          streamName: stream.name
+          itemName: stream.name,
+          type: 'stream'
         };
         streamsMenuItem.children.push(new MenuItem(stream.name, null, function() {
-          $state.go('home.streamPage', params);
+          $state.go('home.postStreamPage.stream', params);
         }));
       });
     }
@@ -78,10 +80,11 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
       _.each(buckets, function(bucket) {
         var params = {
           username: currentUser.username,
-          bucketName: bucket.name
+          itemName: bucket.name,
+          type: 'bucket'
         };
         bucketsMenuItem.children.push(new MenuItem(bucket.name, null, function() {
-          $state.go('home.bucketPage', params);
+          $state.go('home.postStreamPage.bucket', params);
         }));
       });
     }

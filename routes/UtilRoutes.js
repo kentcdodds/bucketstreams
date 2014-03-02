@@ -2,9 +2,13 @@
 var models = require('../model').models;
 var schemas = require('../model').schemas;
 var ref = require('../model/ref');
+
 var User = models[ref.user];
 var Stream = models[ref.stream];
 var Bucket = models[ref.bucket];
+var Post = models[ref.post];
+var Comment = models[ref.comment];
+
 var StreamSchema = schemas[ref.stream];
 var prefixes = require('./prefixes');
 var RouteHelper = require('./RouteHelper');
@@ -51,31 +55,47 @@ module.exports = function(app) {
 
 
   /**
-   * Helper function for loading a stream page.
-   * @param streamName - query - The name of the stream
-   * @param username - query - The name of the user who owns the stream
-   * @returns streamData - A stream and posts (with the post's comments attached to the post object)
+   * Helper function for loading a stream or bucket page.
+   * @param streamName - query - The name of the stream/bucket
+   * @param username - query - The name of the user who owns the stream/bucket
+   * @returns data - A stream/bucket and posts (with the post's comments attached to the post object)
    */
-  app.get(prefixes.util + '/streamData', function(req, res, next) {
-    if (req.query.streamName && req.query.username) {
-      req.query.name = req.query.streamName;
-      delete req.query.streamName;
-      RouteHelper.convertUsernameQueryToId(req, 'owner', function() {
-        Stream.findOne(req.query, function(err, stream) {
-          if (err) return ErrorController.sendErrorJson(res, 500, err.message);
-          if (!stream) return ErrorController.sendErrorJson(res, 400, 'No stream with the name ' + req.query.name);
-          stream.getPosts(function(err, posts) {
+  app.get(prefixes.util + '/data/:type', function(req, res, next) {
+    var type = req.params.type;
+    if (type === 'stream' || type === 'bucket') {
+      if (req.query.name && req.query.username) {
+        RouteHelper.convertUsernameQueryToId(req, 'owner', function() {
+          models[type].findOne(req.query, function(err, one) {
             if (err) return ErrorController.sendErrorJson(res, 500, err.message);
-            res.json({
-              stream: stream,
-              posts: posts
+            if (!one) return ErrorController.sendErrorJson(res, 400, 'No ' + type + ' with the name ' + req.query.name);
+            one.getPosts(function(err, posts) {
+              if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+              var response = {};
+              response[type] = one;
+              response.posts = posts;
+              res.json(response);
             });
           });
         });
-      });
+      } else {
+        next();
+      }
     } else {
       next();
     }
+  });
+
+  app.get(prefixes.util + '/data/post/:id', function(req, res, next) {
+    Post.findOne({_id: req.params.id }, function(err, post) {
+      if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+      if (!post) return ErrorController.sendErrorJson(res, 400, 'No post with the id ' + req.query.id);
+
+      Comment.find({owningPost: req.params.id}, function(err, comments) {
+        if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+        post._doc.comments = comments;
+        res.json(post);
+      });
+    });
   });
 
 };
