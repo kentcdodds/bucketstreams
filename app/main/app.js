@@ -26,17 +26,18 @@
         resolve: {
           currentUser: commonResolve.currentUser
         },
-        onEnter: function() {
-          console.log('home');
+        onEnter: function(CurrentContext) {
+          CurrentContext.context('Main Stream');
         }
       }).
       state('home.gettingStarted', {
         url: 'getting-started',
-        onEnter: function($state, $modal, CurrentUserService) {
+        onEnter: function($state, $modal, CurrentUserService, CurrentContext) {
           var currentUser = CurrentUserService.getUser();
           if (currentUser.hasUsername() && currentUser.hasProfilePicture()) {
             return $state.transitionTo('home');
           }
+          CurrentContext.context('Getting Started');
           $modal.open({
             templateUrl: '/main/getting-started/getting-started.html',
             controller: 'GettingStartedCtrl',
@@ -50,8 +51,8 @@
         url: 'settings',
         controller: 'SettingsCtrl',
         templateUrl: '/main/settings/settings.html',
-        onEnter: function() {
-          console.log('settings');
+        onEnter: function(CurrentContext) {
+          CurrentContext.context('Settings');
         }
       }).
       state('home.userPage', {
@@ -73,23 +74,32 @@
             return Stream.query({username: $stateParams.username});
           }
         },
-        onEnter: function($stateParams) {
-          console.log($stateParams);
+        onEnter: function(CurrentContext, profileUser) {
+          CurrentContext.context(profileUser.getDisplayName());
         }
       }).
       state('home.newBucketOrStream', {
         url: 'new/{type:bucket|stream}',
-        onEnter: function($state, $stateParams, $modal, Bucket, Stream) {
+        onEnter: function($state, $stateParams, $modal, Bucket, Stream, CurrentContext) {
+          var type = $stateParams.type;
+          var capType = 'Stream';
+          var model = Stream;
+
+          if (type === 'bucket') {
+            model = Bucket;
+            capType = 'Bucket';
+          }
+          CurrentContext.context('New ' + capType);
           $modal.open({
             templateUrl: '/main/new-bucket-stream/new-bucket-stream.html',
             controller: 'NewBucketStreamCtrl',
             resolve: {
               currentUser: commonResolve.currentUser,
               type: function() {
-                return $stateParams.type;
+                return type;
               },
               model: function() {
-                return $stateParams.type === 'bucket' ? Bucket : Stream;
+                return model;
               }
             }
           });
@@ -118,25 +128,21 @@
             return deferred.promise;
           }
         },
-        onEnter: function($state, $stateParams) {
-          console.log('postStreamPage', $stateParams);
+        onEnter: function(CurrentContext, data, $stateParams) {
+          var up = $stateParams.type;
+          up = up.substring(0,1).toUpperCase() + up.substring(1,up.length).toLowerCase();
+          CurrentContext.context(data[$stateParams.type].name + ' ' + up);
         }
       }).
       state('home.postStreamPage.bucket', {
         url: '',
         controller: 'BucketCtrl',
-        templateUrl: '/main/buckets/bucket.html',
-        onEnter: function($stateParams) {
-          console.log('bucketPage', $stateParams);
-        }
+        templateUrl: '/main/buckets/bucket.html'
       }).
       state('home.postStreamPage.stream', {
         url: '',
         controller: 'StreamCtrl',
-        templateUrl: '/main/streams/stream.html',
-        onEnter: function($stateParams) {
-          console.log('streamPage', $stateParams);
-        }
+        templateUrl: '/main/streams/stream.html'
       }).
       state('home.postPage', {
         controller: 'PostPageCtrl',
