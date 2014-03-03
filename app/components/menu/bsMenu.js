@@ -24,7 +24,8 @@ angular.module('bs.directives').directive('bsMenu', function($document, $timeout
         scope.showSubMenu = true;
         if (item.onClick) {
           if (angular.isString(item.onClick)) {
-            $state.transitionTo(item.onClick);
+            hideMenu();
+            $state.go(item.onClick);
           } else {
             item.onClick();
           }
@@ -52,11 +53,15 @@ angular.module('bs.directives').directive('bsMenu', function($document, $timeout
         }
       };
 
+      function hideMenu() {
+        scope.large = false;
+        scope.small = false;
+        scope.showSubMenu = false;
+      }
+
       $document.on('click', function(event) {
         if ((scope.large || scope.small) && !isChild(el[0], event.srcElement)) {
-          scope.large = false;
-          scope.small = false;
-          scope.showSubMenu = false;
+          hideMenu();
           scope.$apply();
         }
       });

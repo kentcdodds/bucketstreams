@@ -80,7 +80,8 @@ var reservedUsernames = [
   'settings',
   'getting-started',
   'auth',
-  'api'
+  'api',
+  'new'
 ];
 
 schema.path('username').validate(function (value) {

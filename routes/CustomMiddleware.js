@@ -1,5 +1,6 @@
 
 var RouteHelper = require('./RouteHelper');
+var ErrorController = require('../controller/ErrorController');
 
 module.exports = function(app) {
 
@@ -20,20 +21,14 @@ module.exports = function(app) {
     return req.user ? req.user.mainStream : 'undefined';
   });
 
-  app.get(restPrefix + '/buckets', function(req, res, next) {
-    if (req.query.bucketName) {
-      req.query.name = req.query.bucketName;
-      delete req.query.bucketName;
+  app.get(restPrefix + '/:resource', function(req, res, next) {
+    if (/buckets|streams/.test(req.params.resource)) {
+      RouteHelper.convertUsernameQueryToId(req, 'owner', function(err) {
+        if (err) return ErrorController(res, err.code, err.error.message);
+        next();
+      });
+    } else {
+      next();
     }
-    RouteHelper.convertUsernameQueryToId(req, 'owner', next);
   });
-
-  app.get(restPrefix + '/streams', function(req, res, next) {
-    if (req.query.streamName) {
-      req.query.name = req.query.streamName;
-      delete req.query.streamName;
-    }
-    RouteHelper.convertUsernameQueryToId(req, 'owner', next);
-  });
-
 };

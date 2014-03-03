@@ -1,29 +1,22 @@
 (function() {
   var thirdParties = ['ui.router', 'ui.bootstrap', 'pasvaz.bindonce', 'angularFileUpload'];
   var angularMods = ['ngAnimate'];
-  var internalMods = ['bs.directives', 'bs.models', 'bs.services'];
+  var internalMods = ['bs.directives', 'bs.models', 'bs.services', 'bs.filters'];
   var app = angular.module('bs.app', thirdParties.concat(angularMods.concat(internalMods)));
 
   app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
 
-    function getLoadData(type) {
-      console.log('getting the function for ' + type);
-      return function loadStreamOrBucketPageData($q, $state, $stateParams, UtilService, Bucket, Stream) {
-        var deferred = $q.defer();
-        console.log('running the thing');
-        var model = (type === 'stream' ? Stream : Bucket);
-        UtilService.loadData(type, $stateParams.username, $stateParams.itemName, model).then(function(data) {
-          if (data) {
-            deferred.resolve(data);
-          } else {
-            deferred.reject('No ' + type);
-            $state.go('home');
-          }
-        }, deferred.reject);
-        return deferred.promise;
+    var commonResolve = {
+      currentUser: function(CurrentUserService) {
+        var currentUser = CurrentUserService.getUser();
+        if (currentUser.$resolved) {
+          return currentUser;
+        } else {
+          return currentUser.$promise;
+        }
       }
-    }
+    };
 
     $stateProvider.
       state('home', {
@@ -31,9 +24,7 @@
         templateUrl: '/main/index.html',
         controller: 'MainCtrl',
         resolve: {
-          currentUser: function(CurrentUserService) {
-            return CurrentUserService.getUser().$promise;
-          }
+          currentUser: commonResolve.currentUser
         },
         onEnter: function() {
           console.log('home');
@@ -51,12 +42,14 @@
             controller: 'GettingStartedCtrl',
             backdrop: 'static'
           }).result.then(function() {
-              return $state.transitionTo('home');
+              return $state.go('home');
             });
         }
       }).
       state('home.settings', {
         url: 'settings',
+        controller: 'SettingsCtrl',
+        templateUrl: '/main/settings/settings.html',
         onEnter: function() {
           console.log('settings');
         }
@@ -82,6 +75,24 @@
         },
         onEnter: function($stateParams) {
           console.log($stateParams);
+        }
+      }).
+      state('home.newBucketOrStream', {
+        url: 'new/{type:bucket|stream}',
+        onEnter: function($state, $stateParams, $modal, Bucket, Stream) {
+          $modal.open({
+            templateUrl: '/main/new-bucket-stream/new-bucket-stream.html',
+            controller: 'NewBucketStreamCtrl',
+            resolve: {
+              currentUser: commonResolve.currentUser,
+              type: function() {
+                return $stateParams.type;
+              },
+              model: function() {
+                return $stateParams.type === 'bucket' ? Bucket : Stream;
+              }
+            }
+          });
         }
       }).
       state('home.postStreamPage', {

@@ -26,72 +26,34 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
       this.children = children;
     }
 
-    var newStream = new MenuItem('New Stream', 'plus', function() {
-      $modal.open({
-        templateUrl: '/main/new-stream/new-stream.html',
-        controller: 'NewStreamCtrl',
-        resolve: {
-          currentUser: function() {
-            return $scope.currentUser;
-          }
-        }
-      }).result.then(function(stream) {
-          $scope.userStreams.unshift(stream);
-          streamsMenuItem.children = [newStream];
-          makeStreamMenuItems($scope.userStreams);
-        });
-    });
-
-    var streamsMenuItem = new MenuItem('Streams', 'smile-o', null, [newStream]);
-
-    function makeStreamMenuItems(streams) {
-      _.each(streams, function(stream) {
-        var params = {
-          username: currentUser.username,
-          itemName: stream.name,
-          type: 'stream'
-        };
-        streamsMenuItem.children.push(new MenuItem(stream.name, null, function() {
-          $state.go('home.postStreamPage.stream', params);
-        }));
+    function createThingMenuItems(type, icon) {
+      var newThing = new MenuItem('New ' + type, 'plus', function() {
+        $state.go('home.newBucketOrStream', {type: type.toLowerCase()});
       });
-    }
-    $scope.userStreams = Stream.query({owner: currentUser._id});
-    $scope.userStreams.$promise.then(makeStreamMenuItems);
 
+      var parentMenuItem = new MenuItem(type + 's', icon, null, [newThing]);
 
-    var newBucket = new MenuItem('New Bucket', 'plus', function() {
-      $modal.open({
-        templateUrl: '/main/new-bucket/new-bucket.html',
-        controller: 'NewBucketCtrl',
-        resolve: {
-          currentUser: function() {
-            return $scope.currentUser;
-          }
-        }
-      }).result.then(function(bucket) {
-          $scope.userBuckets.unshift(bucket);
-          bucketsMenuItem.children = [newBucket];
-          makeBucketMenuItems($scope.userBuckets);
+      function makeStreamMenuItems(things) {
+        _.each(things, function(thing) {
+          var params = {
+            username: currentUser.username,
+            itemName: thing.name,
+            type: type
+          };
+          parentMenuItem.children.push(new MenuItem(thing.name, null, function() {
+            $state.go('home.postStreamPage.' + type.toLowerCase(), params);
+          }));
         });
-    });
-
-    function makeBucketMenuItems(buckets) {
-      _.each(buckets, function(bucket) {
-        var params = {
-          username: currentUser.username,
-          itemName: bucket.name,
-          type: 'bucket'
-        };
-        bucketsMenuItem.children.push(new MenuItem(bucket.name, null, function() {
-          $state.go('home.postStreamPage.bucket', params);
-        }));
-      });
+      }
+      var model = type === 'Bucket' ? Bucket : Stream;
+      var scopeProp = 'user' + type + 's';
+      $scope[scopeProp] = model.query({owner: currentUser._id});
+      $scope[scopeProp].$promise.then(makeStreamMenuItems);
+      return parentMenuItem;
     }
 
-    var bucketsMenuItem = new MenuItem('Buckets', 'bitbucket', null, [newBucket]);
-    $scope.userBuckets = Bucket.query({owner: currentUser._id});
-    $scope.userBuckets.$promise.then(makeBucketMenuItems);
+    var streamsMenuItem = createThingMenuItems('Stream', 'smile-o');
+    var bucketsMenuItem = createThingMenuItems('Bucket', 'bitbucket');
 
     var settings = new MenuItem('Settings', 'gear', 'home.settings');
     $scope.menuItems = [streamsMenuItem, bucketsMenuItem, settings];

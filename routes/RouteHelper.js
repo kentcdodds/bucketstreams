@@ -12,8 +12,20 @@ module.exports = {
   convertUsernameQueryToId: function(req, newName, callback) {
     if (req.query.username) {
       dataModels.user.getByUsername(req.query.username, function(err, user) {
-        if (err) return callback(err);
-        if (!user || !user[0]) callback('No user with username ' + req.query.username);
+        if (err) {
+          return callback({
+            code: 500,
+            error: err
+          });
+        }
+        if (!user || !user[0]) {
+          return callback({
+            code: 500,
+            error: {
+              message: 'No user with username ' + req.query.username
+            }
+          });
+        }
         delete req.query.username;
         req.query[newName] = user[0].id;
         callback();
