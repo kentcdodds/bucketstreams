@@ -1,7 +1,11 @@
 angular.module('bs.directives').directive('bsProfilePicture', function() {
   return {
     restrict: 'E',
-    template: '<div class="bs-profile-picture-wrapper"><img ng-src="{{user.getProfilePicture()}}" class="img-circle"></div>',
+    template: '<div class="bs-profile-picture-wrapper" bindonce="user">' +
+      '<a bo-href="\'/\' + user.username">' +
+        '<img bo-src="user.getProfilePicture()" class="img-circle">' +
+      '</a>' +
+    '</div>',
     replace: true,
     scope: {
       user: '=user',

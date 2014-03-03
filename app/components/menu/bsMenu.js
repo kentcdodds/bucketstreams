@@ -34,8 +34,13 @@ angular.module('bs.directives').directive('bsMenu', function($document, $timeout
       scope.iBackground = '#03426A';
       scope.iColor = '#FAFCF9';
 
-      scope.hideSubMenu = function() {
-        scope.showSubMenu = false;
+      var hiding = null;
+
+      scope.onMouseLeave = function() {
+        $timeout.cancel(hiding);
+        hiding = $timeout(function() {
+          scope.small = false;
+        }, 200);
       };
 
       /*
@@ -51,7 +56,7 @@ angular.module('bs.directives').directive('bsMenu', function($document, $timeout
         if ((scope.large || scope.small) && !isChild(el[0], event.srcElement)) {
           scope.large = false;
           scope.small = false;
-          scope.hideSubMenu();
+          scope.showSubMenu = false;
           scope.$apply();
         }
       });

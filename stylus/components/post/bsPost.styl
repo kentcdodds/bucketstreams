@@ -3,13 +3,30 @@
 
   .post-meta
     height 80px
+    position relative
     .post-author-photo
-      max-height 64px
-      max-width 64px
+      padding 6px
+      position absolute
     .post-info
+      display inline-block
+      padding 6px
+      vertical-align top
+      width 100%
       padding-left 72px
+      .post-options
+        display inline
+        float right
+        .dropdown
+          .dropdown-toggle
+            cursor pointer
+            text-decoration none
+          ul
+            float right
+    .post-author-name
+      font-size 1.2em
 
   .post-content
+    font-size 1.1em
     textarea
       height 74px
       resize vertical
@@ -17,8 +34,12 @@
       height 40px
       border-bottom solid 1px #DDD
     .share-post
+      float right
       border-bottom-left-radius initial
       border-bottom-right-radius initial
+      a
+        padding 12px
+        cursor pointer
     & .mode-create
       padding 6px 15px 6px 6px
     .create-footer
@@ -31,18 +52,24 @@
   .comments
     padding 10px
     .add-comment
-      img.add-comment-photo
-        max-height 32px
-        max-width 32px
-        @extend .margin-right-xsmall
+      position relative
+      .add-comment-photo
+        display inline
+        position absolute
+        margin-right 12px
       .add-comment-field
         padding-left 46px
+        display inline-block
         width 100%
     .comment
-      @extend .margin-top-small
-    img.comment-photo
-      max-height 32px
-      max-width 32px
-      @extend .margin-right-xsmall
+      margin-top 18px
+      position relative
+      font-size .9em
+    .comment-photo
+      margin-right 12px
+      display inline
+      position absolute
     .comment-info
+      display inline-block
+      vertical-align top
       padding-left 46px

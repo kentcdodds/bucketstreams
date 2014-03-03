@@ -1,48 +1,46 @@
 <div class="post panel panel-default">
-  <div class="post-meta panel-heading position-relative">
-    <a ng-href="/{{author.username}}">
-      <img ng-src="{{author.getProfilePicture()}}" class="post-author-photo padding-xxsmall img-circle position-absolute">
-    </a>
-    <div class="post-info display-inline-block padding-xxsmall vertical-align-top width-100">
-      <div class="display-inline pull-right">
+  <div class="post-meta panel-heading">
+    <bs-profile-picture user="author" class="post-author-photo" size="64"></bs-profile-picture>
+    <div class="post-info">
+      <div class="post-options">
         <div class="dropdown">
-          <a class="dropdown-toggle cursor-pointer text-decoration-none">
-            <i class="fa fa-chevron-down cursor-pointer"></i>
+          <a class="dropdown-toggle">
+            <i class="fa fa-chevron-down"></i>
           </a>
-          <ul class="dropdown-menu pull-right">
+          <ul class="dropdown-menu">
             <li>
               <a ng-show="currentUser._id === author._id" fa-icon="trash-o" ng-click="removePost()"> Delete</a>
             </li>
           </ul>
         </div>
       </div>
-      <div>
-        <a ng-href="/{{author.username}}">
-          <strong class="post-user font-size-xlarge">{{author.getDisplayName()}}</strong>
-        </a>
-      </div>
-      <div>
-        <small>
-          <a bindonce="post" ng-href="/{{author.username}}/{{post._id}}" bo-text="post.modified | date:'short'"></a>
-        </small>
+      <div bindonce="post">
+        <div>
+          <a bo-href="'/' + author.username">
+            <strong class="post-author-name" bo-text="author.getDisplayName()"></strong>
+          </a>
+        </div>
+        <div>
+          <small>
+            <a bo-href="'/' + author.username + '/' + post._id" bo-text="post.modified | date:'short'"></a>
+          </small>
+        </div>
       </div>
     </div>
   </div>
-  <div class="post-content panel-body font-size-large">
+  <div class="post-content panel-body">
     <div bindonce="post" bo-text="post.content.textString"></div>
   </div>
   <div class="panel-footer">
-    <div class="pull-right share-post">
-      <a class="padding-xsmall cursor-pointer" ng-click="share(post)" fa-icon="share"></a>
-      <a class="padding-xsmall cursor-pointer" ng-click="star(post)" fa-icon="star"></a>
+    <div class="share-post">
+      <a ng-click="share(post)" fa-icon="share"></a>
+      <a ng-click="star(post)" fa-icon="star"></a>
     </div>
   </div>
   <div class="comments">
-    <div class="add-comment position-relative">
-      <a bindonce="currentUser" bo-href="'/' + currentUser.username">
-        <img bo-src="currentUser.getProfilePicture()" class="add-comment-photo img-circle display-inline position-absolute">
-      </a>
-      <div class="add-comment-field display-inline-block">
+    <div class="add-comment">
+      <bs-profile-picture user="currentUser" class="add-comment-photo" size="32"></bs-profile-picture>
+      <div class="add-comment-field">
         <input class="form-control" type="text" placeholder="Add comment..." ng-model="commentToAdd" ng-keydown="addComment($event)">
       </div>
     </div>

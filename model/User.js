@@ -11,7 +11,6 @@ var _ = require('lodash-node');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Email = mongoose.SchemaTypes.Email;
-var Url = mongoose.SchemaTypes.Url;
 var ObjectId = Schema.Types.ObjectId;
 
 var passportLocalMongoose = require('passport-local-mongoose');
@@ -20,7 +19,7 @@ var minute = 1000 * 60;
 
 /**
  * User:
- *   profilePicture: An array of profile pictures of the user where the last one is the current profile picture.
+ *   profilePicture: a url to the profile picture
  *   lastLoginDate: The date the user last logged in.
  */
 var schema = new Schema({
@@ -31,10 +30,7 @@ var schema = new Schema({
     first: String,
     last: String
   },
-  profilePicture: [{
-    name: {type: String, default: 'Untitled'},
-    url: {type: Url, required: true}
-  }],
+  profilePicture: String,
   lastLoginDate: {type: Date, default: Date.now},
   setupReminderDate: {type: Date, required: false},
   mainStream: {type: ObjectId, ref: ref.stream},
@@ -221,13 +217,8 @@ schema.methods.updateLastLoginTime = function(callback) {
   this.save(callback);
 };
 
-schema.methods.addProfilePicture = function(name, url, callback) {
-  this.profilePicture = this.profilePicture || [];
-  var newPicture = {
-    name: name,
-    url: url
-  };
-  this.profilePicture.unshift(newPicture);
+schema.methods.addProfilePicture = function(url, callback) {
+  this.profilePicture = url;
   callback && this.save(callback);
 };
 

@@ -4,6 +4,7 @@ module.exports = function(app) {
   require('./AuthenticationRoutes')(app);
   require('./PhotoRoutes')(app);
   require('./RestRoutes')(app);
+  require('./SEORoutes')(app);
 
   if (!process.env.NODE_ENV || process.env.NODE_ENV === 'local') {
     require('../local/HelperRoutes')(app);

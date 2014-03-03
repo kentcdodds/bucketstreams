@@ -3,7 +3,6 @@ var ref = require('./ref');
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var Url = mongoose.SchemaTypes.Url;
 var ObjectId = Schema.Types.ObjectId;
 
 /**
@@ -19,7 +18,7 @@ var schema = new Schema({
     multimedia: {
       images: [{
         name: {type: String, default: 'Untitled'},
-        url: {type: Url, required: true}
+        url: String
       }]
     }
   },

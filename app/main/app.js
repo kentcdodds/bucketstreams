@@ -87,6 +87,7 @@
       state('home.postStreamPage', {
         url: ':username/:type/:itemName',
         controller: 'PostStreamPageCtrl',
+        abstract: true,
         templateUrl: '/main/post-stream-page/postStreamPage.html',
         resolve: {
           data: function loadStreamOrBucketPageData($q, $state, $stateParams, UtilService, Bucket, Stream) {
@@ -107,21 +108,23 @@
           }
         },
         onEnter: function($state, $stateParams) {
-//          console.log($stateParams);
+          console.log('postStreamPage', $stateParams);
         }
       }).
       state('home.postStreamPage.bucket', {
+        url: '',
         controller: 'BucketCtrl',
         templateUrl: '/main/buckets/bucket.html',
         onEnter: function($stateParams) {
-          console.log($stateParams);
+          console.log('bucketPage', $stateParams);
         }
       }).
       state('home.postStreamPage.stream', {
+        url: '',
         controller: 'StreamCtrl',
         templateUrl: '/main/streams/stream.html',
         onEnter: function($stateParams) {
-          console.log($stateParams);
+          console.log('streamPage', $stateParams);
         }
       }).
       state('home.postPage', {
@@ -130,7 +133,11 @@
         url: ':username/:postId',
         resolve: {
           post: function($q, UtilService, $stateParams) {
-            return UtilService.loadPost($stateParams.postId);
+            var deferred = $q.defer();
+            UtilService.loadPost($stateParams.postId).then(function(response) {
+              deferred.resolve(response.data);
+            }, deferred.reject);
+            return deferred.promise;
           }
         }
       });

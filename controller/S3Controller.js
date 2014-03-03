@@ -57,7 +57,6 @@ module.exports = {
         return ErrorController.sendErrorJson(res, 400, 'Unsupported image type: ' + contentType);
       }
 
-      var name = fields.name || 'Untitled Image';
       var destPath = '/' + userId + '/' + type + '/' + uuid.v4() + '-' + part.filename.replace(' ', '-');
 
       var headers = {
@@ -70,11 +69,11 @@ module.exports = {
         if (err) return ErrorController.sendErrorJson(res, 500, err.message);
         logger.info('photo uploaded, setting as profile picture');
         var imageUrl = imageUrlPrefix + destPath;
-        req.user.addProfilePicture(name, imageUrl, function(err, user) {
+        req.user.addProfilePicture(imageUrl, function(err, user) {
+          if (err) return ErrorController.sendErrorJson(res, 500, err.message);
           res.statusCode = s3Response.statusCode;
           console.log(imageUrl);
           return res.json({
-            name: name,
             imageUrl: imageUrl
           });
         });

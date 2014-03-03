@@ -37,12 +37,12 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
     } else if (this.username) {
       return '@' + this.username;
     } else {
-      return this.email || '';
+      return 'Anonymous';
     }
   };
 
   User.prototype.getProfilePicture = function() {
-    return UtilService.getGrandchild(this, 'profilePicture.0.url') || '/images/guest-photo.png';
+    return this.profilePicture || '/images/guest-photo.png';
   };
 
   User.prototype.isDontRemind = function(fieldDisplayName) {

@@ -2,7 +2,9 @@ var Util = require('./Util');
 var ref = require('./ref');
 var Post = require('./Post').model;
 var Comment = require('./Comment').model;
+var User = require('./User').model;
 var _ = require('lodash-node');
+var async = require('async');
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
@@ -32,14 +34,24 @@ schema.methods.addPost = function(post, callback) {
 };
 
 schema.methods.getPosts = function(callback) {
-  Post.find({buckets: this.id}).sort('modified').exec(function(err, posts) {
+  Post.find({buckets: this.id}).sort('createdAt').exec(function(err, posts) {
     if (err) return callback(err);
-    Comment.find({owningPost: {$in: _.pluck(posts, '_id')}}, function(err, comments) {
-      if (err) return callback(err);
-      _.each(posts, function(post) {
-        post._doc.comments = _.where(comments, {owningPost: post._id});
+
+    var postIds = _.pluck(posts, '_id');
+    Comment.find({owningPost: {$in: postIds}}, function(err, comments) {
+      if (err) return done(err);
+      var commentAuthors = _.pluck(comments, 'author');
+      var postAuthors = _.pluck(posts, 'author');
+      User.find({_id: {$in: _.union(commentAuthors, postAuthors)}}, '_id username name profilePicture', function(err, users) {
+        _.each(comments, function(comment) {
+          comment._doc.authorInfo = _.find(users, {_id: comment.author});
+        });
+        _.each(posts, function(post) {
+          post._doc.comments = _.where(comments, {owningPost: post._id});
+          post._doc.authorInfo = _.find(users, {_id: post.author});
+        });
+        callback(null, posts);
       });
-      callback(null, posts);
     });
   });
 };

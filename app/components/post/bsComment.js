@@ -8,15 +8,13 @@ angular.module('bs.directives').directive('bsComment', function(CurrentUserServi
       onDeleteClicked: '&'
     },
     link: function(scope, el) {
-      if (scope.comment.author) {
-        scope.author = User.get({id: scope.comment.author});
-      }
+      scope.author = scope.comment.authorInfo || User.get({id: scope.comment.author});
       scope.currentUser = CurrentUserService.getUser();
       scope.$on(CurrentUserService.userUpdateEvent, function(event, user) {
         scope.currentUser = user;
       });
 
-      scope.showDelete = false;
+      scope.hovering = false;
       scope.canDelete = function() {
         return scope.author && scope.author._id === scope.currentUser._id;
       };

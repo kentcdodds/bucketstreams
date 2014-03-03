@@ -17,8 +17,11 @@ html(lang="en")
     for script in topScripts
       script(src="#{script}")
   body(ng-app="#{appName}")
-    
-    div(ui-view, class="height-100")
+
+    if !serverRendered
+      div(ui-view, class="height-100")
+    else
+      block content
 
     for script in scripts
       script(src="#{script}")
