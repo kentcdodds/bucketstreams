@@ -70,8 +70,10 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
     var bucketsMenuItem = createThingMenuItems('Bucket', 'bitbucket');
 
     var settings = new MenuItem('Settings', 'gear', 'home.settings');
-    $scope.menuItems = [streamsMenuItem, bucketsMenuItem, settings];
-
+    var feedback = new MenuItem('Send Feedback', 'bullhorn', function() {
+      $window.open('https://bitbucket.org/kentcdodds/bucketstreams/issues/new');
+    });
+    $scope.menuItems = [streamsMenuItem, bucketsMenuItem, settings, feedback];
   })();
 
   (function setupPosting() {
