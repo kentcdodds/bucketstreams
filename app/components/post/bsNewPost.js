@@ -1,4 +1,4 @@
-angular.module('bs.directives').directive('bsNewPost', function(CurrentUserService, Bucket, Post, _, AlertService, $document) {
+angular.module('bs.directives').directive('bsNewPost', function(Post, _, AlertService, $document) {
   var placeholders = [
     'What are you thinking?',
     'Anything cool happen today?',
@@ -9,21 +9,16 @@ angular.module('bs.directives').directive('bsNewPost', function(CurrentUserServi
   ];
 
   return {
-    restrict: 'A',
+    restrict: 'E',
     templateUrl: '/components/post/bsNewPost.html',
     replace: true,
-    scope: {},
+    scope: {
+      user: '=',
+      buckets: '='
+    },
     link: function(scope, el) {
       var postButton = el.find('button');
       var textarea = el.find('textarea');
-      scope.currentUser = CurrentUserService.getUser();
-      scope.$on(CurrentUserService.userUpdateEvent, function(user) {
-        scope.currentUser = user;
-      });
-
-      scope.buckets = Bucket.query({
-        owner: scope.currentUser._id
-      });
 
       scope.makePost = function() {
         var post = new Post({

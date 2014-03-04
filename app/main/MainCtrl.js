@@ -29,6 +29,7 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
       this.children = children;
     }
 
+    // creates a scope variable with the name: userTypes (ie userBuckets)
     function createThingMenuItems(type, icon) {
       var lType = type.toLowerCase();
       var newThing = new MenuItem('New ' + type, 'plus', function() {

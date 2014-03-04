@@ -109,7 +109,6 @@
         resolve: {
           data: function loadStreamOrBucketPageData($q, $state, $stateParams, UtilService, Bucket, Stream) {
             var deferred = $q.defer();
-            console.log('running the thing');
             var type = $stateParams.type;
             var model = (type === 'stream' ? Stream : Bucket);
             UtilService.loadData(type, $stateParams.username, $stateParams.itemName, model).then(function(data) {
