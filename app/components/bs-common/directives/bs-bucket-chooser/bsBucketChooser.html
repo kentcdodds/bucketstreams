@@ -7,11 +7,12 @@
             ng-click="bucket.selected(false)">{{bucket.name}} &times;</span>
     </div>
     <ul class="dropdown-menu" ng-class="{'open': menuOpen}" ng-click="noBubbles($event)">
-      <li class="search-item">
-        <input type="search" ng-model="search" class="form-control" role="search" ng-keydown="toggleFirstBucket($event, search)" bs-autofocus="menuOpen" refocus="true">
+      <li class="dropdown-text-field search-item">
+        <input type="search" ng-model="search" class="form-control" role="search" ng-keydown="toggleFirstBucket($event, search)" bs-autofocus="menuOpen" refocus="true" placeholder="Filter">
+        <i class="fa fa-plus-circle" ng-click="createBucket()" tooltip="Create new bucket" tooltip-placement="left"></i>
       </li>
       <li role="presentation" class="divider"></li>
-      <li ng-repeat="bucket in buckets | filter:search" ng-if="!bucket.isMain" ng-click="toggleBucket(bucket)">
+      <li ng-repeat="bucket in nonMainBuckets() | filter:search" ng-click="toggleBucket(bucket)">
         <a><i class="fa fa-{{bucket.selected() ? 'check-' : ''}}circle-o"></i> {{bucket.name}}</a>
       </li>
     </ul>

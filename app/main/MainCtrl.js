@@ -1,4 +1,4 @@
-angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, currentUser, Stream, Bucket, Post, CurrentUserService, CurrentContext) {
+angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, currentUser, Stream, Bucket, Post, CurrentUserService, CurrentContext, CommonModalService) {
   $scope.currentUser = currentUser;
 
   if (_.isUndefined($scope.currentUser.username)) {
@@ -41,8 +41,19 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
     // creates a scope variable with the name: userTypes (ie userBuckets)
     function createThingMenuItems(type, icon) {
       var lType = type.toLowerCase();
+      var model = type === 'Bucket' ? Bucket : Stream;
+      var scopeProp = 'user' + type + 's';
       var newThing = new MenuItem('New ' + type, 'plus', function() {
-        $state.go('home.newBucketOrStream', {type: lType});
+        CommonModalService.newBucketStream(lType).result.then(function(newThing) {
+          if (newThing) {
+            $scope[scopeProp].unshift(newThing);
+            $state.go('home.postStreamPage.' + lType, {
+              username: currentUser.username,
+              itemName: newThing.name,
+              type: lType
+            });
+          }
+        });
       });
 
       var parentMenuItem = new MenuItem(type + 's', icon, null, [newThing]);
@@ -59,8 +70,6 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
           }));
         });
       }
-      var model = type === 'Bucket' ? Bucket : Stream;
-      var scopeProp = 'user' + type + 's';
       $scope[scopeProp] = model.query({owner: currentUser._id});
       $scope[scopeProp].$promise.then(makeStreamMenuItems);
       return parentMenuItem;

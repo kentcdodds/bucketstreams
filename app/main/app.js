@@ -78,35 +78,6 @@
           });
         }
       }).
-      state('home.newBucketOrStream', {
-        url: 'new/{type:bucket|stream}',
-        onEnter: function($state, $stateParams, $modal, Bucket, Stream, CurrentContext) {
-          var type = $stateParams.type;
-          var capType = 'Stream';
-          var model = Stream;
-          var icon = 'smile-o';
-
-          if (type === 'bucket') {
-            model = Bucket;
-            capType = 'Bucket';
-            icon = 'bitbucket';
-          }
-          CurrentContext.context({name: 'New ' + capType, icon: icon});
-          $modal.open({
-            templateUrl: '/main/new-bucket-stream/new-bucket-stream.html',
-            controller: 'NewBucketStreamCtrl',
-            resolve: {
-              currentUser: commonResolve.currentUser,
-              type: function() {
-                return type;
-              },
-              model: function() {
-                return model;
-              }
-            }
-          });
-        }
-      }).
       state('home.postStreamPage', {
         url: ':username/:type/:itemName',
         controller: 'PostStreamPageCtrl',

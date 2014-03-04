@@ -10,14 +10,9 @@ angular.module('bs.app').controller('NewBucketStreamCtrl', function($scope, $sta
   };
 
   $scope.onSubmit = function() {
-    $scope.newThing.$save(function() {
+    $scope.newThing.$save(function(newThing) {
       AlertService.success('Awesome, created "' + $scope.newThing.name + '" ' + type);
-      $scope.$close();
-      $state.go('home.postStreamPage.' + type, {
-        username: currentUser.username,
-        itemName: $scope.newThing.name,
-        type: type
-      });
+      $scope.$close(newThing);
     }, AlertService.handleErrorResponse);
   }
 });

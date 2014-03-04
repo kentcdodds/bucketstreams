@@ -428,9 +428,11 @@ ul.dropdown-menu li{cursor:pointer}
 /* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketChooser.styl */
 .bs-bucket-chooser .dropdown-menu.open{opacity:1;z-index:999}
 /* line 22 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketChooser.styl */
-.bs-bucket-chooser .dropdown-menu .search-item{padding:6px 16px 0 16px;}
+.bs-bucket-chooser .dropdown-menu .dropdown-text-field{padding:6px 16px 0 16px;}
 /* line 24 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketChooser.styl */
-.bs-bucket-chooser .dropdown-menu .search-item input{line-height:.8;height:28px}
+.bs-bucket-chooser .dropdown-menu .dropdown-text-field i{display:inline;margin-left:10px}
+/* line 27 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketChooser.styl */
+.bs-bucket-chooser .dropdown-menu .dropdown-text-field input{display:inline;height:28px;width:86%}
 /* line 111 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
 
 /* line 111 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
