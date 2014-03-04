@@ -4,6 +4,10 @@ if (process.argv.indexOf('prod') > -1) {
   process.env.LOCAL = true;
 }
 
+if (process.env.OPENSHIFT_NODEJS_IP) {
+  console.log('On Openshift:', process.env.OPENSHIFT_NODEJS_IP + ':' + process.env.OPENSHIFT_NODEJS_PORT);
+}
+
 var app = require('./app');
 
 require('http').createServer(app).listen(app.get('port'), app.get('ip'), function() {
