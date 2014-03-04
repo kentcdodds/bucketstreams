@@ -6,7 +6,7 @@ var MongoStore = require('connect-mongo')(express);
 module.exports = function(app) {
 
   // Setup express
-  if (process.env.NODE_ENV === 'production') {
+  if (/production|alpha/.test(process.env.NODE_ENV)) {
     app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 9000);
     app.set('ip', process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
     app.use(express.cookieParser('Rock Run Slime George'));
