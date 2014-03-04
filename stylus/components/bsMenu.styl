@@ -35,13 +35,17 @@ speed = 0.3s
       width 340px
 
     &.sub-menu-open
-      .bs-menu-options
-        transform translateX(40px)
-        .option-link
-          i
-            padding-right 0px
-            transform translateX(250px)
-            transition transform speed * 1.4
+      .bs-menu-scroll-hider
+        background-color bsBlue0
+        transition background-color 0s linear speed !important
+
+        .bs-menu-options
+          transform translateX(40px)
+          .option-link
+            i
+              padding-right 0px
+              transform translateX(250px)
+              transition transform speed * 1.4
     .bs-menu-scroll-hider-wrapper
       overflow hidden
 
@@ -50,33 +54,33 @@ speed = 0.3s
         overflow-y scroll
         width 370px
         height 100%
+        transition background-color 0s linear 0s
         .bs-menu-options
           width 300px
           transition transform speed
           color bsOffWhite
-          background-color bsBlue0
           font-size 1.6em
           height 100%
-          i
-            padding-right 24px
-            transition transform speed * 1.4
-            background-color transparent !important
-
-          a
-            color bsOffWhite
-            text-decoration none
-            cursor pointer
-
+          background-color bsBlue0
           ul
             list-style none
             padding-left 0
             margin 0
-          li
-            cursor pointer
-            padding 0px 24px
-            line-height 3.4
-            background-color bsBlue0
-            color bsOffWhite
+            li
+              cursor pointer
+              padding 0px 24px
+              line-height 3.4
+              color bsOffWhite
+              a
+                color bsOffWhite
+                text-decoration none
+                cursor pointer
+                i
+                  transition transform speed * 1.4
+                  background-color transparent !important
+                span
+                  padding-left 24px
+
 
           &.bs-sub-menu
             width 300px
@@ -84,9 +88,10 @@ speed = 0.3s
             bottom 0
             top 0
             left 0
-            position fixed
+            position absolute
             transform translateX(-300px)
             transition transform speed * 1.35
+            background-color bsBlue0
 
             &.show
               transform translateX(0px)
