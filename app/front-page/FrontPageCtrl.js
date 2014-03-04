@@ -6,8 +6,9 @@ angular.module('bs.frontPage').controller('FrontPageCtrl', function ($scope, $ht
   $scope.action = 'Login';
   var rememberMeKey = 'front-page-remember-me';
   var rememberedUsername = localStorage.getItem(rememberMeKey);
-  $scope.rememberMe = !!rememberedUsername && !/null|undefined/.test(rememberedUsername);
-  if ($scope.rememberMe) {
+  var remembered = !!rememberedUsername && !/null|undefined/.test(rememberedUsername);
+  $scope.rememberMe = remembered;
+  if (remembered) {
     $scope.username = rememberedUsername;
   }
   $scope.$watch('rememberMe + username', function() {
@@ -15,6 +16,22 @@ angular.module('bs.frontPage').controller('FrontPageCtrl', function ($scope, $ht
       localStorage.setItem(rememberMeKey, $scope.username);
     } else {
       localStorage.removeItem(rememberMeKey);
+    }
+  });
+
+  $scope.$watch('action', function(action) {
+    if (action === 'Login') {
+      if (_.isEmpty($scope.username) || !_.isEmpty($scope.loginPassword)) {
+        $scope.focus = 'username';
+      } else {
+        $scope.focus = 'login-password';
+      }
+    } else {
+      if (_.isEmpty($scope.email) || !_.isEmpty($scope.signUpPassword)) {
+        $scope.focus = 'email';
+      } else {
+        $scope.focus = 'signup-password';
+      }
     }
   });
 

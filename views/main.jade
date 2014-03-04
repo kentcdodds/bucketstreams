@@ -19,7 +19,10 @@ html(lang="en")
   body(ng-app="#{appName}")
 
     if !serverRendered
-      div(ui-view, class="height-100")
+      if name == 'front-page'
+        div(ui-view, class="height-100")
+      else
+        div(ui-view)
     else
       block content
 

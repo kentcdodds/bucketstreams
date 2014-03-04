@@ -26,11 +26,11 @@
           <form id="login-form" name="loginForm" role="form" ng-submit="login(username, loginPassword)" class="center-block">
             <div class="form-group">
               <label class="sr-only" for="login-email">Email or Username</label>
-              <input type="text" ng-model="username" name="username" class="form-control" id="login-email" placeholder="Email or Username" bs-autofocus="action === 'Login'" ng-change="onLoginChange(username)">
+              <input type="text" ng-model="username" name="username" class="form-control" id="login-email" placeholder="Email or Username" bs-autofocus="focus === 'username'" ng-change="onLoginChange(username)">
             </div>
             <div class="form-group">
               <label class="sr-only" for="login-password">Password</label>
-              <input type="password" class="form-control" ng-model="loginPassword" name="password" id="login-password" placeholder="Password">
+              <input type="password" class="form-control" ng-model="loginPassword" name="password" id="login-password" placeholder="Password" bs-autofocus="focus === 'login-password'" >
             </div>
             <div class="pull-left">
               <a class="text-muted cursor-pointer" ng-click="action = 'Sign Up'">New here?</a><br />
@@ -51,11 +51,11 @@
           <form id="sign-up-form" name="signUpForm" role="form" ng-submit="signUp(email, signUpPassword)" class="center-block">
             <div class="form-group">
               <label class="sr-only" for="sign-up-email">Email</label>
-              <input type="email" ng-model="email" name="email" class="form-control" id="sign-up-email" placeholder="Email" bs-autofocus="action === 'Sign Up'" >
+              <input type="email" ng-model="email" name="email" class="form-control" id="sign-up-email" placeholder="Email" bs-autofocus="focus === 'email'" >
             </div>
             <div class="form-group">
               <label class="sr-only" for="sign-up-password">Password</label>
-              <input type="password" class="form-control" ng-model="signUpPassword" name="password" id="sign-up-password" placeholder="Password">
+              <input type="password" class="form-control" ng-model="signUpPassword" name="password" id="sign-up-password" placeholder="Password" bs-autofocus="focus === 'signup-password'">
             </div>
             <a class="text-muted cursor-pointer" ng-click="action = 'Login'">Login instead</a>
             <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-{{going ? 'spinner fa-spin' : 'lock'}}"></i> Join</button>

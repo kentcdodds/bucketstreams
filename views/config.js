@@ -58,6 +58,7 @@ module.exports = (function() {
 
   return {
     frontPage: {
+      name: 'front-page',
       stylesheets: commonConfig.stylesheets,
       topScripts: commonConfig.topScripts,
       appName: 'bs.frontPage',
@@ -65,6 +66,7 @@ module.exports = (function() {
       isDev: isDev
     },
     main: {
+      name: 'main',
       stylesheets: commonConfig.stylesheets,
       topScripts: commonConfig.topScripts,
       appName: 'bs.app',
@@ -72,6 +74,7 @@ module.exports = (function() {
       isDev: isDev
     },
     components: {
+      name: 'components',
       stylesheets: commonConfig.stylesheets,
       topScripts: commonConfig.topScripts,
       appName: 'bs.componentWrapper',
