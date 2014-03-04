@@ -36,7 +36,6 @@ angular.module('bs.directives').directive('bsUsernameInput', function(UtilServic
         var length = (viewValue || '').length;
         var validLength = length >= 3 && length <= 16;
         ctrl.$setValidity(validity.length, validLength);
-        console.log(viewValue);
         return viewValue;
       };
       ctrl.$parsers.unshift(parser);

@@ -24,7 +24,7 @@
     "twitter": "0.2.5",
     "passport-twitter": "1.0.2",
     "passport-google-oauth": "0.1.5",
-    "lodash-node": "2.2.1",
+    "lodash-node": "~2.4.1",
     "async": "0.2.9",
     "winston": "0.7.2",
     "forever": "~0.10.11",

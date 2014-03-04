@@ -2,11 +2,13 @@ var passport = require('passport');
 var express = require('express');
 var path = require('path');
 var MongoStore = require('connect-mongo')(express);
+var logger = require('winston');
 
 module.exports = function(app) {
 
   // Setup express
   if (/production|alpha/.test(process.env.NODE_ENV)) {
+    logger.info('Setting express up with production-level stuff');
     app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 9000);
     app.set('ip', process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
     app.use(express.cookieParser('Rock Run Slime George'));
@@ -18,6 +20,7 @@ module.exports = function(app) {
     }));
     app.use(express.compress());
   } else {
+    logger.info('Setting express up with development-level stuff');
     app.set('port', process.env.PORT || 9000);
     app.set('ip', process.env.IP || '127.0.0.1');
     app.use(express.errorHandler());

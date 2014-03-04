@@ -9790,7 +9790,7 @@ if ( typeof module === "object" && module && typeof module.exports === "object" 
 })( window );
 
 /**
- * @license AngularJS v1.2.14
+ * @license AngularJS v1.2.15-build.2365+sha.d07101d
  * (c) 2010-2014 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9860,7 +9860,7 @@ function minErr(module) {
       return match;
     });
 
-    message = message + '\nhttp://errors.angularjs.org/1.2.14/' +
+    message = message + '\nhttp://errors.angularjs.org/1.2.15-build.2365+sha.d07101d/' +
       (module ? module + '/' : '') + code;
     for (i = 2; i < arguments.length; i++) {
       message = message + (i == 2 ? '?' : '&') + 'p' + (i-2) + '=' +
@@ -11332,7 +11332,7 @@ function setupModuleLoader(window) {
      * Then you can create an injector and load your modules like this:
      *
      * ```js
-     * var injector = angular.injector(['ng', 'MyModule'])
+     * var injector = angular.injector(['ng', 'myModule'])
      * ```
      *
      * However it's more likely that you'll just use
@@ -11341,7 +11341,7 @@ function setupModuleLoader(window) {
      *
      * @param {!string} name The name of the module to create or retrieve.
      * @param {Array.<string>=} requires If specified then new module is being created. If
-     *        unspecified then the the module is being retrieved for further configuration.
+     *        unspecified then the module is being retrieved for further configuration.
      * @param {Function} configFn Optional configuration function for the module. Same as
      *        {@link angular.Module#config Module#config()}.
      * @returns {module} new module with the {@link angular.Module} api.
@@ -11672,11 +11672,11 @@ function setupModuleLoader(window) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.2.14',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.2.15-build.2365+sha.d07101d',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 2,
-  dot: 14,
-  codeName: 'feisty-cryokinesis'
+  dot: 15,
+  codeName: 'snapshot'
 };
 
 
@@ -17317,7 +17317,7 @@ function $HttpProvider() {
      *   - **headers** – `{function([headerName])}` – Header getter function.
      *   - **config** – `{Object}` – The configuration object that was used to generate the request.
      *
-     * @property {Array.&ltObject&gt;} pendingRequests Array of config objects for currently pending
+     * @property {Array.<Object>} pendingRequests Array of config objects for currently pending
      *   requests. This is primarily meant to be used for debugging purposes.
      *
      *
@@ -17619,7 +17619,6 @@ function $HttpProvider() {
         /**
          * @ngdoc property
          * @name $http#defaults
-         * @propertyOf ng.$http
          *
          * @description
          * Runtime equivalent of the `$httpProvider.defaults` property. Allows configuration of
@@ -18370,7 +18369,7 @@ function $IntervalProvider() {
       * @description
       * Cancels a task associated with the `promise`.
       *
-      * @param {number} promise Promise returned by the `$interval` function.
+      * @param {promise} promise returned by the `$interval` function.
       * @returns {boolean} Returns `true` if the task was successfully canceled.
       */
     interval.cancel = function(promise) {
@@ -21999,7 +21998,7 @@ function $RootScopeProvider(){
        *   - `defaultPrevented` - `{boolean}`: true if `preventDefault` was called.
        *
        * @param {string} name Event name to listen on.
-       * @param {function(event, args...)} listener Function to call when the event is emitted.
+       * @param {function(event, ...args)} listener Function to call when the event is emitted.
        * @returns {function()} Returns a deregistration function for this listener.
        */
       $on: function(name, listener) {
@@ -30158,7 +30157,7 @@ var ngTranscludeDirective = ngDirective({
  * `<script>` element must be specified as `text/ng-template`, and a cache name for the template must be
  * assigned through the element's `id`, which can then be used as a directive's `templateUrl`.
  *
- * @param {'text/ng-template'} type Must be set to `'text/ng-template'`.
+ * @param {string} type Must be set to `'text/ng-template'`.
  * @param {string} id Cache name of the template.
  *
  * @example

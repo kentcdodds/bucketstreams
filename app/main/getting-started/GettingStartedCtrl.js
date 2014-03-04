@@ -31,6 +31,7 @@ angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $time
       $scope.currentUser.name.first = firstName;
       $scope.currentUser.name.last = lastName;
       saveUser();
+      $scope.$close();
     }
   };
 
