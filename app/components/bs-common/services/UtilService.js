@@ -1,16 +1,7 @@
-angular.module('bs.services').factory('UtilService', function(_, $http, $q, Post, Comment) {
-  function testPath(object, path) {
-    var props = path.split('.');
-    var value = object;
-    _.each(props, function(prop) {
-      value = value[prop];
-      return !_.isUndefined(value);
-    });
-    return value;
-  }
+angular.module('bs.services').factory('UtilService', function(_, $http, $q, Post, Comment, User) {
   //noinspection UnnecessaryLocalVariableJS
   var util = {
-    testUniqueness: function(model, field, value) {
+    testUniqueness: function (model, field, value) {
       return $http({
         url: '/api/v1/util/unique/' + model,
         method: 'GET',
@@ -20,7 +11,7 @@ angular.module('bs.services').factory('UtilService', function(_, $http, $q, Post
         }
       });
     },
-    loadData: function(type, username, typeName, model) {
+    loadData: function (type, username, typeName, model) {
       var deferred = $q.defer();
       $http({
         method: 'GET',
@@ -29,11 +20,13 @@ angular.module('bs.services').factory('UtilService', function(_, $http, $q, Post
           username: username,
           name: typeName
         }
-      }).then(function(response) {
+      }).then(function (response) {
         var one = response.data[type];
         var posts = response.data.posts;
-        _.each(posts, function(post, postIndex) {
-          _.each(post.comments, function(comment, commentIndex) {
+        _.each(posts, function (post, postIndex) {
+          post.authorInfo = new User(post.authorInfo);
+          _.each(post.comments, function (comment, commentIndex) {
+            comment.authorInfo = new User(comment.authorInfo);
             post.comments[commentIndex] = new Comment(comment);
           });
           posts[postIndex] = new Post(post);
@@ -45,77 +38,8 @@ angular.module('bs.services').factory('UtilService', function(_, $http, $q, Post
       }, deferred.reject);
       return deferred.promise;
     },
-    loadPost: function(postId) {
+    loadPost: function (postId) {
       return $http.get('/api/v1/util/data/post/' + postId);
-    },
-    testHasPosterity: function(object, paths, atLeastOne) {
-      if (!object) {
-        return false;
-      }
-      var hasPosterity = false;
-      paths = _.isArray(paths) ? paths : [paths];
-      _.each(paths, function(path) {
-        hasPosterity = !_.isUndefined(testPath(object, path));
-        if (hasPosterity && atLeastOne) {
-          return false;
-        }
-        return hasPosterity;
-      });
-      return hasPosterity;
-    },
-    getGrandchild: function(object, paths) {
-      if (!object) {
-        return false;
-      }
-      var values = [];
-      paths = _.isArray(paths) ? paths : [paths];
-      _.each(paths, function(path) {
-        values.push(testPath(object, path));
-      });
-      if (values.length === 1) {
-        return values[0];
-      }
-      return values;
-    },
-    testGrandchild: function(object, paths, fn) {
-      if (!object) {
-        return false;
-      }
-      var values = [];
-      paths = _.isArray(paths) ? paths : [paths];
-      _.each(paths, function(path) {
-        values.push(fn(testPath(object, path)));
-      });
-      if (values.length === 1) {
-        return values[0];
-      }
-      return values;
-    },
-    testAllItems: function(arry, test) {
-      var pass = false;
-      _.each(arry, function(item) {
-        pass = test(item);
-        return pass;
-      });
-      return pass;
-    },
-    testAnyItems: function(arry, test) {
-      var pass = false;
-      _.each(arry, function(item) {
-        pass = test(item);
-        if (pass) {
-          return false;
-        }
-      });
-      return pass;
-    },
-    testNoItems: function(arry, test) {
-      var pass = false;
-      _.each(arry, function(item) {
-        pass = test(item);
-        return pass;
-      });
-      return !pass;
     }
   };
   return util;

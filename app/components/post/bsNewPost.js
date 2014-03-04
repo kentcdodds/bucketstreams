@@ -22,10 +22,10 @@ angular.module('bs.directives').directive('bsNewPost', function(Post, _, AlertSe
 
       scope.makePost = function() {
         var post = new Post({
-          author: scope.currentUser._id,
+          author: scope.user._id,
           content: scope.content,
           buckets: _.pluck(_.filter(scope.buckets, function(bucket) {
-            return bucket.isMain || bucket.isSelected
+            return bucket.isMain || bucket.selected()
           }), '_id')
         });
         post.$save(function(){
@@ -47,9 +47,6 @@ angular.module('bs.directives').directive('bsNewPost', function(Post, _, AlertSe
           multimedia: {}
         };
         scope.randomPlaceholder = placeholders[Math.floor(Math.random() * placeholders.length)];
-        _.each(scope.buckets, function(bucket) {
-          bucket.isSelected = false;
-        });
       }
       resetState();
 

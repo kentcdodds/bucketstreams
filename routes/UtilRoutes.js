@@ -67,7 +67,7 @@ module.exports = function(app) {
         RouteHelper.convertUsernameQueryToId(req, 'owner', function() {
           models[type].findOne(req.query, function(err, one) {
             if (err) return ErrorController.sendErrorJson(res, 500, err.message);
-            if (!one) return ErrorController.sendErrorJson(res, 400, 'No ' + type + ' with the name ' + req.query.name);
+            if (!one) return ErrorController.sendErrorJson(res, 404, 'No ' + type + ' with the name ' + req.query.name);
             one.getPosts(function(err, posts) {
               if (err) return ErrorController.sendErrorJson(res, 500, err.message);
               var response = {};
@@ -88,7 +88,7 @@ module.exports = function(app) {
   app.get(prefixes.util + '/data/post/:id', function(req, res, next) {
     Post.findOne({_id: req.params.id }, function(err, post) {
       if (err) return ErrorController.sendErrorJson(res, 500, err.message);
-      if (!post) return ErrorController.sendErrorJson(res, 400, 'No post with the id ' + req.query.id);
+      if (!post) return ErrorController.sendErrorJson(res, 404, 'No post with the id ' + req.query.id);
 
       Comment.find({owningPost: req.params.id}, function(err, comments) {
         if (err) return ErrorController.sendErrorJson(res, 500, err.message);

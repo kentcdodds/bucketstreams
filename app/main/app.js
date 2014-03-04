@@ -71,7 +71,11 @@
           }
         },
         onEnter: function(CurrentContext, profileUser) {
-          CurrentContext.context(profileUser.getDisplayName());
+          CurrentContext.context({
+            name: profileUser.getDisplayName(),
+            icon: 'user',
+            data: profileUser
+          });
         }
       }).
       state('home.newBucketOrStream', {
@@ -80,12 +84,14 @@
           var type = $stateParams.type;
           var capType = 'Stream';
           var model = Stream;
+          var icon = 'smile-o';
 
           if (type === 'bucket') {
             model = Bucket;
             capType = 'Bucket';
+            icon = 'bitbucket';
           }
-          CurrentContext.context('New ' + capType);
+          CurrentContext.context({name: 'New ' + capType, icon: icon});
           $modal.open({
             templateUrl: '/main/new-bucket-stream/new-bucket-stream.html',
             controller: 'NewBucketStreamCtrl',
@@ -124,9 +130,12 @@
           }
         },
         onEnter: function(CurrentContext, data, $stateParams) {
-          var up = $stateParams.type;
-          up = up.substring(0,1).toUpperCase() + up.substring(1,up.length).toLowerCase();
-          CurrentContext.context(data[$stateParams.type].name + ' ' + up);
+          var type = $stateParams.type;
+          var icon = 'bitbucket';
+          if (type === 'stream') {
+            icon = 'smile-o';
+          }
+          CurrentContext.context({name: data[type].name, icon: icon, data: data});
         }
       }).
       state('home.postStreamPage.bucket', {

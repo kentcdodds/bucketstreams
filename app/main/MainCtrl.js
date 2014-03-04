@@ -12,6 +12,15 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
 
   $scope.$on(CurrentContext.contextChangeEvent, function(event, newContext) {
     $scope.context = newContext;
+
+    // Select the bucket in context
+    var id = null;
+    if ($scope.context.data && $scope.context.data.bucket) {
+      id = $scope.context.data.bucket._id;
+    }
+    _.each($scope.userBuckets, function(bucket) {
+      bucket.selected(id === bucket._id);
+    });
   });
   $scope.context = CurrentContext.context();
 

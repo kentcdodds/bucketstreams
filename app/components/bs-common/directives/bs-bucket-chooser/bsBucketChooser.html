@@ -4,7 +4,7 @@
     <span class="label label-{{labelTypes[labelTypes.length - 1]}} cursor-pointer">Main Bucket</span>
     <div class="display-inline" ng-repeat="bucket in buckets | filter:{isSelected: true}">
       <span class="label label-{{labelTypes[$index % labelTypes.length]}} cursor-pointer"
-            ng-click="bucket.isSelected = false">{{bucket.name}} &times;</span>
+            ng-click="bucket.selected(false)">{{bucket.name}} &times;</span>
     </div>
     <ul class="dropdown-menu" ng-class="{'open': menuOpen}" ng-click="noBubbles($event)">
       <li class="search-item">
@@ -12,7 +12,7 @@
       </li>
       <li role="presentation" class="divider"></li>
       <li ng-repeat="bucket in buckets | filter:search" ng-if="!bucket.isMain" ng-click="toggleBucket(bucket)">
-        <a><i class="fa fa-{{bucket.isSelected ? 'check-' : ''}}circle-o"></i> {{bucket.name}}</a>
+        <a><i class="fa fa-{{bucket.selected() ? 'check-' : ''}}circle-o"></i> {{bucket.name}}</a>
       </li>
     </ul>
   </div>

@@ -39,7 +39,7 @@ angular.module('bs.directives').directive('bsBucketChooser', function($timeout, 
       };
 
       scope.toggleBucket = function(bucket) {
-        bucket.isSelected = !bucket.isSelected;
+        bucket.toggleSelected();
       };
 
       scope.toggleFirstBucket = function($event, search) {

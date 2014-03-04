@@ -1,4 +1,4 @@
-angular.module('bs.models').factory('User', function($resource, $http, _, UtilService, $window) {
+angular.module('bs.models').factory('User', function($resource, $http, _, UtilFunctions, $window) {
   var User = $resource('/api/v1/rest/users/:id', { id: '@_id' });
   var authPrefix = '/api/v1/auth';
   User.register = function(email, password) {
@@ -32,7 +32,7 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
   };
 
   User.prototype.getDisplayName = function() {
-    if (UtilService.testHasPosterity(this.name, ['first', 'last'], true)) {
+    if (UtilFunctions.testHasPosterity(this.name, ['first', 'last'], true)) {
       return (this.name.first || '') + ' ' + (this.name.last || '');
     } else if (this.username) {
       return '@' + this.username;
@@ -73,7 +73,7 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
   };
 
   User.prototype.hasProfilePicture = function() {
-    return UtilService.testHasPosterity(this.profilePicture, '0.url');
+    return UtilFunctions.testHasPosterity(this.profilePicture, '0.url');
   };
 
   User.prototype.hasFullName = function() {
@@ -93,11 +93,11 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilSe
   };
 
   User.prototype.hasInboundRules = function(provider) {
-    return UtilService.testHasPosterity(this.connectedAccounts, provider + '.rules.0');
+    return UtilFunctions.testHasPosterity(this.connectedAccounts, provider + '.rules.0');
   };
 
   User.prototype.isConnectedTo = function(provider) {
-    return UtilService.testHasPosterity(this.connectedAccounts, provider + '.token');
+    return UtilFunctions.testHasPosterity(this.connectedAccounts, provider + '.token');
   };
 
   User.prototype.getFieldsToFill = function() {

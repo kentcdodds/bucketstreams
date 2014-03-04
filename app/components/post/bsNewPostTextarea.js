@@ -25,7 +25,7 @@ angular.module('bs.directives').directive('bsNewPostTextarea', function(_) {
 
       function getMatchingBucket(text) {
         return _.filter(scope.buckets, function(bucket) {
-          return !bucket.isMain && !bucket.isSelected && bucket.name.toLowerCase().indexOf(text.toLowerCase()) == 0;
+          return !bucket.isMain && !bucket.selected() && bucket.name.toLowerCase().indexOf(text.toLowerCase()) == 0;
         });
       }
 
@@ -42,7 +42,7 @@ angular.module('bs.directives').directive('bsNewPostTextarea', function(_) {
             var matchingBuckets = getMatchingBucket(textBetween);
             if (matchingBuckets.length) {
               var bucket = _.sortBy(matchingBuckets, 'name')[0];
-              bucket.isSelected = true;
+              bucket.selected(true);
               var firstPart = val.substring(0, ticIndex);
               var secondPart = val.substring(selectionEnd, val.length);
               element.val(firstPart + secondPart);
