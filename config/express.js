@@ -42,7 +42,7 @@ module.exports = function(app) {
   app.use(passport.session());
   app.use(app.router);
 
-  if (process.env.hideBucketStreams !== 'true') {
+  if (process.env.hideBucketStreams === 'true') {
     app.all('*', function (req, res, next) {
       function askForAuth(res) {
         res.statusCode = 401;
