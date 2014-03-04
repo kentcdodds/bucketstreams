@@ -17,7 +17,6 @@
         templateUrl: frontPageTemplates + 'index.html',
         controller: 'FrontPageCtrl',
         onEnter: function() {
-          console.log('frontPage');
         }
       }).
       state('frontPage.loginTrouble', {
@@ -27,7 +26,6 @@
           $scope.message = 'Too bad...';
         },
         onEnter: function() {
-          console.log('too bad...');
         }
       });
 

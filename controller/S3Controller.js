@@ -72,7 +72,6 @@ module.exports = {
         req.user.addProfilePicture(imageUrl, function(err, user) {
           if (err) return ErrorController.sendErrorJson(res, 500, err.message);
           res.statusCode = s3Response.statusCode;
-          console.log(imageUrl);
           return res.json({
             imageUrl: imageUrl
           });

@@ -10,7 +10,7 @@
       <div class="profile-picture">
         <bs-profile-picture-upload ng-if="profileUser._id === currentUser._id"></bs-profile-picture-upload>
         <div ng-if="profileUser._id !== currentUser._id" class="center-block">
-          <img class="user-photo img-circle" ng-src="{{profileUser.getProfilePicture()}}">
+          <bs-profile-picture user="profileUser" class="user-photo" size="160" hide-hover="true"></bs-profile-picture>
         </div>
       </div>
     </div>

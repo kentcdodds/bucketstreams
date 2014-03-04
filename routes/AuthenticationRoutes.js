@@ -100,7 +100,6 @@ module.exports = function(app) {
 
   app.get(prefix.auth + '/logout', function(req, res) {
     req.logout();
-    console.log('logged out, redirecting');
     res.redirect('/');
   });
 

@@ -11,10 +11,7 @@
       .state('home', {
         url: '/components',
         templateUrl: 'componentWrapper/index.html',
-        controller: 'ComponentWrapperCtrl',
-        onEnter: function() {
-          console.log('component wrapper');
-        }
+        controller: 'ComponentWrapperCtrl'
       });
 
     $urlRouterProvider.otherwise('/components');

@@ -1,3 +1,4 @@
+var logger = require('winston');
 module.exports = function(app) {
   require('./CustomMiddleware')(app);
   require('./UtilRoutes')(app);
@@ -17,8 +18,7 @@ module.exports = function(app) {
   });
 
   app.get('/components', function(req, res) {
-    console.log('rendering components page');
-    console.log(config.components);
+    logger.info('rendering components page');
     res.render('main', config.components);
   });
 
@@ -26,7 +26,7 @@ module.exports = function(app) {
 
   app.get('(/' + unauthFrontPages.join('|/') + ')', function(req, res, next) {
     if (!req.isAuthenticated() || req.session.visitor) {
-      console.log('sending front-page');
+      logger.info('sending front-page');
       res.render('main', config.frontPage);
     } else {
       next();
@@ -44,12 +44,12 @@ module.exports = function(app) {
   });
 
   app.get('*', function(req, res) {
-    console.log('catch all: ' + req.params);
+    logger.info('catch all: ' + req.params);
     if (req.session.visitor || !req.isAuthenticated()) {
-      console.log('sending frontPage');
+      logger.info('sending frontPage');
       res.render('main', config.frontPage);
     } else {
-      console.log('sending main');
+      logger.info('sending main');
       res.render('main', config.main);
     }
   });
