@@ -41,4 +41,28 @@ module.exports = function(app) {
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(app.router);
+
+  if (process.env.hideBucketStreams !== 'true') {
+    app.all('*', function (req, res, next) {
+      function askForAuth(res) {
+        res.statusCode = 401;
+        res.setHeader('WWW-Authenticate', 'Basic realm="Please authenticate"');
+        res.end('Unauthorized');
+      }
+
+      var authorization = req.headers.authorization;
+      if (!authorization) return askForAuth(res);
+
+      var token = authorization.split(/\s+/).pop() || '';
+      var auth = new Buffer(token, 'base64').toString();
+      var parts = auth.split(/:/);
+      var username = parts[0];
+      var password = parts[1];
+      if (username === process.env.hideBSUsername && password === process.env.hideBSPassword) {
+        next();
+      } else {
+        askForAuth(res);
+      }
+    });
+  }
 };
