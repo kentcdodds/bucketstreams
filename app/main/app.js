@@ -26,18 +26,15 @@
         resolve: {
           currentUser: commonResolve.currentUser
         },
-        onEnter: function(CurrentContext) {
-          CurrentContext.context('Main Stream');
-        }
+        context: 'Main Stream'
       }).
       state('home.gettingStarted', {
         url: 'getting-started',
-        onEnter: function($state, $modal, CurrentUserService, CurrentContext) {
+        onEnter: function($state, $modal, CurrentUserService) {
           var currentUser = CurrentUserService.getUser();
           if (currentUser.hasUsername() && currentUser.hasProfilePicture()) {
             return $state.transitionTo('home');
           }
-          CurrentContext.context('Getting Started');
           $modal.open({
             templateUrl: '/main/getting-started/getting-started.html',
             controller: 'GettingStartedCtrl',
@@ -45,15 +42,14 @@
           }).result.then(function() {
               return $state.go('home');
             });
-        }
+        },
+        context: 'Getting Started'
       }).
       state('home.settings', {
         url: 'settings',
         controller: 'SettingsCtrl',
         templateUrl: '/main/settings/settings.html',
-        onEnter: function(CurrentContext) {
-          CurrentContext.context('Settings');
-        }
+        context: 'Settings'
       }).
       state('home.userPage', {
         url: ':username',
@@ -147,7 +143,7 @@
       state('home.postPage', {
         controller: 'PostPageCtrl',
         templateUrl: '/main/post-page/post-page.html',
-        url: ':username/:postId',
+        url: ':username/post/:postId',
         resolve: {
           post: function($q, UtilService, $stateParams) {
             var deferred = $q.defer();
@@ -156,7 +152,8 @@
             }, deferred.reject);
             return deferred.promise;
           }
-        }
+        },
+        context: 'Bucket Streams Post'
       });
 
     $urlRouterProvider.otherwise('/');
