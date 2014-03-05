@@ -18,10 +18,18 @@ angular.module('bs.directives').directive('bsMenu', function($document, $timeout
       options: '=bsMenu'
     },
     link: function(scope, el, attrs) {
+      function safeApply(fn) {
+        var phase = scope.$root.$$phase;
+        if(phase == '$apply' || phase == '$digest') {
+          scope.$eval(fn);
+        }
+        else {
+          scope.$apply(fn);
+        }
+      }
 
       scope.onItemClicked = function($event, item) {
         scope.selectedItem = item;
-        scope.showSubMenu = true;
         if (item.onClick) {
           hideMenu();
           if (angular.isString(item.onClick)) {
@@ -29,6 +37,9 @@ angular.module('bs.directives').directive('bsMenu', function($document, $timeout
           } else {
             item.onClick();
           }
+        } else if (item.children && item.children.length) {
+          scope.large = true;
+          scope.showSubMenu = true;
         }
         $event.stopPropagation();
       };
@@ -60,10 +71,14 @@ angular.module('bs.directives').directive('bsMenu', function($document, $timeout
         scope.showSubMenu = false;
       }
 
-      $document.on('click', function($event, event) {
-        if ((scope.large || scope.small) && !isChild(el[0], event.srcElement)) {
-          hideMenu();
-          scope.$apply();
+      $document.on('click keyup', function(event) {
+        var menuIsOpen = scope.large || scope.small;
+        if (!menuIsOpen) return;
+
+        var escapePressed = event.keyCode == 27;
+        var clickedOutOfMenu = event.keyCode == 0 && !isChild(el[0], event.srcElement);
+        if (escapePressed || clickedOutOfMenu) {
+          safeApply(hideMenu);
         }
       });
     }

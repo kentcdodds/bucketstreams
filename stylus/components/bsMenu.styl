@@ -71,8 +71,8 @@ speed = 0.3s
               padding 0px 24px
               line-height 3.4
               color bsOffWhite
+              background-color bsBlue0
               a
-                color bsOffWhite
                 text-decoration none
                 cursor pointer
                 i
@@ -80,6 +80,16 @@ speed = 0.3s
                   background-color transparent !important
                 span
                   padding-left 24px
+              &.menu-option
+                *
+                  background-color bsBlue0
+                  color bsOffWhite
+                &:hover
+                  color bsBlue0
+                  background-color bsOffWhite
+                  *
+                    color bsBlue0
+                    background-color bsOffWhite
 
 
           &.bs-sub-menu
@@ -107,7 +117,7 @@ speed = 0.3s
                 padding-bottom 16px
                 line-height 1
                 background-color rgba(0, 0, 0, .15)
-                &hover
+                &:hover
                   background-color rgba(0, 0, 0, .35)
                 .selected-icon
                   padding-right 6px

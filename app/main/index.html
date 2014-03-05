@@ -3,7 +3,7 @@
   <div class="top-bar">
     <div class="col-xs-4 text-left">
       <div class="position-absolute">
-        <div bs-menu="menuItems"></div>
+        <div bs-menu="menuItems" menu-open="menuOpen"></div>
       </div>
       <a ui-sref="home" ng-click="resetContext()" class="margin-left-xxlarge">
         <img src="/images/logo-small.png" class="bs-logo display-inline">
@@ -36,5 +36,5 @@
     </div>
   </div>
 
-  <div ux-lamp lamp-visible="lampVisible" rub-class="visible" wish-callback="wishMade(wish)" firebase="http://bucketstreams.firebaseio.com/genie/{{currentUser._id}}"></div>
+  <div ng-if="currentUser.username" ux-lamp lamp-visible="lampVisible" rub-class="visible" wish-callback="wishMade(wish)" firebase="http://bucketstreams.firebaseio.com/genie/{{currentUser._id}}"></div>
 </div>

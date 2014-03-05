@@ -4,6 +4,9 @@ angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $time
   $scope.$on(CurrentUserService.userUpdateEvent, function(event, updatedUser) {
     $scope.currentUser = updatedUser;
   });
+  $scope.firstName = $scope.currentUser.name.first;
+  $scope.lastName = $scope.currentUser.name.last;
+  $scope.tempUsername = $scope.currentUser.username;
 
   $scope.fieldsToFill = $scope.currentUser.getFieldsToFill();
   $scope.dismiss = function() {

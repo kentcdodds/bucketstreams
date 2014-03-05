@@ -7,7 +7,8 @@
       <div class="bs-menu-scroll-hider">
         <div class="bs-menu-options bs-main-menu">
           <ul>
-            <li ng-repeat="item in options" bs-invert i-background="{{iBackground}}" i-color="{{iColor}}" ng-click="onItemClicked($event, item)">
+            <li ng-repeat="item in options" class="menu-option" ng-click="onItemClicked($event, item)"
+                genie-wish="{{item.text}}" wish-id="mi-{{item.text}}" wish-context="bs" wish-i-icon="fa fa-{{item.genieIcon}}">
               <a class="option-link">
                 <i class="fa fa-{{item.icon}}"></i>
                 <span class="hide-on-small"> {{item.text}}</span>
@@ -23,7 +24,7 @@
                 <i class="selected-icon fa fa-{{selectedItem.icon}}"></i>
                 <span> {{selectedItem.text}}</span>
               </li>
-              <li ng-repeat="child in selectedItem.children" bs-invert i-background="{{iBackground}}" i-color="{{iColor}}" ng-click="onItemClicked($event, child)">
+              <li ng-repeat="child in selectedItem.children" class="menu-option" ng-click="onItemClicked($event, child)">
                 <a fa-icon="{{child.icon}}">
                   <span class="hide-on-small"> {{child.text}}</span>
                 </a>

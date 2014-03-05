@@ -1,25 +1,48 @@
-angular.module('bs.app').factory('bsGenie', function(genie, $window) {
+angular.module('bs.app').factory('bsGenie', function(genie) {
   var appContext = 'bs';
   genie.context(appContext);
-  var bsGenie = {
-    getUxDataForIcon: function(icon) {
-      return {
-        uxGenie: {
-          iIcon: 'fa fa-' + icon
-        }
+
+  function getUxDataForIcon(icon) {
+    return {
+      uxGenie: {
+        iIcon: 'fa fa-' + icon
       }
-    },
-    initializeGenie: function() {
+    }
+  }
+
+  function initializeGenie() {
+    (function createOptionsWish() {
+      var subContext = 'genie-options';
+      var optionsData = {
+        uxGenie:{
+          iIcon: 'fa fa-cog',
+          subContext: subContext
+        }
+      };
       genie({
-        id: 'submit-feedback',
+        id: 'genie-options',
         context: appContext,
-        magicWords: 'Submit Feedback',
-        data: bsGenie.getUxDataForIcon('bullhorn'),
+        magicWords: 'Genie Options:',
+        data: optionsData
+      });
+
+      genie({
+        id: 'clear-genie-memory',
+        context: subContext,
+        magicWords: 'Clear Genie\'s Memory',
+        data: getUxDataForIcon('times'),
         action: function() {
-          $window.open('https://bitbucket.org/kentcdodds/bucketstreams/issues/new');
+          genie.options({
+            enteredMagicWords: {}
+          });
         }
       });
-    }
+    })();
+  }
+
+  return {
+    appContext: appContext,
+    getUxDataForIcon: getUxDataForIcon,
+    initializeGenie: initializeGenie
   };
-  return bsGenie;
 });

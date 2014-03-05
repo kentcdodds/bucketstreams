@@ -531,9 +531,9 @@ ul.dropdown-menu li{cursor:pointer}
 .bs-bucket-chooser .dropdown-menu .dropdown-text-field i{display:inline;margin-left:10px}
 /* line 27 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketChooser.styl */
 .bs-bucket-chooser .dropdown-menu .dropdown-text-field input{display:inline;height:28px;width:86%}
-/* line 116 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
+/* line 126 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
 
-/* line 116 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
+/* line 126 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
 
 /* line 14 : /Users/kentcdodds/Developer/bucketstreams/node_modules/nib/lib/nib/index.styl */
 
@@ -724,28 +724,36 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 /* line 65 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
 .bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options ul{list-style:none;padding-left:0;margin:0;}
 /* line 69 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
-.bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options ul li{cursor:pointer;padding:0 24px;line-height:3.4;color:#fafcf9;}
-/* line 74 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
-.bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options ul li a{color:#fafcf9;text-decoration:none;cursor:pointer;}
+.bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options ul li{cursor:pointer;padding:0 24px;line-height:3.4;color:#fafcf9;background-color:#03426a;}
+/* line 75 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
+.bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options ul li a{text-decoration:none;cursor:pointer;}
 /* line 78 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
 .bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options ul li a i{-webkit-transition:-webkit-transform 0.42s;-moz-transition:-moz-transform 0.42s;-o-transition:-o-transform 0.42s;-ms-transition:-ms-transform 0.42s;transition:transform 0.42s;background-color:transparent !important}
 /* line 81 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
 .bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options ul li a span{padding-left:24px}
-/* line 85 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
+/* line 83 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
+
+/* line 84 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
+.bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options ul li.menu-option *{background-color:#03426a;color:#fafcf9}
+/* line 87 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
+.bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options ul li.menu-option:hover{color:#03426a;background-color:#fafcf9;}
+/* line 90 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
+.bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options ul li.menu-option:hover *{color:#03426a;background-color:#fafcf9}
+/* line 95 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
 .bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options.bs-sub-menu{width:300px;font-size:1.2em;bottom:0;top:0;left:0;position:absolute;-webkit-transform:translateX(-300px);-moz-transform:translateX(-300px);-o-transform:translateX(-300px);-ms-transform:translateX(-300px);transform:translateX(-300px);-webkit-transition:-webkit-transform 0.405s;-moz-transition:-moz-transform 0.405s;-o-transition:-o-transform 0.405s;-ms-transition:-ms-transform 0.405s;transition:transform 0.405s;background-color:#03426a;}
-/* line 96 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
+/* line 106 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
 .bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options.bs-sub-menu.show{-webkit-transform:translateX(0);-moz-transform:translateX(0);-o-transform:translateX(0);-ms-transform:translateX(0);transform:translateX(0)}
-/* line 99 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
+/* line 109 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
 .bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options.bs-sub-menu .menu-options{width:300px;height:100%;}
-/* line 102 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
-.bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options.bs-sub-menu .menu-options i{padding-right:12px}
-/* line 104 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
-.bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options.bs-sub-menu .menu-options .sub-menu-context{font-size:1.4em;padding-top:16px;padding-bottom:16px;line-height:1;background-color:rgba(0,0,0,0.15);}
-/* line 110 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
-.bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options.bs-sub-menu .menu-options .sub-menu-contexthover{background-color:rgba(0,0,0,0.35)}
 /* line 112 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
-.bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options.bs-sub-menu .menu-options .sub-menu-context .selected-icon{padding-right:6px}
+.bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options.bs-sub-menu .menu-options i{padding-right:12px}
 /* line 114 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
+.bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options.bs-sub-menu .menu-options .sub-menu-context{font-size:1.4em;padding-top:16px;padding-bottom:16px;line-height:1;background-color:rgba(0,0,0,0.15);}
+/* line 120 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
+.bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options.bs-sub-menu .menu-options .sub-menu-context:hover{background-color:rgba(0,0,0,0.35)}
+/* line 122 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
+.bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options.bs-sub-menu .menu-options .sub-menu-context .selected-icon{padding-right:6px}
+/* line 124 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
 .bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options.bs-sub-menu .menu-options .sub-menu-context .back-icon{color:#999}
 /* line 33 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/common-page.styl */
 
@@ -892,7 +900,9 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 /* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/index.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/index.styl */
-.main-content{margin-top:40px;padding:4px 40px 40px 40px}
+.main-content{margin-top:40px;padding:20px 40px;}
+/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/index.styl */
+.main-content #post-field{margin-bottom:30px}
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/profile.styl */
 
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/profile.styl */

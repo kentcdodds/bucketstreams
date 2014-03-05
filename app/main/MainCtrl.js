@@ -1,9 +1,16 @@
-angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, currentUser, Stream, Bucket, Post, CurrentUserService, CurrentContext, CommonModalService, UtilService) {
+angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, currentUser, Stream, Bucket, Post, CurrentUserService, CurrentContext, CommonModalService, UtilService, genie, bsGenie) {
   $scope.currentUser = currentUser;
 
-  if (_.isUndefined($scope.currentUser.username)) {
-    $state.transitionTo('home.gettingStarted');
-    return;
+  if (_.isEmpty($scope.currentUser.username)) {
+    CurrentContext.context('Getting Started');
+    $modal.open({
+      templateUrl: '/main/getting-started/getting-started.html',
+      controller: 'GettingStartedCtrl',
+      backdrop: 'static',
+      keyboard: false
+    }).result.then(function() {
+        $window.location.href = '/';
+      });
   }
 
   $scope.$on(CurrentUserService.userUpdateEvent, function(event, user) {
@@ -28,15 +35,35 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
     CurrentContext.context('Main Stream');
   };
 
+  function menuItemAction(wish) {
+    if (_.isString(wish.data.menuItem.onClick)) {
+      $state.go(wish.data.menuItem.onClick);
+    } else {
+      wish.data.menuItem.onClick();
+    }
+  }
+
   (function setupMenu() {
 
-    function MenuItem(text, icon, onClick, children) {
+    function MenuItem(text, icon, onClick, genieIcon, children) {
       this.text = text;
       this.icon = icon;
       this.onClick = onClick;
+      this.genieIcon = genieIcon || icon;
       this.children = children;
     }
 
+    function createWish(menuItem) {
+      var data = bsGenie.getUxDataForIcon(menuItem.genieIcon);
+      data.menuItem = menuItem;
+      return genie({
+        id: 'mi-' + menuItem.text.toLowerCase().replace(/ /g, '-'),
+        context: bsGenie.appContext,
+        magicWords: menuItem.text,
+        data: data,
+        action: menuItemAction
+      });
+    }
     // creates a scope variable with the name: userTypes (ie userBuckets)
     function createThingMenuItems(type, icon) {
       var lType = type.toLowerCase();
@@ -54,8 +81,9 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
           }
         });
       });
+      createWish(newThing);
 
-      var parentMenuItem = new MenuItem(type + 's', icon, null, [newThing]);
+      var parentMenuItem = new MenuItem(type + 's', icon, null, null, [newThing]);
 
       function makeStreamMenuItems(things) {
         _.each(things, function(thing) {
@@ -64,9 +92,11 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
             itemName: thing.name,
             type: lType
           };
-          parentMenuItem.children.push(new MenuItem(thing.name, null, function() {
+          var thingMenuItem = new MenuItem(thing.name, null, function() {
             $state.go('home.postStreamPage.' + lType, params);
-          }));
+          }, icon);
+          parentMenuItem.children.push(thingMenuItem);
+          createWish(thingMenuItem);
         });
       }
       $scope[scopeProp] = model.query({owner: currentUser._id});
@@ -86,10 +116,6 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
       $scope.lampVisible = true;
       $scope.$safeApply();
     });
-    $scope.$watch('lampVisible', function() {
-      console.log(arguments);
-    });
-
 
     $scope.menuItems = [search, streamsMenuItem, bucketsMenuItem, settings, feedback];
   })();
