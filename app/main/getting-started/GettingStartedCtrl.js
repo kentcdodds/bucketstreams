@@ -28,14 +28,18 @@ angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $time
 
   $scope.onSaveClicked = function(validUsername, username, firstName, lastName) {
     var valid = validUsername && firstName && lastName;
-    if (valid) {
-      $scope.currentUser.username = username;
-      $scope.currentUser.name = $scope.currentUser.name || {};
-      $scope.currentUser.name.first = firstName;
-      $scope.currentUser.name.last = lastName;
-      saveUser();
+    if (!valid) return;
+
+    $scope.currentUser.username = username;
+    $scope.currentUser.name = $scope.currentUser.name || {};
+    $scope.currentUser.name.first = firstName;
+    $scope.currentUser.name.last = lastName;
+    $scope.currentUser.$save(function() {
+      AlertService.success('Saved');
       $scope.$close();
-    }
+    }, function(err) {
+      AlertService.error('Error Saving: ' + err.message);
+    });
   };
 
   $scope.onFileSelect = function(file) {
@@ -58,18 +62,4 @@ angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $time
       AlertService.error('Error uploading file: ' + err.message || err);
     });
   };
-
-  var saveUser = function() {
-    return $scope.currentUser.$save(function() {
-      AlertService.success('Saved');
-    }, function(err) {
-      AlertService.error('Error Saving: ' + err.message);
-    });
-  };
-
-  $scope.onFormUpdate = _.debounce(function(form) {
-    if (!form.$invalid) {
-      saveUser();
-    }
-  }, 1000);
 });

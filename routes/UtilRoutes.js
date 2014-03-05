@@ -18,23 +18,30 @@ var ErrorController = require('../controller/ErrorController');
 module.exports = function(app) {
 
   /**
-   * Checks if the value is unique for the field in the collection.
-   * @param collection - route - The collection to check
-   * @param field - query - The field to check against
-   * @param value - query - The value to check for uniqueness
+   * Checks if the username is valid
+   * @param username - query - The username to check validity for
    */
-  app.get(prefixes.util + '/unique/:collection', function(req, res) {
-    var query = {};
-    query[req.query.field] = new RegExp('^' + req.query.value + '$', 'i');
-    var collection = ref[req.params.collection];
-    if (!collection) {
-      return ErrorController.sendErrorJson(res, 400, 'No collection named ' + req.params.collection);
-    }
-    models[collection].find(query, '_id', function(err, results) {
-      if (err) return ErrorController.sendErrorJson(res, 400, 'Problem finding user. Error:\n' + JSON.stringify(err, null, 2));
-      res.json(200, {
-        isUnique: !results.length,
-        count: results.length
+  app.get(prefixes.util + '/validate/username', function(req, res) {
+    var username = req.query.username;
+    var testModel = new User({
+      email: 'this_should_please_be_unique_and_valid_43423572397598317@example.com',
+      username: username
+    });
+    testModel.validate(function(err) {
+      var valid = true;
+      var type = 'available';
+      if (err && err.errors) {
+        valid = false;
+        if (err.errors.username) {
+          type = err.errors.username.type;
+        } else {
+          type = 'invalid for unknown reasons...';
+        }
+      }
+      return res.json(200, {
+        isValid: valid,
+        message: '"' + username + '" is ' + type + '!',
+        type: type
       });
     });
   });

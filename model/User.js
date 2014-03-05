@@ -73,10 +73,27 @@ schema.plugin(passportLocalMongoose, {
 });
 
 schema.path('username').validate(function (value) {
-  return !!(value || '').match(/^([a-zA-Z]|_|\d){3,16}$/);
-}, 'Username must be between 3 - 16 characters and can only contain numbers, letters, and underscores.');
+  return !!(value || '').match(/^([a-zA-Z]|_|\d)*$/);
+}, 'invalid');
+
+schema.path('username').validate(function (value) {
+  var length = (value || '').length;
+  return length <= 16;
+}, 'too long');
+
+schema.path('username').validate(function (value) {
+  var length = (value || '').length;
+  return length >= 3;
+}, 'too short');
 
 var reservedUsernames = [
+  'microsoft',
+  'google',
+  'facebook',
+  'twitter'
+];
+
+var appRouteUsernames = [
   'settings',
   'getting-started',
   'auth',
@@ -84,9 +101,30 @@ var reservedUsernames = [
   'new'
 ];
 
+var invalidUsernames = _.union(reservedUsernames, appRouteUsernames);
+
 schema.path('username').validate(function (value) {
-  return !_.contains(reservedUsernames, value);
-}, 'Username reserved');
+  return !_.contains(invalidUsernames, value);
+}, 'reserved');
+
+schema.path('username').validate(function (value) {
+  return !_.contains(invalidUsernames, value);
+}, 'unavailable');
+
+schema.path('username').validate(function (value, callback) {
+  if (!_.isEmpty(value)) {
+    var query = {
+      username: new RegExp('^' + value + '$', 'i')
+    };
+    this.model(this.constructor.modelName).find(query, '_id', function(err, results) {
+      if (err) return callback(false);
+      callback(!results.length);
+    });
+  } else {
+    callback(true);
+  }
+  return !_.contains(invalidUsernames, value);
+}, 'taken');
 
 /*
  * Third-party account methods
