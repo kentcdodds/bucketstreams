@@ -1,11 +1,12 @@
 (function() {
-  var thirdParties = ['ui.router', 'ui.bootstrap', 'pasvaz.bindonce', 'angularFileUpload'];
+  var thirdParties = ['ui.router', 'ui.bootstrap', 'pasvaz.bindonce', 'angularFileUpload', 'uxGenie', 'Scope.safeApply'];
   var angularMods = ['ngAnimate'];
   var internalMods = ['bs.directives', 'bs.models', 'bs.services', 'bs.filters'];
   var app = angular.module('bs.app', thirdParties.concat(angularMods.concat(internalMods)));
 
   app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
+
 
     var commonResolve = {
       currentUser: function(CurrentUserService) {
@@ -87,8 +88,7 @@
           data: function loadStreamOrBucketPageData($q, $state, $stateParams, UtilService, Bucket, Stream) {
             var deferred = $q.defer();
             var type = $stateParams.type;
-            var model = (type === 'stream' ? Stream : Bucket);
-            UtilService.loadData(type, $stateParams.username, $stateParams.itemName, model).then(function(data) {
+            UtilService.loadData(type, $stateParams.username, $stateParams.itemName).then(function(data) {
               if (data) {
                 data.type = type;
                 deferred.resolve(data);
@@ -137,4 +137,9 @@
 
     $urlRouterProvider.otherwise('/');
   });
+
+  app.run(function(bsGenie) {
+    bsGenie.initializeGenie();
+  });
+
 })();

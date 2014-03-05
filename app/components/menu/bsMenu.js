@@ -19,17 +19,18 @@ angular.module('bs.directives').directive('bsMenu', function($document, $timeout
     },
     link: function(scope, el, attrs) {
 
-      scope.onItemClicked = function(item) {
+      scope.onItemClicked = function($event, item) {
         scope.selectedItem = item;
         scope.showSubMenu = true;
         if (item.onClick) {
+          hideMenu();
           if (angular.isString(item.onClick)) {
-            hideMenu();
             $state.go(item.onClick);
           } else {
             item.onClick();
           }
         }
+        $event.stopPropagation();
       };
 
       scope.iBackground = '#03426A';
@@ -59,7 +60,7 @@ angular.module('bs.directives').directive('bsMenu', function($document, $timeout
         scope.showSubMenu = false;
       }
 
-      $document.on('click', function(event) {
+      $document.on('click', function($event, event) {
         if ((scope.large || scope.small) && !isChild(el[0], event.srcElement)) {
           hideMenu();
           scope.$apply();

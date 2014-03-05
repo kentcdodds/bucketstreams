@@ -1,4 +1,4 @@
-angular.module('bs.services').factory('UtilService', function(_, $http, $q, Post, Comment, User) {
+angular.module('bs.services').factory('UtilService', function(_, $http, $q, Post, Comment, User, Stream, Bucket) {
   //noinspection UnnecessaryLocalVariableJS
   var util = {
     testUniqueness: function (model, field, value) {
@@ -11,7 +11,8 @@ angular.module('bs.services').factory('UtilService', function(_, $http, $q, Post
         }
       });
     },
-    loadData: function (type, username, typeName, model) {
+    loadData: function (type, username, typeName) {
+      var model = (type === 'stream' ? Stream : Bucket);
       var deferred = $q.defer();
       $http({
         method: 'GET',

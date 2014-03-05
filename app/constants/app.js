@@ -8,4 +8,5 @@
   addConstant('_');
   addConstant('toastr');
   addConstant('moment');
+  addConstant('genie');
 })();

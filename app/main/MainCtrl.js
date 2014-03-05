@@ -1,4 +1,4 @@
-angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, currentUser, Stream, Bucket, Post, CurrentUserService, CurrentContext, CommonModalService) {
+angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, currentUser, Stream, Bucket, Post, CurrentUserService, CurrentContext, CommonModalService, UtilService) {
   $scope.currentUser = currentUser;
 
   if (_.isUndefined($scope.currentUser.username)) {
@@ -30,7 +30,6 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
 
   (function setupMenu() {
 
-    // TODO Refactor the stream and bucket menu options. Abstract it a bit...
     function MenuItem(text, icon, onClick, children) {
       this.text = text;
       this.icon = icon;
@@ -82,29 +81,21 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
     var feedback = new MenuItem('Send Feedback', 'bullhorn', function() {
       $window.open('https://bitbucket.org/kentcdodds/bucketstreams/issues/new');
     });
-    $scope.menuItems = [streamsMenuItem, bucketsMenuItem, settings, feedback];
+
+    var search = new MenuItem('Search', 'search', function() {
+      $scope.lampVisible = true;
+      $scope.$safeApply();
+    });
+    $scope.$watch('lampVisible', function() {
+      console.log(arguments);
+    });
+
+
+    $scope.menuItems = [search, streamsMenuItem, bucketsMenuItem, settings, feedback];
   })();
 
-  (function setupPosting() {
-
-    $scope.removePost = function(post) {
-      $scope.posts = $scope.posts || [];
-      var index = $scope.posts.indexOf(post);
-      if (index > -1) {
-        $scope.posts.splice(index, 1);
-      }
-    };
-
-    $scope.makePost = function(content) {
-      var post = new Post({
-        author: $scope.currentUser._id,
-        content: [content],
-        buckets: []
-      });
-      post.$save();
-      $scope.posts.unshift(post);
-    };
-
-  })();
+  UtilService.loadData('bucket', currentUser.username, 'Main Bucket').then(function(data) {
+    $scope.mainBucketData = data;
+  });
 
 });
