@@ -1,4 +1,4 @@
-angular.module('bs.app').factory('bsGenie', function(genie) {
+angular.module('bs.app').factory('bsGenie', function(genie, $state, User, AlertService) {
   var appContext = 'bs';
   genie.context(appContext);
 
@@ -11,10 +11,21 @@ angular.module('bs.app').factory('bsGenie', function(genie) {
   }
 
   function initializeGenie() {
+
+    genie({
+      id: 'go-home',
+      context: appContext,
+      magicWords: 'Home',
+      data: getUxDataForIcon('home'),
+      action: function() {
+        $state.go('home');
+      }
+    });
+
     (function createOptionsWish() {
       var subContext = 'genie-options';
       var optionsData = {
-        uxGenie:{
+        uxGenie: {
           iIcon: 'fa fa-cog',
           subContext: subContext
         }
@@ -36,6 +47,47 @@ angular.module('bs.app').factory('bsGenie', function(genie) {
             enteredMagicWords: {}
           });
         }
+      });
+    })();
+
+    (function createPeopleSearchWish() {
+      var subContext = 'people-search';
+      var searchData = {
+        uxGenie: {
+          iIcon: 'fa fa-search',
+          subContext: subContext,
+          getWishes: function(input, callback) {
+            User.query({genie: input}, function(users) {
+              var wishes = [];
+              _.each(users, function(user) {
+                wishes.push({
+                  id: 'user-' + user._id,
+                  context: subContext,
+                  magicWords: [user.name.first, user.name.last, user.username],
+                  action: function(wish) {
+                    $state.go('home.userPage', {username: wish.data.user.username});
+                  },
+                  data: {
+                    uxGenie: {
+                      imgIcon: user.getProfilePicture()
+                    },
+                    user: user
+                  }
+                });
+              });
+              callback(wishes);
+            }, function(err) {
+              callback();
+              AlertService.error(err.message);
+            });
+          }
+        }
+      };
+      genie({
+        id: 'people-search',
+        context: appContext,
+        magicWords: 'Find People:',
+        data: searchData
       });
     })();
   }

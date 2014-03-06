@@ -28,11 +28,12 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
     _.each($scope.userBuckets, function(bucket) {
       bucket.selected(id === bucket._id);
     });
+    $scope.lamp.input = $scope.context.name;
   });
   $scope.context = CurrentContext.context();
 
   $scope.resetContext = function() {
-    CurrentContext.context('Main Stream');
+    CurrentContext.context('');
   };
 
   function menuItemAction(wish) {
@@ -123,5 +124,14 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
   UtilService.loadData('bucket', currentUser.username, 'Main Bucket').then(function(data) {
     $scope.mainBucketData = data;
   });
+
+  (function setupLamp() {
+    $scope.lamp = {
+      wishMade: function() {
+      },
+      visible: false,
+      input: (CurrentContext.context() || {name: ''}).name
+    };
+  })();
 
 });

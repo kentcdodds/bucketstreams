@@ -1,9 +1,5 @@
 angular.module('bs.app').factory('CurrentContext', function($rootScope, _, $state) {
-  var context = {
-    name: $state.current.context || '',
-    icon: '',
-    data: {}
-  };
+  var context = contextGetterSetter($state.current.context);
   var contextChangeEvent = 'contextStateChange';
 
   function broadcastStateChange() {
@@ -11,17 +7,25 @@ angular.module('bs.app').factory('CurrentContext', function($rootScope, _, $stat
   }
 
   $rootScope.$on('$stateChangeStart', function(event, toState) {
-    var newContext = toState.context;
-    if (newContext) {
-      contextGetterSetter(newContext);
-    }
+    contextGetterSetter(toState.context);
   });
 
-  function contextGetterSetter(newContext) {
-    if (!_.isUndefined(newContext) && !_.isEqual(newContext, context)) {
-      if (_.isString(newContext)) {
-        newContext = { name: newContext };
+  function contextGetterSetter(newContext, icon, data) {
+    if (_.isUndefined(newContext)) return context;
+
+    if (_.isString(newContext)) {
+      if (!_.isString(icon)) {
+        data = icon;
+        icon = null;
       }
+      newContext = {
+        name: newContext,
+        icon: icon,
+        data: data
+      };
+    }
+
+    if (!_.isEqual(newContext, context)) {
       context = newContext;
       broadcastStateChange();
     }

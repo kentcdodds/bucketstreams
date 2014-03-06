@@ -27,7 +27,7 @@
         resolve: {
           currentUser: commonResolve.currentUser
         },
-        context: 'Main Stream'
+        context: ''
       }).
       state('home.gettingStarted', {
         url: 'getting-started',
@@ -50,7 +50,10 @@
         url: 'settings',
         controller: 'SettingsCtrl',
         templateUrl: '/main/settings/settings.html',
-        context: 'Settings'
+        context: {
+          name: 'Settings',
+          icon: 'cog'
+        }
       }).
       state('home.userPage', {
         url: ':username',
@@ -106,7 +109,7 @@
           if (type === 'stream') {
             icon = 'smile-o';
           }
-          CurrentContext.context({name: data[type].name, icon: icon, data: data});
+          CurrentContext.context(data[type].name, icon, data);
         }
       }).
       state('home.postStreamPage.bucket', {
