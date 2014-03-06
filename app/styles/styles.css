@@ -698,7 +698,7 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 /* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsNewPost.styl */
 .new-post-form .new-post-form-wrapper textarea{height:80px;resize:none;-webkit-border-radius:40px 8px 8px 40px;border-radius:40px 8px 8px 40px;padding-left:86px}
 /* line 13 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsNewPost.styl */
-.new-post-form .new-post-form-wrapper .bs-bucket-chooser-wrapper{position:absolute;width:334px}
+.new-post-form .new-post-form-wrapper .bs-bucket-stream-chooser-wrapper{position:absolute;width:334px}
 /* line 16 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */

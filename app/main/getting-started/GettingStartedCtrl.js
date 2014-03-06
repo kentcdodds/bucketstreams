@@ -7,6 +7,7 @@ angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $time
   $scope.validationParams = {
     email: $scope.currentUser.email
   };
+  $scope.currentUser.name = $scope.currentUser.name || {};
   $scope.firstName = $scope.currentUser.name.first;
   $scope.lastName = $scope.currentUser.name.last;
   $scope.tempUsername = $scope.currentUser.username;

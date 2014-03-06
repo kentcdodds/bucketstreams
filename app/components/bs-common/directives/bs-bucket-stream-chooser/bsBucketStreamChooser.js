@@ -21,13 +21,9 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
         throw new Error('Cannot give buckets AND bucket/stream to bsBucketStreamChooser!');
       }
 
-      scope.type = 'stream';
-      scope.subscriptionSubject = scope.stream;
+      scope.type = scope.buckets ? 'bucket' : 'stream';
+      scope.subscriptionSubject = scope.stream || scope.bucket;
       scope.listItems = scope.streams || scope.buckets;
-      if (scope.bucket) {
-        scope.subscriptionSubject = scope.bucket;
-        scope.type = 'bucket';
-      }
 
       if (scope.streams && scope.subscriptionSubject) {
         _.each(scope.streams, function(stream) {
