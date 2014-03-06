@@ -19,8 +19,8 @@ angular.module('bs.services').factory('UtilService', function(_, $http, $q, Post
           name: typeName
         }
       }).then(function (response) {
-        var one = response.data[type];
-        var posts = response.data.posts;
+        var thing = response.data.thing;
+        var posts = thing.posts;
         _.each(posts, function (post, postIndex) {
           post.authorInfo = new User(post.authorInfo);
           _.each(post.comments, function (comment, commentIndex) {
@@ -30,9 +30,18 @@ angular.module('bs.services').factory('UtilService', function(_, $http, $q, Post
           posts[postIndex] = new Post(post);
         });
         var result = {};
-        result[type] = new model(one);
+        result.thing = new model(thing);
         result.posts = posts;
-        result.owner = new User(response.data.owner);
+        result.owner = new User(thing.ownerInfo);
+        if (response.data.type === 'stream') {
+          result.subscriptionsInfo = {};
+          _.each(['buckets', 'streams'], function(type) {
+            result.subscriptionsInfo[type] = thing.subscriptionsInfo[type] || [];
+            _.each(result.subscriptionsInfo[type], function(item, index) {
+              result.subscriptionsInfo[type][index].ownerInfo = new User(item.ownerInfo);
+            });
+          });
+        }
         deferred.resolve(result);
       }, deferred.reject);
       return deferred.promise;

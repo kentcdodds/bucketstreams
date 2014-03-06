@@ -110,13 +110,12 @@
             return deferred.promise;
           }
         },
-        onEnter: function(CurrentContext, data, $stateParams) {
-          var type = $stateParams.type;
+        onEnter: function(CurrentContext, data) {
           var icon = 'bitbucket';
-          if (type === 'stream') {
+          if (data.type === 'stream') {
             icon = 'smile-o';
           }
-          CurrentContext.context(data[type].name, icon, data);
+          CurrentContext.context(data.thing.name, icon, data);
         }
       }).
       state('home.postStreamPage.bucket', {

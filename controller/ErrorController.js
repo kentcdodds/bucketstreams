@@ -13,8 +13,15 @@ function getErrorJSON(code, message) {
   }
 }
 
+function sendErrorJson(res, code, message) {
+  res.json(code, getErrorJSON(code, message));
+}
+
+function send500Error(res, err) {
+  if (err) sendErrorJson(res, 500, err.message);
+}
+
 module.exports = {
-  sendErrorJson: function(res, code, message) {
-    res.json(code, getErrorJSON(code, message));
-  }
+  sendErrorJson: sendErrorJson,
+  send500Error: send500Error
 };

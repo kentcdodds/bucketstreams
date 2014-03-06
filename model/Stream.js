@@ -35,16 +35,18 @@ var schema = new Schema({
 
 Util.addTimestamps(schema);
 
-schema.methods.subscribeToBucket = function(bucket, callback) {
-  this.subscriptions.buckets.push(bucket.id);
-  if (callback) this.save(callback);
-};
-
 schema.methods.getBucketSubscriptions = function(callback) {
   this.model(this.constructor.modelName).findById(this).populate('subscriptions.buckets').exec(function(err, populated) {
     populated = populated || {subscriptions: { buckets: [] }};
     callback(err, populated.subscriptions.buckets);
   });
+};
+
+schema.methods.hasBucketSubscriptions = function() {
+  return this.subscriptions.buckets.length > 0;
+};
+schema.methods.hasStreamSubscriptions = function() {
+  return this.subscriptions.streams.length > 0;
 };
 
 schema.static.getStreamsByUserId = function(userId, callback) {

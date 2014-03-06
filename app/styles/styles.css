@@ -806,10 +806,12 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 /* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bucketStreamPage.styl */
 .bucket-stream-page .bucket-stream-info .owner-profile{margin-right:20px;float:left}
 /* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bucketStreamPage.styl */
-.bucket-stream-page .bucket-stream-info .bucket-stream-details{float:left;display:inline}
-/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bucketStreamPage.styl */
+.bucket-stream-page .bucket-stream-info .bucket-stream-details{float:left;display:inline;max-width:380px}
+/* line 10 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bucketStreamPage.styl */
 .bucket-stream-page .bucket-stream-info i.edit-thing{float:left;vertical-align:top;margin-right:10px;cursor:pointer;font-size:18px}
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/index.styl */
+/* line 16 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bucketStreamPage.styl */
+.bucket-stream-page .bucket-stream-info .subscriptions{float:left;margin-left:16px}
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/index.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/index.styl */
 
