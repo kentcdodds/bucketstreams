@@ -103,7 +103,10 @@
                 deferred.reject('No ' + type);
                 $state.go('home');
               }
-            }, deferred.reject);
+            }, function(err) {
+              deferred.reject(err);
+              $state.go('home');
+            });
             return deferred.promise;
           }
         },

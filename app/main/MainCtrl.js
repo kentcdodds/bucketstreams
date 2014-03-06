@@ -21,10 +21,12 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
 
   $scope.$on(CurrentUserInfoService.events.buckets, function(event, buckets) {
     $scope.userBuckets = buckets;
+    setupMenu();
   });
 
   $scope.$on(CurrentUserInfoService.events.streams, function(event, streams) {
     $scope.userStreams = streams;
+    setupMenu();
   });
 
   $scope.$on(CurrentContext.contextChangeEvent, function(event, newContext) {
@@ -54,7 +56,7 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
     }
   }
 
-  (function setupMenu() {
+  function setupMenu() {
 
     function MenuItem(text, icon, onClick, genieIcon, children) {
       this.text = text;
@@ -64,11 +66,11 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
       this.children = children;
     }
 
-    function createWish(menuItem) {
+    function createWish(menuItem, id) {
       var data = bsGenie.getUxDataForIcon(menuItem.genieIcon);
       data.menuItem = menuItem;
       return genie({
-        id: 'mi-' + menuItem.text.toLowerCase().replace(/ /g, '-'),
+        id: id || 'mi-' + menuItem.text.toLowerCase().replace(/ /g, '-'),
         context: bsGenie.appContext,
         magicWords: menuItem.text,
         data: data,
@@ -78,10 +80,10 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
     // creates a scope variable with the name: userTypes (ie userBuckets)
     function createThingMenuItems(type, icon) {
       var lType = type.toLowerCase();
-      var model = type === 'Bucket' ? Bucket : Stream;
       var scopeProp = 'user' + type + 's';
       var newThing = new MenuItem('New ' + type, 'plus', function() {
-        CommonModalService.newBucketStream(lType).result.then(function(newThing) {
+        CommonModalService.createOrEditBucketStream(lType).result.then(function(newThing) {
+          CurrentUserInfoService['refresh' + type + 's']();
           if (newThing) {
             $scope[scopeProp].unshift(newThing);
             $state.go('home.postStreamPage.' + lType, {
@@ -92,7 +94,7 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
           }
         });
       });
-      createWish(newThing);
+      createWish(newThing, 'create-new-' + lType);
 
       var parentMenuItem = new MenuItem(type + 's', icon, null, null, [newThing]);
 
@@ -128,7 +130,9 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
     });
 
     $scope.menuItems = [search, streamsMenuItem, bucketsMenuItem, settings, feedback];
-  })();
+  }
+
+  setupMenu();
 
   UtilService.loadData('bucket', currentUser.username, 'Main Bucket').then(function(data) {
     $scope.mainBucketData = data;

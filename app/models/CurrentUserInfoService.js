@@ -32,9 +32,9 @@ angular.module('bs.models').factory('CurrentUserInfoService', function($rootScop
     };
 
     service['refresh' + capThingName] = function() {
-      things[thing].val = things[thing].getter();
-      $rootScope.$broadcast(things[thing].event, things[thing].val);
-      return things[thing].val;
+      things[thingName].val = things[thingName].getter();
+      $rootScope.$broadcast(things[thingName].event, things[thingName].val);
+      return things[thingName].val;
     };
 
     service.events[thingName] = things[thingName].event;

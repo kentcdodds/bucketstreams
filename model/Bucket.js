@@ -60,9 +60,13 @@ Util.addTimestamps(schema);
 
 
 schema.path('name').validate(function (value, callback) {
-  Util.fieldIsUnique(this.model(this.constructor.modelName), 'name', value, {
-    'owner': this.owner
-  }, callback);
+  if (this.isNew) {
+    Util.fieldIsUnique(this.model(this.constructor.modelName), 'name', value, {
+      'owner': this.owner
+    }, callback);
+  } else {
+    callback(true);
+  }
 }, 'nameNotUnique');
 
 

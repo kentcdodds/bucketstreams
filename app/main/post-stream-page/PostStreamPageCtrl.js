@@ -2,8 +2,16 @@ angular.module('bs.app').controller('PostStreamPageCtrl', function($scope, $stat
   $scope.thing = $scope[data.type] = data[data.type];
   $scope.posts = data.posts;
   $scope.type = data.type;
+  $scope.owner = data.owner;
   $scope.currentUserIsOwner = $scope.currentUser._id === $scope.thing.owner;
-  $scope.deleteThing = function() {
-    CommonModalService.deleteBucketStream($scope.type, $scope.thing);
+  $scope.editThing = function() {
+    CommonModalService.createOrEditBucketStream($scope.type, $scope.thing).result.then(function(theThing) {
+      if ($scope.thing === theThing) {
+        console.warn('already equal');
+      }
+      if (theThing) {
+        $scope.thing = theThing;
+      }
+    });
   };
 });

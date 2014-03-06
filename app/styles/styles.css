@@ -797,7 +797,17 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 
 /* line 17 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bsPostStream.styl */
 .bs-post-stream-wrapper .column-wrapper.columns-3 .post-column{width:33.3333%}
-/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/index.styl */
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bucketStreamPage.styl */
+
+/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bucketStreamPage.styl */
+
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bucketStreamPage.styl */
+
+/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bucketStreamPage.styl */
+.bucket-stream-page .bucket-stream-info h1{display:inline}
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bucketStreamPage.styl */
+.bucket-stream-page .bucket-stream-info i{vertical-align:top;margin-right:10px;cursor:pointer;font-size:18px}
+/* line 10 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/index.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/index.styl */
 

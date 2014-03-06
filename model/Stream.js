@@ -135,10 +135,14 @@ schema.methods.getPosts = function(callback) {
 
 
 schema.path('name').validate(function (value, callback) {
-  Util.fieldIsUnique(this.model(this.constructor.modelName), 'name', value, {
-    '_id': this._id
-  }, callback);
-}, 'Stream name must be unique per user');
+  if (this.isNew) {
+    Util.fieldIsUnique(this.model(this.constructor.modelName), 'name', value, {
+      'owner': this.owner
+    }, callback);
+  } else {
+    callback(true);
+  }
+}, 'nameNotUnique');
 
 schema.pre('save', function (next) {
   if (!this.isNew && this.isMain) {

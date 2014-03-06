@@ -1,22 +1,41 @@
 angular.module('bs.app').factory('CommonModalService', function($modal, CurrentUserInfoService, Bucket, Stream, AlertService) {
-  return {
-    newBucketStream: function(type) {
-      var model = type === 'stream' ? Stream : Bucket;
+  var CommonModalService = {
+    createOrEditBucketStream: function(type, model) {
       return $modal.open({
-        templateUrl: '/main/services/common-modal-templates/new-bucket-stream.html',
+        templateUrl: '/main/services/common-modal-templates/new-or-edit-bucket-stream.html',
         controller: function($scope, $state, model, type, currentUser, AlertService) {
           $scope.type = type;
           $scope.validationParams = {
             owner: currentUser._id
           };
+          var klass = Stream;
+          $scope.icon = 'smile-o';
+          if (type === 'bucket') {
+            klass = Bucket;
+            $scope.icon = 'bitbucket';
+          }
+          if (!model) {
+            $scope.isNew = true;
+            model = new klass($scope.validationParams);
+          } else {
+            $scope.originalName = model.name;
+          }
+          $scope.thing = model;
 
-          $scope.newThing = new model($scope.validationParams);
-
-          $scope.onSubmit = function(valid) {
-            $scope.newThing.$save(function(newThing) {
-              AlertService.success('Awesome, created "' + $scope.newThing.name + '" ' + type);
+          $scope.onSubmit = function() {
+            var successMessage = 'Awesome, ' + ($scope.isNew ? 'created' : 'updated') + ' "' + $scope.thing.name + '" ' + type;
+            $scope.thing.$save(function(newThing) {
+              AlertService.success(successMessage);
               $scope.$close(newThing);
             }, AlertService.handleResponse.error);
+          };
+          $scope.deleteIt = function() {
+            $scope.$close();
+            CommonModalService.deleteBucketStream($scope.type, $scope.thing).result.then(function(deletedThing) {
+              if (deletedThing) {
+                $state.go('home');
+              }
+            });
           }
         },
         resolve: {
@@ -39,7 +58,8 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
           $scope.deleteIt = function() {
             var successMessage = 'Deleted "' + $scope.thing.name + '" ' + $scope.type;
             $scope.thing.$remove(function() {
-              CurrentUserInfoService.refreshBuckets();
+              var upType = type.substring(0, 1).toUpperCase() + type.substring(1, type.length);
+              CurrentUserInfoService['refresh' + upType + 's']();
               AlertService.info(successMessage);
               $scope.$close(thing);
             }, AlertService.handleResponse.error);
@@ -56,4 +76,5 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
       });
     }
   };
+  return CommonModalService;
 });
