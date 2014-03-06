@@ -34,6 +34,7 @@ module.exports = function(app) {
         invalidFields = err.errors;
       }
       return res.json(200, {
+        requestIndex: req.query.requestIndex,
         isValid: valid,
         invalidFields: invalidFields
       });
