@@ -59,21 +59,10 @@ schema.static.getPostsById = function(id, callback) {
   });
 };
 
-schema.methods.getPosts = function(callback) {
-  var allPosts = [];
+schema.methods.getPosts = function(callback, streamsRetrieved, bucketsRetrieved) {
   var self = this;
-  function addAllPosts(err, buckets) {
-    if (err) return callback(err);
-    async.each(buckets || [], function(bucket, done) {
-      bucket.getPosts(function(err, posts) {
-        if (err) return done(err);
-        allPosts = _.union(allPosts, posts);
-        done();
-      });
-    }, function(err) {
-      callback(err, allPosts);
-    });
-  }
+  streamsRetrieved = streamsRetrieved || [self.id];
+  bucketsRetrieved = bucketsRetrieved || [];
 
   if (self.isMain) {
     function getUsersPosts(done) {
@@ -89,26 +78,37 @@ schema.methods.getPosts = function(callback) {
             owner: self.owner
           },
           {
-            $not: {
-              _id: self.id
+            _id: {
+              $ne: self._id
             }
           }
-        ]}, 'subscriptions', function(err, streamSubscriptions) {
+        ]}, function(err, streams) {
         if (err) return done(err);
-        async.concat(streamSubscriptions || [], function(subscriptions, done) {
+        async.concat(streams || [], function(stream, done) {
           function getSubscribedBucketsPosts(done) {
-            if (subscriptions.buckets && subscriptions.buckets.length) {
-              Post.find({ buckets : { $in : [ subscriptions.buckets ] }}, done);
+            if (stream.subscriptions.buckets && stream.subscriptions.buckets.length) {
+              Post.find({ buckets : { $in : [ stream.subscriptions.buckets ] }}, done);
             } else {
               done();
             }
           }
 
           function getStreamPosts(done) {
-            if (subscriptions.streams && subscriptions.streams.length) {
-              async.parallel(subscriptions.streams || [], function(stream, streamDone) {
-                stream.getPosts(streamDone);
-              }, done);
+            if (stream.subscriptions.streams && stream.subscriptions.streams.length) {
+              var streamIds = self.subscriptions.streams;
+              if (_.isEmpty(streamIds)) {
+                streamIds.push(self._id);
+              }
+              self.model(self.constructor.modelName).find({_id: { $in: [ streamIds ] } }, function(err, streams) {
+                if (err) return callback(err);
+                async.concat(streams || [], function(stream, done) {
+                  if (_.contains(streamsRetrieved, stream.id)) {
+                    return done();
+                  }
+                  streamsRetrieved.push(stream.id);
+                  stream.getPosts(done, streamsRetrieved, bucketsRetrieved);
+                }, done);
+              });
             } else {
               done();
             }
@@ -117,19 +117,47 @@ schema.methods.getPosts = function(callback) {
         }, done);
       });
     }
-    async.parallel([getUsersPosts, getAllStreamSubscriptionPosts], function(err, posts) {
+    async.parallel([getUsersPosts, getAllStreamSubscriptionPosts], function(err, results) {
       if (err) return callback(err);
-      posts = _(posts).flatten().unique().value();
-      Comment.find({owningPost: {$in: _.pluck(posts, '_id')}}, function(err, comments) {
-        if (err) return callback(err);
-        _.each(posts, function(post) {
-          post.comments = _.find(comments, {owningPost: post._id});
-        });
-        callback(null, posts);
-      });
+      var allPosts = _.chain(results)
+        .unique('_id')
+        .compact()
+        .flatten()
+        .value();
+      callback(null, allPosts);
     });
   } else {
-    self.getBucketSubscriptions(addAllPosts);
+    self.getBucketSubscriptions(function(err, buckets) {
+      if (err) return callback(err);
+      async.concat(buckets || [], function(bucket, done) {
+        if (_.contains(bucketsRetrieved, bucket._id)) return done();
+        bucketsRetrieved.push(bucket.id);
+        bucket.getPosts(done);
+      }, function(err, bucketPosts) {
+        if (err) return callback(err);
+        var streamIds = self.subscriptions.streams;
+        if (_.isEmpty(streamIds)) {
+          streamIds.push(self._id);
+        }
+        self.model(self.constructor.modelName).find({_id: { $in: [ streamIds ] } }, function(err, streams) {
+          if (err) return callback(err);
+          async.concat(streams || [], function(stream, done) {
+            if (_.contains(streamsRetrieved, stream.id)) return done();
+            streamsRetrieved.push(stream.id);
+            stream.getPosts(done, streamsRetrieved, bucketsRetrieved);
+          }, function(err, streamPosts) {
+            if (err) return callback(err);
+            var allPosts = _.union(streamPosts, bucketPosts);
+              _.chain(allPosts)
+              .unique('_id')
+              .compact()
+              .flatten()
+              .value();
+            callback(null, allPosts);
+          });
+        });
+      });
+    });
   }
 };
 

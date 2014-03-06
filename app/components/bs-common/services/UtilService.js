@@ -32,6 +32,7 @@ angular.module('bs.services').factory('UtilService', function(_, $http, $q, Post
         var result = {};
         result[type] = new model(one);
         result.posts = posts;
+        result.owner = new User(response.data.owner);
         deferred.resolve(result);
       }, deferred.reject);
       return deferred.promise;

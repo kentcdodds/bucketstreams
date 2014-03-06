@@ -2,6 +2,7 @@
 var models = require('../model').models;
 var schemas = require('../model').schemas;
 var ref = require('../model/ref');
+var _ = require('lodash-node');
 
 var User = models[ref.user];
 var Stream = models[ref.stream];
@@ -69,10 +70,64 @@ module.exports = function(app) {
             if (!one) return ErrorController.sendErrorJson(res, 404, 'No ' + type + ' with the name ' + req.query.name);
             one.getPosts(function(err, posts) {
               if (err) return ErrorController.sendErrorJson(res, 500, err.message);
-              var response = {};
-              response[type] = one;
-              response.posts = posts;
-              res.json(response);
+
+              var postIds = _.pluck(posts, '_id');
+              Comment.find({owningPost: {$in: postIds}}, function(err, comments) {
+                if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+                var commentAuthors = _.pluck(comments, 'author');
+                var postAuthors = _.pluck(posts, 'author');
+                var streamOwners = [];
+                var bucketOwners = [];
+                if (one.subscriptions) {
+                  Stream.find({'_id': {$in: [one.subscriptions.streams]}}, 'owner name', function (err, streams) {
+                    if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+                    one.subscriptions.streamsInfo = streams;
+                    streamOwners = _.pluck(streams, 'owner');
+                    if (one.subscriptions.buckets.length) {
+                      Bucket.find({'_id': {$in: [one.subscriptions.buckets]}}, 'owner name', function(err, buckets) {
+                        if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+                        one.subscriptions.bucketsInfo = buckets;
+                        bucketOwners = _.pluck(buckets, 'owner');
+                        cont();
+                      });
+                    } else {
+                      cont();
+                    }
+                  });
+                } else {
+                  cont();
+                }
+
+                function cont() {
+                  User.find({'_id': {$in: _.union(commentAuthors, postAuthors, streamOwners, bucketOwners)}}, '_id username name profilePicture', function(err, users) {
+                    if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+
+                    _.each(comments, function(comment) {
+                      comment._doc.authorInfo = _.find(users, {'_id': comment.author});
+                    });
+                    _.each(posts, function(post) {
+                      post._doc.comments = _.where(comments, {owningPost: post._id});
+                      post._doc.authorInfo = _.find(users, {'_id': post.author});
+                    });
+                    if (one.subscriptions) {
+                      _.each(one.subscriptions.streamsInfo, function(streamInfo) {
+                        streamInfo.ownerName = _.find(users, {'_id': streamInfo.owner});
+                      });
+                      _.each(one.subscriptions.bucketsInfo, function(bucketInfo) {
+                        bucketInfo.ownerName = _.find(users, {'_id': bucketInfo.owner});
+                      });
+                    }
+                    User.findOne({'_id': one.owner}, '_id username name profilePicture', function(err, user) {
+                      if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+                      var response = {};
+                      response[type] = one;
+                      response.posts = posts;
+                      response.owner = user;
+                      res.json(response);
+                    });
+                  });
+                }
+              });
             });
           });
         });

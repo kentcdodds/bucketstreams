@@ -1,19 +1,31 @@
 <div class="bucket-stream-page">
   <div class="column-wrapper">
-    <div class="col-xs-6" ng-if="currentUserIsOwner">
+    <div class="col-xs-6" ng-if="currentUserIsOwner && type === 'bucket'">
       <div class="new-post-container">
         <bs-new-post user="currentUser" buckets="userBuckets"></bs-new-post>
       </div>
     </div>
     <div ng-class="{'col-xs-6': currentUserIsOwner}" class="bucket-stream-info">
-      <bs-profile-picture user=""></bs-profile-picture>
-      <i class="fa fa-edit pull-left" ng-click="editThing()" ng-if="currentUserIsOwner"></i>
-      <div class="bucket-stream-details pull-left">
-        <h1 class="margin-top-0">{{thing.name}}</h1>
-        <div>{{thing.description}}</div>
-      </div>
-      <div class="controls" ng-if="currentUserIsOwner">
-        <div ui-view></div>
+      <div class="clearfix">
+        <bs-profile-picture ng-if="!currentUserIsOwner || type !== 'bucket'" user="owner" class="owner-profile"></bs-profile-picture>
+        <i ng-show="!thing.isMain" class="fa fa-edit edit-thing" ng-click="editThing()" ng-if="currentUserIsOwner"></i>
+        <div class="bucket-stream-details">
+          <h1 class="margin-top-0">{{thing.name}}</h1>
+          <div>{{thing.description}}</div>
+          <div ng-if="!currentUserIsOwner && thing.isMain">
+            <strong>Subscribe to this {{type}}</strong>
+            <bs-bucket-stream-chooser streams="streams" bucket="bucket" stream="stream"></bs-bucket-stream-chooser>
+          </div>
+        </div>
+        <div class="subscriptions" ng-if="type === 'stream'">
+          Subscriptions:
+          <div ng-if="stream.subscriptions.buckets">
+            <span ng-repeat="bucketSub in stream.subscriptions.bucketsInfo">{{bucketSub}}</span>
+          </div>
+          <div ng-if="stream.subscriptions.streams">
+            <span ng-repeat="streamSub in stream.subscriptions.streamsInfo">{{streamSub}}</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>

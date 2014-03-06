@@ -70,7 +70,7 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
       var data = bsGenie.getUxDataForIcon(menuItem.genieIcon);
       data.menuItem = menuItem;
       return genie({
-        id: id || 'mi-' + menuItem.text.toLowerCase().replace(/ /g, '-'),
+        id: id || 'mi-' + menuItem.genieIcon + menuItem.text.toLowerCase().replace(/ /g, '-'),
         context: bsGenie.appContext,
         magicWords: menuItem.text,
         data: data,
@@ -134,8 +134,8 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
 
   setupMenu();
 
-  UtilService.loadData('bucket', currentUser.username, 'Main Bucket').then(function(data) {
-    $scope.mainBucketData = data;
+  UtilService.loadData('stream', currentUser.username, 'Main Stream').then(function(data) {
+    $scope.mainStreamData = data;
   });
 
   (function setupLamp() {

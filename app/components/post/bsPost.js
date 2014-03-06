@@ -8,8 +8,8 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoServ
       onRemoved: '&'
     },
     link: function(scope, el) {
-      scope.author = scope.post.authorInfo || User.get({id: scope.post.author});
-      scope.comments = scope.post.comments || Comment.query({owningPost: scope.post._id});
+      scope.author = scope.post.authorInfo;// || User.get({id: scope.post.author});
+      scope.comments = scope.post.comments;// || Comment.query({owningPost: scope.post._id});
       scope.currentUser = CurrentUserInfoService.getUser();
       scope.$on(CurrentUserInfoService.events.user, function(event, user) {
         scope.currentUser = user;

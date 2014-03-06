@@ -11,6 +11,9 @@
             <li>
               <a ng-show="currentUser._id === author._id" fa-icon="trash-o" ng-click="removePost()"> Delete</a>
             </li>
+            <li>
+              <a ng-show="currentUser._id !== author._id" >There aren't any options here for you... Yet...</a>
+            </li>
           </ul>
         </div>
       </div>
