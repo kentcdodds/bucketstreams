@@ -79,12 +79,12 @@ schema.path('username').validate(function (value) {
 schema.path('username').validate(function (value) {
   var length = (value || '').length;
   return length <= 16;
-}, 'too long');
+}, 'tooLong');
 
 schema.path('username').validate(function (value) {
   var length = (value || '').length;
   return length >= 3;
-}, 'too short');
+}, 'tooShort');
 
 var reservedUsernames = [
   'microsoft',
@@ -101,29 +101,16 @@ var appRouteUsernames = [
   'new'
 ];
 
-var invalidUsernames = _.union(reservedUsernames, appRouteUsernames);
-
 schema.path('username').validate(function (value) {
-  return !_.contains(invalidUsernames, value);
+  return !_.contains(reservedUsernames, value);
 }, 'reserved');
 
 schema.path('username').validate(function (value) {
-  return !_.contains(invalidUsernames, value);
+  return !_.contains(appRouteUsernames, value);
 }, 'unavailable');
 
 schema.path('username').validate(function (value, callback) {
-  if (!_.isEmpty(value)) {
-    var query = {
-      username: new RegExp('^' + value + '$', 'i')
-    };
-    this.model(this.constructor.modelName).find(query, '_id', function(err, results) {
-      if (err) return callback(false);
-      callback(!results.length);
-    });
-  } else {
-    callback(true);
-  }
-  return !_.contains(invalidUsernames, value);
+  Util.fieldIsUnique(this.model(this.constructor.modelName), 'username', value, null, callback);
 }, 'taken');
 
 /*

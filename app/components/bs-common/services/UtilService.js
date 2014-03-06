@@ -1,13 +1,11 @@
 angular.module('bs.services').factory('UtilService', function(_, $http, $q, Post, Comment, User, Stream, Bucket) {
   //noinspection UnnecessaryLocalVariableJS
   var util = {
-    testValidUsername: function (value) {
+    validateModel: function(model, params) {
       return $http({
-        url: '/api/v1/util/validate/username',
+        url: '/api/v1/util/validate/' + model,
         method: 'GET',
-        params: {
-          username: value
-        }
+        params: params
       });
     },
     loadData: function (type, username, typeName) {

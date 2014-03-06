@@ -1,11 +1,11 @@
-angular.module('bs.directives').directive('bsProfilePictureUpload', function(CurrentUserService, $timeout, $upload, AlertService, $state) {
+angular.module('bs.directives').directive('bsProfilePictureUpload', function(CurrentUserInfoService, $timeout, $upload, AlertService, $state) {
   return {
     restrict: 'E',
     templateUrl: '/components/bs-common/directives/bs-profile-picture-upload/bsProfilePictureUpload.html',
     scope: {},
     link: function(scope, el, attrs) {
-      scope.currentUser = CurrentUserService.getUser();
-      scope.$on(CurrentUserService.userUpdateEvent, function(event, user) {
+      scope.currentUser = CurrentUserInfoService.getUser();
+      scope.$on(CurrentUserInfoService.events.user, function(event, user) {
         scope.currentUser = user;
       });
 
@@ -76,7 +76,7 @@ angular.module('bs.directives').directive('bsProfilePictureUpload', function(Cur
             scope.$apply();
           }).success(function(data, status, headers, config) {
             scope.uploadInProgress = false;
-            CurrentUserService.refreshUser();
+            CurrentUserInfoService.refreshUser();
             $state.go($state.$current, null, { reload: true });
           }).error(function(err) {
             scope.uploadInProgress = false;

@@ -23,6 +23,13 @@ module.exports = function(app) {
 
   app.get(restPrefix + '/:resource', function(req, res, next) {
     if (/buckets|streams/.test(req.params.resource)) {
+      if (req.query.owner === 'me') {
+        if (req.isAuthenticated()) {
+          req.query.owner = req.user.id;
+        } else {
+          return ErrorController.sendErrorJson(res, 401, 'Must be authenticated to pass "me" as owner');
+        }
+      }
       RouteHelper.convertUsernameQueryToId(req, 'owner', function(err) {
         if (err) return ErrorController(res, err.code, err.error.message);
         next();

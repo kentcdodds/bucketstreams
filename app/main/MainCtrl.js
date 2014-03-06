@@ -1,5 +1,7 @@
-angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, currentUser, Stream, Bucket, Post, CurrentUserService, CurrentContext, CommonModalService, UtilService, genie, bsGenie) {
+angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, currentUser, userBuckets, userStreams, Stream, Bucket, Post, CurrentUserInfoService, CurrentContext, CommonModalService, UtilService, genie, bsGenie) {
   $scope.currentUser = currentUser;
+  $scope.userBuckets = userBuckets;
+  $scope.userStreams = userStreams;
 
   if (_.isEmpty($scope.currentUser.username)) {
     CurrentContext.context('Getting Started');
@@ -13,8 +15,16 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
       });
   }
 
-  $scope.$on(CurrentUserService.userUpdateEvent, function(event, user) {
+  $scope.$on(CurrentUserInfoService.events.user, function(event, user) {
     $scope.currentUser = user;
+  });
+
+  $scope.$on(CurrentUserInfoService.events.buckets, function(event, buckets) {
+    $scope.userBuckets = buckets;
+  });
+
+  $scope.$on(CurrentUserInfoService.events.streams, function(event, streams) {
+    $scope.userStreams = streams;
   });
 
   $scope.$on(CurrentContext.contextChangeEvent, function(event, newContext) {
@@ -100,7 +110,6 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
           createWish(thingMenuItem);
         });
       }
-      $scope[scopeProp] = model.query({owner: currentUser._id});
       $scope[scopeProp].$promise.then(makeStreamMenuItems);
       return parentMenuItem;
     }

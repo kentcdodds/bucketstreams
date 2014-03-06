@@ -1,4 +1,4 @@
-angular.module('bs.directives').directive('bsPost', function(CurrentUserService, User, Comment) {
+angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoService, User, Comment) {
   return {
     restrict: 'A',
     templateUrl: '/components/post/bsPost.html',
@@ -10,8 +10,8 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserService,
     link: function(scope, el) {
       scope.author = scope.post.authorInfo || User.get({id: scope.post.author});
       scope.comments = scope.post.comments || Comment.query({owningPost: scope.post._id});
-      scope.currentUser = CurrentUserService.getUser();
-      scope.$on(CurrentUserService.userUpdateEvent, function(event, user) {
+      scope.currentUser = CurrentUserInfoService.getUser();
+      scope.$on(CurrentUserInfoService.events.user, function(event, user) {
         scope.currentUser = user;
       });
 

@@ -7,17 +7,17 @@
   app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $locationProvider.html5Mode(true);
 
-
-    var commonResolve = {
-      currentUser: function(CurrentUserService) {
-        var currentUser = CurrentUserService.getUser();
-        if (currentUser.$resolved) {
-          return currentUser;
+    var resolveCurrentUserInfo = {};
+    _.each(['User', 'Buckets', 'Streams'], function(thing) {
+      resolveCurrentUserInfo['resolve' + thing] = function(CurrentUserInfoService) {
+        var resource = CurrentUserInfoService['get' + thing]();
+        if (resource.$resolved) {
+          return resource;
         } else {
-          return currentUser.$promise;
+          return resource.$promise;
         }
       }
-    };
+    });
 
     $stateProvider.
       state('home', {
@@ -25,14 +25,15 @@
         templateUrl: '/main/index.html',
         controller: 'MainCtrl',
         resolve: {
-          currentUser: commonResolve.currentUser
+          currentUser: resolveCurrentUserInfo.resolveUser,
+          userBuckets: resolveCurrentUserInfo.resolveBuckets,
+          userStreams: resolveCurrentUserInfo.resolveStreams
         },
         context: ''
       }).
       state('home.gettingStarted', {
         url: 'getting-started',
-        onEnter: function($state, $modal, CurrentUserService) {
-          var currentUser = CurrentUserService.getUser();
+        onEnter: function($state, $modal, currentUser) {
           if (currentUser.hasUsername() && currentUser.hasProfilePicture()) {
             return $state.transitionTo('home');
           }
@@ -83,14 +84,17 @@
         }
       }).
       state('home.postStreamPage', {
-        url: ':username/:type/:itemName',
+        url: ':username/{type:stream|bucket}/:itemName',
         controller: 'PostStreamPageCtrl',
         abstract: true,
-        templateUrl: '/main/post-stream-page/postStreamPage.html',
+        templateUrl: '/main/post-stream-page/post-stream-page.html',
         resolve: {
-          data: function loadStreamOrBucketPageData($q, $state, $stateParams, UtilService, Bucket, Stream) {
+          data: function loadStreamOrBucketPageData($q, $state, $stateParams, UtilService) {
             var deferred = $q.defer();
             var type = $stateParams.type;
+            if (type.indexOf('s') > 3) {
+              debugger;
+            }
             UtilService.loadData(type, $stateParams.username, $stateParams.itemName).then(function(data) {
               if (data) {
                 data.type = type;

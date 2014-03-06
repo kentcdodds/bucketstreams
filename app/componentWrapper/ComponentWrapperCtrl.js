@@ -1,4 +1,4 @@
-angular.module('bs.componentWrapper').controller('ComponentWrapperCtrl', function($scope, $timeout, CurrentUserService, Stream, Bucket, Comment, Post, User) {
+angular.module('bs.componentWrapper').controller('ComponentWrapperCtrl', function($scope, $timeout, CurrentUserInfoService, Stream, Bucket, Comment, Post, User) {
 
   $scope.show = {
     spinners: true,
@@ -117,8 +117,8 @@ angular.module('bs.componentWrapper').controller('ComponentWrapperCtrl', functio
     }
   };
 
-  $scope.currentUser = CurrentUserService.getUser();
-  $scope.$on(CurrentUserService.userUpdateEvent, function(event, updatedUser) {
+  $scope.currentUser = CurrentUserInfoService.getUser();
+  $scope.$on(CurrentUserInfoService.events.user, function(event, updatedUser) {
     $scope.currentUser = updatedUser;
   });
 

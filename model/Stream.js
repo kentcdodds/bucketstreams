@@ -23,8 +23,8 @@ var ObjectId = Schema.Types.ObjectId;
  */
 var schema = new Schema({
   owner: {type: ObjectId, ref: ref.user, required: true},
-  name: {type: String, default: 'New Stream'},
-  description: String,
+  name: {type: String, default: 'New Stream', required: true},
+  description: {type: String, required: false},
   visibility: [{type: ObjectId, ref: ref.user}],
   subscriptions: {
     buckets: [{type: ObjectId, ref: ref.bucket}],
@@ -132,6 +132,13 @@ schema.methods.getPosts = function(callback) {
     self.getBucketSubscriptions(addAllPosts);
   }
 };
+
+
+schema.path('name').validate(function (value, callback) {
+  Util.fieldIsUnique(this.model(this.constructor.modelName), 'name', value, {
+    '_id': this._id
+  }, callback);
+}, 'Stream name must be unique per user');
 
 schema.pre('save', function (next) {
   if (!this.isNew && this.isMain) {

@@ -18,34 +18,26 @@ var ErrorController = require('../controller/ErrorController');
 module.exports = function(app) {
 
   /**
-   * Checks if the username is valid
-   * @param username - query - The username to check validity for
+   * Checks if the model created with the given query would pass validation. Responds with isValid and invalidFields.
+   * @param model - param - The collection to create a test model for
+   * @param query - query - the whole query will be used to create the model
    */
-  app.get(prefixes.util + '/validate/username', function(req, res) {
-    var username = req.query.username;
-    var testModel = new User({
-      email: 'this_should_please_be_unique_and_valid_43423572397598317@example.com',
-      username: username
-    });
+  app.get(prefixes.util + '/validate/:model', function(req, res) {
+    var model = models[req.params.model];
+    if (!model) return ErrorController.sendErrorJson(res, 400, 'No model called ' + req.params.model);
+    var testModel = new model(req.query);
     testModel.validate(function(err) {
-      var valid = true;
-      var type = 'available';
-      if (err && err.errors) {
-        valid = false;
-        if (err.errors.username) {
-          type = err.errors.username.type;
-        } else {
-          type = 'invalid for unknown reasons...';
-        }
+      var valid = !(err && err.errors);
+      var invalidFields = null;
+      if (!valid) {
+        invalidFields = err.errors;
       }
       return res.json(200, {
         isValid: valid,
-        message: '"' + username + '" is ' + type + '!',
-        type: type
+        invalidFields: invalidFields
       });
     });
   });
-
 
   /**
    * Gets the posts in the stream with the given id
@@ -92,6 +84,10 @@ module.exports = function(app) {
     }
   });
 
+  /**
+   * Gets the data necessary for the post of the given id.
+   * @param id - param - the id of the post
+   */
   app.get(prefixes.util + '/data/post/:id', function(req, res, next) {
     Post.findOne({_id: req.params.id }, function(err, post) {
       if (err) return ErrorController.sendErrorJson(res, 500, err.message);

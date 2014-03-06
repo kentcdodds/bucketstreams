@@ -1,9 +1,12 @@
-angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $timeout, _, $upload, UtilService, CurrentUserService, AlertService) {
+angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $timeout, _, $upload, UtilService, CurrentUserInfoService, AlertService) {
 
-  $scope.currentUser = CurrentUserService.getUser();
-  $scope.$on(CurrentUserService.userUpdateEvent, function(event, updatedUser) {
+  $scope.currentUser = CurrentUserInfoService.getUser();
+  $scope.$on(CurrentUserInfoService.events.user, function(event, updatedUser) {
     $scope.currentUser = updatedUser;
   });
+  $scope.validationParams = {
+    email: $scope.currentUser.email
+  };
   $scope.firstName = $scope.currentUser.name.first;
   $scope.lastName = $scope.currentUser.name.last;
   $scope.tempUsername = $scope.currentUser.username;

@@ -13,15 +13,15 @@ var ObjectId = Schema.Types.ObjectId;
  * Bucket:
  *   owner: an ID of the owner user
  *   name: The name of the bucket
+ *   description: The description of the bucket
  *   visibility: An array of IDs of users who can view it. If the array is empty, it's public
  *   parent: The parent bucket of this bucket. Can have no parent.
  *   contributors: An array of user IDs of those who can post to this bucket. If empty, it's public.
- *     NOTE: The owner will not be in this list! They are inferred as a contributor.
  */
 var schema = new Schema({
   owner: {type: ObjectId, ref: ref.user, required: true},
-  name: {type: String, default: 'New Bucket'},
-  description: String,
+  name: {type: String, default: 'New Bucket', required: true},
+  description: {type: String, required: false},
   visibility: [{type: ObjectId, ref: ref.user}],
   parent: {type: ObjectId, ref: ref.bucket},
   contributors: [{type: ObjectId, ref: ref.user}],
@@ -57,6 +57,14 @@ schema.methods.getPosts = function(callback) {
 };
 
 Util.addTimestamps(schema);
+
+
+schema.path('name').validate(function (value, callback) {
+  Util.fieldIsUnique(this.model(this.constructor.modelName), 'name', value, {
+    'owner': this.owner
+  }, callback);
+}, 'nameNotUnique');
+
 
 schema.pre('save', function (next) {
   if (!this.isNew && this.isMain) {

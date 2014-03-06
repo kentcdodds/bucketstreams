@@ -1,0 +1,27 @@
+<div class="new-stream modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="$close()">&times;</button>
+    <h4 class="modal-title">New {{type | bsCapitalizeWords}}</h4>
+  </div>
+  <div class="modal-body">
+    <form name="form" id="new-thing-form" role="form" ng-submit="onSubmit()">
+      <div class="form-group" ng-class="{'has-error': !!newThing.name && form.name.$invalid}">
+        <label for="name-field">Name</label>
+          <span class="label-container">
+            <span ng-show="form.name.$error.nameNotUnique" class="label label-danger">You already have a {{type}} called that!</span>
+          </span>
+        <input type="text" name="name" class="form-control" ng-model="newThing.name" id="name-field" placeholder="Funny Memes" bs-autofocus="true"
+               bs-valid-input="name" validation-model="{{type}}" validation-params="validationParams">
+      </div>
+      <div class="form-group">
+        <label for="description-field">Description</label>
+        <input type="text" class="form-control" ng-model="newThing.description" id="description-field" placeholder="Some of the funniest things I find on the internet!">
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="$close()">Cancel</button>
+    <button type="submit" class="btn btn-primary" form="new-thing-form" ng-disabled="form.$invalid">Save</button>
+  </div>
+</div>
+</div>

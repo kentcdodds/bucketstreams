@@ -18,7 +18,7 @@
             <span ng-show="form.username.$error.tooLong" class="label label-danger">Must be shorter than 16 characters</span>
             <span ng-show="form.username.$error.tooShort" class="label label-danger">Must be longer than 3 characters</span>
           </span>
-          <input id="username-field" name="username" class="form-control" bs-username-input bs-autofocus="true" placeholder="awesome_username" ng-model="tempUsername" required>
+          <input id="username-field" name="username" class="form-control" bs-valid-input="username" validation-model="user" validation-params="validationParams" bs-autofocus="true" placeholder="awesome_username" ng-model="tempUsername" required>
         </div>
         <div class="form-group">
           <label for="first-name-field">First Name</label>

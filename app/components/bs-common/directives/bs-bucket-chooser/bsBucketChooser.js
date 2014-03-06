@@ -1,4 +1,4 @@
-angular.module('bs.directives').directive('bsBucketChooser', function($timeout, $filter, CurrentUserService, $modal, Bucket) {
+angular.module('bs.directives').directive('bsBucketChooser', function($timeout, $filter, CurrentUserInfoService, $modal, Bucket, CommonModalService) {
   return {
     restrict: 'E',
     templateUrl: '/components/bs-common/directives/bs-bucket-chooser/bsBucketChooser.html',
@@ -72,24 +72,12 @@ angular.module('bs.directives').directive('bsBucketChooser', function($timeout, 
       };
 
       scope.createBucket = function() {
-        $modal.open({
-          templateUrl: '/main/new-bucket-stream/new-bucket-stream.html',
-          controller: 'NewBucketStreamCtrl',
-          resolve: {
-            currentUser: CurrentUserService.getUser,
-            type: function() {
-              return 'bucket';
-            },
-            model: function() {
-              return Bucket;
-            }
+        CommonModalService.newBucketStream('bucket').result.then(function(newBucket) {
+          if (newBucket) {
+            newBucket.selected(true);
+            scope.buckets.unshift(newBucket);
           }
-        }).result.then(function(newBucket) {
-            if (newBucket) {
-              newBucket.selected(true);
-              scope.buckets.unshift(newBucket);
-            }
-          });
+        });
       };
 
       scope.labelTypes = [

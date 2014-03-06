@@ -2,7 +2,7 @@
   var app = angular.module('bs.models', ['ngResource', 'pasvaz.bindonce']);
 
   if (window.BS) {
-    app.run(function($rootScope, $window, Bucket, Comment, Post, Stream, User, CurrentUserService) {
+    app.run(function($rootScope, $window, Bucket, Comment, Post, Stream, User, CurrentUserInfoService) {
       $window.BS.model = {
         Bucket: Bucket,
         Comment: Comment,
@@ -10,9 +10,9 @@
         Stream: Stream,
         User: User
       };
-      $window.BS.CurrentUser = CurrentUserService.getUser();
+      $window.BS.CurrentUser = CurrentUserInfoService.getUser();
 
-      $rootScope.$on(CurrentUserService.userUpdateEvent, function(event, updatedUser) {
+      $rootScope.$on(CurrentUserInfoService.events.user, function(event, updatedUser) {
         $rootScope.currentUser = updatedUser;
       });
 
