@@ -1,4 +1,4 @@
-angular.module('bs.frontPage').controller('FrontPageCtrl', function ($scope, $http, $window, User, AlertService, _) {
+angular.module('bs.app').controller('FrontPageCtrl', function ($scope, $http, $window, $state, User, AlertService, _, CurrentUserInfoService) {
 
   $scope.password = '';
   $scope.email = '';
@@ -49,7 +49,10 @@ angular.module('bs.frontPage').controller('FrontPageCtrl', function ($scope, $ht
     var promise = User[action](input, password);
 
     promise.success(function() {
-      $window.location.href = '/';
+      CurrentUserInfoService.refreshUser();
+      CurrentUserInfoService.refreshBuckets();
+      CurrentUserInfoService.refreshStreams();
+      $state.go('root.auth');
     });
 
     promise.error(function(err) {

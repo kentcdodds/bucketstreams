@@ -4,6 +4,7 @@ var Post = require('./Post').model;
 var ref = require('./ref');
 var async = require('async');
 var logger = require('winston');
+var uuid = require('node-uuid');
 
 var providers = require('../controller/providers');
 
@@ -26,6 +27,11 @@ var schema = new Schema({
   username: {type: String, required: false},
   phone: String,
   email: {type: Email, unique: true, required: true},
+  emailConfirmation: {
+    secret: String,
+    emailSent: Date,
+    confirmed: {type: Boolean, default: false}
+  },
   name: {
     first: String,
     last: String
@@ -62,7 +68,11 @@ var schema = new Schema({
       rules: [Rule.schema]
     }
   },
-  dontRemind: [{type: String, required: false}]
+  dontRemind: [{type: String, required: false}],
+  passwordReset: {
+    emailSent: {type: Date, required: false},
+    secret: {type: String, required: false}
+  }
 });
 
 Util.addTimestamps(schema);
@@ -72,6 +82,9 @@ schema.plugin(passportLocalMongoose, {
   usernameLowerCase: true
 });
 
+/*
+ * Validation
+ */
 schema.path('username').validate(function (value) {
   return !!(value || '').match(/^([a-zA-Z]|_|\d)*$/);
 }, 'invalid');
@@ -110,8 +123,68 @@ schema.path('username').validate(function (value) {
 }, 'unavailable');
 
 schema.path('username').validate(function (value, callback) {
-  Util.fieldIsUnique(this.model(this.constructor.modelName), 'username', value, null, callback);
+  if (this.isNew) {
+    Util.fieldIsUnique(this.id, this.model(ref.user), 'username', value, null, callback);
+  } else {
+    callback(true);
+  }
 }, 'taken');
+
+/*
+ * Password reset methods
+ */
+schema.methods.setupPasswordReset = function(callback) {
+  this.passwordReset = {
+    emailSent: new Date(),
+    secret: uuid.v4()
+  };
+  callback && this.save(callback);
+};
+
+schema.statics.findByPasswordResetSecret = function(secret, callback) {
+  this.findOne({'passwordReset.secret': secret}, callback);
+};
+
+schema.statics.findByEmailConfirmationSecret = function(secret, callback) {
+  this.findOne({'emailConfirmation.secret': secret}, callback);
+};
+
+/*
+ * Convenience methods
+ */
+schema.statics.getUserByUsernameOrEmail = function(username, callback) {
+  var query = {};
+  if (username.indexOf('@') > -1) {
+    query.email = username;
+  } else {
+    query.username = username;
+  }
+  this.model(ref.user).findOne(query, callback);
+};
+
+schema.statics.getEmailFromUsername = function(username, callback) {
+  if (username.indexOf('@') > -1) {
+    return callback(null, username);
+  }
+  this.model(ref.user).findOne({username: username}, 'email', function(err, user) {
+    callback(err, (user ? user.email : null));
+  });
+};
+
+schema.methods.confirm = function(callback) {
+  this.emailConfirmation.confirmed = true;
+  callback && this.save(callback);
+};
+
+schema.methods.getDisplayName = function() {
+  if (this.name && (this.name.first || this.name.last)) {
+    return (this.name.first || '') + ' ' + (this.name.last || '');
+  } else if (this.username) {
+    return '@' + this.username;
+  } else {
+    return null;
+  }
+};
 
 /*
  * Third-party account methods
@@ -300,27 +373,6 @@ schema.methods.getPosts = function(callback) {
 schema.statics.getByUsername = function(username, callback) {
   this.model(ref.user).find({username: new RegExp('^' + username + '$', 'i')}, callback);
 };
-
-schema.pre('save', function (next) {
-  var self = this;
-  if (self.username) {
-    this.model(ref.user).getByUsername(self.username, function(err, result) {
-      if (err) return next(err);
-
-      if (result.length > 0) {
-        var others = _.find(result, function(user) {
-          return self.id !== user.id;
-        });
-        if (others && others.length) {
-          err = new Error('The username: ' + self.username + ' already in use');
-        }
-      }
-      next(err);
-    });
-  } else {
-    next();
-  }
-});
 
 module.exports = {
   schema: schema,

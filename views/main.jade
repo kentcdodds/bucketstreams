@@ -1,38 +1,29 @@
 doctype html
-if name == 'front-page'
-  html(lang="en", class="height-100")
-else
-  html(lang="en")
+html(lang="en")
 
-head
-  if isDev
-    script.
-      console.log('on development');
-      window.BS = {};
-
-  meta(charset="utf-8")
-  meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
-  title= "Bucket Streams"
-  meta(name="description", content="")
-  meta(name="viewport", content="width=device-width")
-
-  for href in stylesheets
-    link(rel="stylesheet", href="#{href}")
-  for script in topScripts
-    script(src="#{script}")
-
-if name == 'front-page'
-  body(ng-app="#{appName}", class="height-100")
-else
+  head
+    if isDev
+      script.
+        console.log('on development');
+        window.BS = {};
+  
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
+    title= "Bucket Streams"
+    meta(name="description", content="")
+    meta(name="viewport", content="width=device-width")
+  
+    for href in stylesheets
+      link(rel="stylesheet", href="#{href}")
+    for script in topScripts
+      script(src="#{script}")
+  
   body(ng-app="#{appName}")
-
-if !serverRendered
-  if name == 'front-page'
-    div(ui-view, class="height-100")
-  else
-    div(ui-view)
-else
-  block content
-
-for script in scripts
-  script(src="#{script}")
+  
+    if !serverRendered
+      div(ui-view,class="height-100")
+    else
+      block content
+    
+    for script in scripts
+      script(src="#{script}")

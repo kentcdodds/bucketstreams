@@ -1,0 +1,33 @@
+<div ng-switch on="result.type" class="center-block text-align-center" style="width:500px">
+  <h1>Email Confirmation</h1>
+  <div><strong>Code:</strong> {{code}}</div>
+  <div ng-switch-when="success">
+    <h2>Thanks!</h2>
+    <div>Your email has been confirmed! <a ui-sref="home">Come on in!</a></div>
+  </div>
+  <div ng-switch-when="internal-error">
+    <h2>Uh oh!</h2>
+    <div>There was a problem... Sorry about that!</div>
+  </div>
+  <div ng-switch-when="already-confirmed">
+    <h2>Already Confirmed</h2>
+    <div>Looks like this code has already been used. <a ui-sref="home">Move along...</a></div>
+    <a class="pull-right btn btn-default margin-top-small" href="mailto:info@bucketstreams.com" target="_blank">Help</a>
+  </div>
+  <div ng-switch-when="invalid-link">
+    <h2>Er...</h2>
+    <div>Not sure where you got that link, but it is invalid. Did we send it to you? :-/</div>
+  </div>
+  <div ng-switch-when="expired-link">
+    <h2>Code Expired</h2>
+    <div>That code has expired.</div>
+  </div>
+  <div ng-switch-default>
+    <h2>Hmmm...</h2>
+    <div>We're not sure what happened here... Why don't you try again?</div>
+  </div>
+  <div ng-if="result.type !== 'success' && result.type !== 'already-confirmed'" class="margin-top-small">
+    <a class="pull-left btn btn-default" href="mailto:info@bucketstreams.com" target="_blank">Help</a>
+    <button class="pull-right btn btn-info" ng-click="sendNewConfirmationEmail()">Send Another Link</button>
+  </div>
+</div>

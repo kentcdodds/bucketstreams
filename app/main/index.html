@@ -1,61 +1,68 @@
-<div id="main-container">
+<div id="main-container" ng-class="{'authenticated': isAuthenticated}">
 
   <div class="top-bar">
     <div class="col-xs-4 text-left">
-      <div class="position-absolute">
-        <div bs-menu="menuItems" menu-open="menuOpen"></div>
+      <div ng-show="isAuthenticated">
+        <div class="position-absolute">
+          <div bs-menu="menuItems" menu-open="menuOpen"></div>
+        </div>
+        <a ui-sref="root" ng-click="resetContext()" class="margin-left-xxlarge">
+          <img src="/images/logo-small.png" class="bs-logo display-inline">
+        </a>
       </div>
-      <a ui-sref="home" ng-click="resetContext()" class="margin-left-xxlarge">
-        <img src="/images/logo-small.png" class="bs-logo display-inline">
-      </a>
+      <div ng-hide="isAuthenticated">
+        <h3 class="margin-left-xlarge color-white">
+          See what you want
+        </h3>
+      </div>
     </div>
     <div class="col-xs-4 search-container margin-top-xxsmall">
-      <div ng-if="currentUser.username" ux-lamp="lamp" lamp-visible="lamp.visible" rub-class="no-class" wish-callback="lamp.wishMade(wish)" firebase="http://bucketstreams.firebaseio.com/genie/{{currentUser._id}}">
-        <div id="global-search">
-          <div class="input-container input-group">
-            <span ng-show="context.icon" class="input-group-addon left">
-              <i class="fa fa-{{context.icon}}"></i>
-            </span>
-            <input class="global-search-input form-control lamp-input" ng-class="{'no-icon': !context.icon}" type="search" role="search" ng-model="lamp.input" placeholder="Type to do and find stuff" ng-focus="lamp.visible=true">
-            <span id="global-search-icon" class="input-group-addon right">
-              <i class="fa fa-search"></i>
-            </span>
-          </div>
-          <div ng-show="lamp.matchingWishes.length > 0 && lamp.visible" class="lamp-wishes-container">
-            <div class="lamp-wish wish-{{wish.id}}" ng-repeat="wish in lamp.matchingWishes" ng-class="{focused: lamp.focusedWish == wish}" ng-click="lamp.makeWish(wish)" ng-mouseenter="lamp.focusOnWish(wish, false)">
-              <span class="wish-icon">
-                <img class="wish-img-icon img-circle" ng-if="wish.data.uxGenie.imgIcon" ng-src="{{wish.data.uxGenie.imgIcon}}">
-                <i class="wish-i-icon {{wish.data.uxGenie.iIcon}}" ng-if="wish.data.uxGenie.iIcon"></i>
+      <div ng-show="isAuthenticated">
+        <div ng-if="currentUser.username" ux-lamp="lamp" lamp-visible="lamp.visible" rub-class="no-class" wish-callback="lamp.wishMade(wish)" firebase="http://bucketstreams.firebaseio.com/genie/{{currentUser._id}}">
+          <div id="global-search">
+            <div class="input-container input-group">
+              <span ng-show="context.icon" class="input-group-addon left">
+                <i class="fa fa-{{context.icon}}"></i>
               </span>
-              <span class="wish-display">{{wish.data.uxGenie.displayText || wish.magicWords[0]}}</span>
+              <input class="global-search-input form-control lamp-input" ng-class="{'no-icon': !context.icon}" type="search" role="search" ng-model="lamp.input" placeholder="Type to do and find stuff" ng-focus="lamp.visible=true">
+              <span id="global-search-icon" class="input-group-addon right">
+                <i class="fa fa-search"></i>
+              </span>
+            </div>
+            <div ng-show="lamp.matchingWishes.length > 0 && lamp.visible" class="lamp-wishes-container">
+              <div class="lamp-wish wish-{{wish.id}}" ng-repeat="wish in lamp.matchingWishes" ng-class="{focused: lamp.focusedWish == wish}" ng-click="lamp.makeWish(wish)" ng-mouseenter="lamp.focusOnWish(wish, false)">
+                <span class="wish-icon">
+                  <img class="wish-img-icon img-circle" ng-if="wish.data.uxGenie.imgIcon" ng-src="{{wish.data.uxGenie.imgIcon}}">
+                  <i class="wish-i-icon {{wish.data.uxGenie.iIcon}}" ng-if="wish.data.uxGenie.iIcon"></i>
+                </span>
+                <span class="wish-display">{{wish.data.uxGenie.displayText || wish.magicWords[0]}}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="col-xs-4 text-right">
-      <div class="dropdown margin-xxsmall">
-        <a class="dropdown-toggle color-white cursor-pointer text-decoration-none">
-          <span class="margin-right-xxsmall">{{currentUser.getDisplayName()}}</span>
-          <bs-profile-picture user="currentUser" class="user-photo" size="26" hide-hover="true"></bs-profile-picture>
-        </a>
-        <ul class="dropdown-menu pull-right">
-          <li>
-            <a ui-sref="home.userPage({username: currentUser.username})">Profile</a>
-            <a ng-click="currentUser.logout()">Sign Out</a>
-          </li>
-        </ul>
+      <div ng-show="isAuthenticated">
+        <div class="dropdown margin-xxsmall">
+          <a class="dropdown-toggle color-white cursor-pointer text-decoration-none">
+            <span class="margin-right-xxsmall">{{currentUser.getDisplayName()}}</span>
+            <bs-profile-picture user="currentUser" class="user-photo" size="26" hide-hover="true"></bs-profile-picture>
+          </a>
+          <ul class="dropdown-menu pull-right">
+            <li>
+              <a ui-sref="root.userPage({username: currentUser.username})">Profile</a>
+              <a ng-click="currentUser.logout()">Sign Out</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div ng-hide="isAuthenticated">
+        <h3 class="margin-right-xlarge color-white">
+          Share what you want
+        </h3>
       </div>
     </div>
   </div>
-  <div class="main-content">
-    <div class="center-block clearfix" ui-view>
-      <div id="post-field">
-        <bs-new-post user="currentUser" buckets="userBuckets"></bs-new-post>
-      </div>
-      <div bs-post-stream="mainStreamData.posts"></div>
-    </div>
-  </div>
-
-  <div ng-if="false" ux-lamp lamp-visible="lampVisible" rub-class="visible" wish-callback="wishMade(wish)" firebase="http://bucketstreams.firebaseio.com/genie/{{currentUser._id}}"></div>
+  <div class="main-content" ui-view></div>
 </div>

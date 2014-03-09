@@ -36,7 +36,9 @@
     "readable-stream": "~1.1.10",
     "node-uuid": "~1.4.1",
     "connect-mongo": "~0.4.0",
-    "q": "~1.0.0"
+    "q": "~1.0.0",
+    "mandrill-api": "~1.0.39",
+    "moment": "~2.5.1"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

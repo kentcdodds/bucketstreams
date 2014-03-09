@@ -125,9 +125,11 @@ module.exports = function(app) {
 
     // get subscription.bucket/stream info
     function getSubscriptionInfo(responseBuilder) {
+      if (!isStream) return responseBuilder;
+      
       var deferred = Q.defer();
       var items = [];
-      if (!isStream) return deferred.resolve([]);
+      responseBuilder.subscriptionsInfo = {};
       if (responseBuilder.thing.hasBucketSubscriptions()) {
         items.push({
           type: 'buckets',
@@ -144,7 +146,6 @@ module.exports = function(app) {
         var ids = responseBuilder.thing.subscriptions[item.type];
         item.model.find({'_id': {$in: ids}}, 'owner name', function(err, subscriptionInfo) {
           if (err) return done(err);
-          responseBuilder.subscriptionsInfo = responseBuilder.subscriptionsInfo || {};
           responseBuilder.subscriptionsInfo[item.type] = subscriptionInfo;
           responseBuilder.userIds = uniqueIds(responseBuilder.userIds, _.pluck(subscriptionInfo, 'owner'));
           done();
@@ -202,6 +203,7 @@ module.exports = function(app) {
         type: type
       };
       responseBuilder.thing = thing;
+      responseBuilder.userIds = [thing.owner];
       getPosts(responseBuilder)
         .then(getComments)
         .then(getSubscriptionInfo)
@@ -209,7 +211,7 @@ module.exports = function(app) {
         .then(assignFields)
         .then(returnResult)
         .fail(function(err) {
-          ErrorController.send500Error(res, err);
+          if (err) return ErrorController.sendErrorJson(res, 500, err.message);
         });
     });
 /*

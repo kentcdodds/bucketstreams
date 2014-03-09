@@ -59,7 +59,7 @@ module.exports = (function() {
   var componentScripts = getAppSection('components');
   var modelScripts = getAppSection('models');
 
-  var isDev = process.env.NODE_ENV === 'development';
+  var isDev = /development|local/.test(process.env.NODE_ENV);
 
   return {
     frontPage: {

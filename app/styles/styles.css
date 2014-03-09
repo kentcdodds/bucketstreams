@@ -8,12 +8,14 @@
 /* line 293 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
-body{background-color:#fafcf9}
+html,body{height:100%}
 /* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
+body{background-color:#fafcf9}
+/* line 7 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
 .ng-cloak{display:none}
-/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/main.styl */
 
-/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
 
 /* line 32 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
 .color-bs-blue-0{color:#03426a}
@@ -662,32 +664,26 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 /* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-
-/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-#front-page-container .top-content{min-height:100%;height:auto;margin:-20px auto -20px;padding:20px 0 20px 0;}
+#anon-page{width:400px;margin-top:40px;}
+/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+#anon-page #front-page-forms{width:350px}
+/* line 7 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+#anon-page .logo-container{width:800px;}
 /* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-#front-page-container .top-content .top-bar{height:76px}
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-#front-page-container .top-content #center-content{width:400px;margin-top:40px;margin-bottom:100px}
-/* line 17 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-#front-page-container .top-content #front-page-forms{width:350px}
-/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-#front-page-container .top-content .logo-container{width:800px}
-/* line 23 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-#front-page-container .top-content .logo-container > img{width:800px}
-/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-#front-page-container .footer-container{width:100%;background-color:#6e3700;height:40px}
-/* line 31 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-#front-page-container .footer-container > div{margin-top:10px}
-/* line 33 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+#anon-page .logo-container > img{width:800px}
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
 
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+
 /* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
-#main-container .top-bar{height:40px;position:fixed;z-index:1000;top:0;}
-/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+#main-container.authenticated .top-bar{height:40px}
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+#main-container .top-bar{height:70px;position:fixed;z-index:1000;top:0;}
+/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
 #main-container .top-bar .bs-logo{max-height:36px;padding:2px}
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsNewPost.styl */
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsNewPost.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsNewPost.styl */
 .new-post-form{width:400px;position:relative;}

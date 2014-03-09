@@ -1,0 +1,12 @@
+<div class="need-confirmation-modal modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title">Check Your Email</h4>
+  </div>
+  <div class="modal-body">
+    <div>We sent you an email at <a href="mailto:{{currentUser.email}}" target="_blank">{{currentUser.email}}</a>. Please check there for a confirmation link before you jump into the goodies at Bucket Streams.</div>
+  </div>
+  <div class="modal-footer">
+    <a class="pull-left btn btn-default" href="mailto:info@bucketstreams.com" target="_blank">Help</a>
+    <button class="pull-right btn btn-info" ng-click="sendNewConfirmationEmail()">Send Another Link</button>
+  </div>
+</div>

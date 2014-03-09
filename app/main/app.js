@@ -9,7 +9,8 @@
 
     var resolveCurrentUserInfo = {};
     _.each(['User', 'Buckets', 'Streams'], function(thing) {
-      resolveCurrentUserInfo['resolve' + thing] = function(CurrentUserInfoService) {
+      resolveCurrentUserInfo['resolve' + thing] = function(CurrentUserInfoService, isAuthenticated) {
+        if (!isAuthenticated) return null;
         var resource = CurrentUserInfoService['get' + thing]();
         if (resource.$resolved) {
           return resource;
@@ -20,34 +21,58 @@
     });
 
     $stateProvider.
-      state('home', {
-        url: '/',
+      state('root', {
+        abstract: true,
         templateUrl: '/main/index.html',
-        controller: 'MainCtrl',
+        controller: 'SuperCtrl',
+        url: '/',
         resolve: {
+          isAuthenticated: function($q, $http) {
+            var deferred = $q.defer();
+            $http.get('/api/v1/auth/isAuthenticated').then(function(response) {
+              deferred.resolve(response.data.isAuthenticated);
+            }, deferred.reject);
+            return deferred.promise;
+          },
           currentUser: resolveCurrentUserInfo.resolveUser,
           userBuckets: resolveCurrentUserInfo.resolveBuckets,
           userStreams: resolveCurrentUserInfo.resolveStreams
+        }
+      }).
+      state('root.anon', {
+        url: '',
+        templateUrl: '/main/anon/anon.html',
+        controller: 'FrontPageCtrl',
+        onEnter: function($state, isAuthenticated) {
+          if (isAuthenticated) {
+            $state.go('root.auth');
+          }
         },
         context: ''
       }).
-      state('home.gettingStarted', {
+      state('root.auth', {
+        url: '',
+        templateUrl: '/main/auth.html',
+        controller: 'MainCtrl',
+        context: ''
+      }).
+      state('root.auth.gettingStarted', {
         url: 'getting-started',
         onEnter: function($state, $modal, currentUser) {
           if (currentUser.hasUsername() && currentUser.hasProfilePicture()) {
-            return $state.transitionTo('home');
+            return $state.transitionTo('main');
           }
           $modal.open({
             templateUrl: '/main/getting-started/getting-started.html',
             controller: 'GettingStartedCtrl',
             backdrop: 'static'
           }).result.then(function() {
-              return $state.go('home');
+              return $state.go('root');
             });
         },
         context: 'Getting Started'
       }).
-      state('home.settings', {
+      state('root.auth.settings', {
         url: 'settings',
         controller: 'SettingsCtrl',
         templateUrl: '/main/settings/settings.html',
@@ -56,7 +81,7 @@
           icon: 'cog'
         }
       }).
-      state('home.userPage', {
+      state('root.userPage', {
         url: ':username',
         controller: 'ProfileCtrl',
         templateUrl: '/main/profile/profile.html',
@@ -83,7 +108,7 @@
           });
         }
       }).
-      state('home.postStreamPage', {
+      state('root.postStreamPage', {
         url: ':username/{type:stream|bucket}/:itemName',
         controller: 'PostStreamPageCtrl',
         abstract: true,
@@ -101,11 +126,11 @@
                 deferred.resolve(data);
               } else {
                 deferred.reject('No ' + type);
-                $state.go('home');
+                $state.go('root');
               }
             }, function(err) {
               deferred.reject(err);
-              $state.go('home');
+              $state.go('root');
             });
             return deferred.promise;
           }
@@ -118,17 +143,17 @@
           CurrentContext.context(data.thing.name, icon, data);
         }
       }).
-      state('home.postStreamPage.bucket', {
+      state('root.postStreamPage.bucket', {
         url: '',
         controller: 'BucketCtrl',
         templateUrl: '/main/buckets/bucket.html'
       }).
-      state('home.postStreamPage.stream', {
+      state('root.postStreamPage.stream', {
         url: '',
         controller: 'StreamCtrl',
         templateUrl: '/main/streams/stream.html'
       }).
-      state('home.postPage', {
+      state('root.postPage', {
         controller: 'PostPageCtrl',
         templateUrl: '/main/post-page/post-page.html',
         url: ':username/post/:postId',
@@ -142,13 +167,67 @@
           }
         },
         context: 'Bucket Streams Post'
+      }).
+      state('root.emailConfirmation', {
+        controller: 'EmailConfirmationCtrl',
+        templateUrl: '/main/email-confirmation/email-confirmation.html',
+        url: 'confirm-email/:secret',
+        resolve: {
+          result: function($q, $http, $stateParams) {
+            var deferred = $q.defer();
+            $http.get('/api/v1/auth/confirm-email/' + $stateParams.secret).then(function(response) {
+              deferred.resolve(response.data);
+            }, deferred.reject);
+            return deferred.promise;
+          },
+          code: function($stateParams) {
+            return $stateParams.secret;
+          }
+        }
+      }).
+      state('root.resetPassword', {
+        controller: 'ResetPasswordCtrl',
+        templateUrl: '/main/reset-password/reset-password.html',
+        url: 'reset-password/:secret',
+        resolve: {
+          user: function($q, $http, $stateParams) {
+            var deferred = $q.defer();
+            $http.get('/api/v1/auth/reset-password/' + $stateParams.secret).then(function(response) {
+              deferred.resolve(new User(response.data.user));
+            }, deferred.reject);
+            return deferred;
+          },
+          code: function($http, $stateParams) {
+            return $stateParams.secret;
+          }
+        }
       });
 
     $urlRouterProvider.otherwise('/');
   });
 
-  app.run(function(bsGenie) {
+  app.run(function($rootScope, $state, bsGenie) {
+//    $rootScope.$on('$stateChangeStart', function(event, to) {
+//      if (to.name === 'root') {
+//        
+//      }
+//      
+//    });
     bsGenie.initializeGenie();
   });
+//
+//  app.run(function($rootScope, $state, $currentUser) {
+//    $rootScope.$on('$stateChangeStart', function(e, to) {
+//      if (!angular.isFunction(to.data.rule)) return;
+//      var result = to.data.rule($currentUser);
+//
+//      if (result && result.to) {
+//        e.preventDefault();
+//        // Optionally set option.notify to false if you don't want 
+//        // to retrigger another $stateChangeStart event
+//        $state.go(to, result.params, {notify: false});
+//      }
+//    });
+//  });
 
 })();

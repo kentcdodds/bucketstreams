@@ -14,7 +14,7 @@ module.exports = {
       next();
     });
   },
-  fieldIsUnique: function(model, field, value, query, callback) {
+  fieldIsUnique: function(id, model, field, value, query, callback) {
     if (!_.isEmpty(value)) {
       var escapedValue = value.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
       var unique = {};
@@ -29,7 +29,13 @@ module.exports = {
       }
       model.find(unique, '_id', function(err, results) {
         if (err) return callback(false);
-        callback(!results.length);
+        if (results.length === 0) {
+          callback(true);
+        } else if (results.length === 1) {
+          callback(id === results[0])
+        } else {
+          callback(false);
+        }
       });
     } else {
       callback(true);

@@ -20,6 +20,7 @@ angular.module('bs.models').factory('CurrentUserInfoService', function($rootScop
     }
   };
 
+  // The service will have methods called getUser and refreshUser (as well as streams and buckets)
   var service = {
     events: {}
   };
@@ -39,6 +40,7 @@ angular.module('bs.models').factory('CurrentUserInfoService', function($rootScop
 
     service.events[thingName] = things[thingName].event;
   });
+  
 
   return service;
 });
