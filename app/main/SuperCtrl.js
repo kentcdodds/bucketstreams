@@ -1,28 +1,44 @@
-angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $window, $modal, $http, isAuthenticated, Stream, Bucket, Post, CurrentUserInfoService, AlertService, CurrentContext, CommonModalService, UtilService, genie, bsGenie) {
+angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $window, $modal, $http, isAuthenticated, currentUser, userBuckets, userStreams, CurrentUserInfoService, CurrentContext, bsMenuService, CommonModalService, UtilService, genie, bsGenie) {
   $scope.isAuthenticated = isAuthenticated;
-  $scope.currentUser = null;
-  $scope.userBuckets = [];
-  $scope.userStreams = [];
+  $scope.currentUser = currentUser;
+  $scope.userBuckets = userBuckets;
+  $scope.userStreams = userStreams;
+  
+  bsMenuService.menuItems[10] = new bsMenuService.MenuItem('Settings', 'gear', 'root.auth.settings');
+  bsMenuService.menuItems[11] = new bsMenuService.MenuItem('Send Feedback', 'bullhorn', function() {
+    $window.open('https://bitbucket.org/kentcdodds/bucketstreams/issues/new');
+  });
+  $scope.menuItems = bsMenuService.menuItems;
+
+  $scope.$on('$stateChangeSuccess', function(event, to) {
+    $scope.onFrontPage = to.name === 'root.anon';
+  });
+
+  if ($state.current.name === 'root.anon') {
+    $scope.onFrontPage = true;
+  }
 
   $scope.$on(CurrentUserInfoService.events.user, function(event, user) {
     $scope.currentUser = user;
     if (user) {
       $scope.isAuthenticated = true;
-      setupUserStuff();
+      if (!menuSetup) {
+        setupMenu();
+        menuSetup = true;
+      }
     }
   });
-  
-  var setupBucketsMenuItems = function(){};
-  var setupStreamsMenuItems = function(){};
+
+  var setupMenuItemsFor = function(){};
 
   $scope.$on(CurrentUserInfoService.events.buckets, function(event, buckets) {
     $scope.userBuckets = buckets;
-    setupBucketsMenuItems();
+    setupMenuItemsFor('Buckets');
   });
 
   $scope.$on(CurrentUserInfoService.events.streams, function(event, streams) {
     $scope.userStreams = streams;
-    setupStreamsMenuItems();
+    setupMenuItemsFor('Streams');
   });
 
   $scope.$on(CurrentContext.contextChangeEvent, function(event, newContext) {
@@ -53,15 +69,6 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
   }
 
   function setupMenu() {
-
-    function MenuItem(text, icon, onClick, genieIcon, children) {
-      this.text = text;
-      this.icon = icon;
-      this.onClick = onClick;
-      this.genieIcon = genieIcon || icon;
-      this.children = children;
-    }
-
     function createWish(menuItem, id) {
       var data = bsGenie.getUxDataForIcon(menuItem.genieIcon);
       data.menuItem = menuItem;
@@ -73,26 +80,25 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
         action: menuItemAction
       });
     }
-    // creates a scope variable with the name: userTypes (ie userBuckets)
     function createThingMenuItems(type, icon) {
-      var lType = type.toLowerCase();
-      var scopeProp = 'user' + type + 's';
-      var newThing = new MenuItem('New ' + type, 'plus', function() {
+      var lType = type.toLowerCase().substring(0, type.length - 1);
+      var scopeProp = 'user' + type;
+      var newThing = new bsMenuService.MenuItem('New ' + type, 'plus', function() {
         CommonModalService.createOrEditBucketStream(lType).result.then(function(newThing) {
-          CurrentUserInfoService['refresh' + type + 's']();
+          CurrentUserInfoService['refresh' + type]();
           if (newThing) {
             $scope[scopeProp].unshift(newThing);
             $state.go('root.postStreamPage.' + lType, {
               username: $scope.currentUser.username,
               itemName: newThing.name,
-              type: lType 
+              type: lType
             });
           }
         });
       });
       createWish(newThing, 'create-new-' + lType);
 
-      var parentMenuItem = new MenuItem(type + 's', icon, null, null, [newThing]);
+      var parentMenuItem = new bsMenuService.MenuItem(type, icon, null, null, [newThing]);
 
       function makeStreamMenuItems(things) {
         _.each(things, function(thing) {
@@ -101,60 +107,51 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
             itemName: thing.name,
             type: lType
           };
-          var thingMenuItem = new MenuItem(thing.name, null, function() {
+          var thingMenuItem = new bsMenuService.MenuItem(thing.name, null, function() {
             $state.go('root.postStreamPage.' + lType, params);
           }, icon);
           parentMenuItem.children.push(thingMenuItem);
           createWish(thingMenuItem);
         });
       }
-      $scope[scopeProp].$promise.then(makeStreamMenuItems);
+      if ($scope[scopeProp] && $scope[scopeProp].hasOwnProperty('$resolved')) {
+        if ($scope[scopeProp].$resolved) {
+          makeStreamMenuItems($scope[scopeProp]);
+        } else {
+          $scope[scopeProp].$promise.then(makeStreamMenuItems);
+        }
+      }
       return parentMenuItem;
     }
 
-    setupStreamsMenuItems = function() {
-      $scope.menuItems[1] = createThingMenuItems('Stream', 'smile-o');
-    };
-
-    setupBucketsMenuItems = function() {
-      $scope.menuItems[2] = createThingMenuItems('Bucket', 'bitbucket');
-    };
-
-    var settings = new MenuItem('Settings', 'gear', 'root.auth.settings');
-    var feedback = new MenuItem('Send Feedback', 'bullhorn', function() {
-      $window.open('https://bitbucket.org/kentcdodds/bucketstreams/issues/new');
-    });
-
-    var search = new MenuItem('Search', 'search', function() {
-      $scope.lampVisible = true;
-      $scope.$safeApply();
-    });
-
-    $scope.menuItems = [search, null, null, settings, feedback];
-  }
-
-  function setupUserStuff() {
-      setupMenu();
-      
-      if ($scope.currentUser.username) {
-        UtilService.loadData('stream', currentUser.username, 'Main Stream').then(function(data) {
-          $scope.mainStreamData = data;
-        });
+    setupMenuItemsFor = function(thing) {
+      var index = 3;
+      var icon = 'smile-o';
+      if (thing === 'Buckets') {
+        index = 4;
+        icon = 'bitbucket';
       }
-  
-  }
-  if ($scope.currentUser && $scope.isAuthenticated) {
-    setupUserStuff();
-  }
-  
-  (function setupLamp() {
-    $scope.lamp = {
-      wishMade: function() {
-      },
-      visible: false,
-      input: (CurrentContext.context() || {name: ''}).name
+      bsMenuService.menuItems[index] = createThingMenuItems(thing, icon);
     };
-  })();
+    setupMenuItemsFor('Streams');
+    setupMenuItemsFor('Buckets');
+  }
+
+  var menuSetup = false;
+  if ($scope.isAuthenticated) {
+    setupMenu();
+    menuSetup = true;
+  }
+
+
+  // initialize lamp
+  $scope.lamp = {
+    wishMade: function() {
+    },
+    visible: false,
+    input: (CurrentContext.context() || {name: ''}).name
+  };
+  
 
 
 });

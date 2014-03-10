@@ -1,23 +1,34 @@
-angular.module('bs.models').factory('CurrentUserInfoService', function($rootScope, User, Stream, Bucket, _) {
+angular.module('bs.models').factory('CurrentUserInfoService', function($rootScope, $q, $http, _, User, Stream, Bucket) {
   var things = {
+    authenticated: {
+      val: null,
+      event: 'authenticatedUpdated',
+      refresher: function() {
+        var deferred = $q.defer();
+        $http.get('/api/v1/auth/isAuthenticated').then(function(response) {
+          deferred.resolve(response.data.isAuthenticated);
+        }, deferred.reject);
+        return deferred.promise;
+      }
+    },
     user: {
       val: null,
       event: 'userUpdated',
-      getter: function() {
+      refresher: function() {
         return User.get({id: 'me'});
       }
     },
     buckets: {
       val: [],
       event: 'bucketsUpdated',
-      getter: function() {
+      refresher: function() {
         return Bucket.query({owner: 'me'});
       }
     },
     streams: {
       val: [],
       event: 'streamsUpdated',
-      getter: function() {
+      refresher: function() {
         return Stream.query({owner: 'me'});
       }
     }
@@ -35,7 +46,7 @@ angular.module('bs.models').factory('CurrentUserInfoService', function($rootScop
     };
 
     service['refresh' + capThingName] = function() {
-      things[thingName].val = things[thingName].getter();
+      things[thingName].val = things[thingName].refresher();
       $rootScope.$broadcast(things[thingName].event, things[thingName].val);
       return things[thingName].val;
     };

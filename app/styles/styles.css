@@ -422,15 +422,17 @@ ul.dropdown-menu li{cursor:pointer}
 /* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketStreamChooser.styl */
 .bs-bucket-stream-chooser .selected-things .label{margin:.2em}
 /* line 10 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketStreamChooser.styl */
-.bs-bucket-stream-chooser .dropdown-menu{max-height:160px;overflow-y:scroll;width:240px;overflow-x:hidden;opacity:0;transition:all .3s;display:block;z-index:-1;}
-/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketStreamChooser.styl */
+.bs-bucket-stream-chooser .dropdown-menu{max-height:160px;overflow-y:scroll;max-width:30px;min-width:240px;overflow-x:hidden;opacity:0;transition:all .3s;display:block;z-index:-1;}
+/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketStreamChooser.styl */
 .bs-bucket-stream-chooser .dropdown-menu.open{opacity:1;z-index:999}
-/* line 22 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketStreamChooser.styl */
+/* line 23 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketStreamChooser.styl */
 .bs-bucket-stream-chooser .dropdown-menu .dropdown-text-field{padding:6px 16px 0 16px;}
-/* line 24 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketStreamChooser.styl */
-.bs-bucket-stream-chooser .dropdown-menu .dropdown-text-field i{display:inline;margin-left:10px}
-/* line 27 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketStreamChooser.styl */
-.bs-bucket-stream-chooser .dropdown-menu .dropdown-text-field input{display:inline;height:28px;width:86%}
+/* line 25 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketStreamChooser.styl */
+.bs-bucket-stream-chooser .dropdown-menu .dropdown-text-field input{display:inline;width:86%;height:28px}
+/* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketStreamChooser.styl */
+
+/* line 30 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketStreamChooser.styl */
+.bs-bucket-stream-chooser .dropdown-menu .dropdown-text-field i,.bs-bucket-stream-chooser .dropdown-menu .add-item-line i{display:inline;margin-left:10px}
 /* line 126 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
 
 /* line 126 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
@@ -676,12 +678,26 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
 
 /* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
-#main-container.authenticated .top-bar{height:40px}
+#main-container.authenticated .top-bar{height:40px;}
 /* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+#main-container.authenticated .top-bar .bs-logo{max-height:36px;padding:2px}
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+#main-container.authenticated .main-content{margin-top:40px}
+/* line 10 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+#main-container.authenticated .auth-only{display:auto}
+/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
 #main-container .top-bar{height:70px;position:fixed;z-index:1000;top:0;}
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
-#main-container .top-bar .bs-logo{max-height:36px;padding:2px}
-/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsNewPost.styl */
+/* line 18 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+#main-container .top-bar .search-container .logo-container{text-align:center;}
+/* line 21 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+#main-container .top-bar .search-container .logo-container .bs-logo{max-height:60px}
+/* line 24 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+#main-container .main-content{margin-top:70px}
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+#main-container .auth-only{display:none}
+/* line 28 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsNewPost.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsNewPost.styl */
 .new-post-form{width:400px;position:relative;}

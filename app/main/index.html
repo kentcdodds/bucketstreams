@@ -2,21 +2,26 @@
 
   <div class="top-bar">
     <div class="col-xs-4 text-left">
-      <div ng-show="isAuthenticated">
-        <div class="position-absolute">
-          <div bs-menu="menuItems" menu-open="menuOpen"></div>
-        </div>
-        <a ui-sref="root" ng-click="resetContext()" class="margin-left-xxlarge">
-          <img src="/images/logo-small.png" class="bs-logo display-inline">
-        </a>
-      </div>
       <div ng-hide="isAuthenticated">
         <h3 class="margin-left-xlarge color-white">
           See what you want
         </h3>
       </div>
+      <div ng-show="isAuthenticated">
+        <div class="position-absolute">
+          <div bs-menu="menuItems" menu-open="menuOpen"></div>
+        </div>
+        <a ui-sref="root.route" ng-click="resetContext()" class="margin-left-xxlarge">
+          <img src="/images/logo-small.png" class="bs-logo display-inline">
+        </a>
+      </div>
     </div>
     <div class="col-xs-4 search-container margin-top-xxsmall">
+      <div ng-hide="isAuthenticated || onFrontPage" class="logo-container">
+        <a ui-sref="root.route">
+          <img src="/images/logo-small.png" class="bs-logo">
+        </a>
+      </div>
       <div ng-show="isAuthenticated">
         <div ng-if="currentUser.username" ux-lamp="lamp" lamp-visible="lamp.visible" rub-class="no-class" wish-callback="lamp.wishMade(wish)" firebase="http://bucketstreams.firebaseio.com/genie/{{currentUser._id}}">
           <div id="global-search">
@@ -43,11 +48,16 @@
       </div>
     </div>
     <div class="col-xs-4 text-right">
+      <div ng-hide="isAuthenticated">
+        <h3 class="margin-right-xlarge color-white">
+          Share what you want
+        </h3>
+      </div>
       <div ng-show="isAuthenticated">
         <div class="dropdown margin-xxsmall">
           <a class="dropdown-toggle color-white cursor-pointer text-decoration-none">
             <span class="margin-right-xxsmall">{{currentUser.getDisplayName()}}</span>
-            <bs-profile-picture user="currentUser" class="user-photo" size="26" hide-hover="true"></bs-profile-picture>
+            <bs-profile-picture user="currentUser" class="user-photo" size="26" hide-hover="true" watch-user="true"></bs-profile-picture>
           </a>
           <ul class="dropdown-menu pull-right">
             <li>
@@ -56,11 +66,6 @@
             </li>
           </ul>
         </div>
-      </div>
-      <div ng-hide="isAuthenticated">
-        <h3 class="margin-right-xlarge color-white">
-          Share what you want
-        </h3>
       </div>
     </div>
   </div>

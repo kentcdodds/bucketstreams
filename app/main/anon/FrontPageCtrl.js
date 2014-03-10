@@ -49,11 +49,11 @@ angular.module('bs.app').controller('FrontPageCtrl', function ($scope, $http, $w
     var promise = User[action](input, password);
 
     promise.success(function() {
-      
+      CurrentUserInfoService.refreshAuthenticated();
       CurrentUserInfoService.refreshUser();
       CurrentUserInfoService.refreshBuckets();
       CurrentUserInfoService.refreshStreams();
-      $state.go('root.auth');
+      $state.go('root.auth.home');
     });
 
     promise.error(function(err) {

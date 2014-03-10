@@ -10,14 +10,19 @@
     var resolveCurrentUserInfo = {};
     _.each(['User', 'Buckets', 'Streams'], function(thing) {
       resolveCurrentUserInfo['resolve' + thing] = function(CurrentUserInfoService, isAuthenticated) {
-        var resource = CurrentUserInfoService['get' + thing]();
-        if (_.isEmpty(resource)) {
-          resource = CurrentUserInfoService['refresh' + thing]();
+        if (!isAuthenticated) return null;
+        var thingVal = CurrentUserInfoService['get' + thing]();
+        if (_.isEmpty(thingVal)) {
+          thingVal = CurrentUserInfoService['refresh' + thing]();
         }
-        if (resource.$resolved) {
-          return resource;
+        if (thingVal.hasOwnProperty('$resolved')) {
+          if (thingVal.$resolved) {
+            return thingVal;
+          } else {
+            return thingVal.$promise;
+          }
         } else {
-          return resource.$promise;
+          return thingVal;
         }
       }
     });
@@ -29,12 +34,22 @@
         controller: 'SuperCtrl',
         url: '/',
         resolve: {
-          isAuthenticated: function($q, $http) {
-            var deferred = $q.defer();
-            $http.get('/api/v1/auth/isAuthenticated').then(function(response) {
-              deferred.resolve(response.data.isAuthenticated);
-            }, deferred.reject);
-            return deferred.promise;
+          isAuthenticated: function(CurrentUserInfoService) {
+            return CurrentUserInfoService.refreshAuthenticated;
+          },
+          currentUser: resolveCurrentUserInfo.resolveUser,
+          userBuckets: resolveCurrentUserInfo.resolveBuckets,
+          userStreams: resolveCurrentUserInfo.resolveStreams
+        }
+      }).
+      state('root.route', {
+        url: '',
+        onEnter: function($state, isAuthenticated) {
+          console.log('route');
+          if (isAuthenticated) {
+            $state.go('root.auth.home');
+          } else {
+            $state.go('root.anon');
           }
         }
       }).
@@ -42,51 +57,50 @@
         url: '',
         templateUrl: '/main/anon/anon.html',
         controller: 'FrontPageCtrl',
-        onEnter: function($state, isAuthenticated) {
-          console.log('anon');
-          if (isAuthenticated) {
-            $state.go('root.auth');
-          }
+        onEnter: function() {
+          console.log('root.anon');
         },
         context: ''
       }).
       state('root.auth', {
+        abstract: true,
         url: '',
-        templateUrl: '/main/auth.html',
-        controller: 'MainCtrl',
-        context: '',
-        resolve: {
-          currentUser: resolveCurrentUserInfo.resolveUser,
-          userBuckets: resolveCurrentUserInfo.resolveBuckets,
-          userStreams: resolveCurrentUserInfo.resolveStreams
-        },
-        onEnter: function() {
-          console.log('auth');
+        template: '<div ui-view></div>',
+        onEnter: function($state, isAuthenticated) {
+          console.log('root.auth');
+          if (!isAuthenticated) {
+            $state.go('root.anon');
+          }
         }
       }).
-      state('root.auth.gettingStarted', {
-        url: 'getting-started',
-        onEnter: function($state, $modal, currentUser) {
-          if (currentUser.hasUsername() && currentUser.hasProfilePicture()) {
-            return $state.transitionTo('main');
+      state('root.auth.home', {
+        url: '',
+        templateUrl: '/main/auth/home.html',
+        controller: 'MainCtrl',
+        resolve: {
+          mainStreamData: function(UtilService, currentUser) {
+            if (currentUser.hasUsername) {
+              return UtilService.loadData('stream', currentUser.username, 'Main Stream');
+            } else {
+              return [];
+            }
           }
-          $modal.open({
-            templateUrl: '/main/getting-started/getting-started.html',
-            controller: 'GettingStartedCtrl',
-            backdrop: 'static'
-          }).result.then(function() {
-              return $state.go('root');
-            });
         },
-        context: 'Getting Started'
+        onEnter: function() {
+          console.log('root.auth.home');
+        },
+        context: ''
       }).
       state('root.auth.settings', {
         url: 'settings',
         controller: 'SettingsCtrl',
-        templateUrl: '/main/settings/settings.html',
+        templateUrl: '/main/auth/settings/settings.html',
         context: {
           name: 'Settings',
           icon: 'cog'
+        },
+        onEnter: function() {
+          console.log('root.settings');
         }
       }).
       state('root.userPage', {
@@ -178,7 +192,7 @@
       }).
       state('root.emailConfirmation', {
         controller: 'EmailConfirmationCtrl',
-        templateUrl: '/main/email-confirmation/email-confirmation.html',
+        templateUrl: '/main/auth/email-confirmation/email-confirmation.html',
         url: 'confirm-email/:secret',
         resolve: {
           result: function($q, $http, $stateParams) {
@@ -213,29 +227,4 @@
 
     $urlRouterProvider.otherwise('/');
   });
-
-  app.run(function($rootScope, $state, bsGenie) {
-//    $rootScope.$on('$stateChangeStart', function(event, to) {
-//      if (to.name === 'root') {
-//        
-//      }
-//      
-//    });
-    bsGenie.initializeGenie();
-  });
-//
-//  app.run(function($rootScope, $state, $currentUser) {
-//    $rootScope.$on('$stateChangeStart', function(e, to) {
-//      if (!angular.isFunction(to.data.rule)) return;
-//      var result = to.data.rule($currentUser);
-//
-//      if (result && result.to) {
-//        e.preventDefault();
-//        // Optionally set option.notify to false if you don't want 
-//        // to retrigger another $stateChangeStart event
-//        $state.go(to, result.params, {notify: false});
-//      }
-//    });
-//  });
-
 })();

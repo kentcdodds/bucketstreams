@@ -15,7 +15,7 @@ angular.module('bs.directives').directive('bsMenu', function($document, $timeout
     restrict: 'A',
     templateUrl: '/components/menu/bsMenu.html',
     scope: {
-      options: '=bsMenu'
+      bsMenu: '=bsMenu'
     },
     link: function(scope, el, attrs) {
       function safeApply(fn) {
@@ -27,6 +27,12 @@ angular.module('bs.directives').directive('bsMenu', function($document, $timeout
           scope.$apply(fn);
         }
       }
+      
+      scope.options = _.compact(scope.bsMenu);
+      
+      scope.$watch('bsMenu', function(newVal) {
+        scope.options = _.compact(newVal);
+      });
 
       scope.onItemClicked = function($event, item) {
         scope.selectedItem = item;

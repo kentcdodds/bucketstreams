@@ -1,11 +1,10 @@
-angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, $http, currentUser, userBuckets, userStreams, Stream, Bucket, Post, CurrentUserInfoService, AlertService, CurrentContext, CommonModalService, UtilService, genie, bsGenie) {
-  $scope.currentUser = currentUser;
-  $scope.userBuckets = userBuckets;
-  $scope.userStreams = userStreams;
+angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, $http, mainStreamData, Stream, Bucket, Post, CurrentUserInfoService, AlertService, CurrentContext) {
+  $scope.mainStreamData = mainStreamData;
+  
   if (!$scope.currentUser.hasUsername()) {
     CurrentContext.context('Getting Started');
     $modal.open({
-      templateUrl: '/main/getting-started/getting-started.html',
+      templateUrl: '/main/auth/getting-started/getting-started.html',
       controller: 'GettingStartedCtrl',
       backdrop: 'static',
       keyboard: false
@@ -30,10 +29,9 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
           }, AlertService.handleResponse.error);
         }
       },
-      templateUrl: '/main/email-confirmation/need-confirmation.html',
+      templateUrl: '/main/auth/email-confirmation/need-confirmation.html',
       backdrop: 'static',
       keyboard: false
     });
   }
-
 });

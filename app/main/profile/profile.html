@@ -3,7 +3,7 @@
     <div class="col-xs-4 text-left">
       <h2>Buckets</h2>
       <div ng-repeat="bucket in buckets">
-        <a ui-sref="home.postStreamPage.bucket({username: profileUser.username, type: 'bucket', itemName: bucket.name})">
+        <a ui-sref="root.postStreamPage.bucket({username: profileUser.username, type: 'bucket', itemName: bucket.name})">
           {{bucket.name}}
         </a>
       </div>
@@ -19,7 +19,7 @@
     <div class="col-xs-4 text-right">
       <h2>Streams</h2>
       <div ng-repeat="stream in streams">
-        <a ui-sref="home.postStreamPage.stream({username: profileUser.username, type: 'stream', itemName: stream.name})">
+        <a ui-sref="root.postStreamPage.stream({username: profileUser.username, type: 'stream', itemName: stream.name})">
           {{stream.name}}
         </a>
       </div>

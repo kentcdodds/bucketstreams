@@ -3,7 +3,7 @@
   <div><strong>Code:</strong> {{code}}</div>
   <div ng-switch-when="success">
     <h2>Thanks!</h2>
-    <div>Your email has been confirmed! <a ui-sref="home">Come on in!</a></div>
+    <div>Your email has been confirmed! <a ui-sref="root.route">Come on in!</a></div>
   </div>
   <div ng-switch-when="internal-error">
     <h2>Uh oh!</h2>
@@ -11,7 +11,7 @@
   </div>
   <div ng-switch-when="already-confirmed">
     <h2>Already Confirmed</h2>
-    <div>Looks like this code has already been used. <a ui-sref="home">Move along...</a></div>
+    <div>Looks like this code has already been used. <a ui-sref="root.route">Move along...</a></div>
     <a class="pull-right btn btn-default margin-top-small" href="mailto:info@bucketstreams.com" target="_blank">Help</a>
   </div>
   <div ng-switch-when="invalid-link">

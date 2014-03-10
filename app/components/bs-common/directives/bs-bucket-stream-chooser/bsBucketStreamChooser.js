@@ -9,7 +9,7 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
       bucket: '=?',
       stream: '=?'
     },
-    link: function(scope, el) {
+    link: function(scope, el, attrs) {
       var opening = null;
       var closing = null;
 
@@ -21,7 +21,7 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
         throw new Error('Cannot give buckets AND bucket/stream to bsBucketStreamChooser!');
       }
 
-      scope.type = scope.buckets ? 'bucket' : 'stream';
+      scope.type = attrs.hasOwnProperty('buckets') ? 'bucket' : 'stream';
       scope.subscriptionSubject = scope.stream || scope.bucket;
       scope.listItems = scope.streams || scope.buckets;
 
