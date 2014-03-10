@@ -1,18 +1,21 @@
 angular.module('bs.models').factory('CurrentUserInfoService', function($rootScope, User, Stream, Bucket, _) {
   var things = {
     user: {
+      val: null,
       event: 'userUpdated',
       getter: function() {
         return User.get({id: 'me'});
       }
     },
     buckets: {
+      val: [],
       event: 'bucketsUpdated',
       getter: function() {
         return Bucket.query({owner: 'me'});
       }
     },
     streams: {
+      val: [],
       event: 'streamsUpdated',
       getter: function() {
         return Stream.query({owner: 'me'});
@@ -26,7 +29,6 @@ angular.module('bs.models').factory('CurrentUserInfoService', function($rootScop
   };
   _.each(things, function(thing, thingName) {
     var capThingName = thingName.substring(0, 1).toUpperCase() + thingName.substring(1, thingName.length);
-    things[thingName].val = things[thingName].getter();
 
     service['get' + capThingName] = function() {
       return things[thingName].val;

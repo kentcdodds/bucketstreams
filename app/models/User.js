@@ -99,6 +99,10 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilFu
   User.prototype.isConnectedTo = function(provider) {
     return UtilFunctions.testHasPosterity(this.connectedAccounts, provider + '.token');
   };
+  
+  User.prototype.isConfirmed = function() {
+    return this.emailConfirmation && this.emailConfirmation.confirmed;
+  };
 
   User.prototype.getFieldsToFill = function() {
     var fields = [];

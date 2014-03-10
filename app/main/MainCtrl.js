@@ -1,6 +1,8 @@
 angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, $http, currentUser, userBuckets, userStreams, Stream, Bucket, Post, CurrentUserInfoService, AlertService, CurrentContext, CommonModalService, UtilService, genie, bsGenie) {
-
-  if (_.isEmpty($scope.currentUser.username)) {
+  $scope.currentUser = currentUser;
+  $scope.userBuckets = userBuckets;
+  $scope.userStreams = userStreams;
+  if (!$scope.currentUser.hasUsername()) {
     CurrentContext.context('Getting Started');
     $modal.open({
       templateUrl: '/main/getting-started/getting-started.html',
@@ -10,9 +12,10 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
     }).result.then(function() {
         $window.location.href = '/';
       });
+    return;
   }
   
-  if (!$scope.currentUser.emailConfirmation.confirmed && $state.current.name !== 'root.emailConfirmation') {
+  if (!$scope.currentUser.isConfirmed() && $state.current.name !== 'root.emailConfirmation') {
     CurrentContext.context('Email Confirmation');
     $modal.open({
       controller: function($scope, $http) {

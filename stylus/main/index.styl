@@ -54,3 +54,28 @@
   padding 20px 40px
   #post-field
     margin-bottom 30px
+    
+  /* login animation */
+  &.ng-enter, &.ng-leave
+    transition opacity 0.5s, transform 0.5s
+    background-color: blue
+
+  &.ng-enter
+    opacity 0
+    transform translateY(100px)
+    background-color: red
+  
+  &.ng-enter-active
+    opacity 1
+    transform translateY(0px)
+    background-color: green
+  
+  &.ng-leave
+    opacity 1
+    transform translateY(0px)
+    background-color: orange
+  
+  &.ng-leave-active
+    opacity 0
+    transform translateY(100px)
+    background-color: black

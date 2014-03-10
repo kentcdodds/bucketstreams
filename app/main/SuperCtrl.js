@@ -1,24 +1,28 @@
-angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $window, $modal, $http, currentUser, userBuckets, userStreams, isAuthenticated, Stream, Bucket, Post, CurrentUserInfoService, AlertService, CurrentContext, CommonModalService, UtilService, genie, bsGenie) {
-  $scope.currentUser = currentUser;
-  $scope.userBuckets = userBuckets;
-  $scope.userStreams = userStreams;
+angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $window, $modal, $http, isAuthenticated, Stream, Bucket, Post, CurrentUserInfoService, AlertService, CurrentContext, CommonModalService, UtilService, genie, bsGenie) {
   $scope.isAuthenticated = isAuthenticated;
+  $scope.currentUser = null;
+  $scope.userBuckets = [];
+  $scope.userStreams = [];
 
   $scope.$on(CurrentUserInfoService.events.user, function(event, user) {
     $scope.currentUser = user;
     if (user) {
       $scope.isAuthenticated = true;
+      setupUserStuff();
     }
   });
+  
+  var setupBucketsMenuItems = function(){};
+  var setupStreamsMenuItems = function(){};
 
   $scope.$on(CurrentUserInfoService.events.buckets, function(event, buckets) {
     $scope.userBuckets = buckets;
-    setupMenu();
+    setupBucketsMenuItems();
   });
 
   $scope.$on(CurrentUserInfoService.events.streams, function(event, streams) {
     $scope.userStreams = streams;
-    setupMenu();
+    setupStreamsMenuItems();
   });
 
   $scope.$on(CurrentContext.contextChangeEvent, function(event, newContext) {
@@ -79,9 +83,9 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
           if (newThing) {
             $scope[scopeProp].unshift(newThing);
             $state.go('root.postStreamPage.' + lType, {
-              username: currentUser.username,
+              username: $scope.currentUser.username,
               itemName: newThing.name,
-              type: lType
+              type: lType 
             });
           }
         });
@@ -93,7 +97,7 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
       function makeStreamMenuItems(things) {
         _.each(things, function(thing) {
           var params = {
-            username: currentUser.username,
+            username: $scope.currentUser.username,
             itemName: thing.name,
             type: lType
           };
@@ -108,8 +112,13 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
       return parentMenuItem;
     }
 
-    var streamsMenuItem = createThingMenuItems('Stream', 'smile-o');
-    var bucketsMenuItem = createThingMenuItems('Bucket', 'bitbucket');
+    setupStreamsMenuItems = function() {
+      $scope.menuItems[1] = createThingMenuItems('Stream', 'smile-o');
+    };
+
+    setupBucketsMenuItems = function() {
+      $scope.menuItems[2] = createThingMenuItems('Bucket', 'bitbucket');
+    };
 
     var settings = new MenuItem('Settings', 'gear', 'root.auth.settings');
     var feedback = new MenuItem('Send Feedback', 'bullhorn', function() {
@@ -121,27 +130,31 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
       $scope.$safeApply();
     });
 
-    $scope.menuItems = [search, streamsMenuItem, bucketsMenuItem, settings, feedback];
+    $scope.menuItems = [search, null, null, settings, feedback];
   }
 
-  if ($scope.currentUser) {
-    setupMenu();
-    
-    if ($scope.currentUser.username) {
-      UtilService.loadData('stream', currentUser.username, 'Main Stream').then(function(data) {
-        $scope.mainStreamData = data;
-      });
-    }
-
-    (function setupLamp() {
-      $scope.lamp = {
-        wishMade: function() {
-        },
-        visible: false,
-        input: (CurrentContext.context() || {name: ''}).name
-      };
-    })();
+  function setupUserStuff() {
+      setupMenu();
+      
+      if ($scope.currentUser.username) {
+        UtilService.loadData('stream', currentUser.username, 'Main Stream').then(function(data) {
+          $scope.mainStreamData = data;
+        });
+      }
+  
   }
+  if ($scope.currentUser && $scope.isAuthenticated) {
+    setupUserStuff();
+  }
+  
+  (function setupLamp() {
+    $scope.lamp = {
+      wishMade: function() {
+      },
+      visible: false,
+      input: (CurrentContext.context() || {name: ''}).name
+    };
+  })();
 
 
 });

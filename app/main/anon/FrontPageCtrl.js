@@ -49,6 +49,7 @@ angular.module('bs.app').controller('FrontPageCtrl', function ($scope, $http, $w
     var promise = User[action](input, password);
 
     promise.success(function() {
+      
       CurrentUserInfoService.refreshUser();
       CurrentUserInfoService.refreshBuckets();
       CurrentUserInfoService.refreshStreams();

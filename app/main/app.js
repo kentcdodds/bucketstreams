@@ -4,14 +4,16 @@
   var internalMods = ['bs.directives', 'bs.models', 'bs.services', 'bs.filters'];
   var app = angular.module('bs.app', thirdParties.concat(angularMods.concat(internalMods)));
 
-  app.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+  app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, _) {
     $locationProvider.html5Mode(true);
 
     var resolveCurrentUserInfo = {};
     _.each(['User', 'Buckets', 'Streams'], function(thing) {
       resolveCurrentUserInfo['resolve' + thing] = function(CurrentUserInfoService, isAuthenticated) {
-        if (!isAuthenticated) return null;
         var resource = CurrentUserInfoService['get' + thing]();
+        if (_.isEmpty(resource)) {
+          resource = CurrentUserInfoService['refresh' + thing]();
+        }
         if (resource.$resolved) {
           return resource;
         } else {
@@ -33,10 +35,7 @@
               deferred.resolve(response.data.isAuthenticated);
             }, deferred.reject);
             return deferred.promise;
-          },
-          currentUser: resolveCurrentUserInfo.resolveUser,
-          userBuckets: resolveCurrentUserInfo.resolveBuckets,
-          userStreams: resolveCurrentUserInfo.resolveStreams
+          }
         }
       }).
       state('root.anon', {
@@ -44,6 +43,7 @@
         templateUrl: '/main/anon/anon.html',
         controller: 'FrontPageCtrl',
         onEnter: function($state, isAuthenticated) {
+          console.log('anon');
           if (isAuthenticated) {
             $state.go('root.auth');
           }
@@ -54,7 +54,15 @@
         url: '',
         templateUrl: '/main/auth.html',
         controller: 'MainCtrl',
-        context: ''
+        context: '',
+        resolve: {
+          currentUser: resolveCurrentUserInfo.resolveUser,
+          userBuckets: resolveCurrentUserInfo.resolveBuckets,
+          userStreams: resolveCurrentUserInfo.resolveStreams
+        },
+        onEnter: function() {
+          console.log('auth');
+        }
       }).
       state('root.auth.gettingStarted', {
         url: 'getting-started',
