@@ -32,14 +32,14 @@ module.exports = function(app) {
 
   app.set('view engine', 'jade');
   app.engine('jade', require('jade').__express);
-  app.set('views', app.get('directory') + '/views');
+  app.set('views', path.resolve('./server/views'));
 
-  app.use(express.favicon(app.get('directory') + '/app/images/favicon.png'));
+  app.use(express.favicon(path.resolve('./public/images/favicon.png')));
   app.use(express.urlencoded());
   app.use(express.json());
   app.use(express.methodOverride());
 
-  app.use(express.static(path.join(app.get('directory'), 'app')));
+  app.use(express.static(path.resolve('./public')));
 
   app.use(passport.initialize());
   app.use(passport.session());

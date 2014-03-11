@@ -8,7 +8,7 @@ if (process.env.OPENSHIFT_NODEJS_IP) {
   logger.info('On Openshift:', process.env.OPENSHIFT_NODEJS_IP + ':' + process.env.OPENSHIFT_NODEJS_PORT);
 }
 
-var app = require('./app');
+var app = require('./server/app');
 logger.info('Getting ready to create server... On ' + process.env.NODE_ENV + ' express (' + app.get('env') + ') server will listen here: ' + app.get('ip') + ':' + app.get('port'));
 
 require('http').createServer(app).listen(app.get('port'), app.get('ip'), function() {

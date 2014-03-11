@@ -20,6 +20,9 @@ angular.module('bs.services').factory('UtilService', function(_, $http, $q, Post
         }
       }).then(function (response) {
         var thing = response.data.thing;
+        if (_.isEmpty(thing)) {
+          return deferred.resolve(thing);
+        }
         var posts = thing.posts;
         _.each(posts, function (post, postIndex) {
           post.authorInfo = new User(post.authorInfo);

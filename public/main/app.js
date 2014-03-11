@@ -35,11 +35,14 @@
         url: '/',
         resolve: {
           isAuthenticated: function(CurrentUserInfoService) {
-            return CurrentUserInfoService.refreshAuthenticated;
+            return CurrentUserInfoService.refreshAuthenticated();
           },
           currentUser: resolveCurrentUserInfo.resolveUser,
           userBuckets: resolveCurrentUserInfo.resolveBuckets,
           userStreams: resolveCurrentUserInfo.resolveStreams
+        },
+        onEnter: function() {
+          console.log('root');
         }
       }).
       state('root.route', {

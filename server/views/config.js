@@ -12,7 +12,7 @@ module.exports = (function() {
     return files;
   }
 
-  var customStyles = getFilesInPath('./app/styles/*.css', './app');
+  var customStyles = getFilesInPath('./public/styles/*.css', './public');
   var thirdPartyStyles = [
     '/bower_components/bootstrap/dist/css/bootstrap.min.css',
     '/non_bower_components/font-awesome-4.0.3/css/font-awesome.min.css',
@@ -48,8 +48,8 @@ module.exports = (function() {
   };
 
   function getAppSection(name) {
-    var appJs = getFilesInPath('./app/' + name + '/app.js', './app');
-    var otherJsFiles = getFilesInPath('./app/' + name + '/**/*.js', './app');
+    var appJs = getFilesInPath('./public/' + name + '/app.js', './public');
+    var otherJsFiles = getFilesInPath('./public/' + name + '/**/*.js', './public');
     return _.union(appJs, otherJsFiles);
   }
 

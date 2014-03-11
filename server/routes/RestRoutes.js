@@ -1,4 +1,4 @@
-var dataModels = require('../model').models;
+var dataModels = require('../model/index').models;
 var prefixes = require('./prefixes');
 var _ = require('lodash-node');
 var ErrorController = require('../controller/ErrorController');

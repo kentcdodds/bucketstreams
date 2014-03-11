@@ -4,7 +4,7 @@ var logger = require('winston');
 module.exports = function() {
 
   // Setup model
-  require('../model');
+  require('../model/index');
 
   // Connect to database
   var regex = /mongodb:\/\/.*?:(.*?)@.*?:.*?\/.*?$/;

@@ -49,11 +49,9 @@ angular.module('bs.app').controller('FrontPageCtrl', function ($scope, $http, $w
     var promise = User[action](input, password);
 
     promise.success(function() {
-      CurrentUserInfoService.refreshAuthenticated();
-      CurrentUserInfoService.refreshUser();
-      CurrentUserInfoService.refreshBuckets();
-      CurrentUserInfoService.refreshStreams();
-      $state.go('root.auth.home');
+      $state.go('root.auth.home', null, {
+        reload: true, inherit: false, notify: false
+      });
     });
 
     promise.error(function(err) {

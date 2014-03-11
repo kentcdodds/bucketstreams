@@ -20,10 +20,10 @@ html(lang="en")
   
   body(ng-app="#{appName}")
   
-    if !serverRendered
-      div(ui-view,class="height-100")
-    else
+    if serverRendered
       block content
+    else
+      div(ui-view,class="height-100")
     
     for script in scripts
       script(src="#{script}")

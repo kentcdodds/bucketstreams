@@ -1,4 +1,4 @@
-var dataModels = require('../model').models;
+var dataModels = require('../model/index').models;
 
 
 module.exports = {
