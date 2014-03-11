@@ -1,4 +1,4 @@
-angular.module('bs.app').controller('PostStreamPageCtrl', function($scope, $state, data, $modal, AlertService, CommonModalService, CurrentUserInfoService) {
+angular.module('bs.app').controller('PostStreamPageCtrl', function($scope, $state, _, data, $modal, AlertService, CommonModalService, CurrentUserInfoService, PostBroadcaster) {
   $scope.thing = data.thing;
   $scope.posts = data.posts;
   $scope.type = data.type;
@@ -7,8 +7,8 @@ angular.module('bs.app').controller('PostStreamPageCtrl', function($scope, $stat
   if ($scope.isStream) {
     $scope.subscriptionsInfo = data.subscriptionsInfo;
   } else {
-    var bucket = _.find($scope.userBuckets, {_id: $scope.thing._id, isMain: false});
-    if (bucket) {
+    var bucket = _.find($scope.userBuckets, {_id: $scope.thing._id});
+    if (bucket && !bucket.isMain) {
       bucket.selected(true);
     }
   }
@@ -18,12 +18,19 @@ angular.module('bs.app').controller('PostStreamPageCtrl', function($scope, $stat
   $scope.streams = CurrentUserInfoService.getStreams();
   $scope.editThing = function() {
     CommonModalService.createOrEditBucketStream($scope.type, $scope.thing).result.then(function(theThing) {
-      if ($scope.thing === theThing) {
-        console.warn('already equal');
-      }
       if (theThing) {
         $scope.thing = theThing;
       }
     });
   };
+
+  $scope.$on(PostBroadcaster.removedPostEvent, function(event, post) {
+    _.remove($scope.posts, {_id: post._id});
+  });
+
+  $scope.$on(PostBroadcaster.newPostEvent, function(event, post) {
+    if (_.contains(post.buckets, $scope.thing._id) || (!$scope.isStream && $scope.thing.isMain)) {
+      $scope.posts.unshift(post);
+    }
+  });
 });

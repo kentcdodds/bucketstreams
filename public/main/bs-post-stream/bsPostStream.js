@@ -1,4 +1,4 @@
-angular.module('bs.app').directive('bsPostStream', function($window) {
+angular.module('bs.app').directive('bsPostStream', function($window, PostBroadcaster) {
   return {
     restrict: 'A',
     templateUrl: '/main/bs-post-stream/bsPostStream.html',
@@ -41,7 +41,6 @@ angular.module('bs.app').directive('bsPostStream', function($window) {
         });
         return postsForColumn;
       };
-
     }
   };
 });

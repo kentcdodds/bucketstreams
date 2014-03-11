@@ -1,4 +1,4 @@
-angular.module('bs.directives').directive('bsNewPost', function(Post, _, AlertService, $document) {
+angular.module('bs.directives').directive('bsNewPost', function(Post, _, AlertService, $document, PostBroadcaster) {
   var placeholders = [
     'What are you thinking?',
     'Anything cool happen today?',
@@ -23,20 +23,22 @@ angular.module('bs.directives').directive('bsNewPost', function(Post, _, AlertSe
       scope.makePost = function() {
         var post = new Post({
           author: scope.user._id,
+          authorInfo: scope.user,
+          modified: new Date(),
           content: scope.content,
           buckets: _.pluck(_.filter(scope.buckets, function(bucket) {
             return bucket.isMain || bucket.selected()
           }), '_id')
         });
+        PostBroadcaster.broadcastNewPost(post);
         post.$save(function(){
           resetState();
           AlertService.success('Post saved');
           if ($document[0].activeElement === postButton[0]) {
             textarea[0].focus();
           }
-          //TODO Figure out how to add this to the post view if applicable......
         }, function(err) {
-          //TODO Figure out how to remove this from the post view if applicable.
+          PostBroadcaster.broadcastRemovedPost(post);
           AlertService.error(err.message);
         });
       };
