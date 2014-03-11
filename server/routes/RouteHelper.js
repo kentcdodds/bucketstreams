@@ -27,7 +27,7 @@ module.exports = {
           });
         }
         delete req.query.username;
-        req.query[newName] = user[0].id;
+        req.query[newName || '_id'] = user[0].id;
         callback();
       });
     } else {

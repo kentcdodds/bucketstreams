@@ -1,7 +1,22 @@
-<div class="center-block clearfix" ui-view>
-  <h1 class="text-align-center margin-bottom-large">Main Stream</h1>
-  <div id="post-field">
-    <bs-new-post user="currentUser" buckets="userBuckets"></bs-new-post>
+<div class="center-block clearfix home" ui-view>
+  <div class="row margin-top-large">
+    <div class="col-xs-6">
+      <div class="post-field">
+        <bs-new-post user="currentUser" buckets="userBuckets"></bs-new-post>
+      </div>
+    </div>
+    <div class="col-xs-6 people-to-follow">
+      <strong>People to follow</strong>
+      <ul class="well">
+        <li ng-repeat="person in people" class="margin-top-xsmall">
+          <bs-profile-picture user="person" size="small"></bs-profile-picture>
+          <a ui-sref="root.userPage({username: person.username})"><span class="margin-left-xxsmall">{{person.getDisplayName()}}</span></a>
+        </li>
+      </ul>
+    </div>
   </div>
-  <div bs-post-stream="mainStreamData.posts" class="margin-top-medium"></div>
+  <div class="margin-top-medium clearfix">
+    <h1 class="text-align-center margin-bottom-large">Main Stream</h1>
+    <div bs-post-stream="mainStreamData.posts"></div>
+  </div>
 </div>

@@ -1,5 +1,14 @@
 angular.module('bs.models').factory('User', function($resource, $http, _, UtilFunctions, $window) {
-  var User = $resource('/api/v1/rest/users/:id', { id: '@_id' });
+  var User = $resource('/api/v1/rest/users/:id', { id: '@_id' }, {
+    dicsoverUsers: {
+      method: 'GET',
+      url: '/api/v1/rest/users/discover',
+      isArray: true,
+      params: {
+        username: 'me'
+      }
+    }
+  });
   var authPrefix = '/api/v1/auth';
   User.register = function(email, password) {
     return $http({

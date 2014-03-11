@@ -41,7 +41,7 @@ module.exports = function (grunt) {
 //        tasks: 'simplemocha'
 //      },
       stylus: {
-        files: ['stylus/**/*.styl', 'stylus/*.styl'],
+        files: ['stylus/**/*.styl', 'stylus/*.styl', 'stylus/**/**/*.stly'],
         tasks: 'stylus'
       }
     },

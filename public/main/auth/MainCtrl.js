@@ -1,4 +1,4 @@
-angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, $http, mainStreamData, Stream, Bucket, Post, CurrentUserInfoService, AlertService, CurrentContext, PostBroadcaster) {
+angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, $http, mainStreamData, Stream, Bucket, Post, User, CurrentUserInfoService, AlertService, CurrentContext, PostBroadcaster) {
   $scope.mainStreamData = mainStreamData;
   
   if (!$scope.currentUser.hasUsername()) {
@@ -36,8 +36,6 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
     });
   }
 
-
-
   $scope.$on(PostBroadcaster.removedPostEvent, function(event, post) {
     _.remove($scope.mainStreamData.posts, {_id: post._id});
   });
@@ -45,4 +43,6 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
   $scope.$on(PostBroadcaster.newPostEvent, function(event, post) {
     $scope.mainStreamData.posts.unshift(post);
   });
+  
+  $scope.people = User.dicsoverUsers();
 });
