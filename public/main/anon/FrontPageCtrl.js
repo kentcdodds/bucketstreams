@@ -50,7 +50,7 @@ angular.module('bs.app').controller('FrontPageCtrl', function ($scope, $http, $w
 
     promise.success(function() {
       $state.go('root.auth.home', null, {
-        reload: true, inherit: false, notify: false
+        reload: true, inherit: false, notify: true
       });
     });
 

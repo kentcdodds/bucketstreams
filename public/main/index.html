@@ -11,14 +11,14 @@
         <div class="position-absolute">
           <div bs-menu="menuItems" menu-open="menuOpen"></div>
         </div>
-        <a ui-sref="root.route" ng-click="resetContext()" class="margin-left-xxlarge">
+        <a ui-sref="root.auth.home" ng-click="resetContext()" class="margin-left-xxlarge">
           <img src="/images/logo-small.png" class="bs-logo display-inline">
         </a>
       </div>
     </div>
     <div class="col-xs-4 search-container margin-top-xxsmall">
       <div ng-hide="isAuthenticated || onFrontPage" class="logo-container">
-        <a ui-sref="root.route">
+        <a ui-sref="root.auth.home">
           <img src="/images/logo-small.png" class="bs-logo">
         </a>
       </div>

@@ -18,7 +18,7 @@ angular.module('bs.app').factory('bsGenie', function(genie, $state, User, AlertS
       magicWords: 'Home',
       data: getUxDataForIcon('home'),
       action: function() {
-        $state.go('root.route');
+        $state.go('root.auth.home');
       }
     });
 

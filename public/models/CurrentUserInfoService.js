@@ -54,6 +54,8 @@ angular.module('bs.models').factory('CurrentUserInfoService', function($rootScop
     service.events[thingName] = things[thingName].event;
   });
   
+  service.refreshAuthenticated();
+  
 
   return service;
 });

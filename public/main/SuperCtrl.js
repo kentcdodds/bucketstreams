@@ -3,11 +3,6 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
   $scope.currentUser = currentUser;
   $scope.userBuckets = userBuckets;
   $scope.userStreams = userStreams;
-  
-  bsMenuService.menuItems[10] = new bsMenuService.MenuItem('Settings', 'gear', 'root.auth.settings');
-  bsMenuService.menuItems[11] = new bsMenuService.MenuItem('Send Feedback', 'bullhorn', function() {
-    $window.open('https://bitbucket.org/kentcdodds/bucketstreams/issues/new');
-  });
   $scope.menuItems = bsMenuService.menuItems;
 
   $scope.$on('$stateChangeSuccess', function(event, to) {
@@ -22,6 +17,7 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
     $scope.currentUser = user;
     if (user) {
       $scope.isAuthenticated = true;
+    bsMenuService.menuItems[10] = new bsMenuService.MenuItem('Settings', 'gear', 'root.auth.settings');
       if (!menuSetup) {
         setupMenu();
         menuSetup = true;
@@ -135,6 +131,10 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
     };
     setupMenuItemsFor('Streams');
     setupMenuItemsFor('Buckets');
+    bsMenuService.menuItems[10] = new bsMenuService.MenuItem('Settings', 'gear', 'root.auth.settings');
+    bsMenuService.menuItems[11] = new bsMenuService.MenuItem('Send Feedback', 'bullhorn', function() {
+      $window.open('https://bitbucket.org/kentcdodds/bucketstreams/issues/new');
+    });
   }
 
   var menuSetup = false;

@@ -40,48 +40,22 @@
           currentUser: resolveCurrentUserInfo.resolveUser,
           userBuckets: resolveCurrentUserInfo.resolveBuckets,
           userStreams: resolveCurrentUserInfo.resolveStreams
-        },
-        onEnter: function() {
-          console.log('root');
-        }
-      }).
-      state('root.route', {
-        url: '',
-        onEnter: function($state, isAuthenticated) {
-          console.log('route');
-          if (isAuthenticated) {
-            $state.go('root.auth.home');
-          } else {
-            $state.go('root.anon');
-          }
         }
       }).
       state('root.anon', {
         url: '',
         templateUrl: '/main/anon/anon.html',
-        controller: 'FrontPageCtrl',
-        onEnter: function() {
-          console.log('root.anon');
-        }
+        controller: 'FrontPageCtrl'
       }).
       state('root.anon.trouble', {
         url: 'login-trouble',
         templateUrl: '/main/anon/login-trouble.html',
-        controller: 'LoginTroubleCtrl',
-        onEnter: function() {
-          console.log('Login Trouble');
-        }
+        controller: 'LoginTroubleCtrl'
       }).
       state('root.auth', {
         abstract: true,
         url: '',
-        template: '<div ui-view></div>',
-        onEnter: function($state, isAuthenticated) {
-          console.log('root.auth');
-          if (!isAuthenticated) {
-            $state.go('root.anon');
-          }
-        }
+        template: '<div ui-view></div>'
       }).
       state('root.auth.home', {
         url: '',
@@ -114,7 +88,7 @@
         }
       }).
       state('root.userPage', {
-        url: ':username',
+        url: '{username:^([a-zA-Z]|_|\\d)*$}',
         controller: 'ProfileCtrl',
         templateUrl: '/main/profile/profile.html',
         resolve: {
@@ -141,7 +115,7 @@
         }
       }).
       state('root.postStreamPage', {
-        url: ':username/{type:stream|bucket}/:itemName',
+        url: '{username:^([a-zA-Z]|_|\\d)*$}/{type:stream|bucket}/:itemName',
         controller: 'PostStreamPageCtrl',
         abstract: true,
         templateUrl: '/main/post-stream-page/post-stream-page.html',
@@ -158,11 +132,11 @@
                 deferred.resolve(data);
               } else {
                 deferred.reject('No ' + type);
-                $state.go('root.route');
+                $state.go('root.auth.home');
               }
             }, function(err) {
               deferred.reject(err);
-              $state.go('root.route');
+              $state.go('root.auth.home');
             });
             return deferred.promise;
           }
@@ -188,7 +162,7 @@
       state('root.postPage', {
         controller: 'PostPageCtrl',
         templateUrl: '/main/post-page/post-page.html',
-        url: ':username/post/:postId',
+        url: '{username:^([a-zA-Z]|_|\\d)*$}/post/:postId',
         resolve: {
           post: function($q, UtilService, $stateParams) {
             var deferred = $q.defer();
@@ -239,5 +213,27 @@
       });
 
     $urlRouterProvider.otherwise('/');
+    
+  });
+  
+  app.run(function($rootScope, $state, CurrentUserInfoService) {
+    $rootScope.$on(CurrentUserInfoService.events.user, function(event, user) {
+      if (!user && /root\.auth/.test($state.current.name)) {
+        $state.go('root.anon');
+      }
+    });
+    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
+      console.log(toState.name);
+      var authenticated = CurrentUserInfoService.getAuthenticated();
+      if (/root\.auth/.test(toState.name)) {
+        if (!authenticated) {
+          $state.go('root.anon');
+        }
+      } else if ('root.anon' === toState.name) {
+        if (authenticated) {
+          $state.go('root.auth.home');
+        }
+      }
+    });
   });
 })();

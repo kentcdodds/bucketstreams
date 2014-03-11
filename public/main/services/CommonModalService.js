@@ -33,7 +33,7 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
             $scope.$close();
             CommonModalService.deleteBucketStream($scope.type, $scope.thing).result.then(function(deletedThing) {
               if (deletedThing) {
-                $state.go('root.route');
+                $state.go('root.auth.home');
               }
             });
           }

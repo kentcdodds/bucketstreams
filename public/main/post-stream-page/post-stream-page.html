@@ -16,7 +16,7 @@
           <div ng-if="thing.isMain && isStream && !currentUserIsOwner">This is a collection of all of {{owner.getDisplayName()}}'s subscriptions you can see.</div>
           <div ng-if="thing.isMain && !isStream && currentUserIsOwner">This is a collection of all of your posts.</div>
           <div ng-if="thing.isMain && isStream && currentUserIsOwner">This is a collection of all of your subscriptions.</div>
-          <div ng-if="!currentUserIsOwner" class="auth-only">
+          <div class="auth-only">
             <strong>Subscribe to this {{type}}</strong>
             <bs-bucket-stream-chooser streams="streams" bucket="bucket" stream="stream"></bs-bucket-stream-chooser>
           </div>

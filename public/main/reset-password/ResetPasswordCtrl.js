@@ -22,7 +22,7 @@ angular.module('bs.app').controller('ResetPasswordCtrl', function($scope, data, 
       }
     }).then(function() {
       AlertService.success('Password changed!');
-      $state.go('root.route');
+      $state.go('root.auth.home');
     }, function() {
       AlertService.error('There was a problem. Please try again');
     }).finally(function() {
