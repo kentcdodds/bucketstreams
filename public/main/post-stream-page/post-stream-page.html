@@ -10,7 +10,7 @@
         <bs-profile-picture ng-if="!currentUserIsOwner || isStream" user="owner" class="owner-profile"></bs-profile-picture>
         <i ng-show="!thing.isMain" class="fa fa-edit edit-thing" ng-click="editThing()" ng-if="currentUserIsOwner"></i>
         <div class="bucket-stream-details">
-          <h1 class="margin-top-0">{{thing.name}}</h1>
+          <h1 class="margin-top-0" fa-icon="{{isStream ? 'smile-o' : 'bitbucket'}}"> {{thing.name}}</h1>
           <div ng-if="!thing.isMain">{{thing.description}}</div>
           <div ng-if="thing.isMain && !isStream && !currentUserIsOwner">This is a collection of all of {{owner.getDisplayName()}}'s posts you can see.</div>
           <div ng-if="thing.isMain && isStream && !currentUserIsOwner">This is a collection of all of {{owner.getDisplayName()}}'s subscriptions you can see.</div>
@@ -18,21 +18,29 @@
           <div ng-if="thing.isMain && isStream && currentUserIsOwner">This is a collection of all of your subscriptions.</div>
           <div class="auth-only">
             <strong>Subscribe to this {{type}}</strong>
-            <bs-bucket-stream-chooser streams="streams" bucket="bucket" stream="stream"></bs-bucket-stream-chooser>
+            <div class="subscription-chooser-wrapper">
+              <bs-bucket-stream-chooser streams="streams" bucket="bucket" stream="stream"></bs-bucket-stream-chooser>
+            </div>
           </div>
         </div>
         <div class="subscriptions" ng-if="isStream">
           Subscriptions:
-          <div ng-if="thing.subscriptionsInfo.buckets.length">
-            <strong fa-icon="bitbucket"> Buckets</strong>
-            <ul>
-              <li ng-repeat="bucketSub in thing.subscriptionsInfo.buckets">{{bucketSub.name}} by {{bucketSub.ownerInfo.getDisplayName()}}</li>
-            </ul>
+          <div ng-hide="subscriptionGroups[0].list.length || subscriptionGroups[1].list.length">
+            This stream has no subscriptions!<br />
+            No wonder there aren't any posts here!
           </div>
-          <div ng-if="thing.subscriptionsInfo.streams.length">
-            <strong fa-icon="smile-o"> Streams</strong>
+          <div ng-repeat="group in subscriptionGroups" ng-if="group.list.length">
+            <strong fa-icon="{{group.icon}}"> {{group.name}}</strong>
             <ul>
-              <li ng-repeat="streamSub in thing.subscriptionsInfo.streams">{{streamSub.name}} by {{streamSub.ownerInfo.getDisplayName()}}</li>
+              <li ng-repeat="item in group.list">
+                <a ui-sref="root.postStreamPage.bucket({username: item.ownerInfo.username, type: group.type, itemName: item.name})">
+                  {{item.name}}
+                </a>
+                by
+                <a ui-sref="root.userPage({username: item.ownerInfo.username})">
+                  {{item.ownerInfo.getDisplayName()}}
+                </a>
+              </li>
             </ul>
           </div>
         </div>

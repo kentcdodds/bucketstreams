@@ -35,4 +35,19 @@ angular.module('bs.app').controller('PostStreamPageCtrl', function($scope, $stat
       $scope.posts.unshift(post);
     }
   });
+  var subscriptionsInfo = ($scope.thing && $scope.thing.subscriptionsInfo) ? $scope.thing.subscriptionsInfo : {};
+  $scope.subscriptionGroups = [
+    {
+      name: 'Buckets',
+      type: 'bucket',
+      list: subscriptionsInfo.buckets,
+      icon: 'bitbucket'
+    },
+    {
+      name: 'Streams',
+      type: 'stream',
+      list: subscriptionsInfo.streams,
+      icons: 'smile-o'
+    }
+  ];
 });

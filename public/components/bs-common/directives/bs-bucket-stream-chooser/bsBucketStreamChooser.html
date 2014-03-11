@@ -18,7 +18,7 @@
         <i class="fa fa-plus-circle" ng-click="createThing()" tooltip="Create new {{listType === 'bucket' ? 'bucket' : 'stream'}}" tooltip-placement="left"></i>
       </li>
       <li ng-show="listItems.length > 1" role="presentation" class="divider"></li>
-      <li ng-repeat="thing in nonMainThings() | filter:search" ng-click="toggleThing(thing)">
+      <li ng-repeat="thing in applicableThings() | filter:search" ng-click="toggleThing(thing)">
         <a><i class="fa fa-{{thing.selected() ? 'check-' : ''}}circle-o"></i> {{thing.name}}</a>
       </li>
     </ul>

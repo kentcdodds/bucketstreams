@@ -98,9 +98,9 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
         }
       };
 
-      scope.nonMainThings = function() {
+      scope.applicableThings = function() {
         return _.filter(scope.listItems, function(thing) {
-          return !thing.isMain;
+          return !thing.isMain && !(scope.subscriptionSubject && scope.subscriptionSubject._id === thing._id);
         });
       };
 
