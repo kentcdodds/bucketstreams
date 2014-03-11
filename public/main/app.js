@@ -26,6 +26,8 @@
         }
       }
     });
+    
+    var usernameUrl = '{username:(?:[a-zA-Z]|_|\\d){3,16}}';
 
     $stateProvider.
       state('root', {
@@ -88,7 +90,7 @@
         }
       }).
       state('root.userPage', {
-        url: '{username:^([a-zA-Z]|_|\\d)*$}',
+        url: usernameUrl,
         controller: 'ProfileCtrl',
         templateUrl: '/main/profile/profile.html',
         resolve: {
@@ -115,7 +117,7 @@
         }
       }).
       state('root.postStreamPage', {
-        url: '{username:^([a-zA-Z]|_|\\d)*$}/{type:stream|bucket}/:itemName',
+        url: usernameUrl + '/{type:stream|bucket}/:itemName',
         controller: 'PostStreamPageCtrl',
         abstract: true,
         templateUrl: '/main/post-stream-page/post-stream-page.html',
@@ -162,7 +164,7 @@
       state('root.postPage', {
         controller: 'PostPageCtrl',
         templateUrl: '/main/post-page/post-page.html',
-        url: '{username:^([a-zA-Z]|_|\\d)*$}/post/:postId',
+        url: usernameUrl + '/post/:postId',
         resolve: {
           post: function($q, UtilService, $stateParams) {
             var deferred = $q.defer();

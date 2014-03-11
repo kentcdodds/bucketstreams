@@ -1,0 +1,9 @@
+<div class="new-post modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="$close()">&times;</button>
+    <h4 class="modal-title" fa-icon="{{icon}}"> {{isNew ? 'New' : 'Edit'}} Post</h4>
+  </div>
+  <div class="modal-body">
+    <bs-new-post user="user" buckets="buckets" on-save="$close()"></bs-new-post>
+  </div>
+</div>

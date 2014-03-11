@@ -74,6 +74,35 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
           }
         }
       });
+    },
+    createOrEditPost: function(user, buckets, post) {
+      return $modal.open({
+        templateUrl: '/main/services/common-modal-templates/new-or-edit-post-modal.html',
+        controller: function($scope, user, buckets, post) {
+          $scope.user = user;
+          $scope.buckets = buckets;
+          $scope.post = post;
+          $scope.isNew = !post;
+          $scope.deleteIt = function() {
+            var successMessage = 'Post deleted';
+            $scope.post.$remove(function() {
+              AlertService.info(successMessage);
+              $scope.$close();
+            }, AlertService.handleResponse.error);
+          };
+        },
+        resolve: {
+          user: function() {
+            return user;
+          },
+          buckets: function() {
+            return buckets;
+          },
+          post: function() {
+            return post;
+          }
+        }
+      });
     }
   };
   return CommonModalService;

@@ -53,8 +53,11 @@
           Share what you want
         </h3>
       </div>
-      <div ng-show="isAuthenticated">
-        <div class="dropdown margin-xxsmall">
+      <div ng-show="isAuthenticated" class="user-options">
+        <span class="new-post-button">
+          <button class="btn btn-default btn-sm" ng-click="showNewPostModal()">New Post</button>
+        </span>
+        <span class="dropdown margin-xxsmall">
           <a class="dropdown-toggle color-white cursor-pointer text-decoration-none">
             <span class="margin-right-xxsmall">{{currentUser.getDisplayName()}}</span>
             <bs-profile-picture user="currentUser" class="user-photo" size="26" hide-hover="true" watch-user="true"></bs-profile-picture>
@@ -65,7 +68,7 @@
               <a ng-click="currentUser.logout()">Sign Out</a>
             </li>
           </ul>
-        </div>
+        </span>
       </div>
     </div>
   </div>

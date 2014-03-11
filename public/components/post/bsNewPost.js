@@ -14,7 +14,8 @@ angular.module('bs.directives').directive('bsNewPost', function(Post, _, AlertSe
     replace: true,
     scope: {
       user: '=',
-      buckets: '='
+      buckets: '=',
+      onSave: '&'
     },
     link: function(scope, el) {
       var postButton = el.find('button');
@@ -32,6 +33,7 @@ angular.module('bs.directives').directive('bsNewPost', function(Post, _, AlertSe
         });
         PostBroadcaster.broadcastNewPost(post);
         post.$save(function(){
+          scope.onSave && scope.onSave({post: post});
           resetState();
           AlertService.success('Post saved');
           if ($document[0].activeElement === postButton[0]) {

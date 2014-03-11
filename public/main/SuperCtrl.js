@@ -143,6 +143,10 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
     menuSetup = true;
   }
 
+  $scope.showNewPostModal = function() {
+    CommonModalService.createOrEditPost($scope.currentUser, $scope.userBuckets);
+  };
+
 
   // initialize lamp
   $scope.lamp = {
