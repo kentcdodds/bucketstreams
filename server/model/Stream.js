@@ -107,7 +107,7 @@ schema.methods.getPosts = function(callback) {
   // get all posts
   function getPosts(responseBuilder) {
     var deferred = Q.defer();
-    Post.find({buckets: { $in: responseBuilder.bucketIds }}).sort('createdAt').exec(function(err, posts) {
+    Post.find({buckets: { $in: responseBuilder.bucketIds }}).sort('-created').exec(function(err, posts) {
       if (err) return deferred.reject(err);
       responseBuilder.posts = uniqueById(responseBuilder.posts, posts);
       deferred.resolve(responseBuilder);
@@ -118,7 +118,7 @@ schema.methods.getPosts = function(callback) {
   // resolve ids of all user's stream's subscriptions
   function getSubscribedBucketIds(responseBuilder) {
     var deferred = Q.defer();
-    self.resolveSubscriptions(function(err, bucketIds) {
+    this.resolveSubscriptions(function(err, bucketIds) {
       if (err) return deferred.reject(err);
       responseBuilder.bucketIds = uniqueById(responseBuilder.bucketIds, bucketIds);
       deferred.resolve(responseBuilder);
@@ -165,10 +165,12 @@ schema.methods.getPosts = function(callback) {
         if (err) return deferred.reject(err);
         var iterators = [];
         _.each(streams, function(stream, index) {
-          iterators[index] = _.bind(getSubscribedBucketIds, stream, responseBuilder);
+          iterators[index] = function(done) {
+            _.bind(getSubscribedBucketIds, stream, responseBuilder)().then(done);
+          }
         });
-        Q.all(iterators).then(function(results) {
-          if (iterators.length === _.where(results, {state: 'fulfilled'}).length) return deferred.reject('Not all fulfilled');
+        async.parallel(iterators, function(responseBuilder) {
+          if (err) return deferred.reject(err);
           deferred.resolve(responseBuilder);
         });
       });
@@ -176,105 +178,9 @@ schema.methods.getPosts = function(callback) {
     }
     
     promise = getUserPosts(responseBuilder).then(getAllSubscribedBucketIds);
-    /*
-    function getUsersPosts(done) {
-      Post.find({
-        author: self.owner
-      }, done);
-    }
-
-    function getAllStreamSubscriptionPosts(done) {
-      self.model(self.constructor.modelName).find({
-        $and: [
-          {
-            owner: self.owner
-          },
-          {
-            _id: {
-              $ne: self._id
-            }
-          }
-        ]}, function(err, streams) {
-        if (err) return done(err);
-        async.concat(streams || [], function(stream, done) {
-          function getSubscribedBucketsPosts(done) {
-            if (stream.subscriptions.buckets && stream.subscriptions.buckets.length) {
-              Post.find({ buckets : { $in : [ stream.subscriptions.buckets ] }}, done);
-            } else {
-              done();
-            }
-          }
-
-          function getStreamPosts(done) {
-            if (stream.subscriptions.streams && stream.subscriptions.streams.length) {
-              var streamIds = self.subscriptions.streams;
-              if (_.isEmpty(streamIds)) {
-                streamIds.push(self._id);
-              }
-              self.model(self.constructor.modelName).find({_id: { $in: [ streamIds ] } }, function(err, streams) {
-                if (err) return callback(err);
-                async.concat(streams || [], function(stream, done) {
-                  if (_.contains(streamsRetrieved, stream.id)) {
-                    return done();
-                  }
-                  streamsRetrieved.push(stream.id);
-                  stream.getPosts(done, streamsRetrieved, bucketsRetrieved);
-                }, done);
-              });
-            } else {
-              done();
-            }
-          }
-          async.parallel([getSubscribedBucketsPosts, getStreamPosts], done);
-        }, done);
-      });
-    }
-    async.parallel([getUsersPosts, getAllStreamSubscriptionPosts], function(err, results) {
-      if (err) return callback(err);
-      var allPosts = _.chain(results)
-        .unique('_id')
-        .compact()
-        .flatten()
-        .value();
-      callback(null, allPosts);
-    });
-    */
   } else {
     // get bucket subscription ids
     promise = getSubscribedBucketIds(responseBuilder);
-    /*
-    self.getBucketSubscriptions(function(err, buckets) {
-      if (err) return callback(err);
-      async.concat(buckets || [], function(bucket, done) {
-        if (_.contains(bucketsRetrieved, bucket._id)) return done();
-        bucketsRetrieved.push(bucket.id);
-        bucket.getPosts(done);
-      }, function(err, bucketPosts) {
-        if (err) return callback(err);
-        var streamIds = self.subscriptions.streams;
-        if (_.isEmpty(streamIds)) {
-          streamIds.push(self._id);
-        }
-        self.model(self.constructor.modelName).find({_id: { $in: [ streamIds ] } }, function(err, streams) {
-          if (err) return callback(err);
-          async.concat(streams || [], function(stream, done) {
-            if (_.contains(streamsRetrieved, stream.id)) return done();
-            streamsRetrieved.push(stream.id);
-            stream.getPosts(done, streamsRetrieved, bucketsRetrieved);
-          }, function(err, streamPosts) {
-            if (err) return callback(err);
-            var allPosts = _.union(streamPosts, bucketPosts);
-              _.chain(allPosts)
-              .unique('_id')
-              .compact()
-              .flatten()
-              .value();
-            callback(null, allPosts);
-          });
-        });
-      });
-    });
-    */
   }
   promise.then(getPosts).then(returnResult).fail(fail);
 };

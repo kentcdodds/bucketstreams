@@ -1,4 +1,4 @@
-angular.module('bs.app').directive('bsPostStream', function($window, PostBroadcaster) {
+angular.module('bs.app').directive('bsPostStream', function($window, $filter) {
   return {
     restrict: 'A',
     templateUrl: '/main/bs-post-stream/bsPostStream.html',
@@ -34,7 +34,8 @@ angular.module('bs.app').directive('bsPostStream', function($window, PostBroadca
 
       scope.getPostsForColumn = function(column) {
         var postsForColumn = [];
-        angular.forEach(scope.posts, function(post, index) {
+        var posts = $filter('orderBy')(scope.posts, 'created', true);
+        angular.forEach(posts, function(post, index) {
           if (index % scope.columns.length === column) {
             postsForColumn.push(post);
           }
