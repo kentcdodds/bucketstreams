@@ -29,11 +29,14 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoServ
         if (event.keyCode != 13) return;
         var comment = new Comment({
           author: scope.currentUser._id,
+          authorInfo: scope.currentUser,
           content: scope.commentToAdd,
           modified: new Date(),
           owningPost: scope.post._id
         });
-        comment.$save();
+        comment.$save(function() {
+          comment.authorInfo = scope.currentUser;
+        });
         scope.comments = scope.comments || [];
         scope.comments.push(comment);
         scope.commentToAdd = '';

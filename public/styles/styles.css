@@ -748,19 +748,27 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 /* line 48 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
 .post .create-footer .post-button{width:60px;padding:3px}
 /* line 52 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
-.post .comments{padding:10px;}
-/* line 54 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+.post .comments{padding:10px;border-top:solid #ddd 1px;}
+/* line 55 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
 .post .comments .add-comment{position:relative;}
-/* line 56 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+/* line 57 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
 .post .comments .add-comment .add-comment-photo{display:inline;position:absolute;margin-right:12px}
-/* line 60 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+/* line 61 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
 .post .comments .add-comment .add-comment-field{padding-left:46px;display:inline-block;width:100%}
-/* line 64 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
-.post .comments .comment{margin-top:18px;position:relative;font-size:.9em}
-/* line 68 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
-.post .comments .comment-photo{margin-right:12px;display:inline;position:absolute}
-/* line 72 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
-.post .comments .comment-info{display:inline-block;vertical-align:top;padding-left:46px}
+/* line 65 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+.post .comments .comment{margin-top:18px;position:relative;font-size:.9em;}
+/* line 69 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+.post .comments .comment .comment-photo{margin-right:12px;display:inline;position:absolute}
+/* line 73 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+.post .comments .comment .comment-info{display:inline-block;vertical-align:top;padding-left:46px;}
+/* line 77 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+.post .comments .comment .comment-info i.delete-comment{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);-webkit-transition:opacity 0.2s;-moz-transition:opacity 0.2s;-o-transition:opacity 0.2s;-ms-transition:opacity 0.2s;transition:opacity 0.2s}
+/* line 80 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+
+/* line 81 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+
+/* line 82 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+.post .comments .comment:hover .comment-info i.delete-comment{opacity:1;-ms-filter:none;filter:none}
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
 
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */

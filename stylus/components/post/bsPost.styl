@@ -51,6 +51,7 @@
 
   .comments
     padding 10px
+    border-top solid #DDD 1px
     .add-comment
       position relative
       .add-comment-photo
@@ -65,11 +66,18 @@
       margin-top 18px
       position relative
       font-size .9em
-    .comment-photo
-      margin-right 12px
-      display inline
-      position absolute
-    .comment-info
-      display inline-block
-      vertical-align top
-      padding-left 46px
+      .comment-photo
+        margin-right 12px
+        display inline
+        position absolute
+      .comment-info
+        display inline-block
+        vertical-align top
+        padding-left 46px
+        i.delete-comment
+          opacity 0
+          transition opacity 0.2s
+      &:hover
+        .comment-info
+          i.delete-comment
+            opacity 1

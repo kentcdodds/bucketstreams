@@ -2,7 +2,7 @@
   <div class="post-meta panel-heading">
     <bs-profile-picture user="author" class="post-author-photo" size="60"></bs-profile-picture>
     <div class="post-info">
-      <div class="post-options">
+      <div class="post-options auth-only">
         <div class="dropdown">
           <a class="dropdown-toggle">
             <i class="fa fa-chevron-down"></i>
@@ -34,14 +34,14 @@
   <div class="post-content panel-body">
     <div bindonce="post" bo-text="post.content.textString"></div>
   </div>
-  <div class="panel-footer">
+  <div class="panel-footer auth-only">
     <div class="share-post">
       <a ng-click="share(post)" fa-icon="share"></a>
       <a ng-click="star(post)" fa-icon="star"></a>
     </div>
   </div>
-  <div class="comments">
-    <div class="add-comment">
+  <div class="comments" ng-if="currentUser || comments.length">
+    <div class="add-comment auth-only">
       <bs-profile-picture user="currentUser" class="add-comment-photo" size="32"></bs-profile-picture>
       <div class="add-comment-field">
         <input class="form-control" type="text" placeholder="Add comment..." ng-model="commentToAdd" ng-keydown="addComment($event)">

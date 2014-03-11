@@ -1,4 +1,4 @@
-<div class="comment" ng-mouseenter="hovering=true" ng-mouseleave="hovering=false">
+<div class="comment">
   <bs-profile-picture user="author" class="comment-photo" size="32"></bs-profile-picture>
   <div class="comment-info">
     <div>
@@ -7,7 +7,7 @@
       </a>
       -
       <small bindonce="comment" bo-text="comment.modified | date:'short'"></small>
-      <i ng-show="hovering && canDelete()" class="fa fa-trash-o color-red cursor-pointer" ng-click="deleteComment()"></i>
+      <i ng-show="canDelete()" class="fa fa-trash-o color-red cursor-pointer delete-comment" ng-click="deleteComment()"></i>
     </div>
     <div bindonce="comment" class="comment-content" bo-text="comment.content"></div>
   </div>

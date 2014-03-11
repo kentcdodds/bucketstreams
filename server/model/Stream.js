@@ -180,7 +180,7 @@ schema.methods.getPosts = function(callback) {
     promise = getUserPosts(responseBuilder).then(getAllSubscribedBucketIds);
   } else {
     // get bucket subscription ids
-    promise = getSubscribedBucketIds(responseBuilder);
+    promise = _.bind(getSubscribedBucketIds, self, responseBuilder)();
   }
   promise.then(getPosts).then(returnResult).fail(fail);
 };
