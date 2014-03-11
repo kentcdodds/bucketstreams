@@ -151,6 +151,7 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
     visible: false,
     input: (CurrentContext.context() || {name: ''}).name
   };
+  bsGenie.initializeGenie();
   
 
 

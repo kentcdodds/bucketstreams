@@ -1,5 +1,5 @@
 <div class="bs-bucket-stream-chooser dropdown" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()">
-  <i class="fa fa-{{type === 'bucket' ? 'bitbucket' : streams ? 'smile-o' : ''}} cursor-pointer bs-bucket-stream-chooser-icon"></i>
+  <i class="fa fa-{{listType === 'bucket' ? 'bitbucket' : streams ? 'smile-o' : ''}} cursor-pointer bs-bucket-stream-chooser-icon"></i>
   <div class="selected-things">
     <!--<span class="label label-{{labelTypes[labelTypes.length - 1]}} cursor-pointer">Main {{buckets ? 'Bucket' : 'Stream'}}</span>-->
     <div class="display-inline" ng-repeat="thing in (buckets || streams)| filter:{isSelected: true}">
@@ -9,13 +9,13 @@
     <ul class="dropdown-menu" ng-class="{'open': menuOpen}" ng-click="noBubbles($event)">
       <li ng-hide="listItems.length > 1">
         <a class="add-item-line">
-          You have no {{type}}s...
-          <i class="fa fa-plus-circle" ng-click="createThing()" tooltip="Create new {{type === 'bucket' ? 'bucket' : 'stream'}}" tooltip-placement="left"></i>
+          You have no {{listType}}s...
+          <i class="fa fa-plus-circle" ng-click="createThing()" tooltip="Create new {{listType === 'bucket' ? 'bucket' : 'stream'}}" tooltip-placement="left"></i>
         </a>
       </li>
       <li ng-show="listItems.length > 1" class="dropdown-text-field search-item">
-        <input type="search" ng-model="search" class="form-control" role="search" ng-keydown="toggleFirstThing($event, search)" bs-autofocus="menuOpen" refocus="true" placeholder="Filter {{type === 'bucket' ? 'buckets' : 'streams'}}">
-        <i class="fa fa-plus-circle" ng-click="createThing()" tooltip="Create new {{type === 'bucket' ? 'bucket' : 'stream'}}" tooltip-placement="left"></i>
+        <input type="search" ng-model="search" class="form-control" role="search" ng-keydown="toggleFirstThing($event, search)" bs-autofocus="menuOpen" refocus="true" placeholder="Filter {{listType === 'bucket' ? 'buckets' : 'streams'}}">
+        <i class="fa fa-plus-circle" ng-click="createThing()" tooltip="Create new {{listType === 'bucket' ? 'bucket' : 'stream'}}" tooltip-placement="left"></i>
       </li>
       <li ng-show="listItems.length > 1" role="presentation" class="divider"></li>
       <li ng-repeat="thing in nonMainThings() | filter:search" ng-click="toggleThing(thing)">

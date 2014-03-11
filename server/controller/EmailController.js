@@ -108,7 +108,7 @@ function sendEmailConfirmationEmail(user, callback) {
     subject: 'Welcome to Bucket Streams!',
     'from_email': 'info@bucktstreams.com',
     'from_name': 'Bucket Streams',
-    'merge_vars': [
+    'global_merge_vars': [
       {
         name: 'emailConfirmationLink',
         content: process.env.BASE_URL + '/confirm-email/' + user.emailConfirmation.secret
@@ -138,7 +138,7 @@ function sendPasswordResetEmail(user) {
     subject: 'Password Reset - Bucket Streams',
     'from_email': 'info@bucktstreams.com',
     'from_name': 'Bucket Streams',
-    'merge_vars': [
+    'global_merge_vars': [
       {
         name: 'passwordResetLink',
         content: process.env.BASE_URL + '/reset-password/' + user.passwordReset.secret

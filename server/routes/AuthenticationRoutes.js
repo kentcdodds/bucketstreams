@@ -100,17 +100,15 @@ module.exports = function(app) {
     }
     
     function sendEmail(user) {
-      if (user.emailConfirmation.confirmed) {
+      if (user.isConfirmed()) {
         return res.json({
           sent: false,
           reason: 'User with email ' + user.email + ' is already confirmed.'
         });
       }
-      user.secret = uuid.v4();
-      EmailController.sendEmailConfirmationEmail(user, function(err, result) {
+      user.setupPasswordReset(function(err, user) {
         if (err) return ErrorController.sendErrorJson(res, 500, err.message);
-        user.emailConfirmation.emailSent = new Date();
-        user.save(function(err, user) {
+        EmailController.sendEmailConfirmationEmail(user, function(err, result) {
           if (err) return ErrorController.sendErrorJson(res, 500, err.message);
           res.json({
             sent: true

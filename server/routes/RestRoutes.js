@@ -52,7 +52,7 @@ module.exports = function(app) {
     ],
     query: 'req.query'
   });
-
+  
   angularBridge.addResource('streams', dataModels.stream, {
     hide: [
       ''

@@ -1,8 +1,8 @@
 <div class="bs-post-stream-wrapper">
-  <div ng-hide="posts">
+  <div ng-hide="posts.length">
     <h1 class="text-center">No posts here...</h1>
   </div>
-  <div ng-show="posts" class="column-wrapper columns-{{columns.length}}">
+  <div ng-show="posts.length" class="column-wrapper columns-{{columns.length}}">
     <div ng-repeat="column in columns" class="post-column column-{{column}}">
       <div class="stream-posts">
         <div ng-repeat="post in getPostsForColumn(column)" bs-post="post" on-removed="onPostRemoved(post)"></div>

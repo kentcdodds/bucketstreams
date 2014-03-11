@@ -224,7 +224,7 @@ module.exports = function (grunt) {
           linenos: true
         },
         files: {
-          'app/styles/styles.css': [
+          'public/styles/styles.css': [
             'stylus/imports.styl'
           ]
         }

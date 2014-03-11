@@ -21,8 +21,9 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
         throw new Error('Cannot give buckets AND bucket/stream to bsBucketStreamChooser!');
       }
 
-      scope.type = attrs.hasOwnProperty('buckets') ? 'bucket' : 'stream';
+      scope.subscriptionType = attrs.hasOwnProperty('bucket') ? 'buckets' : 'streams';
       scope.subscriptionSubject = scope.stream || scope.bucket;
+      scope.listType = attrs.hasOwnProperty('buckets') ? 'bucket' : 'stream';
       scope.listItems = scope.streams || scope.buckets;
 
       if (scope.streams && scope.subscriptionSubject) {
@@ -62,11 +63,13 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
       scope.toggleThing = function(thing) {
         thing.toggleSelected();
         if (scope.streams) {
-          thing.toggleSubscription(scope.subscriptionSubject, scope.type + 's').then(function() {
+          var addMessage = 'Subscribed your ' + thing.name + ' stream to ' + scope.subscriptionSubject.name + '! :-D';
+          var removeMessage = 'Unsubscribed your ' + thing.name + ' stream from ' + scope.subscriptionSubject.name + '...';
+          thing.toggleSubscription(scope.subscriptionSubject, scope.subscriptionType).then(function() {
             if (thing.isSelected) {
-              AlertService.success('Subscribed your ' + thing.name + ' stream to ' + scope[scope.type].name + '! :-D');
+              AlertService.success(addMessage);
             } else {
-              AlertService.info('Unsubscribed your ' + thing.name + ' stream from ' + scope[scope.type].name + '...');
+              AlertService.info(removeMessage);
             }
           }, AlertService.handleResponse.error);
         }
@@ -102,7 +105,7 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
       };
 
       scope.createThing = function() {
-        CommonModalService.createOrEditBucketStream(scope.type).result.then(function(newThing) {
+        CommonModalService.createOrEditBucketStream(scope.listType).result.then(function(newThing) {
           if (newThing) {
             newThing.selected(true);
             scope.listItems.unshift(newThing);

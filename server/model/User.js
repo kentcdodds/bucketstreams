@@ -11,7 +11,6 @@ var providers = require('../controller/providers');
 var _ = require('lodash-node');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var Email = mongoose.SchemaTypes.Email;
 var ObjectId = Schema.Types.ObjectId;
 
 var passportLocalMongoose = require('passport-local-mongoose');
@@ -26,7 +25,7 @@ var minute = 1000 * 60;
 var schema = new Schema({
   username: {type: String, required: false},
   phone: String,
-  email: {type: Email, unique: true, required: true},
+  email: {type: String, unique: true, required: true},
   emailConfirmation: {
     secret: String,
     emailSent: Date,
@@ -130,6 +129,10 @@ schema.path('username').validate(function (value, callback) {
   }
 }, 'taken');
 
+schema.path('email').validate(function (value) {
+  return /^[a-zA-Z0-9._-]+(\+[a-zA-Z0-9._-]+)?@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value);
+}, 'email invalid');
+
 /*
  * Password reset methods
  */
@@ -174,6 +177,10 @@ schema.statics.getEmailFromUsername = function(username, callback) {
 schema.methods.confirm = function(callback) {
   this.emailConfirmation.confirmed = true;
   callback && this.save(callback);
+};
+
+schema.methods.isConfirmed = function() {
+  return this.emailConfirmation && this.emailConfirmation.confirmed;
 };
 
 schema.methods.getDisplayName = function() {

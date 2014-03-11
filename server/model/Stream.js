@@ -6,6 +6,7 @@ var User = require('./User').model;
 var Comment = require('./Comment').model;
 var Bucket = require('./Bucket').model;
 
+var Q = require('q');
 var _ = require('lodash-node');
 var async = require('async');
 var mongoose = require('mongoose');
@@ -42,6 +43,37 @@ schema.methods.getBucketSubscriptions = function(callback) {
   });
 };
 
+schema.methods.resolveSubscriptions = function(callback) {
+  var allBucketIds = [];
+  var resolvedStreams = [];
+  var Stream = this.model(this.constructor.modelName);
+  
+  function resolveSubscriptions(callback) {
+    if (_.contains(resolvedStreams, this)) return callback();
+    
+    resolvedStreams = _.union(resolvedStreams, this.id);
+    if (this.hasBucketSubscriptions()) {
+      allBucketIds = _.union(allBucketIds, this.subscriptions.buckets);
+    }
+    
+    if (!this.hasStreamSubscriptions()) return callback();
+    var streamIds = _.flatten(this.subscriptions.streams);
+    Stream.find({'_id': {$in: streamIds}}, '_id subscriptions', function(err, streams) {
+      if (err) return callback(err);
+      async.each(streams, function(stream, done) {
+        _.bind(resolveSubscriptions, stream, done)();
+      }, function(err) {
+        callback(err);
+      });
+    });
+  }
+  
+  _.bind(resolveSubscriptions, this, function(err) {
+    if (err) return callback(err);
+    callback(null, allBucketIds);
+  })();
+};
+
 schema.methods.hasBucketSubscriptions = function() {
   return this.subscriptions.buckets.length > 0;
 };
@@ -61,12 +93,90 @@ schema.static.getPostsById = function(id, callback) {
   });
 };
 
-schema.methods.getPosts = function(callback, streamsRetrieved, bucketsRetrieved) {
+schema.methods.getPosts = function(callback) {
   var self = this;
-  streamsRetrieved = streamsRetrieved || [self.id];
-  bucketsRetrieved = bucketsRetrieved || [];
+  var Stream = this.model(this.constructor.modelName);
+
+  function uniqueById(allIds, objIds) {
+    var union = _.union(allIds, objIds);
+    return _.unique(union, function(objId) {
+      return objId.id;
+    });
+  }
+
+  // get all posts
+  function getPosts(responseBuilder) {
+    var deferred = Q.defer();
+    Post.find({buckets: { $in: responseBuilder.bucketIds }}).sort('createdAt').exec(function(err, posts) {
+      if (err) return deferred.reject(err);
+      responseBuilder.posts = uniqueById(responseBuilder.posts, posts);
+      deferred.resolve(responseBuilder);
+    });
+    return deferred.promise;
+  }
+
+  // resolve ids of all user's stream's subscriptions
+  function getSubscribedBucketIds(responseBuilder) {
+    var deferred = Q.defer();
+    self.resolveSubscriptions(function(err, bucketIds) {
+      if (err) return deferred.reject(err);
+      responseBuilder.bucketIds = uniqueById(responseBuilder.bucketIds, bucketIds);
+      deferred.resolve(responseBuilder);
+    });
+    return deferred.promise;
+  }
+
+  // return result object
+  function returnResult(responseBuilder) {
+    var posts = _.chain(responseBuilder.posts)
+      .unique('_id')
+      .compact()
+      .flatten()
+      .value();
+    callback(null, posts);
+  }
+  
+  function fail(err) {
+    callback(err);
+  }
+
+  var responseBuilder = {
+    posts: [],
+    resolvedStreams: [],
+    bucketIds: []
+  };
+  var promise;
 
   if (self.isMain) {
+    // get all of the user's posts
+    function getUserPosts(responseBuilder) {
+      var deferred = Q.defer();
+      Post.find({ author: self.owner }, function(err, posts) {
+        if (err) return deferred.reject(err);
+        responseBuilder.posts = uniqueById(responseBuilder.posts, posts);
+        deferred.resolve(responseBuilder);
+      });
+      return deferred.promise;
+    }
+    
+    function getAllSubscribedBucketIds(responseBuilder) {
+      var deferred = Q.defer();
+      Stream.find({owner: self.owner}, '_id subscriptions', function(err, streams) {
+        if (err) return deferred.reject(err);
+        var iterators = [];
+        _.each(streams, function(stream, index) {
+          iterators[index] = _.bind(getSubscribedBucketIds, stream, responseBuilder);
+        });
+        Q.all(iterators).then(function(results) {
+          if (iterators.length === _.where(results, {state: 'fulfilled'}).length) return deferred.reject('Not all fulfilled');
+          deferred.resolve(responseBuilder);
+        });
+      });
+      return deferred.promise;
+    }
+    
+    promise = getUserPosts(responseBuilder).then(getAllSubscribedBucketIds);
+    /*
     function getUsersPosts(done) {
       Post.find({
         author: self.owner
@@ -128,7 +238,11 @@ schema.methods.getPosts = function(callback, streamsRetrieved, bucketsRetrieved)
         .value();
       callback(null, allPosts);
     });
+    */
   } else {
+    // get bucket subscription ids
+    promise = getSubscribedBucketIds(responseBuilder);
+    /*
     self.getBucketSubscriptions(function(err, buckets) {
       if (err) return callback(err);
       async.concat(buckets || [], function(bucket, done) {
@@ -160,14 +274,20 @@ schema.methods.getPosts = function(callback, streamsRetrieved, bucketsRetrieved)
         });
       });
     });
+    */
   }
+  promise.then(getPosts).then(returnResult).fail(fail);
 };
 
 
 schema.path('name').validate(function (value, callback) {
-  Util.fieldIsUnique(this.id, this.model(this.constructor.modelName), 'name', value, {
-    'owner': this.owner
-  }, callback);
+  if (this.isNew) {
+    Util.fieldIsUnique(this.id, this.model(this.constructor.modelName), 'name', value, {
+      'owner': this.owner
+    }, callback);
+  } else {
+    callback(true);
+  }
 }, 'nameNotUnique');
 
 schema.pre('save', function (next) {

@@ -65,7 +65,7 @@ angular.module('bs.app').factory('bsGenie', function(genie, $state, User, AlertS
                   context: subContext,
                   magicWords: [user.name.first, user.name.last, user.username],
                   action: function(wish) {
-                    $state.go('home.userPage', {username: wish.data.user.username});
+                    $state.go('root.userPage', {username: wish.data.user.username});
                   },
                   data: {
                     uxGenie: {

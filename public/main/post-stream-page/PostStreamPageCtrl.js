@@ -1,12 +1,14 @@
 angular.module('bs.app').controller('PostStreamPageCtrl', function($scope, $state, _, data, $modal, AlertService, CommonModalService, CurrentUserInfoService, PostBroadcaster) {
   $scope.thing = data.thing;
-  $scope.posts = data.posts;
+  $scope.posts = data.posts || [];
   $scope.type = data.type;
   $scope.isStream = data.type === 'stream';
   $scope.owner = data.owner;
   if ($scope.isStream) {
+    $scope.stream = data.thing;
     $scope.subscriptionsInfo = data.subscriptionsInfo;
   } else {
+    $scope.bucket = data.thing;
     var bucket = _.find($scope.userBuckets, {_id: $scope.thing._id});
     if (bucket && !bucket.isMain) {
       bucket.selected(true);

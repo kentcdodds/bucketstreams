@@ -16,6 +16,7 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
   
   if (!$scope.currentUser.isConfirmed() && $state.current.name !== 'root.emailConfirmation') {
     CurrentContext.context('Email Confirmation');
+    var currentUser = $scope.currentUser;
     $modal.open({
       controller: function($scope, $http) {
         $scope.currentUser = currentUser;

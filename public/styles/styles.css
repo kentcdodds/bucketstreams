@@ -684,7 +684,7 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 /* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
 #main-container.authenticated .main-content{margin-top:40px}
 /* line 10 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
-#main-container.authenticated .auth-only{display:auto}
+#main-container.authenticated .auth-only{display:inherit}
 /* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
 #main-container .top-bar{height:70px;position:fixed;z-index:1000;top:0;}
 /* line 18 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */

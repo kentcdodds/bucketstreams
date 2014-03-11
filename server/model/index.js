@@ -2,9 +2,6 @@ var ref = require('./ref');
 
 var mongoose = require('mongoose');
 
-var mongooseTypes = require('mongoose-types');
-mongooseTypes.loadTypes(mongoose, 'email');
-
 // Model
 var Bucket = require('./Bucket');
 var Stream = require('./Stream');
