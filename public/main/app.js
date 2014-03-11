@@ -62,8 +62,15 @@
         controller: 'FrontPageCtrl',
         onEnter: function() {
           console.log('root.anon');
-        },
-        context: ''
+        }
+      }).
+      state('root.anon.trouble', {
+        url: 'login-trouble',
+        templateUrl: '/main/anon/login-trouble.html',
+        controller: 'LoginTroubleCtrl',
+        onEnter: function() {
+          console.log('Login Trouble');
+        }
       }).
       state('root.auth', {
         abstract: true,
@@ -210,17 +217,20 @@
           }
         }
       }).
-      state('root.resetPassword', {
+      state('root.sendResetPasswordEmail', {
         controller: 'ResetPasswordCtrl',
         templateUrl: '/main/reset-password/reset-password.html',
         url: 'reset-password/:secret',
         resolve: {
-          user: function($q, $http, $stateParams) {
+          data: function($q, $http, $stateParams, User) {
             var deferred = $q.defer();
             $http.get('/api/v1/auth/reset-password/' + $stateParams.secret).then(function(response) {
-              deferred.resolve(new User(response.data.user));
+              deferred.resolve({
+                result: response.data.result,
+                user: new User(response.data.user)
+              });
             }, deferred.reject);
-            return deferred;
+            return deferred.promise;
           },
           code: function($http, $stateParams) {
             return $stateParams.secret;

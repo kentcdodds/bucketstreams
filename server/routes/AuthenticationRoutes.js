@@ -135,13 +135,13 @@ module.exports = function(app) {
           success: false,
           type: 'invalid-link'
         });
-      } else if (user.emailConfirmation.confirmed) {
+      } else if (user.isConfirmed()) {
         return res.json({
           success: false,
           user: user,
           type: 'already-confirmed'
         });
-      } else if (moment(user.emailConfirmation.emailSent).diff(moment(), 'days') > 1) {
+      } else if (user.emailConfirmationExpired()) {
         return res.json({
           success: false,
           user: user,
@@ -204,34 +204,88 @@ module.exports = function(app) {
       });
     });
   });
-
-  app.get(prefix.auth + '/reset-password/:secret', function(req, res) {
+  
+  function handlePasswordResetSecret(req, res, callback) {
+    function maybeSendError(err) {
+      if (!err) return;
+      res.json({
+        user: null,
+        result: {
+          success: false,
+          type: 'internal-error',
+          message: err.message
+        }
+      });
+      return true;
+    }
     User.findByPasswordResetSecret(req.params.secret, function(err, user) {
-      if (err) return ErrorController.sendErrorJson(res, 500, err.message);
-      res.json(user);
+      if (maybeSendError(err)) return;
+      if (!user) {
+        return res.json({
+          user: null,
+          result: {
+            success: false,
+            type: 'invalid-link'
+          }
+        });
+      } else if (user.passwordResetUsed()) {
+        return res.json({
+          user: user,
+          result: {
+            success: false,
+            type: 'already-confirmed'
+          }
+        });
+      } else if (user.passwordResetExpired()) {
+        return res.json({
+          user: user,
+          result: {
+            success: false,
+            type: 'expired-link'
+          }
+        });
+      } else {
+        callback(user);
+      }
+    });
+  }
+  
+  
+  app.get(prefix.auth + '/reset-password/:secret', function(req, res) {
+    handlePasswordResetSecret(req, res, function(user) {
+      res.json({
+        user: user,
+        result: {
+          success: true,
+          type: 'success'
+        }
+      });
     });
   });
 
 
   app.post(prefix.auth + '/reset-password/:secret', function(req, res) {
     if (!req.body.newPassword) return ErrorController.sendErrorJson(res, 400, 'Must set a new password.');
-    User.findByPasswordResetSecret(req.params.secret, function(err, user) {
-      if (err) return ErrorController.sendErrorJson(res, 500, err.message);
-      if (!user) {
+    handlePasswordResetSecret(req, res, function(user) {
+      function sendInternalError() {
         return res.json({
-          success: false,
-          type: 'invalid-link'
-        });
-      } else if (moment(user.passwordReset.emailSent).diff(moment(), 'hours') > 2) {
-        return res.json({
-          success: false,
           user: user,
-          type: 'expired-link'
+          result: {
+            success: false,
+            type: 'internal-error',
+            message: err.message
+          }
         });
       }
-      user.setPassword(req.body.newPassword, function(err, user) {
-        if (err) return ErrorController.sendErrorJson(res, 500, err.message);
-        res.redirect('/');
+      user.sendResetPasswordEmail(req.body.newPassword, function(err, user) {
+        if (err) return sendInternalError();
+        res.json({
+          user: user,
+          result: {
+            success: true,
+            type: 'success'
+          }
+        });
       });
     });
   });

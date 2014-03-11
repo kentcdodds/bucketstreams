@@ -51,6 +51,15 @@ angular.module('bs.services').factory('UtilService', function(_, $http, $q, Post
     },
     loadPost: function (postId) {
       return $http.get('/api/v1/util/data/post/' + postId);
+    },
+    sendResetPasswordEmail: function(username) {
+      return $http({
+        method: 'POST',
+        url: '/api/v1/auth/reset-password',
+        data: {
+          username: username
+        }
+      });
     }
   };
   return util;

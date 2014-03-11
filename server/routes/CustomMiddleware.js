@@ -31,7 +31,7 @@ module.exports = function(app) {
         }
       }
       RouteHelper.convertUsernameQueryToId(req, 'owner', function(err) {
-        if (err) return ErrorController(res, err.code, err.error.message);
+        if (err) return ErrorController.sendErrorJson(res, err.code, err.error.message);
         next();
       });
     } else {

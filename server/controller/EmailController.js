@@ -132,8 +132,8 @@ function sendEmailConfirmationEmail(user, callback) {
   }, callback);
 }
 
-function sendPasswordResetEmail(user) {
-  var message = getDefaultMessage(user, 'email-confirmation');
+function sendPasswordResetEmail(user, callback) {
+  var message = getDefaultMessage(user, 'reset-password');
   message = _.extend(message, {
     subject: 'Password Reset - Bucket Streams',
     'from_email': 'info@bucktstreams.com',
@@ -151,7 +151,7 @@ function sendPasswordResetEmail(user) {
   });
 
   sendEmail({
-    'template_name': 'email-confirmation',
+    'template_name': 'reset-password',
     'template_content': [
       {
         'name': 'what-is-this-for',

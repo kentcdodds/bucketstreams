@@ -5,6 +5,7 @@ var ref = require('./ref');
 var async = require('async');
 var logger = require('winston');
 var uuid = require('node-uuid');
+var moment = require('moment');
 
 var providers = require('../controller/providers');
 
@@ -70,7 +71,8 @@ var schema = new Schema({
   dontRemind: [{type: String, required: false}],
   passwordReset: {
     emailSent: {type: Date, required: false},
-    secret: {type: String, required: false}
+    secret: {type: String, required: false},
+    used: {type: Boolean, required: false}
   }
 });
 
@@ -145,11 +147,11 @@ schema.methods.setupPasswordReset = function(callback) {
 };
 
 schema.statics.findByPasswordResetSecret = function(secret, callback) {
-  this.findOne({'passwordReset.secret': secret}, callback);
+  this.findOne({'passwordReset.secret': secret}, '_id name username email passwordReset', callback);
 };
 
 schema.statics.findByEmailConfirmationSecret = function(secret, callback) {
-  this.findOne({'emailConfirmation.secret': secret}, callback);
+  this.findOne({'emailConfirmation.secret': secret}, '_id name username email emailConfirmation', callback);
 };
 
 /*
@@ -179,8 +181,27 @@ schema.methods.confirm = function(callback) {
   callback && this.save(callback);
 };
 
+schema.methods.emailConfirmationExpired = function() {
+  return moment(this.emailConfirmation.emailSent).diff(moment(), 'days') > 5;
+};
+
 schema.methods.isConfirmed = function() {
   return this.emailConfirmation && this.emailConfirmation.confirmed;
+};
+
+schema.methods.sendResetPasswordEmail = function(password, callback) {
+  this.setPassword(password, function(err, user) {
+    user.passwordReset.used = true;
+    callback && user.save(callback);
+  });
+};
+
+schema.methods.passwordResetUsed = function() {
+  return this.passwordReset && this.passwordReset.used;
+};
+
+schema.methods.passwordResetExpired = function() {
+  return moment(this.passwordReset.emailSent).diff(moment(), 'hours') > 2;
 };
 
 schema.methods.getDisplayName = function() {
@@ -383,7 +404,7 @@ schema.statics.getByUsername = function(username, callback) {
 
 if (process.env.hideBucketStreams) {
   schema.pre('save', function(next) {
-    if (!this.profilePicture) {
+    if (!this._doc.profilePicture) {
       var gender = (Math.random()<.5 ? 'men' : 'women');
       var max = 60;
       if (gender === 'men') {

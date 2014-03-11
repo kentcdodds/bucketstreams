@@ -1,5 +1,14 @@
 <div>
-  Please <a href="https://bitbucket.org/kentcdodds/bucketstreams/issues/new">submit feedback</a>
-  or
-  email <a href="mailto:info@bucketstreams.com">info@bucketstreams.com</a> with your information and we'll help you out.
+  <h1>Forget your password?</h1>
+  <div>It's ok, just enter your email or username here and we'll email you a link to reset it :-D</div>
+  <form name="form" id="info-form" role="form" ng-submit="onSubmit(usernameOrEmail)" class="clearfix">
+    <div class="form-group margin-top-small">
+      <label for="username-or-email-field">Username or Email</label>
+      <input id="username-or-email-field" name="usernameOrEmail" class="form-control" bs-autofocus="true" placeholder="Username Or Email" ng-model="usernameOrEmail" required>
+    </div>
+    <button type="submit" class="btn btn-primary pull-right" form="info-form"><i class="fa fa-{{loading ? 'spinner fa-spin' : 'envelope'}}"></i> Submit</button>
+    <a ui-sref="root.route" class="pull-left">Cancel</a>
+  </form>
+  <h2 class="text-muted">Something else?</h2>
+  <a href="mailto:info@bucketstreams.com">Shoot us an email</a> or <a href="https://bitbucket.org/kentcdodds/bucketstreams/issues/new">send us some feedback</a>.
 </div>
