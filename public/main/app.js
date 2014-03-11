@@ -151,11 +151,11 @@
                 deferred.resolve(data);
               } else {
                 deferred.reject('No ' + type);
-                $state.go('root');
+                $state.go('root.route');
               }
             }, function(err) {
               deferred.reject(err);
-              $state.go('root');
+              $state.go('root.route');
             });
             return deferred.promise;
           }
