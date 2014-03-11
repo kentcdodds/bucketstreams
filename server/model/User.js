@@ -384,7 +384,12 @@ schema.statics.getByUsername = function(username, callback) {
 if (process.env.hideBucketStreams) {
   schema.pre('save', function(next) {
     if (!this.profilePicture) {
-      this.profilePicture = 'http://api.randomuser.me/0.3.2/portraits/' + (Math.random()<.5 ? 'men' : 'women') + '' + '/' + Math.floor(Math.random()*25) + '.jpg';
+      var gender = (Math.random()<.5 ? 'men' : 'women');
+      var max = 60;
+      if (gender === 'men') {
+        max = 100;
+      }
+      this.profilePicture = 'http://api.randomuser.me/0.3.2/portraits/' + gender + '/' + Math.floor(Math.random()*max) + '.jpg';
     }
     next();
   });
