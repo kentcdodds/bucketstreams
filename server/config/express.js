@@ -16,6 +16,8 @@ module.exports = function(app) {
       secret: 'Emily X-men Team Elephant Water',
       store: new MongoStore({
         url: process.env.MONGO_CONNECTION_STRING
+      }, function() {
+        logger.log('MongoStore setup');
       })
     }));
     app.use(express.compress());

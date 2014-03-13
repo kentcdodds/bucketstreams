@@ -1,5 +1,10 @@
 var logger = require('winston');
+
+console.log('\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+console.log('Hello World! Starting up BucketStreams!');
+
 if (process.argv.indexOf('prod') > -1) {
+  logger.info('pretending to be production');
   process.env.NODE_ENV = 'production';
   process.env.LOCAL = true;
 }
@@ -11,6 +16,21 @@ if (process.env.OPENSHIFT_NODEJS_IP) {
 var app = require('./server/app');
 logger.info('Getting ready to create server... On ' + process.env.NODE_ENV + ' express (' + app.get('env') + ') server will listen here: ' + app.get('ip') + ':' + app.get('port'));
 
-require('http').createServer(app).listen(app.get('port'), app.get('ip'), function() {
+var server = require('http').createServer(app);
+server.listen(app.get('port'), app.get('ip'), function() {
   logger.info('On ' + process.env.NODE_ENV + ' express (' + app.get('env') + ') server listening here: ' + app.get('ip') + ':' + app.get('port'));
+});
+
+process.on('SIGINT', function() {
+  logger.info('\nGracefully shutting down from SIGINT (Ctrl-C)');
+  process.exit();
+});
+
+process.on('exit', function () {
+  process.BUCKET_STREAMS_EXITING = true;
+  logger.info('About to exit, waiting for remaining connections to complete');
+  require('mongoose').disconnect(function() {
+    logger.info('Mongo disconnected. Closing server. Goodbye! :)');
+    server.close();
+  });
 });
