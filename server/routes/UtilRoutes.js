@@ -144,10 +144,10 @@ module.exports = function(app) {
       }
       async.concat(items, function(item, done) {
         var ids = responseBuilder.thing.subscriptions[item.type];
-        item.model.find({'_id': {$in: ids}}, 'owner name', function(err, subscriptionInfo) {
+        item.model.find({'_id': {$in: ids}}, '_id owner name', function(err, theThings) {
           if (err) return done(err);
-          responseBuilder.subscriptionsInfo[item.type] = subscriptionInfo;
-          responseBuilder.userIds = uniqueIds(responseBuilder.userIds, _.pluck(subscriptionInfo, 'owner'));
+          responseBuilder[item.type] = _.unique(_.union(responseBuilder[item.type], theThings), false, '_id');
+          responseBuilder.userIds = uniqueIds(responseBuilder.userIds, _.pluck(theThings, 'owner'));
           done();
         });
       }, function(err, result) {
@@ -168,36 +168,20 @@ module.exports = function(app) {
       return deferred.promise;
     }
 
-    // assign fields
-    function assignFields(responseBuilder) {
-      responseBuilder.thing._doc.ownerInfo = _.find(responseBuilder.users, {'_id': responseBuilder.thing.owner});
-      _.each(responseBuilder.comments, function(comment) {
-        comment._doc.authorInfo = _.find(responseBuilder.users, {'_id': comment.author});
-      });
-      _.each(responseBuilder.posts, function(post) {
-        post._doc.comments = _.where(responseBuilder.comments, {owningPost: post._id});
-        post._doc.authorInfo = _.find(responseBuilder.users, {'_id': post.author});
-      });
-      if (isStream) {
-        responseBuilder.thing._doc.subscriptionsInfo = {};
-        _.each(['buckets', 'streams'], function(type) {
-          _.each(responseBuilder.subscriptionsInfo[type], function(info, index) {
-            responseBuilder.subscriptionsInfo[type][index]._doc.ownerInfo = _.find(responseBuilder.users, {'_id': info.owner});
-          });
-          responseBuilder.thing._doc.subscriptionsInfo[type] = responseBuilder.subscriptionsInfo[type] || [];
-        });
-      }
-      responseBuilder.thing._doc.posts = responseBuilder.posts;
-      return responseBuilder;
-    }
-
     // return result object
     function returnResult(responseBuilder) {
-      var response = {};
-      response.thing = responseBuilder.thing;
-      response.type = type;
-      res.json(response);
+      res.json({
+        type: responseBuilder.type,
+        thing: responseBuilder.thing,
+        users: responseBuilder.users,
+        buckets: responseBuilder.buckets,
+        streams: responseBuilder.streams,
+        posts: responseBuilder.posts,
+        comments: responseBuilder.comments
+      });
     }
+    
+    // Start building the response.
     convertUsername().then(getThing).then(function(thing) {
       var responseBuilder = {
         type: type
@@ -208,7 +192,6 @@ module.exports = function(app) {
         .then(getComments)
         .then(getSubscriptionInfo)
         .then(getUsers)
-        .then(assignFields)
         .then(returnResult)
         .fail(function(err) {
           if (err) return ErrorController.sendErrorJson(res, 500, err.message);
@@ -227,8 +210,10 @@ module.exports = function(app) {
 
       Comment.find({owningPost: req.params.id}, function(err, comments) {
         if (err) return ErrorController.sendErrorJson(res, 500, err.message);
-        post._doc.comments = comments;
-        res.json(post);
+        res.json({
+          post: post,
+          comments: comments
+        });
       });
     });
   });

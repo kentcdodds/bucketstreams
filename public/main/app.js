@@ -1,5 +1,5 @@
 (function() {
-  var thirdParties = ['ui.router', 'ui.bootstrap', 'pasvaz.bindonce', 'angularFileUpload', 'uxGenie', 'Scope.safeApply'];
+  var thirdParties = ['ui.router', 'ui.bootstrap', 'angularFileUpload', 'uxGenie', 'Scope.safeApply'];
   var angularMods = ['ngAnimate'];
   var internalMods = ['bs.directives', 'bs.models', 'bs.services', 'bs.filters'];
   var app = angular.module('bs.app', thirdParties.concat(angularMods.concat(internalMods)));

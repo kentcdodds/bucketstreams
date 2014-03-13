@@ -8,7 +8,7 @@ angular.module('bs.directives').directive('bsComment', function(CurrentUserInfoS
       onDeleteClicked: '&'
     },
     link: function(scope, el) {
-      scope.author = scope.comment.authorInfo;
+      scope.author = scope.comment.getAuthor();
       scope.currentUser = CurrentUserInfoService.getUser();
       scope.$on(CurrentUserInfoService.events.user, function(event, user) {
         scope.currentUser = user;

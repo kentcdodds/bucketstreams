@@ -12,9 +12,9 @@ var ObjectId = Schema.Types.ObjectId;
  *   post: The post on which the comment is found
  */
 var schema = new Schema({
-  author: {type: ObjectId, ref: ref.user},
+  author: {type: ObjectId, ref: ref.user, required: true},
   content: {type: String, required: true},
-  owningPost: {type: ObjectId, ref: ref.post}
+  owningPost: {type: ObjectId, ref: ref.post, required: true}
 });
 
 Util.addTimestamps(schema);

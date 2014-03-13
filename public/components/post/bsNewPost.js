@@ -24,7 +24,6 @@ angular.module('bs.directives').directive('bsNewPost', function(Post, _, AlertSe
       scope.makePost = function() {
         var post = new Post({
           author: scope.user._id,
-          authorInfo: scope.user,
           modified: new Date(),
           content: scope.content,
           buckets: _.pluck(_.filter(scope.buckets, function(bucket) {

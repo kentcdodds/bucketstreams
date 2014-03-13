@@ -1,3 +1,4 @@
+var logger = require('winston');
 var errorCodeMap = {
   400: 'Bad Request',
   401: 'Unauthorized',
@@ -14,6 +15,7 @@ function getErrorJSON(code, message) {
 }
 
 function sendErrorJson(res, code, message) {
+  logger.warn(message);
   res.json(code, getErrorJSON(code, message));
 }
 

@@ -1,4 +1,4 @@
-angular.module('bs.models').factory('Stream', function($resource, _) {
+angular.module('bs.models').factory('Stream', function($resource, _, Cacher) {
   var Stream = $resource('/api/v1/rest/streams/:id', { id: '@_id' }, {
     save: {
       method: 'POST',
@@ -41,6 +41,18 @@ angular.module('bs.models').factory('Stream', function($resource, _) {
     }, function(err) {
       self.selected(!selected);
     });
+  };
+  
+  Stream.prototype.getOwner = function() {
+    return Cacher.userCache.get(this.owner);
+  };
+
+  Stream.prototype.getBucketSubscriptions = function() {
+    return Cacher.bucketCache.getAll(this.subscriptions.buckets);
+  };
+
+  Stream.prototype.getStreamSubscriptions = function() {
+    return Cacher.streamCache.getAll(this.subscriptions.streams);
   };
 
   return Stream;

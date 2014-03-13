@@ -1,4 +1,4 @@
-angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoService, _, User, Comment, PostBroadcaster, AlertService) {
+angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoService, _, Cacher, User, Comment, PostBroadcaster, AlertService) {
   return {
     restrict: 'A',
     templateUrl: '/components/post/bsPost.html',
@@ -7,8 +7,8 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoServ
       post: '=bsPost'
     },
     link: function(scope, el) {
-      scope.author = scope.post.authorInfo;
-      scope.comments = scope.post.comments;
+      scope.author = scope.post.getAuthor();
+      scope.comments = scope.post.getComments();
       scope.currentUser = CurrentUserInfoService.getUser();
       scope.$on(CurrentUserInfoService.events.user, function(event, user) {
         scope.currentUser = user;
@@ -29,13 +29,14 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoServ
         if (event.keyCode != 13) return;
         var comment = new Comment({
           author: scope.currentUser._id,
-          authorInfo: scope.currentUser,
           content: scope.commentToAdd,
           modified: new Date(),
           owningPost: scope.post._id
         });
-        comment.$save(function() {
-          comment.authorInfo = scope.currentUser;
+        comment.$save(function(){
+          Cacher.commentCache.putById(comment);
+        }, function error() {
+          scope.deleteComment(comment);
         });
         scope.comments = scope.comments || [];
         scope.comments.push(comment);

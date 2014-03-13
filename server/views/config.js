@@ -38,7 +38,7 @@ module.exports = (function() {
       '/bower_components/angular-resource/angular-resource.js',
       '/bower_components/angular-cookies/angular-cookies.js',
       '/bower_components/angular-sanitize/angular-sanitize.js',
-      '/bower_components/angular-bindonce/bindonce.js',
+//      '/bower_components/angular-bindonce/bindonce.js',
       '/non_bower_components/Scope.SafeApply.js',
       '/bower_components/genie/genie.js',
       '/bower_components/ux-genie/uxGenie.js',

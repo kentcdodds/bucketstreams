@@ -7,8 +7,8 @@ angular.module('bs.directives').directive('bsProfilePicture', function() {
         temp.push('<a ng-href="/{{user.username}}">');
         temp.push('<img ng-src="{{user.getProfilePicture()}}" class="img-circle">');
       } else {
-        temp.push('<a bindonce="user" bo-href="\'/\' + user.username">');
-        temp.push('<img bo-src="user.getProfilePicture()" class="img-circle">');
+        temp.push('<a ng-href="/{{user.username}}">');
+        temp.push('<img ng-src="{{user.getProfilePicture()}}" class="img-circle">');
       }
       temp.push('</a></div>');
       return temp.join('');

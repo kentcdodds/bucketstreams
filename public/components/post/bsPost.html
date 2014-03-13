@@ -17,22 +17,22 @@
           </ul>
         </div>
       </div>
-      <div bindonce="author">
+      <div>
         <div>
-          <a bo-href="'/' + author.username">
-            <strong class="post-author-name" bo-text="author.getDisplayName()"></strong>
+          <a ng-href="/{{author.username}}">
+            <strong class="post-author-name">{{author.getDisplayName()}}</strong>
           </a>
         </div>
         <div>
           <small>
-            <a bo-href="'/' + author.username + '/post/' + post._id" bo-text="post.modified | date:'short'"></a>
+            <a ng-href="/post/{{post._id}}">{{post.modified | date:'short'}}</a>
           </small>
         </div>
       </div>
     </div>
   </div>
   <div class="post-content panel-body">
-    <div bindonce="post" bo-text="post.content.textString"></div>
+    <div>{{post.content.textString}}</div>
   </div>
   <div class="panel-footer auth-only">
     <div class="share-post">
@@ -40,7 +40,7 @@
       <a ng-click="star(post)" fa-icon="star"></a>
     </div>
   </div>
-  <div class="comments" ng-if="currentUser || comments.length">
+  <div class="comments" ng-show="currentUser || comments.length">
     <div class="add-comment auth-only">
       <bs-profile-picture user="currentUser" class="add-comment-photo" size="32"></bs-profile-picture>
       <div class="add-comment-field">

@@ -6,9 +6,9 @@
         <strong class="comment-user">{{author.getDisplayName()}}</strong>
       </a>
       -
-      <small bindonce="comment" bo-text="comment.modified | date:'short'"></small>
+      <small>{{comment.modified | date:'short'}}</small>
       <i ng-show="canDelete()" class="fa fa-trash-o color-red cursor-pointer delete-comment" ng-click="deleteComment()"></i>
     </div>
-    <div bindonce="comment" class="comment-content" bo-text="comment.content"></div>
+    <div class="comment-content">{{comment.content}}</div>
   </div>
 </div>

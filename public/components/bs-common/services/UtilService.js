@@ -1,4 +1,4 @@
-angular.module('bs.services').factory('UtilService', function(_, $http, $q, Post, Comment, User, Stream, Bucket) {
+angular.module('bs.services').factory('UtilService', function(_, Cacher, $http, $q, Post, Comment, User, Stream, Bucket) {
   //noinspection UnnecessaryLocalVariableJS
   var util = {
     validateModel: function(model, params) {
@@ -19,33 +19,23 @@ angular.module('bs.services').factory('UtilService', function(_, $http, $q, Post
           name: typeName
         }
       }).then(function (response) {
-        var thing = response.data.thing;
-        if (_.isEmpty(thing)) {
-          return deferred.resolve(thing);
-        }
-        var posts = thing.posts;
-        _.each(posts, function (post, postIndex) {
-          post.authorInfo = new User(post.authorInfo);
-          _.each(post.comments, function (comment, commentIndex) {
-            comment.authorInfo = new User(comment.authorInfo);
-            post.comments[commentIndex] = new Comment(comment);
+        var data = response.data;
+        data.thing = Cacher[type + 'Cache'].putById(data.thing);
+        var modelGroups = [
+          { propName: 'user', model: User },
+          { propName: 'bucket', model: Bucket },
+          { propName: 'stream', model: Stream },
+          { propName: 'post', model: Post },
+          { propName: 'comment', model: Comment }
+        ];
+        _.each(modelGroups, function(group) {
+          var cache = Cacher[group.propName + 'Cache'];
+          _.each(data[group.propName + 's'], function(item, index) {
+            // add to cache and reset the value to the resource version.
+            data[group.propName + 's'][index] = cache.putById(data[group.propName + 's'][index]);
           });
-          posts[postIndex] = new Post(post);
         });
-        var result = {};
-        result.thing = new model(thing);
-        result.posts = posts;
-        result.owner = new User(thing.ownerInfo);
-        if (response.data.type === 'stream') {
-          result.subscriptionsInfo = {};
-          _.each(['buckets', 'streams'], function(type) {
-            result.subscriptionsInfo[type] = thing.subscriptionsInfo[type] || [];
-            _.each(result.subscriptionsInfo[type], function(item, index) {
-              result.subscriptionsInfo[type][index].ownerInfo = new User(item.ownerInfo);
-            });
-          });
-        }
-        deferred.resolve(result);
+        deferred.resolve(data);
       }, deferred.reject);
       return deferred.promise;
     },
