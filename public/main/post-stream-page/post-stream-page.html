@@ -1,13 +1,8 @@
 <div class="bucket-stream-page">
   <div class="column-wrapper">
-    <div class="col-xs-6" ng-if="currentUserIsOwner && !isStream">
-      <div class="new-post-container">
-        <bs-new-post user="currentUser" buckets="userBuckets"></bs-new-post>
-      </div>
-    </div>
-    <div ng-class="{'col-xs-6': currentUserIsOwner && !isStream}" class="bucket-stream-info">
-      <div class="clearfix">
-        <bs-profile-picture ng-if="!currentUserIsOwner || isStream" user="owner" class="owner-profile"></bs-profile-picture>
+    <div class="bucket-stream-info col-xs-6">
+      <div class="pull-right">
+        <bs-profile-picture user="owner" class="owner-profile"></bs-profile-picture>
         <div class="bucket-stream-details">
           <div class="hover-parent-2">
             <i ng-show="!thing.isMain" class="fa fa-edit edit-thing pull-right hover-only-2" ng-click="editThing()" ng-if="currentUserIsOwner"></i>
@@ -25,22 +20,29 @@
             </div>
           </div>
         </div>
-        <div class="subscriptions" ng-if="isStream">
-          Subscriptions:
-          <div ng-hide="subscriptionGroups[0].list.length || subscriptionGroups[1].list.length">
-            This stream has no subscriptions!<br />
-            No wonder there aren't any posts here!
-          </div>
-          <div ng-repeat="group in subscriptionGroups" ng-if="group.list.length">
-            <strong fa-icon="{{group.icon}}"> {{group.name}}</strong>
-            <ul>
-              <li ng-repeat="item in group.list">
-                <a ui-sref="root.postStreamPage.bucket({username: item.getOwner().username, type: group.type, itemName: item.name})">{{item.name}}</a>
-                by
-                <a ui-sref="root.userPage({username: item.getOwner().username})">{{item.getOwner().getDisplayName()}}</a>
-              </li>
-            </ul>
-          </div>
+      </div>
+    </div>
+    <div class="col-xs-6" ng-if="currentUserIsOwner && !isStream">
+      <div class="new-post-container pull-left">
+        <bs-new-post user="currentUser" buckets="userBuckets"></bs-new-post>
+      </div>
+    </div>
+    <div class="subscriptions col-xs-6" ng-if="isStream">
+      <div class="pull-left">
+        Subscriptions:
+        <div ng-hide="subscriptionGroups[0].list.length || subscriptionGroups[1].list.length">
+          This stream has no subscriptions!<br />
+          No wonder there aren't any posts here!
+        </div>
+        <div ng-repeat="group in subscriptionGroups" ng-if="group.list.length">
+          <strong fa-icon="{{group.icon}}"> {{group.name}}</strong>
+          <ul>
+            <li ng-repeat="item in group.list">
+              <a ui-sref="root.postStreamPage.bucket({username: item.getOwner().username, type: group.type, itemName: item.name})">{{item.name}}</a>
+              by
+              <a ui-sref="root.userPage({username: item.getOwner().username})">{{item.getOwner().getDisplayName()}}</a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>

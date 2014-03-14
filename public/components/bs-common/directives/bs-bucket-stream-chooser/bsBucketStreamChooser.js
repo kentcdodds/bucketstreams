@@ -21,7 +21,7 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
         throw new Error('Cannot give buckets AND bucket/stream to bsBucketStreamChooser!');
       }
 
-      scope.subscriptionType = attrs.hasOwnProperty('bucket') ? 'buckets' : 'streams';
+      scope.subscriptionType = scope.bucket ? 'bucket' : 'stream';
       scope.subscriptionSubject = scope.stream || scope.bucket;
       scope.listType = attrs.hasOwnProperty('buckets') ? 'bucket' : 'stream';
       scope.listItems = scope.streams || scope.buckets;
@@ -59,13 +59,18 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
       scope.noBubbles = function($event) {
         $event.stopPropagation();
       };
+      
+      function updateThingsSelected() {
+        scope.thingsSelected = !!_.find(scope.listItems, {isSelected: true});
+      }
+      updateThingsSelected();
 
       scope.toggleThing = function(thing) {
         thing.toggleSelected();
         if (scope.streams) {
           var addMessage = 'Subscribed your ' + thing.name + ' stream to ' + scope.subscriptionSubject.name + '! :-D';
           var removeMessage = 'Unsubscribed your ' + thing.name + ' stream from ' + scope.subscriptionSubject.name + '...';
-          thing.toggleSubscription(scope.subscriptionSubject, scope.subscriptionType).then(function() {
+          thing.toggleSubscription(scope.subscriptionSubject, scope.subscriptionType + 's').then(function() {
             if (thing.isSelected) {
               AlertService.success(addMessage);
             } else {
@@ -73,7 +78,14 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
             }
           }, AlertService.handleResponse.error);
         }
+        updateThingsSelected();
       };
+      
+      if (scope.listType === 'stream') {
+        scope.noThingSelectedText = 'Subscribe this ' + scope.subscriptionType + ' to some streams...';
+      } else {
+        scope.noThingSelectedText = 'Choose buckets to put this post in...';
+      }
 
       scope.toggleFirstThing = function($event, search) {
         switch ($event.keyCode) {
@@ -114,12 +126,14 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
       };
 
       scope.labelTypes = [
-        'default',
+        'blue',
+        'brown',
         'success',
-        'info',
-        'warning',
         'danger',
-        'primary'
+        'default',
+        'info',
+        'primary',
+        'warning'
       ];
 
     }

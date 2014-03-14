@@ -1,12 +1,12 @@
-<div class="bs-bucket-stream-chooser dropdown" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()">
-  <i class="fa fa-{{listType === 'bucket' ? 'bitbucket' : streams ? 'smile-o' : ''}} cursor-pointer bs-bucket-stream-chooser-icon"></i>
+<div class="bs-bucket-stream-chooser dropdown">
+  <i class="fa fa-{{listType === 'bucket' ? 'bitbucket' : streams ? 'smile-o' : ''}} cursor-pointer bs-bucket-stream-chooser-icon" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()"></i>
   <div class="selected-things">
-    <!--<span class="label label-{{labelTypes[labelTypes.length - 1]}} cursor-pointer">Main {{buckets ? 'Bucket' : 'Stream'}}</span>-->
-    <div class="display-inline" ng-repeat="thing in (buckets || streams)| filter:{isSelected: true}">
+    <span ng-hide="thingsSelected" class="cursor-pointer text-muted" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()">{{noThingSelectedText}}</span>
+    <div class="display-inline" ng-repeat="thing in (buckets || streams)| filter:{isSelected: true}" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()">
       <span class="label label-{{labelTypes[$index % labelTypes.length]}} cursor-pointer"
             ng-click="toggleThing(thing)">{{thing.name}} &times;</span>
     </div>
-    <ul class="dropdown-menu" ng-class="{'open': menuOpen}" ng-click="noBubbles($event)">
+    <ul class="dropdown-menu" ng-class="{'open': menuOpen}" ng-click="noBubbles($event)" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()">
       <li ng-hide="listItems.length > 1">
         <a class="add-item-line">
           You have no {{listType}}s...

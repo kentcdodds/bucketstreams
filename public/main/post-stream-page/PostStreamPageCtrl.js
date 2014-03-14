@@ -17,7 +17,7 @@ angular.module('bs.app').controller('PostStreamPageCtrl', function($scope, $stat
         name: 'Streams',
         type: 'stream',
         list: $scope.thing.getStreamSubscriptions(),
-        icons: 'smile-o'
+        icon: 'smile-o'
       }
     ];
   } else {

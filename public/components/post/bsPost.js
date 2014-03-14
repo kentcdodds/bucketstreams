@@ -47,6 +47,13 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoServ
       scope.showOrHideComment = function(comment) {
         comment.showDelete = comment.author.username === scope.currentUser.username;
       };
+      scope.newPostContent = scope.post.content.textString;
+      
+      scope.updatePostContent = function(newContent) {
+        scope.post.content.textString = newContent;
+        scope.post.$save();
+        scope.editing = false;
+      };
 
       scope.deleteComment = function(comment) {
         _.remove(scope.comments, comment);

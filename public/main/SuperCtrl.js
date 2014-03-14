@@ -77,9 +77,10 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
       });
     }
     function createThingMenuItems(type, icon) {
-      var lType = type.toLowerCase().substring(0, type.length - 1);
+      var typeNoS = type.substring(0, type.length - 1);
+      var lType = typeNoS.toLowerCase();
       var scopeProp = 'user' + type;
-      var newThing = new bsMenuService.MenuItem('New ' + type, 'plus', function() {
+      var newThing = new bsMenuService.MenuItem('New ' + typeNoS, 'plus', function() {
         CommonModalService.createOrEditBucketStream(lType).result.then(function(newThing) {
           CurrentUserInfoService['refresh' + type]();
           if (newThing) {

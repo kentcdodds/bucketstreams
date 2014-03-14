@@ -15,15 +15,21 @@ angular.module('bs.directives').directive('bsComment', function(CurrentUserInfoS
       });
 
       scope.hovering = false;
-      scope.canDelete = function() {
+      scope.canEdit = function() {
         return scope.author && scope.currentUser && scope.author._id === scope.currentUser._id;
       };
 
       scope.deleteComment = function() {
-        if (scope.canDelete()) {
+        if (scope.canEdit()) {
           scope.comment.$remove();
           scope.onDeleteClicked({comment: scope.comment});
         }
+      };
+      scope.newCommentContent = scope.comment.content;
+      scope.updateComment = function(newContent) {
+        scope.comment.content = newContent;
+        scope.editing = false;
+        scope.comment.$save();
       }
     }
   }
