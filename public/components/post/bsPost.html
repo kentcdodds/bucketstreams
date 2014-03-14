@@ -40,13 +40,15 @@
       <a ng-click="star(post)" fa-icon="star"></a>
     </div>
   </div>
-  <div class="comments" ng-show="currentUser || comments.length">
+  <div class="comments-container" ng-show="currentUser || comments.length">
     <div class="add-comment auth-only">
       <bs-profile-picture user="currentUser" class="add-comment-photo" size="32"></bs-profile-picture>
       <div class="add-comment-field">
         <input class="form-control" type="text" placeholder="Add comment..." ng-model="commentToAdd" ng-keydown="addComment($event)">
       </div>
     </div>
-    <div ng-repeat="comment in comments" bs-comment="comment" on-delete-clicked="deleteComment(comment)"></div>
+    <div class="comment-container" bs-scroll-bottom>
+      <div ng-repeat="comment in comments" bs-comment="comment" on-delete-clicked="deleteComment(comment)"></div>
+    </div>
   </div>
 </div>
