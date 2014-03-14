@@ -20,3 +20,12 @@
 
 .label-container
   min-height 20px
+
+for layer in 1 .. 10
+  .hover-parent-{layer}
+    .hover-only-{layer}
+      opacity 0
+      transition opacity 0.3s
+    &:hover
+      .hover-only-{layer}
+        opacity 1

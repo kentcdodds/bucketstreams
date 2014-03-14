@@ -8,14 +8,16 @@
     <div ng-class="{'col-xs-6': currentUserIsOwner && !isStream}" class="bucket-stream-info">
       <div class="clearfix">
         <bs-profile-picture ng-if="!currentUserIsOwner || isStream" user="owner" class="owner-profile"></bs-profile-picture>
-        <i ng-show="!thing.isMain" class="fa fa-edit edit-thing" ng-click="editThing()" ng-if="currentUserIsOwner"></i>
         <div class="bucket-stream-details">
-          <h1 class="margin-top-0" fa-icon="{{isStream ? 'smile-o' : 'bitbucket'}}"> {{thing.name}}</h1>
-          <div ng-if="!thing.isMain">{{thing.description}}</div>
-          <div ng-if="thing.isMain && !isStream && !currentUserIsOwner">This is a collection of all of {{owner.getDisplayName()}}'s posts you can see.</div>
-          <div ng-if="thing.isMain && isStream && !currentUserIsOwner">This is a collection of all of {{owner.getDisplayName()}}'s subscriptions you can see.</div>
-          <div ng-if="thing.isMain && !isStream && currentUserIsOwner">This is a collection of all of your posts.</div>
-          <div ng-if="thing.isMain && isStream && currentUserIsOwner">This is a collection of all of your subscriptions.</div>
+          <div class="hover-parent-2">
+            <i ng-show="!thing.isMain" class="fa fa-edit edit-thing pull-right hover-only-2" ng-click="editThing()" ng-if="currentUserIsOwner"></i>
+            <h1 class="margin-top-0" fa-icon="{{isStream ? 'smile-o' : 'bitbucket'}}"> {{thing.name}}</h1>
+            <div ng-if="!thing.isMain">{{thing.description}}</div>
+            <div ng-if="thing.isMain && !isStream && !currentUserIsOwner">This is a collection of all of {{owner.getDisplayName()}}'s posts you can see.</div>
+            <div ng-if="thing.isMain && isStream && !currentUserIsOwner">This is a collection of all of {{owner.getDisplayName()}}'s subscriptions you can see.</div>
+            <div ng-if="thing.isMain && !isStream && currentUserIsOwner">This is a collection of all of your posts.</div>
+            <div ng-if="thing.isMain && isStream && currentUserIsOwner">This is a collection of all of your subscriptions.</div>
+          </div>
           <div class="auth-only">
             <strong>Subscribe to this {{type}}</strong>
             <div class="subscription-chooser-wrapper">

@@ -1,4 +1,4 @@
-<div class="comment">
+<div class="comment hover-parent-7">
   <bs-profile-picture user="author" class="comment-photo" size="32"></bs-profile-picture>
   <div class="comment-info">
     <div>
@@ -7,7 +7,7 @@
       </a>
       -
       <small>{{comment.modified | date:'short'}}</small>
-      <i ng-show="canDelete()" class="fa fa-trash-o color-red cursor-pointer delete-comment" ng-click="deleteComment()"></i>
+      <i ng-show="canDelete()" class="fa fa-trash-o color-red cursor-pointer delete-comment hover-only-7" ng-click="deleteComment()"></i>
     </div>
     <div class="comment-content">{{comment.content}}</div>
   </div>

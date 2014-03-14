@@ -293,6 +293,86 @@ body{background-color:#fafcf9}
 .cursor-pointer{cursor:pointer}
 /* line 21 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
 .label-container{min-height:20px}
+/* line 25 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-1 .hover-only-1{opacity:0;transition:opacity .3s}
+/* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 30 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-1:hover .hover-only-1{opacity:1}
+/* line 25 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-2 .hover-only-2{opacity:0;transition:opacity .3s}
+/* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 30 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-2:hover .hover-only-2{opacity:1}
+/* line 25 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-3 .hover-only-3{opacity:0;transition:opacity .3s}
+/* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 30 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-3:hover .hover-only-3{opacity:1}
+/* line 25 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-4 .hover-only-4{opacity:0;transition:opacity .3s}
+/* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 30 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-4:hover .hover-only-4{opacity:1}
+/* line 25 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-5 .hover-only-5{opacity:0;transition:opacity .3s}
+/* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 30 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-5:hover .hover-only-5{opacity:1}
+/* line 25 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-6 .hover-only-6{opacity:0;transition:opacity .3s}
+/* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 30 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-6:hover .hover-only-6{opacity:1}
+/* line 25 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-7 .hover-only-7{opacity:0;transition:opacity .3s}
+/* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 30 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-7:hover .hover-only-7{opacity:1}
+/* line 25 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-8 .hover-only-8{opacity:0;transition:opacity .3s}
+/* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 30 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-8:hover .hover-only-8{opacity:1}
+/* line 25 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-9 .hover-only-9{opacity:0;transition:opacity .3s}
+/* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 30 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-9:hover .hover-only-9{opacity:1}
+/* line 25 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-10 .hover-only-10{opacity:0;transition:opacity .3s}
+/* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+
+/* line 30 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/other.styl */
+.hover-parent-10:hover .hover-only-10{opacity:1}
 /* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
 
 /* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/text.styl */
@@ -760,15 +840,7 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 /* line 69 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
 .post .comments .comment .comment-photo{margin-right:12px;display:inline;position:absolute}
 /* line 73 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
-.post .comments .comment .comment-info{display:inline-block;vertical-align:top;padding-left:46px;}
-/* line 77 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
-.post .comments .comment .comment-info i.delete-comment{opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);-webkit-transition:opacity 0.2s;-moz-transition:opacity 0.2s;-o-transition:opacity 0.2s;-ms-transition:opacity 0.2s;transition:opacity 0.2s}
-/* line 80 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
-
-/* line 81 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
-
-/* line 82 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
-.post .comments .comment:hover .comment-info i.delete-comment{opacity:1;-ms-filter:none;filter:none}
+.post .comments .comment .comment-info{display:inline-block;vertical-align:top;padding-left:46px}
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
 
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
@@ -836,7 +908,7 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 /* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bucketStreamPage.styl */
 .bucket-stream-page .bucket-stream-info .bucket-stream-details{float:left;display:inline;min-width:380px;max-width:90%;}
 /* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bucketStreamPage.styl */
-.bucket-stream-page .bucket-stream-info .bucket-stream-details .subscription-chooser-wrapper{max-width:200px}
+.bucket-stream-page .bucket-stream-info .bucket-stream-details .subscription-chooser-wrapper{max-width:380px}
 /* line 13 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bucketStreamPage.styl */
 .bucket-stream-page .bucket-stream-info i.edit-thing{float:left;vertical-align:top;margin-right:10px;cursor:pointer;font-size:18px}
 /* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bucketStreamPage.styl */
