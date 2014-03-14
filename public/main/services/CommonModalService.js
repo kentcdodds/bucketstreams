@@ -1,4 +1,4 @@
-angular.module('bs.app').factory('CommonModalService', function($modal, CurrentUserInfoService, Bucket, Stream, AlertService) {
+angular.module('bs.app').factory('CommonModalService', function($modal, CurrentUserInfoService, Bucket, Stream, AlertService, Cacher, ShareBroadcaster) {
   var CommonModalService = {
     createOrEditBucketStream: function(type, model) {
       return $modal.open({
@@ -101,6 +101,50 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
           post: function() {
             return post;
           }
+        }
+      });
+    },
+    sharePost: function(post) {
+      return $modal.open({
+        templateUrl: '/main/services/common-modal-templates/share-post.html',
+        controller: function($scope, currentUser, post, buckets, Share) {
+          $scope.post = post;
+          $scope.buckets = buckets;
+          _.each($scope.buckets, function(bucket) {
+            bucket.selected(false);
+          });
+          $scope.currentUser = currentUser;
+          $scope.share = new Share({
+            sourcePost: post._id,
+            author: $scope.currentUser._id,
+            comment: '',
+            buckets: []
+          });
+          $scope.onShare = function() {
+            $scope.share.buckets = _.pluck(_.filter($scope.buckets, function(bucket) {
+              var ret = bucket.isMain || bucket.selected();
+              bucket.selected(false);
+              return ret;
+            }), '_id');
+            Cacher.shareCache.putById($scope.share);
+            ShareBroadcaster.broadcastNewShare($scope.share);
+            $scope.share.$save(function() {
+              $scope.post.shares++;
+              $scope.post.$save();
+              AlertService.success('Post shared :)');
+              $scope.$close($scope.share);
+            }, function() {
+              ShareBroadcaster.broadcastRemovedShare($scope.share);
+              Cacher.shareCache.removeById($scope.share);
+            });
+          }
+        },
+        resolve: {
+          currentUser: CurrentUserInfoService.getUser,
+          post: function() {
+            return post;
+          },
+          buckets: CurrentUserInfoService.getBuckets
         }
       });
     }

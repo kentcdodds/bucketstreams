@@ -34,7 +34,7 @@ schema.methods.addPost = function(post, callback) {
 };
 
 schema.methods.getPostsAndShares = function(callback) {
-  var query = {buckets: this.id};
+  var query = {buckets: this._id };
   require('./QueryUtil').getPostsAndShares(query, function(err, result) {
     if (err) return callback(err);
     callback(null, {

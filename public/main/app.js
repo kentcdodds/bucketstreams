@@ -68,7 +68,7 @@
             if (currentUser.hasUsername) {
               return UtilService.loadData('stream', currentUser.username, 'Main Stream');
             } else {
-              return [];
+              return {};
             }
           }
         },
@@ -106,6 +106,9 @@
           },
           streams: function(Stream, $stateParams) {
             return Stream.query({username: $stateParams.username});
+          },
+          mainBucketData: function(UtilService, $stateParams) {
+            return UtilService.loadData('bucket', $stateParams.username, 'Main Bucket');
           }
         },
         onEnter: function(CurrentContext, profileUser) {

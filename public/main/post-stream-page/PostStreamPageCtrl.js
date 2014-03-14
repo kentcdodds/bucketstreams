@@ -1,6 +1,9 @@
-angular.module('bs.app').controller('PostStreamPageCtrl', function($scope, $state, _, data, $modal, Cacher, AlertService, CommonModalService, CurrentUserInfoService, PostBroadcaster) {
+angular.module('bs.app').controller('PostStreamPageCtrl', function($scope, $state, _, data, $modal, Cacher, AlertService, CommonModalService, CurrentUserInfoService, PostBroadcaster, ShareBroadcaster) {
   $scope.thing = data.thing;
-  $scope.posts = data.posts || [];
+  $scope.postsAndShares = {
+    posts: data.posts || [],
+    shares: data.shares || []
+  };
   $scope.type = data.type;
   $scope.isStream = data.type === 'stream';
   $scope.owner = data.thing.getOwner();
@@ -40,12 +43,24 @@ angular.module('bs.app').controller('PostStreamPageCtrl', function($scope, $stat
   }
 
   $scope.$on(PostBroadcaster.removedPostEvent, function(event, post) {
-    _.remove($scope.posts, {_id: post._id});
+    _.remove($scope.postsAndShares.posts, {_id: post._id});
   });
 
   $scope.$on(PostBroadcaster.newPostEvent, function(event, post) {
     if (_.contains(post.buckets, $scope.thing._id) || (!$scope.isStream && $scope.thing.isMain)) {
-      $scope.posts.unshift(post);
+      $scope.postsAndShares.posts.unshift(post);
     }
   });
+
+  $scope.$on(ShareBroadcaster.removedShareEvent, function(event, share) {
+    _.remove($scope.postsAndShares.shares, {_id: share._id});
+  });
+
+  $scope.$on(ShareBroadcaster.newShareEvent, function(event, share) {
+    if (_.contains(share.getPost().buckets, $scope.thing._id) || (!$scope.isStream && $scope.thing.isMain)) {
+      $scope.postsAndShares.shares.unshift(share);
+    }
+  });
+  
+  $scope.onShare = CommonModalService.sharePost;
 });

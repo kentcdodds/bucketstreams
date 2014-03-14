@@ -1,4 +1,4 @@
-angular.module('bs.services').factory('UtilService', function(_, Cacher, $http, $q, Post, Comment, User, Stream, Bucket) {
+angular.module('bs.services').factory('UtilService', function(_, Cacher, $http, $q, Post, Share, Comment, User, Stream, Bucket) {
   //noinspection UnnecessaryLocalVariableJS
   var util = {
     validateModel: function(model, params) {
@@ -26,6 +26,7 @@ angular.module('bs.services').factory('UtilService', function(_, Cacher, $http, 
           { propName: 'bucket', model: Bucket },
           { propName: 'stream', model: Stream },
           { propName: 'post', model: Post },
+          { propName: 'share', model: Share },
           { propName: 'comment', model: Comment }
         ];
         _.each(modelGroups, function(group) {

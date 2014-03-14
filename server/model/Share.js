@@ -13,6 +13,7 @@ var ObjectId = Schema.Types.ObjectId;
 var schema = new Schema({
   author: {type: ObjectId, ref: ref.user, required: true},
   sourcePost: {type: ObjectId, ref: ref.post, required: true},
+  comments: String,
   buckets: [{type: ObjectId, ref: ref.bucket, required: true}]
 });
 

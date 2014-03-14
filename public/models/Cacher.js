@@ -81,6 +81,9 @@ angular.module('bs.models').factory('Cacher', function($cacheFactory, _, $resour
         removeAll: function() {
           return aCache.removeAll.apply(aCache, arguments);
         },
+        removeById: function(item) {
+          return this.remove(item._id);
+        },
         destroy: function() {
           return aCache.destroy.apply(aCache, arguments);
         },

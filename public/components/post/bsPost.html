@@ -2,7 +2,7 @@
   <div class="post-meta panel-heading">
     <bs-profile-picture user="author" class="post-author-photo" size="60"></bs-profile-picture>
     <div class="post-info">
-      <div class="post-options auth-only hover-only-5">
+      <div class="post-options auth-only hover-only-5" ng-if="!postOnly">
         <div class="dropdown">
           <a class="dropdown-toggle">
             <i class="fa fa-chevron-down"></i>
@@ -12,10 +12,10 @@
               <a ng-show="canEdit" fa-icon="edit" ng-click="edit()"> Edit</a>
             </li>
             <li>
-              <a ng-show="canEdit" fa-icon="trash-o color-red" ng-click="removePost()"> Delete</a>
+              <a ng-show="canEdit || canDelete" fa-icon="trash-o color-red" ng-click="removePost()"> Delete</a>
             </li>
             <li>
-              <a ng-hide="canEdit">There aren't any options here for you... Yet...</a>
+              <a ng-hide="canEdit || canDelete">There aren't any options here for you... Yet...</a>
             </li>
           </ul>
         </div>
@@ -27,26 +27,29 @@
         <small class="display-block">
           <a ng-href="/post/{{post._id}}">{{post.modified | date:'short'}}</a>
         </small>
-        <small class="display-block text-muted" ng-show="isShare">
-          Shared by <a ng-href="/{{shareAuthor.username}}">{{shareAuthor.getDisplayName()}}</a>
-        </small>
       </div>
     </div>
   </div>
   <div class="post-content panel-body">
-    <div ng-hide="editing">{{post.content.textString}}</div>
+    <small class="display-block text-muted" ng-if="isShare && !postOnly">
+      Shared by <a ng-href="/{{shareAuthor.username}}">{{shareAuthor.getDisplayName()}}</a>
+    </small>
+    <div ng-hide="editing">{{mainContent}}</div>
     <div ng-show="editing">
-      <textarea ng-model="newPostContent" class="form-control"></textarea>
+      <textarea ng-model="newContent" class="form-control"></textarea>
+    </div>
+    <div ng-if="isShare">
+      <div class="well">{{post.content.textString}}</div>
     </div>
   </div>
-  <div class="panel-footer auth-only">
+  <div class="panel-footer auth-only" ng-hide="postOnly">
     <div class="share-post" ng-hide="editing">
-      <a ng-click="share()" fa-icon="share"> {{post.shares.length || ''}}</a>
+      <a ng-click="sharePost()" fa-icon="share"> {{post.shares.length || ''}}</a>
       <a ng-click="favorite()" fa-icon="star"> {{post.favorites.length || ''}}</a>
     </div>
     <div class="edit-buttons" ng-show="editing">
       <button class="btn btn-default btn-xs pull-left" ng-click="editing=false">Cancel</button>
-      <button class="btn btn-primary btn-xs pull-right" ng-click="updatePostContent(newPostContent)">Save</button>
+      <button class="btn btn-primary btn-xs pull-right" ng-click="updatePostContent(newContent)">Save</button>
     </div>
   </div>
   <div class="comments-container" ng-show="currentUser || comments.length">
