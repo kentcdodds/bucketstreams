@@ -47,7 +47,7 @@
         <input class="form-control" type="text" placeholder="Add comment..." ng-model="commentToAdd" ng-keydown="addComment($event)">
       </div>
     </div>
-    <div class="comment-container" bs-scroll-bottom>
+    <div class="comment-container" bs-scroll-bottom="scrollComments">
       <div ng-repeat="comment in comments" bs-comment="comment" on-delete-clicked="deleteComment(comment)"></div>
     </div>
   </div>

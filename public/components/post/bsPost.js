@@ -40,6 +40,7 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoServ
         });
         scope.comments = scope.comments || [];
         scope.comments.push(comment);
+        scope.scrollComments = true;
         scope.commentToAdd = '';
       };
 
@@ -49,7 +50,8 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoServ
 
       scope.deleteComment = function(comment) {
         _.remove(scope.comments, comment);
-      }
+      };
+      scope.scrollComments = true;
     }
   }
 });
