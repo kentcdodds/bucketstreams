@@ -9,28 +9,27 @@
           </a>
           <ul class="dropdown-menu pull-right">
             <li>
-              <a ng-show="currentUser._id === author._id" fa-icon="edit" ng-click="editing=true"> Edit</a>
+              <a ng-show="canEdit" fa-icon="edit" ng-click="edit()"> Edit</a>
             </li>
             <li>
-              <a ng-show="currentUser._id === author._id" fa-icon="trash-o color-red" ng-click="removePost()"> Delete</a>
+              <a ng-show="canEdit" fa-icon="trash-o color-red" ng-click="removePost()"> Delete</a>
             </li>
             <li>
-              <a ng-show="currentUser._id !== author._id">There aren't any options here for you... Yet...</a>
+              <a ng-hide="canEdit">There aren't any options here for you... Yet...</a>
             </li>
           </ul>
         </div>
       </div>
       <div>
-        <div>
-          <a ng-href="/{{author.username}}">
-            <strong class="post-author-name">{{author.getDisplayName()}}</strong>
-          </a>
-        </div>
-        <div>
-          <small>
-            <a ng-href="/post/{{post._id}}">{{post.modified | date:'short'}}</a>
-          </small>
-        </div>
+        <a ng-href="/{{author.username}}">
+          <strong class="post-author-name">{{author.getDisplayName()}}</strong>
+        </a>
+        <small class="display-block">
+          <a ng-href="/post/{{post._id}}">{{post.modified | date:'short'}}</a>
+        </small>
+        <small class="display-block text-muted" ng-show="isShare">
+          Shared by <a ng-href="/{{shareAuthor.username}}">{{shareAuthor.getDisplayName()}}</a>
+        </small>
       </div>
     </div>
   </div>
@@ -42,8 +41,8 @@
   </div>
   <div class="panel-footer auth-only">
     <div class="share-post" ng-hide="editing">
-      <a ng-click="share(post)" fa-icon="share"></a>
-      <a ng-click="star(post)" fa-icon="star"></a>
+      <a ng-click="share()" fa-icon="share"> {{post.shares.length || ''}}</a>
+      <a ng-click="favorite()" fa-icon="star"> {{post.favorites.length || ''}}</a>
     </div>
     <div class="edit-buttons" ng-show="editing">
       <button class="btn btn-default btn-xs pull-left" ng-click="editing=false">Cancel</button>

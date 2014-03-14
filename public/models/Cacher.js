@@ -4,6 +4,7 @@ angular.module('bs.models').factory('Cacher', function($cacheFactory, _, $resour
     streamCache: null,
     bucketCache: null,
     postCache: null,
+    shareCache: null,
     commentCache: null
   };
   

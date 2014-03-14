@@ -5,7 +5,7 @@
   <div ng-show="posts.length" class="column-wrapper columns-{{columns.length}}">
     <div ng-repeat="column in columns" class="post-column column-{{column}}">
       <div class="stream-posts">
-        <div ng-repeat="post in getPostsForColumn(column)" bs-post="post" on-removed="onPostRemoved(post)"></div>
+        <div ng-repeat="post in getPostsForColumn(column)" bs-post="post" on-share="onShareClicked(post)"></div>
       </div>
     </div>
   </div>

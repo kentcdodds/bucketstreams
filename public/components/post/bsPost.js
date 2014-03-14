@@ -1,18 +1,28 @@
-angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoService, _, Cacher, User, Comment, PostBroadcaster, AlertService) {
+angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoService, _, Cacher, User, Comment, Share, PostBroadcaster, AlertService) {
   return {
     restrict: 'A',
     templateUrl: '/components/post/bsPost.html',
     replace: true,
     scope: {
-      post: '=bsPost'
+      post: '=bsPost',
+      onShare: '&',
+      share: '='
     },
     link: function(scope, el) {
+      scope.isShare = !!scope.share;
       scope.author = scope.post.getAuthor();
       scope.comments = scope.post.getComments();
       scope.currentUser = CurrentUserInfoService.getUser();
       scope.$on(CurrentUserInfoService.events.user, function(event, user) {
         scope.currentUser = user;
       });
+      
+      scope.canEdit = scope.currentUser._id === scope.author._id;
+      if (scope.isShare) {
+        scope.shareAuthor = scope.share.getAuthor();
+        scope.canEdit = scope.currentUser._id === scope.shareAuthor._id;
+        
+      }
 
       scope.removePost = function() {
         PostBroadcaster.broadcastRemovedPost(scope.post);
@@ -22,6 +32,14 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoServ
           PostBroadcaster.broadcastNewPost(scope.post);
           AlertService.error(err.message);
         });
+      };
+      
+      scope.share = function() {
+        scope.onShare({post: scope.post});
+      };
+      
+      scope.favorite = function() {
+        scope.post.addFavorite(scope.currentUser);
       };
 
       scope.commentToAdd = '';
@@ -43,11 +61,17 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoServ
         scope.scrollComments = true;
         scope.commentToAdd = '';
       };
+      
 
       scope.showOrHideComment = function(comment) {
         comment.showDelete = comment.author.username === scope.currentUser.username;
       };
-      scope.newPostContent = scope.post.content.textString;
+      
+      scope.edit = function() {
+        scope.newPostContent = scope.post.content.textString;
+        scope.editing = true;
+      };
+      
       
       scope.updatePostContent = function(newContent) {
         scope.post.content.textString = newContent;

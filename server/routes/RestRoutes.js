@@ -43,6 +43,16 @@ module.exports = function(app) {
     query: 'req.query'
   });
 
+  angularBridge.addResource('shares', dataModels.share, {
+    hide: [
+      ''
+    ],
+    readOnly: [
+      '_id'
+    ],
+    query: 'req.query'
+  });
+
   angularBridge.addResource('buckets', dataModels.bucket, {
     hide: [
       ''

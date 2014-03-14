@@ -25,7 +25,12 @@ angular.module('bs.directives').directive('bsComment', function(CurrentUserInfoS
           scope.onDeleteClicked({comment: scope.comment});
         }
       };
-      scope.newCommentContent = scope.comment.content;
+      
+      scope.edit = function() {
+        scope.newCommentContent = scope.comment.content;
+        scope.editing = true;
+      };
+      
       scope.updateComment = function(newContent) {
         scope.comment.content = newContent;
         scope.editing = false;

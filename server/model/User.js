@@ -298,7 +298,7 @@ schema.methods.importPosts = function(callback) {
     if (!readyForImport) {
       return done(true);
     }
-    providers[aProvider].getPosts(self, function(err, posts) {
+    providers[aProvider].getPostsAndShares(self, function(err, posts) {
       if (!err) {
         updateUser[aProvider](providerInfo, posts);
         _.each(posts, function(post) {
@@ -394,7 +394,7 @@ schema.methods.makePost = function(post, callback) {
   if (callback) post.save(callback);
 };
 
-schema.methods.getPosts = function(callback) {
+schema.methods.getPostsAndShares = function(callback) {
   require('./Post').model.find({author: this.id}).sort('-created').exec(callback);
 };
 

@@ -7,7 +7,7 @@
       </a>
       -
       <small>{{comment.modified | date:'short'}}</small>
-      <i ng-show="canEdit()" class="fa fa-edit cursor-pointer edit-comment hover-only-7" ng-click="editing=true"></i>
+      <i ng-show="canEdit()" class="fa fa-edit cursor-pointer edit-comment hover-only-7" ng-click="edit()"></i>
       <i ng-show="canEdit()" class="fa fa-trash-o color-red cursor-pointer delete-comment hover-only-7" ng-click="deleteComment()"></i>
     </div>
     <div class="comment-content" ng-hide="editing">{{comment.content}}</div>

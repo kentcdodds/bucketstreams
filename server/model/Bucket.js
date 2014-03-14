@@ -1,8 +1,6 @@
 var Util = require('./Util');
 var ref = require('./ref');
 var Post = require('./Post').model;
-var Comment = require('./Comment').model;
-var User = require('./User').model;
 var _ = require('lodash-node');
 var async = require('async');
 
@@ -28,16 +26,23 @@ var schema = new Schema({
   isMain: {type: Boolean, required: false}
 });
 
+Util.addTimestamps(schema);
+
 schema.methods.addPost = function(post, callback) {
   post.buckets.push(this.id);
   if (callback) post.save(callback);
 };
 
-schema.methods.getPosts = function(callback) {
-  Post.find({buckets: this.id}).sort('-created').exec(callback);
+schema.methods.getPostsAndShares = function(callback) {
+  var query = {buckets: this.id};
+  require('./QueryUtil').getPostsAndShares(query, function(err, result) {
+    if (err) return callback(err);
+    callback(null, {
+      posts: result.posts,
+      shares: result.shares
+    });
+  });
 };
-
-Util.addTimestamps(schema);
 
 schema.path('name').validate(function (value, callback) {
   if (this.isNew) {

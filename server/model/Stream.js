@@ -2,6 +2,7 @@ var Util = require('./Util');
 var ref = require('./ref');
 
 var Post = require('./Post').model;
+var Share = require('./Share').model;
 var User = require('./User').model;
 var Comment = require('./Comment').model;
 var Bucket = require('./Bucket').model;
@@ -85,15 +86,15 @@ schema.static.getStreamsByUserId = function(userId, callback) {
   this.model(this.constructor.modelName).find({owner: userId}, callback);
 };
 
-schema.static.getPostsById = function(id, callback) {
+schema.static.getPostsAndSharesById = function(id, callback) {
   this.model(this.constructor.modelName).findOne({_id: id}, function(err, stream) {
     if (err) return callback(err);
     if (!stream) return callback('No stream with the id of ' + id);
-    stream.getPosts(callback);
+    stream.getPostsAndShares(callback);
   });
 };
 
-schema.methods.getPosts = function(callback) {
+schema.methods.getPostsAndShares = function(callback) {
   var self = this;
   var Stream = this.model(this.constructor.modelName);
 
@@ -105,16 +106,21 @@ schema.methods.getPosts = function(callback) {
   }
 
   // get all posts
-  function getPosts(responseBuilder) {
+  function getPostsAndShares(responseBuilder) {
+    if (!responseBuilder.bucketIds) {
+      return responseBuilder;
+    }
     var deferred = Q.defer();
-    Post.find({buckets: { $in: responseBuilder.bucketIds }}).sort('-created').exec(function(err, posts) {
+    var query = {buckets: { $in: responseBuilder.bucketIds }};
+    require('./QueryUtil').getPostsAndShares(query, function(err, result) {
       if (err) return deferred.reject(err);
-      responseBuilder.posts = uniqueById(responseBuilder.posts, posts);
+      responseBuilder.posts = uniqueById(responseBuilder.posts, result.posts);
+      responseBuilder.shares = uniqueById(responseBuilder.shares, result.shares);
       deferred.resolve(responseBuilder);
     });
     return deferred.promise;
   }
-
+  
   // resolve ids of all user's stream's subscriptions
   function getSubscribedBucketIds(responseBuilder) {
     var deferred = Q.defer();
@@ -133,7 +139,15 @@ schema.methods.getPosts = function(callback) {
       .compact()
       .flatten()
       .value();
-    callback(null, posts);
+    var shares = _.chain(responseBuilder.shares)
+      .unique('_id')
+      .compact()
+      .flatten()
+      .value();
+    callback(null, {
+      posts: posts,
+      shares: shares
+    });
   }
   
   function fail(err) {
@@ -142,6 +156,7 @@ schema.methods.getPosts = function(callback) {
 
   var responseBuilder = {
     posts: [],
+    shares: [],
     resolvedStreams: [],
     bucketIds: []
   };
@@ -182,7 +197,7 @@ schema.methods.getPosts = function(callback) {
     // get bucket subscription ids
     promise = _.bind(getSubscribedBucketIds, self, responseBuilder)();
   }
-  promise.then(getPosts).then(returnResult).fail(fail);
+  promise.then(getPostsAndShares).then(returnResult).fail(fail);
 };
 
 

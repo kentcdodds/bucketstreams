@@ -48,7 +48,7 @@ describe('Bucket Model Spec', function() {
           });
         }, function(success) {
           if (!success) return done(new Error('Not all user streams saved!'));
-          mockBucket.getPosts(function(err, posts) {
+          mockBucket.getPostsAndShares(function(err, posts) {
             if (err) return done(err);
             expect(posts.length).to.equal(numberOfRealPosts);
 

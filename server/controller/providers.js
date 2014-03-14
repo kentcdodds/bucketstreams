@@ -7,7 +7,7 @@ var _ = require('lodash-node');
 
 module.exports = {
   facebook: {
-    getPosts: function(user, callback) {
+    getPostsAndShares: function(user, callback) {
       var accountId = user.connectedAccounts.facebook.accountId;
       var token = user.connectedAccounts.facebook.token;
       var lastImportEpoch = user.connectedAccounts.facebook.lastImportEpoch;
@@ -108,7 +108,7 @@ module.exports = {
     }
   },
   twitter: {
-    getPosts: function(user, callback) {
+    getPostsAndShares: function(user, callback) {
       var userTwitterInfo = user.connectedAccounts.twitter;
       var twit = new twitter({
         consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -162,7 +162,7 @@ module.exports = {
     }
   },
   google: {
-    getPosts: function(user, callback) {
+    getPostsAndShares: function(user, callback) {
       callback(null, []);
     },
     getFeed: function(user, callback) {

@@ -42,6 +42,10 @@ angular.module('bs.app').directive('bsPostStream', function($window, $filter) {
         });
         return postsForColumn;
       };
+      
+      scope.onShareClicked = function(post) {
+        
+      }
     }
   };
 });

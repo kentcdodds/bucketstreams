@@ -108,7 +108,7 @@ describe('User Model Spec', function() {
     }, function(success) {
       if (!success) return done(new Error('Not all user streams saved!'));
 
-      mockUser.getPosts(function(err, savedPosts) {
+      mockUser.getPostsAndShares(function(err, savedPosts) {
         savedPosts.length.should.equal(numberOfPosts);
         done();
       });

@@ -10,6 +10,7 @@ var User = models[ref.user];
 var Stream = models[ref.stream];
 var Bucket = models[ref.bucket];
 var Post = models[ref.post];
+var Share = models[ref.share];
 var Comment = models[ref.comment];
 
 var StreamSchema = schemas[ref.stream];
@@ -50,7 +51,7 @@ module.exports = function(app) {
    * @param limit - query - The number of posts to return - NOT YET IMPLEMENTED
    */
   app.get(prefixes.util + '/streams/:id/posts', function(req, res, next) {
-    StreamSchema.getPostsById(req.params.id, function(err, posts) {
+    StreamSchema.getPostsAndSharesById(req.params.id, function(err, posts) {
       if (err) return ErrorController.sendErrorJson(res, 500, 'Problem getting stream posts: ' + err.message);
       res.json(200, posts);
     });
@@ -96,15 +97,23 @@ module.exports = function(app) {
         return objId.id;
       });
     }
-
+    
     // get posts
     function getPosts(responseBuilder) {
       var deferred = Q.defer();
-      responseBuilder.thing.getPosts(function(err, posts) {
+      responseBuilder.thing.getPostsAndShares(function(err, postsAndShares) {
         if (err) return deferred.reject(err);
-        responseBuilder.posts = posts;
-        responseBuilder.postIds = _.pluck(posts, '_id');
-        responseBuilder.userIds = uniqueIds(responseBuilder.userIds, _.pluck(posts, 'author'));
+        
+        responseBuilder.posts = postsAndShares.posts;
+        responseBuilder.postIds = _.pluck(postsAndShares.posts, '_id');
+        responseBuilder.userIds = uniqueIds(responseBuilder.userIds, _.pluck(postsAndShares.posts, 'author'));
+        responseBuilder.bucketIds = uniqueIds(responseBuilder.bucketIds, _.pluck(postsAndShares.posts, 'buckets'));
+        
+        responseBuilder.shares = postsAndShares.shares;
+        responseBuilder.shareIds = _.pluck(postsAndShares.shares, '_id');
+        responseBuilder.userIds = uniqueIds(responseBuilder.userIds, _.pluck(postsAndShares.shares, 'author'));
+        responseBuilder.bucketIds = uniqueIds(responseBuilder.bucketIds, _.pluck(postsAndShares.shares, 'buckets'));
+        
         deferred.resolve(responseBuilder);
       });
       return deferred.promise;
@@ -124,27 +133,28 @@ module.exports = function(app) {
     }
 
     // get subscription.bucket/stream info
-    function getSubscriptionInfo(responseBuilder) {
+    function getBucketsAndStreams(responseBuilder) {
       if (!isStream) return responseBuilder;
       
       var deferred = Q.defer();
       var items = [];
       responseBuilder.subscriptionsInfo = {};
-      if (responseBuilder.thing.hasBucketSubscriptions()) {
+      if (responseBuilder.thing.hasBucketSubscriptions() || !_.isEmpty(responseBuilder.bucketIds)) {
         items.push({
           type: 'buckets',
-          model: Bucket
+          model: Bucket,
+          ids: _.union(responseBuilder.thing.subscriptions.buckets, responseBuilder.bucketIds)
         });
       }
       if (responseBuilder.thing.hasStreamSubscriptions()) {
         items.push({
           type: 'streams',
-          model: Stream
+          model: Stream,
+          ids: responseBuilder.thing.subscriptions.streams
         });
       }
       async.concat(items, function(item, done) {
-        var ids = responseBuilder.thing.subscriptions[item.type];
-        item.model.find({'_id': {$in: ids}}, '_id owner name', function(err, theThings) {
+        item.model.find({'_id': {$in: item.ids}}, '_id owner name', function(err, theThings) {
           if (err) return done(err);
           responseBuilder[item.type] = _.unique(_.union(responseBuilder[item.type], theThings), false, '_id');
           responseBuilder.userIds = uniqueIds(responseBuilder.userIds, _.pluck(theThings, 'owner'));
@@ -177,6 +187,7 @@ module.exports = function(app) {
         buckets: responseBuilder.buckets,
         streams: responseBuilder.streams,
         posts: responseBuilder.posts,
+        shares: responseBuilder.shares,
         comments: responseBuilder.comments
       });
     }
@@ -190,7 +201,7 @@ module.exports = function(app) {
       responseBuilder.userIds = [thing.owner];
       getPosts(responseBuilder)
         .then(getComments)
-        .then(getSubscriptionInfo)
+        .then(getBucketsAndStreams)
         .then(getUsers)
         .then(returnResult)
         .fail(function(err) {

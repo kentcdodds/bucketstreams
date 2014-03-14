@@ -29,7 +29,9 @@ var schema = new Schema({
     metadata: {}
   },
   buckets: [{type: ObjectId, ref: ref.bucket, required: true}],
-  previousVersion: {type: ObjectId, ref: ref.post, required: false}
+  previousVersion: {type: ObjectId, ref: ref.post, required: false},
+  shares: [{type: ObjectId, ref: ref.user, required: false}],
+  favorites: [{type: ObjectId, ref: ref.user, required: false}]
 });
 
 Util.addTimestamps(schema);
