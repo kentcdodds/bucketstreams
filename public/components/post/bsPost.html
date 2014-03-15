@@ -22,24 +22,32 @@
       </div>
       <div>
         <a ng-href="/{{author.username}}">
-          <strong class="post-author-name">{{author.getDisplayName()}}</strong>
+          <strong class="post-author-name">{{authorDisplayName}}</strong>
         </a>
         <small class="display-block">
           <a ng-href="/post/{{post._id}}">{{post.modified | date:'short'}}</a>
         </small>
+        <small bs-bucket-list="postBucketList" max-chars="40"></small>
       </div>
     </div>
   </div>
   <div class="post-content panel-body">
-    <small class="display-block text-muted" ng-if="isShare && !postOnly">
-      Shared by <a ng-href="/{{shareAuthor.username}}">{{shareAuthor.getDisplayName()}}</a>
-    </small>
+    <div class="post-content-shared" ng-if="isShare && !postOnly">
+      <bs-profile-picture user="shareAuthor" class="post-author-photo" size="36"></bs-profile-picture>
+      <small class="share-info">
+        <span class="text-muted">
+          <a ng-href="/{{shareAuthor.username}}">{{shareAuthorDisplayName}}</a> shared this
+        </span>
+        <span class="display-block" bs-bucket-list="shareBucketList" max-chars="40"></span>
+      </small>
+    </div>
     <div ng-hide="editing">{{mainContent}}</div>
     <div ng-show="editing">
       <textarea ng-model="newContent" class="form-control"></textarea>
     </div>
     <div ng-if="isShare">
-      <div class="well">{{post.content.textString}}</div>
+      <hr />
+      <div>{{post.content.textString}}</div>
     </div>
   </div>
   <div class="panel-footer auth-only" ng-hide="postOnly">

@@ -15,7 +15,7 @@ angular.module('bs.models').factory('Post', function($resource, Cacher) {
     return this.$save();
   };
   Post.prototype.getBuckets = function() {
-    return Cacher.bucketCache.get(this.buckets);
+    return Cacher.bucketCache.getAll(this.buckets);
   };
   return Post;
 });

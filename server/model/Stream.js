@@ -107,7 +107,7 @@ schema.methods.getPostsAndShares = function(callback) {
 
   // get all posts
   function getPostsAndShares(responseBuilder) {
-    if (!responseBuilder.bucketIds) {
+    if (_.isEmpty(responseBuilder.bucketIds)) {
       return responseBuilder;
     }
     var deferred = Q.defer();
@@ -134,19 +134,9 @@ schema.methods.getPostsAndShares = function(callback) {
 
   // return result object
   function returnResult(responseBuilder) {
-    var posts = _.chain(responseBuilder.posts)
-      .unique('_id')
-      .compact()
-      .flatten()
-      .value();
-    var shares = _.chain(responseBuilder.shares)
-      .unique('_id')
-      .compact()
-      .flatten()
-      .value();
     callback(null, {
-      posts: posts,
-      shares: shares
+      posts: responseBuilder.posts,
+      shares: responseBuilder.shares
     });
   }
   
@@ -164,11 +154,13 @@ schema.methods.getPostsAndShares = function(callback) {
 
   if (self.isMain) {
     // get all of the user's posts
-    function getUserPosts(responseBuilder) {
+    function getUserPostsAndShares(responseBuilder) {
       var deferred = Q.defer();
-      Post.find({ author: self.owner }, function(err, posts) {
+      var query = { author: self.owner };
+      require('./QueryUtil').getPostsAndShares(query, function(err, result) {
         if (err) return deferred.reject(err);
-        responseBuilder.posts = uniqueById(responseBuilder.posts, posts);
+        responseBuilder.posts = uniqueById(responseBuilder.posts, result.posts);
+        responseBuilder.shares = uniqueById(responseBuilder.shares, result.shares);
         deferred.resolve(responseBuilder);
       });
       return deferred.promise;
@@ -185,14 +177,14 @@ schema.methods.getPostsAndShares = function(callback) {
           }
         });
         async.parallel(iterators, function(responseBuilder) {
-          if (err) return deferred.reject(err);
+//          if (err) return deferred.reject(err);
           deferred.resolve(responseBuilder);
         });
       });
       return deferred.promise;
     }
     
-    promise = getUserPosts(responseBuilder).then(getAllSubscribedBucketIds);
+    promise = getUserPostsAndShares(responseBuilder).then(getAllSubscribedBucketIds);
   } else {
     // get bucket subscription ids
     promise = _.bind(getSubscribedBucketIds, self, responseBuilder)();

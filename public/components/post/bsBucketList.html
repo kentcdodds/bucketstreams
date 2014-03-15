@@ -1,0 +1,18 @@
+<span>
+  <i class="fa fa-bitbucket"></i>
+  <span ng-repeat="bucket in visibleBuckets">
+    <a ui-sref="root.postStreamPage.bucket(bucketPageParams[$index])">
+      {{bucket.name}}</a><span ng-show="!$last">, </span>
+  </span>
+
+  <a ng-show="showElipsis"
+     class="cursor-pointer"
+     popover="There are other buckets... Listing coming soon."
+     popover-template="{{templateName}}"
+     popover-title="Buckets"
+     popover-delay="200"
+     popover-trigger="click">…</a>
+  <script id="{{templateName}}" type="text/ng-template">
+    Hello world!
+  </script>
+</span>

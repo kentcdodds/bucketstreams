@@ -7,7 +7,7 @@ angular.module('bs.models').factory('Share', function($resource, Cacher) {
     return Cacher.postCache.get(this.sourcePost);
   };
   Share.prototype.getBuckets = function() {
-    return Cacher.bucketCache.get(this.buckets);
+    return Cacher.bucketCache.getAll(this.buckets);
   };
   return Share;
 });

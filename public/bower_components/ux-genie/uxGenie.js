@@ -61,15 +61,13 @@
       },
       link: function(scope, el) {
         scope.uxLamp = scope.uxLamp || {};
-        scope.uxLamp.input = scope.uxLamp.input || '';
-        scope.uxLamp.state = scope.uxLamp.state || states.userEntry;
-        scope.lampVisible = scope.lampVisible || false;
+        scope.uxLamp.input = '';
+        scope.uxLamp.state = states.userEntry;
+        scope.lampVisible = false;
 
         var mathResultId = 'ux-genie-math-result';
         var startTextForSubContext = null;
         var preSubContextContext = null;
-        var subContextWish = null;
-        var subContextWishes = null;
 
         function findFirstChild(el, className) {
           var container = null;
@@ -211,16 +209,20 @@
          * Document events
          */
         $document.bind('click', function(event) {
-          if (!scope.lampVisible) return;
           // If it's not part of the lamp, then make the lamp invisible.
-          var parent = event.srcElement || event.target;
-          while (parent) {
-            if (parent === el[0]) {
+          var clickedElement = event.srcElement || event.target;
+          if (clickedElement === el[0]) {
+            return;
+          }
+          var children = el.children();
+          for (var i = 0; i < children.length; i++) {
+            if (clickedElement === children[i]) {
               return;
             }
-            parent = parent.parentNode;
           }
-          toggleVisibility(false);
+          if (scope.lampVisible) {
+            toggleVisibility(false);
+          }
         });
 
         $document.bind(scope.rubEventType || 'keydown', function(event) {
@@ -294,15 +296,13 @@
 
         function _setSubContextState(wish) {
           if (scope.uxLamp.state !== states.subContext) {
-            subContextWish = wish;
-            var uxGenieData = wish.data.uxGenie;
             scope.uxLamp.state = states.subContext;
             startTextForSubContext = wish.magicWords[0] + ' ';
-            if (uxGenieData.displayText) {
-              startTextForSubContext = uxGenieData.displayText;
+            if (wish.data && wish.data.uxGenie && wish.data.uxGenie.displayText) {
+              startTextForSubContext = wish.data.uxGenie.displayText;
             }
             preSubContextContext = genie.context();
-            genie.context(uxGenieData.subContext);
+            genie.context(wish.data.uxGenie.subContext);
             safeApply(function() {
               scope.uxLamp.input = startTextForSubContext;
             });
@@ -310,8 +310,6 @@
         }
 
         function _exitSubContext() {
-          genie.deregisterWishesWithContext(subContextWish.data.uxGenie.subContext);
-          subContextWish = null;
           genie.context(preSubContextContext);
           scope.uxLamp.state = states.userEntry;
           startTextForSubContext = null;
@@ -384,15 +382,15 @@
           }
         }
 
-        function handleInputChange(newInput) {
+        function handleInputChange(newVal) {
           if (scope.uxLamp.state === states.subContext) {
-            if (newInput.indexOf(startTextForSubContext.trim()) === 0) {
-              newInput = newInput.substring(startTextForSubContext.length);
+            if (newVal.indexOf(startTextForSubContext.trim()) === 0) {
+              newVal = newVal.substring(startTextForSubContext.length);
             } else {
               _exitSubContext();
             }
           }
-          updateMatchingWishes(newInput);
+          updateMatchingWishes(newVal);
           var firstWish = null;
           var firstWishDisplay = null;
           if (scope.uxLamp.matchingWishes && scope.uxLamp.matchingWishes.length > 0) {
@@ -404,28 +402,18 @@
           }
 
           if (firstWish && scope.uxLamp.matchingWishes.length === 1 &&
-            _isSubContextWish(firstWish) && firstWishDisplay === newInput) {
+            _isSubContextWish(firstWish) && firstWishDisplay === newVal) {
             _setSubContextState(firstWish);
           }
 
-          if (scope.uxLamp.state === states.subContext && subContextWish && subContextWish.data.uxGenie.getWishes && newInput) {
-            subContextWish.data.uxGenie.getWishes(newInput, function(wishObjects) {
-              safeApply(function() {
-                genie.deregisterWishesWithContext(subContextWish.data.uxGenie.subContext);
-                genie(wishObjects);
-                updateMatchingWishes(newInput);
-              });
-            });
-          }
-
-          var result = _evaluateMath(newInput || '');
+          var result = _evaluateMath(newVal || '');
           if (angular.isNumber(result)) {
             scope.uxLamp.matchingWishes = scope.uxLamp.matchingWishes || [];
             scope.uxLamp.matchingWishes.unshift({
               id: mathResultId,
               data: {
                 uxGenie: {
-                  displayText: newInput + ' = ' + result
+                  displayText: newVal + ' = ' + result
                 }
               }
             });
@@ -438,10 +426,10 @@
             handleInputChange(scope.uxLamp.input);
             if (scope.rubClass) {
               el.addClass(scope.rubClass);
-              // Needs to be visible before it can be selected
+              // Needs to be lampVisible before it can be selected
               $timeout(function() {
                 inputEl[0].select();
-              });
+              }, 25);
             } else {
               inputEl[0].select();
             }

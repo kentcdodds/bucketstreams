@@ -41,11 +41,11 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
   }
 
   $scope.$on(PostBroadcaster.removedPostEvent, function(event, post) {
-    _.remove($scope.mainStreamData.postsAndShares.posts, {_id: post._id});
+    _.remove($scope.postsAndShares.posts, {_id: post._id});
   });
 
   $scope.$on(PostBroadcaster.newPostEvent, function(event, post) {
-    $scope.mainStreamData.postsAndShares.posts.unshift(post);
+    $scope.postsAndShares.posts.unshift(post);
   });
 
   $scope.$on(ShareBroadcaster.removedShareEvent, function(event, share) {

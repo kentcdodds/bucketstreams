@@ -15,5 +15,12 @@ angular.module('bs.models').factory('Bucket', function($resource, Cacher) {
   Bucket.prototype.getContributors = function() {
     return Cacher.userCache.getAll(this.contributors);
   };
+  Bucket.prototype.getPageParams = function() {
+    return {
+      username: this.getOwner().username,
+      type: 'bucket',
+      itemName: this.name
+    };
+  };
   return Bucket;
 });

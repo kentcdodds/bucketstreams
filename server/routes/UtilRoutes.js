@@ -107,12 +107,12 @@ module.exports = function(app) {
         responseBuilder.posts = postsAndShares.posts;
         responseBuilder.postIds = _.pluck(postsAndShares.posts, '_id');
         responseBuilder.userIds = uniqueIds(responseBuilder.userIds, _.pluck(postsAndShares.posts, 'author'));
-        responseBuilder.bucketIds = uniqueIds(responseBuilder.bucketIds, _.pluck(postsAndShares.posts, 'buckets'));
+        responseBuilder.bucketIds = uniqueIds(responseBuilder.bucketIds, _.flatten(_.pluck(postsAndShares.posts, 'buckets')));
         
         responseBuilder.shares = postsAndShares.shares;
         responseBuilder.shareIds = _.pluck(postsAndShares.shares, '_id');
         responseBuilder.userIds = uniqueIds(responseBuilder.userIds, _.pluck(postsAndShares.shares, 'author'));
-        responseBuilder.bucketIds = uniqueIds(responseBuilder.bucketIds, _.pluck(postsAndShares.shares, 'buckets'));
+        responseBuilder.bucketIds = uniqueIds(responseBuilder.bucketIds, _.flatten(_.pluck(postsAndShares.shares, 'buckets')));
         
         deferred.resolve(responseBuilder);
       });
@@ -122,7 +122,9 @@ module.exports = function(app) {
     // get comments
     function getComments(responseBuilder) {
       var deferred = Q.defer();
-      if (!responseBuilder.postIds.length) return responseBuilder;
+      if (_.isEmpty(responseBuilder.postIds)) {
+        return responseBuilder;
+      }
       Comment.find({owningPost: {$in: responseBuilder.postIds}}, function(err, comments) {
         if (err) return deferred.reject(err);
         responseBuilder.comments = comments;
@@ -154,7 +156,7 @@ module.exports = function(app) {
         });
       }
       async.concat(items, function(item, done) {
-        item.model.find({'_id': {$in: item.ids}}, '_id owner name', function(err, theThings) {
+        item.model.find({'_id': {$in: item.ids}}, '_id owner name isMain', function(err, theThings) {
           if (err) return done(err);
           responseBuilder[item.type] = _.unique(_.union(responseBuilder[item.type], theThings), false, '_id');
           responseBuilder.userIds = uniqueIds(responseBuilder.userIds, _.pluck(theThings, 'owner'));
