@@ -53,7 +53,7 @@
   <div class="panel-footer auth-only" ng-hide="postOnly">
     <div class="share-post" ng-hide="editing">
       <a ng-click="sharePost()" fa-icon="share"> {{post.shares.length || ''}}</a>
-      <a ng-click="favorite()" fa-icon="star"> {{post.favorites.length || ''}}</a>
+      <a ng-click="toggleFavorite()" fa-icon="star" ng-class="{'is-favorite': currentUserHasFavorited}"> {{post.favorites.length || ''}}</a>
     </div>
     <div class="edit-buttons" ng-show="editing">
       <button class="btn btn-default btn-xs pull-left" ng-click="editing=false">Cancel</button>

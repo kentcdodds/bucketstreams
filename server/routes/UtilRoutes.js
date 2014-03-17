@@ -136,23 +136,27 @@ module.exports = function(app) {
 
     // get subscription.bucket/stream info
     function getBucketsAndStreams(responseBuilder) {
-      if (!isStream) return responseBuilder;
-      
+      var bucketIds = responseBuilder.bucketIds;
+      var streamIds = [];
+      if (isStream) {
+        bucketIds = _.union(bucketIds, responseBuilder.thing.subscriptions.buckets);
+        streamIds = responseBuilder.thing.subscriptions.streams;
+      }
       var deferred = Q.defer();
       var items = [];
       responseBuilder.subscriptionsInfo = {};
-      if (responseBuilder.thing.hasBucketSubscriptions() || !_.isEmpty(responseBuilder.bucketIds)) {
+      if (!_.isEmpty(bucketIds)) {
         items.push({
           type: 'buckets',
           model: Bucket,
-          ids: _.union(responseBuilder.thing.subscriptions.buckets, responseBuilder.bucketIds)
+          ids: bucketIds
         });
       }
-      if (responseBuilder.thing.hasStreamSubscriptions()) {
+      if (!_.isEmpty(streamIds)) {
         items.push({
           type: 'streams',
           model: Stream,
-          ids: responseBuilder.thing.subscriptions.streams
+          ids: streamIds
         });
       }
       async.concat(items, function(item, done) {

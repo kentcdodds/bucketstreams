@@ -10,6 +10,16 @@ angular.module('bs.services').factory('UtilFunctions', function(_) {
   }
   //noinspection UnnecessaryLocalVariableJS
   var util = {
+    getResourcePromises: function(resources) {
+      var promises = [];
+      if (!_.isArray(resources)) {
+        resources = [resources];
+      }
+      _.each(resources, function(resource) {
+        resource && resource.$promise && !resource.$resolved && promises.push(resource.$promise);
+      });
+      return promises;
+    },
     testHasPosterity: function(object, paths, atLeastOne) {
       if (!object) {
         return false;

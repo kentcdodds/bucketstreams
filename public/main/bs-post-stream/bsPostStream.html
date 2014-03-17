@@ -1,11 +1,11 @@
-<div class="bs-post-stream-wrapper">
+<div class="bs-post-stream-wrapper center-block">
   <div ng-hide="posts.length">
     <h1 class="text-center">No posts here...</h1>
   </div>
-  <div ng-show="posts.length" class="column-wrapper columns-{{columns.length}}">
-    <div ng-repeat="column in columns" class="post-column column-{{column}}">
+  <div ng-show="posts.length" class="column-wrapper">
+    <div class="post-column">
       <div class="stream-posts">
-        <div ng-repeat="post in getPostsForColumn(column)" bs-post="post" share="post.share"></div>
+        <div ng-repeat="post in posts" bs-post="post" share="post.share"></div>
       </div>
     </div>
   </div>

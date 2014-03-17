@@ -1,4 +1,4 @@
-angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoService, _, $q, Cacher, User, Comment, Share, PostBroadcaster, ShareBroadcaster, AlertService, CommonModalService) {
+angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoService, _, $q, Cacher, User, Comment, Share, PostBroadcaster, ShareBroadcaster, AlertService, CommonModalService, UtilFunctions) {
   return {
     restrict: 'A',
     templateUrl: '/components/post/bsPost.html',
@@ -9,35 +9,38 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoServ
       postOnly: '@'
     },
     link: function(scope, el) {
-      scope.author = scope.post.getAuthor();
-      scope.comments = scope.post.getComments();
+      scope.isShare = !!scope.share;
       scope.currentUser = CurrentUserInfoService.getUser();
       scope.$on(CurrentUserInfoService.events.user, function(event, user) {
         scope.currentUser = user;
       });
-      var promises = [];
-      _.each([scope.post, scope.share, scope.author, scope.comments, scope.currentUser], function(resource) {
-        resource && resource.$promise && !resource.$resolved && promises.push(resource.$promise);
-      });
-      
-      $q.all(promises).then(initializeScope);
-      
-      function initializeScope() {
-        scope.isShare = !!scope.share;
-        scope.canEdit = scope.currentUser._id === scope.author._id;
-        scope.mainContent = scope.post.content.textString;
-        scope.canDelete = scope.canEdit;
-        scope.postBucketList = scope.post.getBuckets();
-        scope.scrollComments = true;
-        scope.authorDisplayName = scope.author.getDisplayName();
+      var initialPromises = UtilFunctions.getResourcePromises([scope.post, scope.share, scope.currentUser]);
+      $q.all(initialPromises).then(initializeStep1);
 
+      function initializeStep1() {
+        scope.mainContent = scope.post.content.textString;
+        scope.author = scope.post.getAuthor();
+        scope.comments = scope.post.getComments();
+        scope.postBucketList = scope.post.getBuckets();
+        scope.currentUserHasFavorited = scope.post.hasFavorited(scope.currentUser);
         if (scope.isShare) {
           scope.shareAuthor = scope.share.getAuthor();
-          scope.shareAuthorDisplayName = scope.shareAuthor.getDisplayName();
-          scope.canEdit = scope.currentUser._id === scope.shareAuthor._id;
           scope.shareBucketList = scope.share.getBuckets();
           scope.mainContent = scope.share.comments;
         }
+        var step1Promises = UtilFunctions.getResourcePromises([scope.author, scope.comments, scope.postBucketList, scope.shareAuthor, scope.shareBucketList]);
+        $q.all(step1Promises).then(initializeStep2);
+      }
+
+      function initializeStep2() {
+        scope.scrollComments = true;
+        scope.canEdit = scope.currentUser._id === scope.author._id;
+        scope.authorDisplayName = scope.author.getDisplayName();
+        if (scope.isShare) {
+          scope.canEdit = scope.currentUser._id === scope.shareAuthor._id;
+          scope.shareAuthorDisplayName = scope.shareAuthor.getDisplayName();
+        }
+        scope.canDelete = scope.canEdit;
       }
 
       scope.edit = function() {
@@ -85,8 +88,9 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoServ
         CommonModalService.sharePost(scope.post);
       };
 
-      scope.favorite = function() {
-        scope.post.addFavorite(scope.currentUser);
+      scope.toggleFavorite = function() {
+        scope.post.toggleFavorite(scope.currentUser);
+        scope.currentUserHasFavorited = !scope.currentUserHasFavorited;
       };
 
       scope.commentToAdd = '';

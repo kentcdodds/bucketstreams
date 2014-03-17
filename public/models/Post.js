@@ -6,13 +6,23 @@ angular.module('bs.models').factory('Post', function($resource, Cacher) {
   Post.prototype.getComments = function() {
     return Cacher.commentCache.where({owningPost: this._id});
   };
-  Post.prototype.addFavorite = function(_id) {
+  Post.prototype.toggleFavorite = function(_id) {
     if (_.isObject(_id)) {
       _id = _id._id;
     }
     this.favorites = this.favorites || [];
-    this.favorites.push(_id);
+    if (_.contains(this.favorites, _id)) {
+      this.favorites = _.remove(this.favorites, _id);
+    } else {
+      this.favorites.push(_id);
+    }
     return this.$save();
+  };
+  Post.prototype.hasFavorited = function(_id) {
+    if (_.isObject(_id)) {
+      _id = _id._id;
+    }
+    return _.contains(this.favorites, _id);
   };
   Post.prototype.getBuckets = function() {
     return Cacher.bucketCache.getAll(this.buckets);

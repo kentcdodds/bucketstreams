@@ -24,7 +24,9 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
 
           $scope.onSubmit = function() {
             var successMessage = 'Awesome, ' + ($scope.isNew ? 'created' : 'updated') + ' "' + $scope.thing.name + '" ' + type;
+            var capType = $scope.type.substring(0, 1).toUpperCase() + $scope.type.substring(1, $scope.type.length) + 's';
             $scope.thing.$save(function(newThing) {
+              CurrentUserInfoService['refresh' + capType]();
               AlertService.success(successMessage);
               $scope.$close(newThing);
             }, AlertService.handleResponse.error);

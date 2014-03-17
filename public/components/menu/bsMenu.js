@@ -32,7 +32,7 @@ angular.module('bs.directives').directive('bsMenu', function($document, $timeout
       
       scope.$watch('bsMenu', function(newVal) {
         scope.options = _.compact(newVal);
-      });
+      }, true);
 
       scope.onItemClicked = function($event, item) {
         scope.selectedItem = item;
