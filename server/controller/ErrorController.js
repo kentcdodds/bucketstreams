@@ -1,4 +1,3 @@
-var traceback = require('traceback');
 var logger = require('winston');
 var errorCodeMap = {
   400: 'Bad Request',
@@ -17,10 +16,6 @@ function getErrorJSON(code, message) {
 
 function sendErrorJson(res, code, message) {
   logger.warn(message);
-//  var stack = traceback();
-//  _.each(stack, function(item) {
-//    logger.info([item.file, item.name, item.line].join('.'));
-//  });
   res.json(code, getErrorJSON(code, message));
 }
 
