@@ -1,5 +1,14 @@
-for provider in facebook twitter google-plus
+.provider-button
+  color white
+  font-size 30px
+  &:hover, &:active, &:focus
+    background-color #FFF
+    border-color #CCC
+
+for provider in facebook twitter google
   .button-{provider}
     @extend .background-color-{provider}
-  .button-{provider}:hover
+  .button-{provider}:hover,
+  .button-{provider}:active,
+  .button-{provider}:focus
     @extend .color-{provider}

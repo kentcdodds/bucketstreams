@@ -27,9 +27,21 @@ module.exports = function(app) {
     urlPrefix : prefixes.rest + '/'
   });
 
+  var hiddenUserFields = (function() {
+    var fields = [ 'hash', 'salt' ];
+    var providerFields = [ 'token', 'secret' ];
+    _.each(['facebook', 'google', 'twitter'], function(provider) {
+      var p = 'connectedAccounts.' + provider + '.';
+      _.each(providerFields, function(field) {
+        fields.push(p + field);
+      });
+    });
+    return fields;
+  })();
+
   angularBridge.addResource('users', dataModels.user, {
-    hide: [ 'hash', 'salt' ],
-    readOnly: [ '_id', 'modified', 'lastLoginDate'],
+    hide: hiddenUserFields,
+    readOnly: [ '_id', 'modified', 'lastLoginDate' ],
     query: 'req.query'
   });
 

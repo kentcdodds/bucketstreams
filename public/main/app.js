@@ -26,6 +26,12 @@
         }
       }
     });
+
+    function resolveParameter(param) {
+      return function($stateParams) {
+        return $stateParams[param];
+      }
+    }
     
     var usernameUrl = '{username:(?:[a-zA-Z]|_|\\d){3,16}}';
 
@@ -87,6 +93,17 @@
         },
         onEnter: function() {
           console.log('root.settings');
+        }
+      }).
+      state('root.auth.thirdParties', {
+        url: 'rules',
+        controller: 'RulesCtrl',
+        templateUrl: '/main/auth/rules/rules.html',
+        context: {
+          name: 'Rules'
+        },
+        onEnter: function() {
+          console.log('root.auth.thirdParties');
         }
       }).
       state('root.userPage', {
@@ -177,9 +194,7 @@
             }, deferred.reject);
             return deferred.promise;
           },
-          code: function($stateParams) {
-            return $stateParams.secret;
-          }
+          code: resolveParameter('secret')
         }
       }).
       state('root.sendResetPasswordEmail', {
@@ -197,9 +212,7 @@
             }, deferred.reject);
             return deferred.promise;
           },
-          code: function($http, $stateParams) {
-            return $stateParams.secret;
-          }
+          code: resolveParameter('secret')
         }
       });
 

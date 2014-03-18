@@ -131,6 +131,8 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
     };
     setupMenuItemsFor('Streams');
     setupMenuItemsFor('Buckets');
+
+    bsMenuService.menuItems[5] = new bsMenuService.MenuItem('Rules', 'facebook', 'root.auth.thirdParties');
     bsMenuService.menuItems[10] = new bsMenuService.MenuItem('Settings', 'gear', 'root.auth.settings');
     bsMenuService.menuItems[11] = new bsMenuService.MenuItem('Send Feedback', 'bullhorn', function() {
       $window.open('https://bitbucket.org/kentcdodds/bucketstreams/issues/new');
