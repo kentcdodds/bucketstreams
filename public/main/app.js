@@ -1,7 +1,7 @@
 (function() {
   var thirdParties = ['ui.router', 'ui.bootstrap', 'angularFileUpload', 'uxGenie', 'Scope.safeApply'];
   var angularMods = ['ngAnimate'];
-  var internalMods = ['bs.directives', 'bs.models', 'bs.services', 'bs.filters'];
+  var internalMods = ['bs.constants', 'bs.directives', 'bs.models', 'bs.services', 'bs.filters'];
   var app = angular.module('bs.app', thirdParties.concat(angularMods.concat(internalMods)));
 
   app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, _) {
@@ -127,9 +127,6 @@
           data: function loadStreamOrBucketPageData($q, $state, $stateParams, UtilService) {
             var deferred = $q.defer();
             var type = $stateParams.type;
-            if (type.indexOf('s') > 3) {
-              debugger;
-            }
             UtilService.loadData(type, $stateParams.username, $stateParams.itemName).then(function(data) {
               if (data) {
                 data.type = type;

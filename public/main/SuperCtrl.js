@@ -17,7 +17,6 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
     $scope.currentUser = user;
     if (user) {
       $scope.isAuthenticated = true;
-    bsMenuService.menuItems[10] = new bsMenuService.MenuItem('Settings', 'gear', 'root.auth.settings');
       if (!menuSetup) {
         setupMenu();
         menuSetup = true;
