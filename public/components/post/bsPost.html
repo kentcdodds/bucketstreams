@@ -25,7 +25,7 @@
           <strong class="post-author-name">{{authorDisplayName}}</strong>
         </a>
         <small class="display-block">
-          <a ng-href="/post/{{post._id}}">{{post.modified | date:'short'}}</a>
+          <a ng-href="/post/{{post._id}}">{{post.created | date:'short'}}</a>
         </small>
         <small bs-bucket-list="postBucketList" max-chars="40"></small>
       </div>
