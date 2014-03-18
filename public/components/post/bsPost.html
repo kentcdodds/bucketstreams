@@ -9,13 +9,13 @@
           </a>
           <ul class="dropdown-menu pull-right">
             <li>
-              <a ng-show="canEdit" fa-icon="edit" ng-click="edit()"> Edit</a>
+              <a ng-if="isOwner" fa-icon="edit" ng-click="edit()"> Edit</a>
             </li>
             <li>
-              <a ng-show="canEdit || canDelete" fa-icon="trash-o color-red" ng-click="removePost()"> Delete</a>
+              <a ng-if="isOwner" fa-icon="trash-o color-red" ng-click="removePost()"> Delete</a>
             </li>
             <li>
-              <a ng-hide="canEdit || canDelete">There aren't any options here for you... Yet...</a>
+              <a ng-if="!isOwner">There aren't any options here for you... Yet...</a>
             </li>
           </ul>
         </div>

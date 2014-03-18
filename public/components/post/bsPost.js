@@ -34,13 +34,12 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoServ
 
       function initializeStep2() {
         scope.scrollComments = true;
-        scope.canEdit = scope.currentUser._id === scope.author._id;
+        scope.isOwner = scope.currentUser._id === scope.author._id;
         scope.authorDisplayName = scope.author.getDisplayName();
         if (scope.isShare) {
-          scope.canEdit = scope.currentUser._id === scope.shareAuthor._id;
+          scope.isOwner = scope.currentUser._id === scope.shareAuthor._id;
           scope.shareAuthorDisplayName = scope.shareAuthor.getDisplayName();
         }
-        scope.canDelete = scope.canEdit;
       }
 
       scope.edit = function() {
