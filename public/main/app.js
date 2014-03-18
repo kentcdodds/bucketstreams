@@ -122,7 +122,6 @@
       state('root.postStreamPage', {
         url: usernameUrl + '/{type:stream|bucket}/:itemName',
         controller: 'PostStreamPageCtrl',
-        abstract: true,
         templateUrl: '/main/post-stream-page/post-stream-page.html',
         resolve: {
           data: function loadStreamOrBucketPageData($q, $state, $stateParams, UtilService) {
@@ -153,16 +152,6 @@
           }
           CurrentContext.context(data.thing.name, icon, data);
         }
-      }).
-      state('root.postStreamPage.bucket', {
-        url: '',
-        controller: 'BucketCtrl',
-        templateUrl: '/main/buckets/bucket.html'
-      }).
-      state('root.postStreamPage.stream', {
-        url: '',
-        controller: 'StreamCtrl',
-        templateUrl: '/main/streams/stream.html'
       }).
       state('root.postPage', {
         controller: 'PostPageCtrl',

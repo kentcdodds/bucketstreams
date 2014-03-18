@@ -43,7 +43,7 @@
           <strong fa-icon="{{group.icon}}"> {{group.name}}</strong>
           <ul>
             <li ng-repeat="item in group.list">
-              <a ui-sref="root.postStreamPage.bucket({username: item.getOwner().username, type: group.type, itemName: item.name})">{{item.name}}</a>
+              <a ui-sref="root.postStreamPage({username: item.getOwner().username, type: group.type, itemName: item.name})">{{item.name}}</a>
               by
               <a ui-sref="root.userPage({username: item.getOwner().username})">{{item.getOwner().getDisplayName()}}</a>
             </li>

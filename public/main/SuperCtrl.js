@@ -85,7 +85,7 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
           CurrentUserInfoService['refresh' + type]();
           if (newThing) {
             $scope[scopeProp].unshift(newThing);
-            $state.go('root.postStreamPage.' + lType, {
+            $state.go('root.postStreamPage', {
               username: $scope.currentUser.username,
               itemName: newThing.name,
               type: lType
@@ -105,7 +105,7 @@ angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $wi
             type: lType
           };
           var thingMenuItem = new bsMenuService.MenuItem(thing.name, null, function() {
-            $state.go('root.postStreamPage.' + lType, params);
+            $state.go('root.postStreamPage', params);
           }, icon);
           parentMenuItem.children.push(thingMenuItem);
           createWish(thingMenuItem);
