@@ -1,7 +1,7 @@
 var logger = require('winston');
 
-console.log('\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-console.log('Hello World! Starting up BucketStreams!');
+logger.info('\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+logger.info('Hello World! Starting up BucketStreams!');
 
 if (process.argv.indexOf('prod') > -1) {
   logger.info('pretending to be production');
