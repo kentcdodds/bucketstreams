@@ -18,6 +18,29 @@ var passportLocalMongoose = require('passport-local-mongoose');
 
 var minute = 1000 * 60;
 
+var rule = {
+  type: String,
+  constraints: {
+    hashtags: {
+      any: [ String ],
+      all: [ String ],
+      none: [ String ]
+    },
+    buckets: {
+      any: [{type: ObjectId, ref: ref.bucket}],
+      all: [{type: ObjectId, ref: ref.bucket}],
+      none: [{type: ObjectId, ref: ref.bucket}]
+    }
+  }
+};
+var connectedAccount = {
+  accountId: String,
+  token: String,
+  lastImportEpoch: Number,
+  timeBetweenImports: {type: Number, default: 5 * minute},
+  rules: [rule]
+};
+
 /**
  * User:
  *   profilePicture: a url to the profile picture
@@ -43,30 +66,14 @@ var schema = new Schema({
   mainBucket: {type: ObjectId, ref: ref.bucket},
   rules: [Rule.schema],
   connectedAccounts: {
-    facebook: {
-      accountId: String,
-      token: String,
-      lastImportEpoch: Number,
-      timeBetweenImports: {type: Number, default: 5 * minute},
-      rules: [Rule.schema]
-    },
-    twitter: {
-      accountId: String,
-      token: String,
+    facebook: connectedAccount,
+    twitter: _.extend(connectedAccount, {
       secret: String,
-      lastImportedTweetId: Number,
-      lastImportEpoch: Number,
-      timeBetweenImports: {type: Number, default: 5 * minute},
-      rules: [Rule.schema]
-    },
-    google: {
-      accountId: String,
-      token: String,
-      secret: String,
-      lastImportEpoch: Number,
-      timeBetweenImports: {type: Number, default: 5 * minute},
-      rules: [Rule.schema]
-    }
+      lastImportedTweetId: Number
+    }),
+    google: _.extend(connectedAccount, {
+      secret: String
+    })
   },
   dontRemind: [{type: String, required: false}],
   passwordReset: {
@@ -110,6 +117,7 @@ var reservedUsernames = [
 var appRouteUsernames = [
   'settings',
   'rules',
+  'third-party',
   'getting-started',
   'auth',
   'api',

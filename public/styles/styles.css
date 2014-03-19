@@ -56,17 +56,17 @@ body{background-color:#fafcf9}
 /* line 34 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
 .background-color-bs-brown-4{background-color:#ffc173}
 /* line 32 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
-.color-facebook,.button-facebook:hover,.button-facebook:active,.button-facebook:focus{color:#3b5998}
+.color-facebook,.bucket-rules .provider-column .button-facebook:hover,.bucket-rules .provider-column .button-facebook:active,.bucket-rules .provider-column .button-facebook:focus{color:#3b5998}
 /* line 34 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
-.background-color-facebook,.button-facebook{background-color:#3b5998}
+.background-color-facebook,.bucket-rules .provider-column .button-facebook{background-color:#3b5998}
 /* line 32 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
-.color-twitter,.button-twitter:hover,.button-twitter:active,.button-twitter:focus{color:#4099ff}
+.color-twitter,.bucket-rules .provider-column .button-twitter:hover,.bucket-rules .provider-column .button-twitter:active,.bucket-rules .provider-column .button-twitter:focus{color:#4099ff}
 /* line 34 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
-.background-color-twitter,.button-twitter{background-color:#4099ff}
+.background-color-twitter,.bucket-rules .provider-column .button-twitter{background-color:#4099ff}
 /* line 32 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
-.color-google,.button-google:hover,.button-google:active,.button-google:focus{color:#d34836}
+.color-google,.bucket-rules .provider-column .button-google:hover,.bucket-rules .provider-column .button-google:active,.bucket-rules .provider-column .button-google:focus{color:#d34836}
 /* line 34 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
-.background-color-google,.button-google{background-color:#d34836}
+.background-color-google,.bucket-rules .provider-column .button-google{background-color:#d34836}
 /* line 32 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
 .color-red{color:#f00}
 /* line 34 : /Users/kentcdodds/Developer/bucketstreams/stylus/other/colors.styl */
@@ -865,25 +865,7 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 .post .comments-container .comment-container .comment{margin-top:14px;}
 /* line 84 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
 .post .comments-container .comment-container .comment:first-child{margin-top:0}
-/* line 86 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
-
-/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
-.provider-button{color:#fff;font-size:30px;}
-/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
-.provider-button:hover,.provider-button:active,.provider-button:focus{background-color:#fff;border-color:#ccc}
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
-
-/* line 13 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
-
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
-
-/* line 13 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
-
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
-
-/* line 13 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/provider-buttons.styl */
-
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/signup.styl */
+/* line 86 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/signup.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/signup.styl */
 
@@ -905,7 +887,33 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 
 /* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/home.styl */
 .home .people-to-follow ul.well{overflow-y:scroll;max-height:300px;list-style-type:none}
-/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bsPostStream.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+.bucket-rules .provider-column .provider-button{margin-bottom:40px;color:#fff;font-size:30px;}
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+.bucket-rules .provider-column .provider-button:hover,.bucket-rules .provider-column .provider-button:active,.bucket-rules .provider-column .provider-button:focus{background-color:#fff;border-color:#ccc}
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 16 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 16 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 16 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+.bucket-rules .buckets-container .bucket{font-size:2em;margin-bottom:12px}
+/* line 23 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bsPostStream.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bsPostStream.styl */
 .bs-post-stream-wrapper{max-width:600px;}

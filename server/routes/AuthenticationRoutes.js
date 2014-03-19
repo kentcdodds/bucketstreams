@@ -290,6 +290,6 @@ module.exports = function(app) {
     });
   });
 
-  app.get(prefix.auth + '/third-party/:provider', AuthenticationController.authenticate);
-  app.get(prefix.auth + '/third-party/:provider/callback', AuthenticationController.callback);
+  app.get('/third-party/:provider', AuthenticationController.authenticate);
+  app.get('/third-party/:provider/callback', AuthenticationController.callback);
 };

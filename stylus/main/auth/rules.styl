@@ -1,0 +1,22 @@
+.bucket-rules
+  .provider-column
+    .provider-button
+      margin-bottom 40px
+      color white
+      font-size 30px
+      &:hover, &:active, &:focus
+        background-color #FFF
+        border-color #CCC
+
+    for provider in facebook twitter google
+      .button-{provider}
+        @extend .background-color-{provider}
+      .button-{provider}:hover,
+      .button-{provider}:active,
+      .button-{provider}:focus
+        @extend .color-{provider}
+
+  .buckets-container
+    .bucket
+      font-size 2em
+      margin-bottom 12px

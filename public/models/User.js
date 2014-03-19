@@ -106,7 +106,7 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilFu
   };
 
   User.prototype.isConnectedTo = function(provider) {
-    return UtilFunctions.testHasPosterity(this.connectedAccounts, provider + '.token');
+    return UtilFunctions.testHasPosterity(this.connectedAccounts, provider + '.accountId');
   };
   
   User.prototype.isConfirmed = function() {
