@@ -1,6 +1,14 @@
 <div class="bucket-rules">
   <h1>Bucket Rules</h1>
-  <div class="center-block">
+  <div class="row text-align-center">
+    <div class="col-xs-6">
+      <h2>Inbound Rules</h2>
+    </div>
+    <div class="col-xs-6">
+      <h2>Outbound Rules</h2>
+    </div>
+  </div>
+  <div class="row margin-top-xlarge">
     <div class="col-xs-4 provider-column inbound">
       <div ng-repeat="provider in providers"class="provider-button-wrapper" ng-click="toggle(provider)" ng-class="{'not-connected': !provider.isConnected}">
         <i class="fa" ng-class="{'fa-circle-o': !provider.isConnected, 'fa-check-circle': provider.isConnected}" tooltip="{{provider.isConnected ? 'Disconnect Account' : 'Connect Account'}}"></i>
@@ -11,8 +19,7 @@
     <div class="col-xs-4 buckets-container">
       <div ng-repeat="bucket in userBuckets" class="bucket">
         <i class="fa fa-circle-o pull-left rule-connector" tooltip="Create Inbound Rule"></i>
-        <i class="fa fa-bitbucket"></i>
-        {{bucket.name}}
+        <span class="bucket-name" fa-icon="bitbucket"> {{bucket.name}}</span>
         <i class="fa fa-circle-o pull-right rule-connector" tooltip="Create Outbound Rule"></i>
       </div>
     </div>
