@@ -891,59 +891,39 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
 
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+.bucket-rules .provider-column{text-align:right;}
 /* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-.bucket-rules i.rule-connector{color:#555;cursor:pointer}
-/* line 7 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-
-/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-
-/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-.bucket-rules .provider-column.inbound i.rule-connector,.bucket-rules .provider-column.outbound i.rule-connector{margin-top:12px}
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-.bucket-rules .provider-column.inbound{padding-right:140px;}
-/* line 13 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-.bucket-rules .provider-column.inbound i.rule-connector{float:right}
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-.bucket-rules .provider-column.outbound{text-align:right;padding-left:140px;}
-/* line 18 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-.bucket-rules .provider-column.outbound i.rule-connector{float:left}
-/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
 .bucket-rules .provider-column .provider-button-wrapper{margin-bottom:40px;font-size:2.4em;color:#2e8924;}
-/* line 24 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-.bucket-rules .provider-column .provider-button-wrapper i{cursor:pointer}
-/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-.bucket-rules .provider-column .provider-button-wrapper .provider-button{font-size:30px;color:#fff}
-/* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+.bucket-rules .provider-column .provider-button-wrapper .provider-button{font-size:30px;color:#fff;cursor:auto}
+/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
 .bucket-rules .provider-column .provider-button-wrapper.not-connected{color:#aaa;}
-/* line 31 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-.bucket-rules .provider-column .provider-button-wrapper.not-connected .provider-button{opacity:.7;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";filter:alpha(opacity=70);}
-/* line 33 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+/* line 14 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+.bucket-rules .provider-column .provider-button-wrapper.not-connected .provider-button{opacity:.4;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";filter:alpha(opacity=40);cursor:pointer;}
+/* line 17 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
 .bucket-rules .provider-column .provider-button-wrapper.not-connected .provider-button:hover{opacity:1;-ms-filter:none;filter:none;background-color:#fff;border-color:#ccc}
+/* line 22 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 22 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 22 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+
+/* line 30 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+.bucket-rules .buckets-column .bs-logo{margin-top:40px;width:400px}
+/* line 34 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
+.bucket-rules .rules-column{margin-top:50px;text-align:center;font-size:3em;}
 /* line 38 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-
-/* line 38 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-
-/* line 38 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-
-/* line 41 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-
-/* line 41 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-
-/* line 41 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-
-/* line 43 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-
-/* line 44 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-.bucket-rules .buckets-container .bucket{font-size:2em;margin-bottom:12px;}
-/* line 47 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-.bucket-rules .buckets-container .bucket .bucket-name{padding:0 40px 0 40px}
-/* line 49 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-.bucket-rules .buckets-container .bucket i.rule-connector{margin-top:8px}
-/* line 51 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-.bucket-rules .buckets-container .bucket i.rule-connector:first-child{float:left}
-/* line 53 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/auth/rules.styl */
-.bucket-rules .buckets-container .bucket i.rule-connector:last-child{float:right}
-/* line 55 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bsPostStream.styl */
+.bucket-rules .rules-column .inbound,.bucket-rules .rules-column .outbound{margin-bottom:20px}
+/* line 40 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bsPostStream.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/bsPostStream.styl */
 .bs-post-stream-wrapper{max-width:600px;}

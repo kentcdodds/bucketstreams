@@ -149,6 +149,17 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
           buckets: CurrentUserInfoService.getBuckets
         }
       });
+    },
+    confirm: function(options) {
+      return $modal.open({
+        templateUrl: '/main/services/common-modal-templates/confirmation-template.html',
+        controller: function($scope) {
+          $scope.header = options.header || 'Are you sure?';
+          $scope.message = options.message;
+          $scope.yesButton = options.yesButton || 'Yes';
+          $scope.cancelButton = options.cancelButton || 'Cancel';
+        }
+      });
     }
   };
   return CommonModalService;
