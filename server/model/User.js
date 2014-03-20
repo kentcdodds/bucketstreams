@@ -117,6 +117,8 @@ var reservedUsernames = [
 var appRouteUsernames = [
   'settings',
   'rules',
+  'tos',
+  'privacy',
   'third-party',
   'getting-started',
   'auth',

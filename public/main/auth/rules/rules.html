@@ -1,19 +1,27 @@
 <div class="bucket-rules">
   <h1>Bucket Rules</h1>
   <div class="center-block">
-    <div class="col-xs-4 provider-column">
-      <div ng-repeat="provider in providers">
-        <button ng-hide="provider.isConnected" class="btn provider-button button-{{provider.name}}" fa-icon="{{provider.icon}}" ng-click="connect(provider.name)"> Connect {{provider.display}}</button>
-        <span ng-show="provider.isConnected" class="provider-display-{{provider.name}}" fa-icon="{{provider.icon}}"> {{provider.display}}</span>
+    <div class="col-xs-4 provider-column inbound">
+      <div ng-repeat="provider in providers"class="provider-button-wrapper" ng-click="toggle(provider)" ng-class="{'not-connected': !provider.isConnected}">
+        <i class="fa" ng-class="{'fa-circle-o': !provider.isConnected, 'fa-check-circle': provider.isConnected}" tooltip="{{provider.isConnected ? 'Disconnect Account' : 'Connect Account'}}"></i>
+        <button class="btn provider-button button-{{provider.name}}" fa-icon="{{provider.icon}}"> {{provider.display}}</button>
+        <i class="fa fa-circle-o rule-connector" tooltip="Create Inbound Rule" ng-show="provider.isConnected"></i>
       </div>
     </div>
     <div class="col-xs-4 buckets-container">
-      <div ng-repeat="bucket in userBuckets" fa-icon="bitbucket" class="bucket">
+      <div ng-repeat="bucket in userBuckets" class="bucket">
+        <i class="fa fa-circle-o pull-left rule-connector" tooltip="Create Inbound Rule"></i>
+        <i class="fa fa-bitbucket"></i>
         {{bucket.name}}
+        <i class="fa fa-circle-o pull-right rule-connector" tooltip="Create Outbound Rule"></i>
       </div>
     </div>
-    <div class="col-xs-4 destination-column text-align-center">
-      <span ng-show="isConnected" class="provider-display-{{provider.name}}" fa-icon="{{provider.icon}}"> {{provider.display}}</span>
+    <div class="col-xs-4 provider-column outbound">
+      <div ng-repeat="provider in providers"class="provider-button-wrapper" ng-click="toggle(provider)" ng-class="{'not-connected': !provider.isConnected}">
+        <i class="fa fa-circle-o rule-connector" tooltip="Create Outbound Rule" ng-show="provider.isConnected"></i>
+        <button class="btn provider-button button-{{provider.name}}" fa-icon="{{provider.icon}}"> {{provider.display}}</button>
+        <i class="fa" ng-class="{'fa-circle-o': !provider.isConnected, 'fa-check-circle': provider.isConnected}" tooltip="{{provider.isConnected ? 'Disconnect Account' : 'Connect Account'}}"></i>
+      </div>
     </div>
   </div>
 </div>

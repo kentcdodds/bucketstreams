@@ -1,22 +1,53 @@
 .bucket-rules
+  i.rule-connector
+    color #555
+    cursor pointer
   .provider-column
-    .provider-button
+    &.inbound, &.outbound
+      i.rule-connector
+        margin-top 12px
+    &.inbound
+      padding-right 80px
+      i.rule-connector
+        float right
+    &.outbound
+      text-align right
+      padding-left 80px
+      i.rule-connector
+        float left
+    .provider-button-wrapper
       margin-bottom 40px
-      color white
-      font-size 30px
-      &:hover, &:active, &:focus
-        background-color #FFF
-        border-color #CCC
+      font-size 32px
+      color #2e8924
+      i
+        cursor pointer
+      .provider-button
+        font-size 30px
+        color white
+      &.not-connected
+        color #AAA
+        .provider-button
+          opacity .7
+          &:hover
+            opacity 1
+            background-color #FFF
+            border-color #CCC
+        for provider in facebook twitter google
+          .button-{provider}:hover
+            @extend .color-{provider}
 
-    for provider in facebook twitter google
-      .button-{provider}
-        @extend .background-color-{provider}
-      .button-{provider}:hover,
-      .button-{provider}:active,
-      .button-{provider}:focus
-        @extend .color-{provider}
+      for provider in facebook twitter google
+        .button-{provider}
+          @extend .background-color-{provider}
 
   .buckets-container
     .bucket
-      font-size 2em
+      font-size 32px
       margin-bottom 12px
+      i.rule-connector
+        margin-top 8px
+      i.rule-connector:first-child
+        float left
+      i.rule-connector:last-child
+        float right
+
