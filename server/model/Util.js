@@ -7,10 +7,8 @@ module.exports = {
       modified: Date
     });
     schema.pre('save', function (next) {
-      if (this.isNew) {
-        this.created = new Date;
-      }
-      this.modified = new Date;
+      this.created = this.created || new Date();
+      this.modified = new Date();
       next();
     });
   },

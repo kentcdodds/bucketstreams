@@ -1,5 +1,8 @@
 <div class="bucket-rules">
   <h1>Bucket Rules</h1>
+  <span class="cursor-pointer" ng-click="runRulesManually()">
+    <i class="fa fa-refresh"></i> Run rules manually now
+  </span>
   <div class="provider-accordion-wrapper">
     <accordion>
       <accordion-group ng-repeat="provider in providers" class="provider-accordion-group" is-open="provider.isOpen">

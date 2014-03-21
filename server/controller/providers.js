@@ -7,7 +7,7 @@ var _ = require('lodash-node');
 
 module.exports = {
   facebook: {
-    getPostsAndShares: function(user, callback) {
+    getPosts: function(user, callback) {
       var accountId = user.connectedAccounts.facebook.accountId;
       var token = user.connectedAccounts.facebook.token;
       var lastImportEpoch = user.connectedAccounts.facebook.lastImportEpoch;
@@ -24,17 +24,15 @@ module.exports = {
         }
         return new Post({
           author: user.id,
-          content: [
-            {
-              textString: contentTextString
-            }
-          ],
+          content: {
+            textString: contentTextString
+          },
+          created: data['created_time'],
           sourceData: {
             source: 'facebook',
-            id: data.id,
-            createdAt: data['created_time']
+            sourceId: data.id
           }
-        })
+        });
       }
 
       function getFeedPosts(done) {
@@ -90,10 +88,10 @@ module.exports = {
         if (!err) {
           var posts = [].concat(results[0]).concat(results[1]).concat(results[2]);
           posts = _.uniq(posts, function(post) {
-            return post.sourceData.id.replace(/\d+_/, '');
+            return post.sourceData.sourceId.replace(/\d+_/, '');
           });
           posts = _.sortBy(posts, function(post) {
-            return post.sourceData.createdAt;
+            return post.created;
           });
         }
         callback(err, posts);
@@ -108,7 +106,7 @@ module.exports = {
     }
   },
   twitter: {
-    getPostsAndShares: function(user, callback) {
+    getPosts: function(user, callback) {
       var userTwitterInfo = user.connectedAccounts.twitter;
       var twit = new twitter({
         consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -130,15 +128,13 @@ module.exports = {
           }
           posts.push(new Post({
             author: user.id,
-            content: [
-              {
-                textString: data.text
-              }
-            ],
+            content: {
+              textString: data.text
+            },
+            created: data['created_at'],
             sourceData: {
               source: 'twitter',
-              id: data['id_str'],
-              createdAt: data['created_at']
+              sourceId: data['id_str']
             }
           }));
         });
@@ -162,7 +158,7 @@ module.exports = {
     }
   },
   google: {
-    getPostsAndShares: function(user, callback) {
+    getPosts: function(user, callback) {
       callback(null, []);
     },
     getFeed: function(user, callback) {

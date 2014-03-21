@@ -1,5 +1,4 @@
 var Util = require('./Util');
-var Rule = require('./Rule');
 var Post = require('./Post').model;
 var ref = require('./ref');
 var async = require('async');
@@ -228,6 +227,33 @@ schema.methods.getDisplayName = function() {
   }
 };
 
+schema.hasProvider = function(provider) {
+  return this.connectedAccounts && this.connectedAccounts[provider];
+};
+
+schema.methods.isConnected = function(provider) {
+  return this.hasProvider(provider) && this.connectedAccounts[provider].accountId;
+};
+
+schema.methods.hasRules = function(provider, type) {
+  if (!type) {
+    return this.hasRules(provider, 'inbound') || this.hasRules(provider, 'outbound');
+  } else {
+    return this.isConnected(provider) &&
+      this.connectedAccounts[provider].rules &&
+      this.connectedAccounts[provider].rules[type] &&
+      this.connectedAccounts[provider].rules[type].length > 0;
+  }
+};
+
+schema.methods.hasOutboundRules = function(provider) {
+  return this.hasRules(provider, 'outbound');
+};
+
+schema.methods.hasInboundRules = function(provider) {
+  return this.hasRules(provider, 'inbound');
+};
+
 /*
  * Third-party account methods
  */
@@ -243,13 +269,12 @@ schema.methods.isConnected = function(provider) {
   return !!this.connectedAccounts[provider];
 };
 
-function matchesHashtagRule(postContent, rule) {
-  var hashtags = postContent.match(/\S*#(?:\[[^\]]+\]|\S+)/gi) || [];
+function matchesHashtagRule(postHashtags, rule) {
   var ruleTags = rule.constraints.hashtags;
   var containsAny = !ruleTags.any || ruleTags.any.length === 0; // true if this is empty
 
-  for (var i = 0; i < hashtags.length; i++) {
-    var hashtag = hashtags[i].substring(1);
+  for (var i = 0; i < postHashtags.length; i++) {
+    var hashtag = postHashtags[i].substring(1);
     if (ruleTags.none.length && _.contains(ruleTags.none, hashtag)) {
       return false;
     }
@@ -266,11 +291,11 @@ function matchesHashtagRule(postContent, rule) {
 function getBucketsToPostTo(postContent, rules) {
   var bucketIds = [];
   _.each(rules, function(rule) {
-    if (rule.type !== 'inbound') {
-      return;
-    }
+    var ruleHasBuckets = rule.constraints.buckets.all && rule.constraints.buckets.all.length > 0;
+    var postHashtags = postContent.match(/\S*#(?:\[[^\]]+\]|\S+)/gi) || [];
+    var ruleHasHashtags = rule.constraints.hashtags && rule.constraints.hashtags.length > 0;
 
-    if (matchesHashtagRule(postContent, rule)) {
+    if (ruleHasBuckets && (!ruleHasHashtags || (ruleHasHashtags && postHashtags.length > 0 && matchesHashtagRule(postHashtags, rule)))) {
       bucketIds = bucketIds.concat(rule.constraints.buckets.all);
     }
   });
@@ -303,21 +328,21 @@ schema.methods.importPosts = function(callback) {
   var theProviders = [ 'facebook', 'twitter', 'google' ];
   async.every(theProviders, function(aProvider, done) {
     var providerInfo = self.connectedAccounts[aProvider];
-    if (!providerInfo || !providerInfo.token) {
+    if (!providerInfo || !providerInfo.token || !self.hasInboundRules(aProvider)) {
       return done(true);
     }
     var timeSinceLastImport = new Date().getTime() - providerInfo.lastImportEpoch;
-    var readyForImport = timeSinceLastImport > providerInfo.timeBetweenImports;
+    var readyForImport = timeSinceLastImport > providerInfo.timeBetweenImports || !providerInfo.lastImportEpoch;
 
     if (!readyForImport) {
       return done(true);
     }
-    providers[aProvider].getPostsAndShares(self, function(err, posts) {
+    providers[aProvider].getPosts(self, function(err, posts) {
       if (!err) {
         updateUser[aProvider](providerInfo, posts);
         _.each(posts, function(post) {
-          var postContent = post.content[post.content.length - 1].textString;
-          var bucketsToPostTo = getBucketsToPostTo(postContent, providerInfo.rules);
+          var postContent = post.content.textString;
+          var bucketsToPostTo = getBucketsToPostTo(postContent, providerInfo.rules.inbound);
 
           if (bucketsToPostTo.length) {
             post.buckets = (post.buckets || []).concat(bucketsToPostTo);

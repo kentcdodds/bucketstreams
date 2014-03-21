@@ -24,13 +24,11 @@ var schema = new Schema({
   },
   sourceData: {
     source: String,
-    id: String,
-    createdAt: Date,
+    sourceId: String,
     metadata: {}
   },
   buckets: [{type: ObjectId, ref: ref.bucket, required: true}],
-  previousVersion: {type: ObjectId, ref: ref.post, required: false},
-  shares: [{type: ObjectId, ref: ref.user, required: false}],
+  shares: {type: Number, default: 0},
   favorites: [{type: ObjectId, ref: ref.user, required: false}]
 });
 

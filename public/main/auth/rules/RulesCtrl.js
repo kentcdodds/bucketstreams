@@ -1,4 +1,4 @@
-angular.module('bs.app').controller('RulesCtrl', function($scope, $window, $location, AlertService, CommonModalService) {
+angular.module('bs.app').controller('RulesCtrl', function($scope, $window, $location, $http, AlertService, CommonModalService) {
   $scope.connectedAccounts = $scope.currentUser.connectedAccounts;
   $scope.outboundRules = $scope.currentUser.rules;
   $scope.providers = [
@@ -80,5 +80,13 @@ angular.module('bs.app').controller('RulesCtrl', function($scope, $window, $loca
           AlertService.info('Rule deleted');
         }, AlertService.handleResponse.error);
       });
+  };
+
+  $scope.runRulesManually = function() {
+    $http.get('/api/v1/util/run-manual-import').then(function(response) {
+      console.log(arguments);
+    }, function(err) {
+      console.log(arguments);
+    });
   }
 });

@@ -208,10 +208,10 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
 
           $scope.hashtags = {
             all: {
+              advanced: true,
               description: 'The post must have all of these hashtags'
             },
             any: {
-              advanced: true,
               description: 'The post must have at least one of these hashtags'
             },
             none: {

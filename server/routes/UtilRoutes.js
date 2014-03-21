@@ -18,6 +18,7 @@ var prefixes = require('./prefixes');
 var RouteHelper = require('./RouteHelper');
 
 var ErrorController = require('../controller/ErrorController');
+var AuthenticationController = require('../controller/AuthenticationController');
 
 module.exports = function(app) {
 
@@ -232,6 +233,12 @@ module.exports = function(app) {
           comments: comments
         });
       });
+    });
+  });
+
+  app.get(prefixes.util + '/run-manual-import', AuthenticationController.checkAuthenticated, function(req, res, next) {
+    req.user.importPosts(function(err, user, allPosts, totalPosts) {
+      res.json(arguments);
     });
   });
 
