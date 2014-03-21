@@ -1,4 +1,4 @@
-angular.module('bs.models').factory('User', function($resource, $http, _, UtilFunctions, $window) {
+angular.module('bs.models').factory('User', function($resource, $http, $q, _, UtilFunctions, $window) {
   var User = $resource('/api/v1/rest/users/:id', { id: '@_id' }, {
     dicsoverUsers: {
       method: 'GET',
@@ -113,6 +113,32 @@ angular.module('bs.models').factory('User', function($resource, $http, _, UtilFu
     this.connectedAccounts[provider].accountId = null;
     this.connectedAccounts[provider].secret = null;
     return this.$save();
+  };
+
+  function getRuleIndex(user, provider, type, rule) {
+    user.connectedAccounts[provider].rules = user.connectedAccounts[provider].rules || {};
+    user.connectedAccounts[provider].rules[type] = user.connectedAccounts[provider].rules[type] || [];
+    return _.findIndex(user.connectedAccounts[provider].rules[type], {_id: rule._id});
+  }
+
+  User.prototype.addOrUpdateRule = function(provider, type, rule) {
+    var index = getRuleIndex(this, provider, type, rule);
+    if (index > -1) {
+      this.connectedAccounts[provider].rules[type][index] = rule;
+    } else {
+      this.connectedAccounts[provider].rules[type].push(rule);
+    }
+    return this.$save();
+  };
+
+  User.prototype.deleteRule = function(provider, type, rule) {
+    var index = getRuleIndex(this, provider, type, rule);
+    if (index > -1) {
+      this.connectedAccounts[provider].rules[type].splice(index, 1);
+      return this.$save();
+    } else {
+      return $q.when(this);
+    }
   };
   
   User.prototype.isConfirmed = function() {

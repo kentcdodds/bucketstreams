@@ -7,7 +7,8 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
       buckets: '=?',
       streams: '=?',
       bucket: '=?',
-      stream: '=?'
+      stream: '=?',
+      noThingSelectedText: '@'
     },
     link: function(scope, el, attrs) {
       var opening = null;
@@ -23,7 +24,13 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
 
       scope.subscriptionType = scope.bucket ? 'bucket' : 'stream';
       scope.subscriptionSubject = scope.stream || scope.bucket;
-      scope.listType = attrs.hasOwnProperty('buckets') ? 'bucket' : 'stream';
+      if (attrs.hasOwnProperty('buckets')) {
+        scope.listType = 'bucket';
+        scope.icon = 'bitbucket';
+      } else {
+        scope.listType = 'stream';
+        scope.icon = 'smile-o';
+      }
       scope.listItems = scope.streams || scope.buckets;
 
       if (scope.streams && scope.subscriptionSubject) {
@@ -80,11 +87,13 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
         }
         updateThingsSelected();
       };
-      
-      if (scope.listType === 'stream') {
-        scope.noThingSelectedText = 'Subscribe this ' + scope.subscriptionType + ' to some streams...';
-      } else {
-        scope.noThingSelectedText = 'Choose buckets to put this post in...';
+
+      if (!scope.noThingSelectedText) {
+        if (scope.listType === 'stream') {
+          scope.noThingSelectedText = 'Subscribe this ' + scope.subscriptionType + ' to some streams...';
+        } else {
+          scope.noThingSelectedText = 'Choose buckets to put this post in...';
+        }
       }
 
       scope.toggleFirstThing = function($event, search) {
@@ -96,6 +105,7 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
               scope.toggleThing(things[0]);
               scope.search = '';
             }
+            $event.stopPropagation();
             break;
           case 27:
             cancelTimeouts();

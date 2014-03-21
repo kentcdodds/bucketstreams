@@ -1,0 +1,44 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()">&times;</button>
+    <h3>
+      New rule
+      <i class="fa fa-{{leftIconClass}} margin-left-small"></i>
+      <i class="fa fa-arrow-right margin-left-xsmall margin-right-xsmall"></i>
+      <i class="fa fa-{{rightIconClass}}"></i>
+    </h3>
+  </div>
+  <div class="modal-body">
+    <form name="form" id="rule-form" role="form" ng-submit="saveRule()">
+      <div class="form-group margin-bottom-large">
+        <label for="rule-name-field">Rule Name (optional)</label>
+        <input id="rule-name-field" name="ruleName" class="form-control" bs-autofocus="true" placeholder="Surfing" ng-model="rule.name">
+      </div>
+      <div class="margin-bottom-small">
+        <strong>Buckets</strong>
+        <div ng-repeat="(key, bucketGroup) in buckets" ng-hide="!showAdvanced && bucketGroup.advanced" class="margin-top-xsmall">
+          <strong ng-show="showAdvanced">{{bucketGroup.displayType}}</strong>
+          <span class="text-muted">{{bucketGroup.description}}</span>
+          <bs-bucket-stream-chooser buckets="bucketGroup.list" no-thing-selected-text="Choose buckets"></bs-bucket-stream-chooser>
+        </div>
+      </div>
+      <div>
+        <strong>Hashtags (optional)</strong>
+        <div ng-repeat="(key, hashtagGroup) in hashtags" ng-hide="!showAdvanced && hashtagGroup.advanced" class="margin-top-xsmall">
+          <label for="rule-{{key}}-hashtags" ng-show="showAdvanced">{{hashtagGroup.displayType}}</label>
+          <span class="text-muted">{{hashtagGroup.description}}</span>
+          <input id="rule-{{key}}-hashtags" name="{{key}}Hashtags" type="text" class="form-control" placeholder="hashtags" ng-model="hashtagGroup.text">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="checkbox pull-left">
+      <label>
+        <input type="checkbox" ng-model="showAdvanced"> Advanced
+      </label>
+    </div>
+    <button class="btn btn-default" ng-click="$dismiss()">Cancel</button>
+    <button class="btn btn-primary" type="submit" form="rule-form">Save</button>
+  </div>
+</div>

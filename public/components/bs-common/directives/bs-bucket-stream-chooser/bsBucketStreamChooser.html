@@ -1,8 +1,8 @@
 <div class="bs-bucket-stream-chooser dropdown">
-  <i class="fa fa-{{listType === 'bucket' ? 'bitbucket' : streams ? 'smile-o' : ''}} cursor-pointer bs-bucket-stream-chooser-icon" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()"></i>
+  <i class="fa fa-{{icon}} cursor-pointer bs-bucket-stream-chooser-icon" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()"></i>
   <div class="selected-things">
     <span ng-hide="thingsSelected" class="cursor-pointer text-muted" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()">{{noThingSelectedText}}</span>
-    <div class="display-inline" ng-repeat="thing in (buckets || streams)| filter:{isSelected: true}" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()">
+    <div class="display-inline" ng-repeat="thing in listItems | filter:{isSelected: true}" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()">
       <span class="label label-{{labelTypes[$index % labelTypes.length]}} cursor-pointer"
             ng-click="toggleThing(thing)">{{thing.name}} &times;</span>
     </div>
@@ -14,8 +14,8 @@
         </a>
       </li>
       <li ng-show="listItems.length > 1" class="dropdown-text-field search-item">
-        <input type="search" ng-model="search" class="form-control" role="search" ng-keydown="toggleFirstThing($event, search)" bs-autofocus="menuOpen" refocus="true" placeholder="Filter {{listType === 'bucket' ? 'buckets' : 'streams'}}">
-        <i class="fa fa-plus-circle" ng-click="createThing()" tooltip="Create new {{listType === 'bucket' ? 'bucket' : 'stream'}}" tooltip-placement="left"></i>
+        <input type="search" ng-model="search" class="form-control" role="search" ng-keydown="toggleFirstThing($event, search)" bs-autofocus="menuOpen" refocus="true" placeholder="Filter {{listType}}s">
+        <i class="fa fa-plus-circle" ng-click="createThing()" tooltip="Create new {{listType}}" tooltip-placement="left"></i>
       </li>
       <li ng-show="listItems.length > 1" role="presentation" class="divider"></li>
       <li ng-repeat="thing in applicableThings() | filter:search" ng-click="toggleThing(thing)">

@@ -1,39 +1,19 @@
 .bucket-rules
-  .provider-column
-    text-align right
-    .provider-button-wrapper
-      margin-bottom 40px
-      font-size 2.4em
-      color #2e8924
-      .provider-button
-        font-size 30px
-        color white
-        cursor auto
-      &.not-connected
-        color #AAA
-        .provider-button
-          opacity .4
-          cursor pointer
-          &:hover
-            opacity 1
-            background-color #FFF
-            border-color #CCC
-        for provider in facebook twitter google
-          .button-{provider}:hover
-            @extend .color-{provider}
+  for provider in facebook twitter google
+    .button-{provider}:hover
+      @extend .color-{provider}
+    .button-{provider}
+      color white
+      @extend .background-color-{provider}
+    .provider-heading-{provider}
+      @extend .color-{provider}
 
-      for provider in facebook twitter google
-        .button-{provider}
-          @extend .background-color-{provider}
-
-  .buckets-column
-    .bs-logo
-      margin-top 40px
-      width 400px
-
-  .rules-column
-    margin-top 50px
-    text-align center
-    font-size 3em
-    .inbound, .outbound
-      margin-bottom 20px
+  .provider-accordion-group
+    .provider-heading
+      font-size 1.6em
+    .provider-button
+      font-size 2.2em
+      cursor pointer
+      &:hover
+        background-color #FFF
+        border-color #CCC

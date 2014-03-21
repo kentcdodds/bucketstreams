@@ -1,4 +1,7 @@
 angular.module('bs.app').factory('CommonModalService', function($modal, CurrentUserInfoService, Bucket, Stream, AlertService, Cacher, ShareBroadcaster) {
+
+
+
   var CommonModalService = {
     createOrEditBucketStream: function(type, model) {
       return $modal.open({
@@ -160,7 +163,142 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
           $scope.cancelButton = options.cancelButton || 'Cancel';
         }
       });
+    },
+    createOrEditRule: function(rule, provider, type, buckets) {
+      return $modal.open({
+        templateUrl: '/main/services/common-modal-templates/new-rule-template.html',
+        controller: function ($scope, rule, provider, type, buckets) {
+          var oldRule = rule;
+          $scope.isInbound = /inbound/i.test(type);
+          $scope.provider = provider;
+          $scope.type = type;
+          if ($scope.isInbound) {
+            $scope.leftIconClass = provider.icon + ' color-' + provider.name;
+            $scope.rightIconClass = 'bitbucket color-bs-blue-0';
+            $scope.buckets = {
+              all: {
+                show: true,
+                description: 'Pick the buckets your post will be posted to'
+              }
+            };
+          } else {
+            $scope.rightIconClass = provider.icon + ' color-' + provider.name;
+            $scope.leftIconClass = 'bitbucket color-bs-blue-0';
+            $scope.buckets = {
+              all: {
+                description: 'The post must be in all of these buckets'
+              },
+              any: {
+                advanced: true,
+                description: 'The post must be in at least one of these buckets'
+              },
+              none: {
+                advanced: true,
+                description: 'The post must not be in any of these buckets'
+              }
+            };
+          }
+
+          _.each($scope.buckets, function (bucketGroup) {
+            bucketGroup.list = [];
+            _.each(buckets, function(bucket) {
+              bucketGroup.list.push(new Bucket(bucket));
+            });
+          });
+
+          $scope.hashtags = {
+            all: {
+              description: 'The post must have all of these hashtags'
+            },
+            any: {
+              advanced: true,
+              description: 'The post must have at least one of these hashtags'
+            },
+            none: {
+              advanced: true,
+              description: 'The post must not have any of these hashtags'
+            }
+          };
+
+          var setDisplayType = [$scope.hashtags];
+          if (!$scope.isInbound) {
+            setDisplayType.push($scope.buckets);
+          }
+          _.each(setDisplayType, function (groups) {
+            _.each(groups, function (group, name) {
+              group.displayType = name.substring(0, 1).toUpperCase() + name.substring(1, name.length);
+            });
+          });
+
+          $scope.showAdvanced = false;
+
+          if (!rule) {
+            $scope.rule = {
+              ruleType: type,
+              constraints: {
+                hashtags: { any: [], all: [], none: [] },
+                buckets: { any: [], all: [], none: [] }
+              },
+              isNew: true
+            };
+          } else {
+            $scope.rule = _.clone(rule);
+            _.each($scope.hashtags, function(hashtagGroup, type) {
+              hashtagGroup.text = $scope.rule.constraints.hashtags[type].join(' ');
+            });
+            _.each($scope.buckets, function(bucketGroup, type) {
+              _.each($scope.rule.constraints.buckets[type], function(bucketId) {
+                var bucket = _.find(bucketGroup.list, {_id: bucketId});
+                if (bucket) {
+                  bucket.selected(true);
+                }
+              });
+            });
+          }
+
+          $scope.saveRule = function () {
+            _.each($scope.hashtags, function (hashtagGroup, type) {
+              if (!hashtagGroup.text || (!$scope.showAdvanced && hashtagGroup.advanced)) return;
+
+              $scope.rule.constraints.hashtags[type] = _.map(hashtagGroup.text.split(' '), function (tag) {
+                tag = tag.trim();
+                if (tag.indexOf('#') === 0) {
+                  tag = tag.substring(1, tag.length);
+                }
+                return tag;
+              });
+            });
+            _.each($scope.buckets, function (bucketGroup, type) {
+              if (!$scope.showAdvanced && bucketGroup.advanced) return;
+              $scope.rule.constraints.buckets[type] = _.pluck(_.where(bucketGroup.list, 'isSelected'), '_id');
+            });
+            $scope.$close($scope.rule);
+          };
+        },
+        resolve: {
+          rule: function() {
+            return rule;
+          },
+          provider: function () {
+            return provider;
+          },
+          type: function () {
+            return type;
+          },
+          buckets: function () {
+            var subBuckets = [];
+            _.each(buckets, function (bucket) {
+              subBuckets.push({
+                name: bucket.name,
+                _id: bucket._id
+              });
+            });
+            return subBuckets;
+          }
+        }
+      });
     }
   };
+
   return CommonModalService;
 });

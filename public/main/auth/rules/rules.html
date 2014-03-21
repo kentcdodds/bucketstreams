@@ -1,21 +1,39 @@
 <div class="bucket-rules">
   <h1>Bucket Rules</h1>
-  <div class="row margin-top-xlarge">
-    <div class="col-xs-5 provider-column">
-      <div ng-repeat="provider in providers" class="provider-button-wrapper" ng-click="toggle(provider)" ng-class="{'not-connected': !provider.isConnected}">
-        <button class="btn provider-button button-{{provider.name}}" fa-icon="{{provider.icon}}" tooltip="{{provider.isConnected ? '' : 'Connect ' + provider.display}}"> {{provider.display}}</button>
-      </div>
-    </div>
-    <div class="col-xs-2 rules-column">
-      <div class="inbound">
-        <i class="fa fa-arrow-right"></i>
-      </div>
-      <div class="outbound">
-        <i class="fa fa-arrow-left"></i>
-      </div>
-    </div>
-    <div class="col-xs-5 buckets-column">
-      <img class="bs-logo" src="/images/logo-big.png">
-    </div>
+  <div class="provider-accordion-wrapper">
+    <accordion>
+      <accordion-group ng-repeat="provider in providers" class="provider-accordion-group" is-open="provider.isOpen">
+        <accordion-heading>
+          <div class="provider-heading provider-heading-{{provider.name}}">
+            <i class="fa fa-{{provider.icon}}"></i> {{provider.display}}
+          </div>
+        </accordion-heading>
+        <div ng-hide="provider.isConnected">
+          <button class="btn provider-button button-{{provider.name}}" fa-icon="{{provider.icon}}" tooltip="Connect to {{provider.display}}" ng-click="connect(provider)"> {{provider.display}}</button>
+        </div>
+        <div ng-show="provider.isConnected">
+          <div ng-repeat="group in provider.ruleGroups" class="rules rules-{{group.type}}">
+            <h3>
+              {{group.displayType}} Rules
+              <i class="fa fa-{{group.leftIconClass}} margin-left-small"></i>
+              <i class="fa fa-arrow-right margin-left-xxsmall margin-right-xxsmall"></i>
+              <i class="fa fa-{{group.rightIconClass}}"></i>
+              <i class="fa fa-plus-circle margin-left-small cursor-pointer" tooltip="Create New Rule" ng-click="createRule(provider, group.type)"></i>
+            </h3>
+            <accordion ng-show="group.rules.length">
+              <accordion-group ng-repeat="rule in group.rules" heading="{{rule.name}}">
+                <div bs-rule="rule" on-edit-click="editRule(rule, provider, group.type)" on-delete-click="deleteRule(rule, provider, group.type)"></div>
+              </accordion-group>
+            </accordion>
+            <div ng-hide="group.rules.length">
+              No rules here... <a ng-click="createRule(provider, group.type)" class="cursor-pointer">create a new one</a>
+            </div>
+            <hr />
+          </div>
+          <a ng-href="{{provider.url}}" class="margin-right-xxsmall">Account on {{provider.display}}</a> |
+          <a ng-click="disconnect(provider)" class="margin-left-xxsmall cursor-pointer">Disconnect {{provider.display}}</a>
+        </div>
+      </accordion-group>
+    </accordion>
   </div>
 </div>

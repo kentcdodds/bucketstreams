@@ -1,0 +1,30 @@
+<div class="bs-rule hover-parent-5">
+  <h4>
+    {{rule.name}}
+    <i class="fa fa-edit hover-only-5 cursor-pointer margin-left-xsmall margin-right-xxsmall" ng-click="onEditClick()"></i>
+    <i class="fa fa-trash-o color-red hover-only-5 cursor-pointer" ng-click="onDeleteClick()"></i>
+  </h4>
+  <div class="rule-hashtags">
+    <strong>Hashtags</strong>
+    <div ng-show="hashtags.length">
+      <div ng-repeat="group in hashtags">
+        <span>{{group.description}}</span>
+        <ul>
+          <li ng-repeat="tag in group.list">#{{tag}}</li>
+        </ul>
+      </div>
+    </div>
+    <div ng-hide="hashtags.length">
+      This rule has no hashtag constraints
+    </div>
+  </div>
+  <div class="rule-buckets">
+    <strong>Buckets</strong>
+    <div ng-repeat="group in buckets">
+      <span>{{group.description}}</span>
+      <ul>
+        <li ng-repeat="bucket in group.list">{{bucket.name}}</li>
+      </ul>
+    </div>
+  </div>
+</div>

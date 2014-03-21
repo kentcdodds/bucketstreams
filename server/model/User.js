@@ -19,7 +19,8 @@ var passportLocalMongoose = require('passport-local-mongoose');
 var minute = 1000 * 60;
 
 var rule = {
-  type: String,
+  name: {type: String, default: 'Unnamed Rule'},
+  ruleType: String,
   constraints: {
     hashtags: {
       any: [ String ],
@@ -38,7 +39,10 @@ var connectedAccount = {
   token: String,
   lastImportEpoch: Number,
   timeBetweenImports: {type: Number, default: 5 * minute},
-  rules: [rule]
+  rules: {
+    outbound: [rule],
+    inbound: [rule]
+  }
 };
 
 /**
@@ -64,7 +68,6 @@ var schema = new Schema({
   setupReminderDate: {type: Date, required: false},
   mainStream: {type: ObjectId, ref: ref.stream},
   mainBucket: {type: ObjectId, ref: ref.bucket},
-  rules: [Rule.schema],
   connectedAccounts: {
     facebook: connectedAccount,
     twitter: _.extend(connectedAccount, {
