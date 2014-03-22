@@ -1,12 +1,14 @@
 angular.module('bs.app').controller('RulesCtrl', function($scope, $window, $location, $http, AlertService, CommonModalService) {
   $scope.connectedAccounts = $scope.currentUser.connectedAccounts;
   $scope.outboundRules = $scope.currentUser.rules;
+  var openProvider = $location.search().provider || 'facebook';
   $scope.providers = [
-    { icon: 'facebook', name: 'facebook', display: 'Facebook', isOpen: true, url: 'http://www.facebook.com/' },
+    { icon: 'facebook', name: 'facebook', display: 'Facebook', url: 'http://www.facebook.com/' },
     { icon: 'twitter', name: 'twitter', display: 'Twitter', url: 'https://twitter.com/account/redirect_by_id/' },
-    { icon: 'google-plus', name: 'google', display: 'Google+', url: 'http://plus.google.com/' }
+//    { icon: 'google-plus', name: 'google', display: 'Google+', url: 'http://plus.google.com/' }
   ];
   _.each($scope.providers, function(provider) {
+    provider.isOpen = openProvider === provider.name;
     provider.isConnected = $scope.currentUser.isConnectedTo(provider.name);
     $scope.connectedAccounts[provider.name].rules = $scope.connectedAccounts[provider.name].rules || {};
     if (provider.isConnected) {
@@ -51,7 +53,7 @@ angular.module('bs.app').controller('RulesCtrl', function($scope, $window, $loca
 
 
   $scope.connect = function(provider) {
-    $window.location.href = '/third-party/' + provider.name + '?destination=' + encodeURIComponent($location.path());
+    $window.location.href = '/third-party/' + provider.name + '?destination=' + encodeURIComponent($location.path() + '?provider=' + provider.name);
   };
 
   function createOrEditRule(rule, provider, type) {

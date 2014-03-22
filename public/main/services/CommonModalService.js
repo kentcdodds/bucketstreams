@@ -168,11 +168,9 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
       return $modal.open({
         templateUrl: '/main/services/common-modal-templates/new-rule-template.html',
         controller: function ($scope, rule, provider, type, buckets) {
-          var oldRule = rule;
-          $scope.isInbound = /inbound/i.test(type);
-          $scope.provider = provider;
-          $scope.type = type;
-          if ($scope.isInbound) {
+          var isInbound = /inbound/i.test(type);
+          $scope.options = { advanced: false };
+          if (isInbound) {
             $scope.leftIconClass = provider.icon + ' color-' + provider.name;
             $scope.rightIconClass = 'bitbucket color-bs-blue-0';
             $scope.buckets = {
@@ -221,7 +219,7 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
           };
 
           var setDisplayType = [$scope.hashtags];
-          if (!$scope.isInbound) {
+          if (!isInbound) {
             setDisplayType.push($scope.buckets);
           }
           _.each(setDisplayType, function (groups) {
@@ -229,8 +227,6 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
               group.displayType = name.substring(0, 1).toUpperCase() + name.substring(1, name.length);
             });
           });
-
-          $scope.showAdvanced = false;
 
           if (!rule) {
             $scope.rule = {
@@ -245,6 +241,9 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
             $scope.rule = _.clone(rule);
             _.each($scope.hashtags, function(hashtagGroup, type) {
               hashtagGroup.text = $scope.rule.constraints.hashtags[type].join(' ');
+              if (hashtagGroup.advanced && hashtagGroup.text) {
+                $scope.options.advanced = true;
+              }
             });
             _.each($scope.buckets, function(bucketGroup, type) {
               _.each($scope.rule.constraints.buckets[type], function(bucketId) {
@@ -258,7 +257,10 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
 
           $scope.saveRule = function () {
             _.each($scope.hashtags, function (hashtagGroup, type) {
-              if (!hashtagGroup.text || (!$scope.showAdvanced && hashtagGroup.advanced)) return;
+              if (!hashtagGroup.text) {
+                $scope.rule.constraints.hashtags[type] = [];
+              }
+              if (!hashtagGroup.text || (!$scope.options.advanced && hashtagGroup.advanced)) return;
 
               $scope.rule.constraints.hashtags[type] = _.map(hashtagGroup.text.split(' '), function (tag) {
                 tag = tag.trim();
@@ -269,7 +271,7 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
               });
             });
             _.each($scope.buckets, function (bucketGroup, type) {
-              if (!$scope.showAdvanced && bucketGroup.advanced) return;
+              if (!$scope.options.advanced && bucketGroup.advanced) return;
               $scope.rule.constraints.buckets[type] = _.pluck(_.where(bucketGroup.list, 'isSelected'), '_id');
             });
             $scope.$close($scope.rule);

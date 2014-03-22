@@ -16,16 +16,16 @@
       </div>
       <div class="margin-bottom-small">
         <strong>Buckets</strong>
-        <div ng-repeat="(key, bucketGroup) in buckets" ng-hide="!showAdvanced && bucketGroup.advanced" class="margin-top-xsmall">
-          <strong ng-show="showAdvanced">{{bucketGroup.displayType}}</strong>
+        <div ng-repeat="(key, bucketGroup) in buckets" ng-hide="!options.advanced && bucketGroup.advanced" class="margin-top-xsmall">
+          <strong ng-show="options.advanced">{{bucketGroup.displayType}}</strong>
           <span class="text-muted">{{bucketGroup.description}}</span>
           <bs-bucket-stream-chooser buckets="bucketGroup.list" no-thing-selected-text="Choose buckets"></bs-bucket-stream-chooser>
         </div>
       </div>
       <div>
         <strong>Hashtags (optional)</strong>
-        <div ng-repeat="(key, hashtagGroup) in hashtags" ng-hide="!showAdvanced && hashtagGroup.advanced" class="margin-top-xsmall">
-          <label for="rule-{{key}}-hashtags" ng-show="showAdvanced">{{hashtagGroup.displayType}}</label>
+        <div ng-repeat="(key, hashtagGroup) in hashtags" ng-hide="!options.advanced && hashtagGroup.advanced" class="margin-top-xsmall">
+          <label for="rule-{{key}}-hashtags" ng-show="options.advanced">{{hashtagGroup.displayType}}</label>
           <span class="text-muted">{{hashtagGroup.description}}</span>
           <input id="rule-{{key}}-hashtags" name="{{key}}Hashtags" type="text" class="form-control" placeholder="hashtags" ng-model="hashtagGroup.text">
         </div>
@@ -35,7 +35,7 @@
   <div class="modal-footer">
     <div class="checkbox pull-left">
       <label>
-        <input type="checkbox" ng-model="showAdvanced"> Advanced
+        <input type="checkbox" ng-model="options.advanced"> Advanced
       </label>
     </div>
     <button class="btn btn-default" ng-click="$dismiss()">Cancel</button>
