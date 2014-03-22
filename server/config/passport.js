@@ -2,37 +2,9 @@ module.exports = function() {
 
   var passport = require('passport');
   var User = require('../model/User').model;
-  var prefix = require('../routes/prefixes');
 
-  function handleAuthenticatedUser(provider, req, token, secret, profile, done) {
-    if (!req.isAuthenticated()) {
-      if (req.params.temp) {
-        profile.temp = true;
-        req.login(profile, function(err) {
-          if (err) return done(err);
-
-          return done(null, profile);
-        });
-      }
-      var query = {};
-      query['connectedAccounts.' + provider + '.accountId'] = { $exists: true };
-      User.findOne(query, function(err, user) {
-        if (err) return done(err);
-        if (!user) return done(new Error('User does not exist. Cannot connect account.'));
-
-        req.login(user, function(err) {
-          if (err) return done(err);
-
-          return done(null, user);
-        });
-      });
-    } else {
-      req.user.connect(provider, token, secret, profile, function(err, user) {
-        if (err) return done(err);
-
-        return done(null, user);
-      });
-    }
+  function handleAuthenticatedUser(options, done) {
+    req.user.connect(options, done);
   }
 
   var configure = {
@@ -45,7 +17,12 @@ module.exports = function() {
           passReqToCallback: true
         },
         function(req, accessToken, refreshToken, profile, done) {
-          handleAuthenticatedUser('facebook', req, accessToken, refreshToken, profile, done);
+          req.user.connect({
+            provider: 'facebook',
+            token: accessToken,
+            refreshToken: refreshToken,
+            profile: profile
+          }, done);
         }));
     },
     twitter: function() {
@@ -56,8 +33,13 @@ module.exports = function() {
           callbackURL: process.env.BASE_URL + '/third-party/twitter/callback',
           passReqToCallback: true
         },
-        function(req, accessToken, refreshToken, profile, done) {
-          handleAuthenticatedUser('twitter', req, accessToken, refreshToken, profile, done);
+        function(req, accessToken, secret, profile, done) {
+          req.user.connect({
+            provider: 'twitter',
+            token: accessToken,
+            secret: secret,
+            profile: profile
+          }, done);
         }));
     },
     google: function() {
@@ -69,7 +51,12 @@ module.exports = function() {
           passReqToCallback: true
         },
         function(req, accessToken, refreshToken, profile, done) {
-          handleAuthenticatedUser('google', req, accessToken, refreshToken, profile, done);
+          req.user.connect({
+            provider: 'google',
+            token: accessToken,
+            refreshToken: refreshToken,
+            profile: profile
+          }, done);
         }));
     }
   };

@@ -7,7 +7,7 @@ module.exports = function(app) {
   require('./RestRoutes')(app);
   require('./SEORoutes')(app);
 
-  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'local') {
+  if (!process.env.NODE_ENV || /local|development/.test(process.env.NODE_ENV)) {
     require('../local/HelperRoutes')(app);
   }
 

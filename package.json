@@ -36,7 +36,8 @@
     "connect-mongo": "^0.4.0",
     "q": "^1.0.0",
     "mandrill-api": "^1.0.39",
-    "moment": "^2.5.1"
+    "moment": "^2.5.1",
+    "request": "~2.34.0"
   },
   "devDependencies": {
     "grunt": "^0.4.1",

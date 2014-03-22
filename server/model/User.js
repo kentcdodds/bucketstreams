@@ -289,13 +289,22 @@ schema.methods.disconnect = function(provider, callback) {
   callback && this.save(callback);
 };
 
-schema.methods.connect = function(provider, token, secret, profile, callback) {
-  this.connectedAccounts[provider] = this.connectedAccounts[provider] || {};
-  this.connectedAccounts[provider].accountId = profile.id;
-  this.hidden.secrets = this.hidden.secrets || {};
-  this.hidden.tokens = this.hidden.tokens || {};
-  this.hidden.secrets[provider] = secret;
-  this.hidden.tokens[provider] = token;
+schema.methods.connect = function(options, callback) {
+  this.connectedAccounts[options.provider] = this.connectedAccounts[options.provider] || {};
+  this.connectedAccounts[options.provider].accountId = options.profile.id;
+  if (options.secret) {
+    this.hidden.secrets = this.hidden.secrets || {};
+    this.hidden.secrets[options.provider] = options.secret;
+  }
+  if (options.token) {
+    this.hidden.tokens = this.hidden.tokens || {};
+    this.hidden.tokens[options.provider] = options.token;
+  }
+  if (options.refreshToken) {
+    this.hidden.tokens = this.hidden.tokens || {};
+    var capProvider = options.provider.substring(0, 1).toUpperCase() + options.provider.substring(1);
+    this.hidden.tokens['refresh' + capProvider] = options.refreshToken;
+  }
   if (callback) this.save(callback);
 };
 

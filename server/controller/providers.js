@@ -1,5 +1,6 @@
 var twitter = require('twitter');
 var facebook = require('fbgraph');
+var request = require('request');
 var Post = require('../model/Post').model;
 var async = require('async');
 var logger = require('winston');
@@ -158,7 +159,19 @@ module.exports = {
   },
   google: {
     getPosts: function(user, callback) {
-      callback(null, []);
+      var query = {
+        key: process.env.GOOGLE_CLIENT_SECRET
+      };
+
+      var id = user.connectedAccounts.google.accountId;
+      request({
+        url: 'https://www.googleapis.com/plus/v1/people/' + id + '/activities/public',
+        qs: query
+      }, function(err, res, body) {
+        console.log('request for posts came back!');
+        console.log(arguments);
+        callback(err, body);
+      });
     },
     getFeed: function(user, callback) {
       callback(null, []);
