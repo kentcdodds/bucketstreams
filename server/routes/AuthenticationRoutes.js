@@ -24,8 +24,10 @@ module.exports = function(app) {
     }
     var newUser = new User({
       email: req.body.email,
-      emailConfirmation: {
-        secret: uuid.v4()
+      hidden: {
+        secrets: {
+          emailConfirmation: uuid.v4()
+        }
       }
     });
     User.register(newUser, req.body.password, function(err, user) {
@@ -62,7 +64,7 @@ module.exports = function(app) {
       function sendConfirmationEmail(done) {
         EmailController.sendEmailConfirmationEmail(user, function(err, result) {
           if (err) return sendError(err);
-          user.emailConfirmation.emailSent = new Date();
+          user.extraInfo.emailConfirmationSent = new Date();
           user.save(done);
         });
       }
@@ -106,7 +108,7 @@ module.exports = function(app) {
           reason: 'User with email ' + user.email + ' is already confirmed.'
         });
       }
-      user.setupPasswordReset(function(err, user) {
+      user.setupEmailConfirmationResend(function(err, user) {
         if (err) return ErrorController.sendErrorJson(res, 500, err.message);
         EmailController.sendEmailConfirmationEmail(user, function(err, result) {
           if (err) return ErrorController.sendErrorJson(res, 500, err.message);
@@ -292,4 +294,17 @@ module.exports = function(app) {
 
   app.get('/third-party/:provider', AuthenticationController.authenticate);
   app.get('/third-party/:provider/callback', AuthenticationController.callback);
+
+  /**
+   * Disconnects a user from the given provider
+   */
+  app.get(prefix.auth + '/disconnect/:provider', AuthenticationController.checkAuthenticated, function(req, res, next) {
+    req.user.disconnect(req.params.provider, function(err, user) {
+      if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+      res.json({
+        disconnected: true,
+        provider: req.params.provider
+      });
+    });
+  });
 };

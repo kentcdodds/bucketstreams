@@ -236,6 +236,9 @@ module.exports = function(app) {
     });
   });
 
+  /**
+   * Runs the import process for the currently logged in user
+   */
   app.get(prefixes.util + '/run-manual-import', AuthenticationController.checkAuthenticated, function(req, res, next) {
     req.user.importPosts(function(err, user, allPosts, totalPosts) {
       res.json(arguments);

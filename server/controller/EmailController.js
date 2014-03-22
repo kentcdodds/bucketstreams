@@ -111,7 +111,7 @@ function sendEmailConfirmationEmail(user, callback) {
     'global_merge_vars': [
       {
         name: 'emailConfirmationLink',
-        content: process.env.BASE_URL + '/confirm-email/' + user.emailConfirmation.secret
+        content: process.env.BASE_URL + '/confirm-email/' + user.hidden.secrets.emailConfirmation
       },
       {
         name: 'email',
@@ -141,7 +141,7 @@ function sendPasswordResetEmail(user, callback) {
     'global_merge_vars': [
       {
         name: 'passwordResetLink',
-        content: process.env.BASE_URL + '/reset-password/' + user.passwordReset.secret
+        content: process.env.BASE_URL + '/reset-password/' + user.hidden.secrets.passwordReset
       },
       {
         name: 'userName',

@@ -35,7 +35,6 @@ var rule = {
 };
 var connectedAccount = {
   accountId: String,
-  token: String,
   lastImportEpoch: Number,
   timeBetweenImports: {type: Number, default: 5 * minute},
   rules: {
@@ -53,35 +52,43 @@ var schema = new Schema({
   username: {type: String, required: false},
   phone: String,
   email: {type: String, unique: true, required: true},
-  emailConfirmation: {
-    secret: String,
-    emailSent: Date,
-    confirmed: {type: Boolean, default: false}
-  },
   name: {
     first: String,
     last: String
   },
   profilePicture: String,
   lastLoginDate: {type: Date, default: Date.now},
-  setupReminderDate: {type: Date, required: false},
   mainStream: {type: ObjectId, ref: ref.stream},
   mainBucket: {type: ObjectId, ref: ref.bucket},
+  hidden: {
+    tokens: {
+      facebook: {type: String, required: false},
+      google: {type: String, required: false},
+      twitter: {type: String, required: false}
+    },
+    secrets: {
+      passwordReset: {type: String, required: false},
+      emailConfirmation: {type: String, required: false},
+      google: {type: String, required: false},
+      twitter: {type: String, required: false}
+    }
+  },
+  extraInfo: {
+    setupReminderDate: {type: Date, required: false},
+    dontRemind: [{type: String, required: false}],
+    passwordReset: {
+      emailSent: {type: Date, required: false},
+      used: {type: Boolean, required: false}
+    },
+    emailConfirmationSent: Date
+  },
+  emailConfirmed: {type: Boolean, default: false},
   connectedAccounts: {
     facebook: connectedAccount,
     twitter: _.extend(connectedAccount, {
-      secret: String,
       lastImportedTweetId: Number
     }),
-    google: _.extend(connectedAccount, {
-      secret: String
-    })
-  },
-  dontRemind: [{type: String, required: false}],
-  passwordReset: {
-    emailSent: {type: Date, required: false},
-    secret: {type: String, required: false},
-    used: {type: Boolean, required: false}
+    google: connectedAccount
   }
 });
 
@@ -152,19 +159,31 @@ schema.path('email').validate(function (value) {
  * Password reset methods
  */
 schema.methods.setupPasswordReset = function(callback) {
-  this.passwordReset = {
-    emailSent: new Date(),
-    secret: uuid.v4()
+  this.extraInfo.passwordReset = {
+    emailSent: new Date()
   };
+  this.hidden.secrets.passwordReset = uuid.v4();
+  callback && this.save(callback);
+};
+
+function findBySecret(model, field, secret, extraInfoField, callback) {
+  var query = {};
+  query[field] = secret;
+  model.findOne(query, '_id name username email extraInfo.' + extraInfoField, callback);
+}
+
+schema.methods.setupEmailConfirmationResend = function(callback) {
+  this.extraInfo.emailConfirmationSent = new Date();
+  this.hidden.secrets.emailConfirmation = uuid.v4();
   callback && this.save(callback);
 };
 
 schema.statics.findByPasswordResetSecret = function(secret, callback) {
-  this.findOne({'passwordReset.secret': secret}, '_id name username email passwordReset', callback);
+  findBySecret(this, 'hidden.secrets.passwordReset', secret, 'passwordReset', callback);
 };
 
 schema.statics.findByEmailConfirmationSecret = function(secret, callback) {
-  this.findOne({'emailConfirmation.secret': secret}, '_id name username email emailConfirmation', callback);
+  findBySecret(this, 'hidden.secrets.emailConfirmation', secret, 'emailConfirmation', callback);
 };
 
 /*
@@ -190,31 +209,31 @@ schema.statics.getEmailFromUsername = function(username, callback) {
 };
 
 schema.methods.confirm = function(callback) {
-  this.emailConfirmation.confirmed = true;
+  this.emailConfirmed = true;
   callback && this.save(callback);
 };
 
 schema.methods.emailConfirmationExpired = function() {
-  return moment(this.emailConfirmation.emailSent).diff(moment(), 'days') > 5;
+  return moment(this.extraInfo.emailConfirmationSent).diff(moment(), 'days') > 5;
 };
 
 schema.methods.isConfirmed = function() {
-  return this.emailConfirmation && this.emailConfirmation.confirmed;
+  return this.emailConfirmed;
 };
 
 schema.methods.sendResetPasswordEmail = function(password, callback) {
   this.setPassword(password, function(err, user) {
-    user.passwordReset.used = true;
+    user.extraInfo.passwordReset.used = true;
     callback && user.save(callback);
   });
 };
 
 schema.methods.passwordResetUsed = function() {
-  return this.passwordReset && this.passwordReset.used;
+  return this.extraInfo.passwordReset && this.extraInfo.passwordReset.used;
 };
 
 schema.methods.passwordResetExpired = function() {
-  return moment(this.passwordReset.emailSent).diff(moment(), 'hours') > 2;
+  return moment(this.extraInfo.passwordReset.emailSent).diff(moment(), 'hours') > 2;
 };
 
 schema.methods.getDisplayName = function() {
@@ -227,7 +246,7 @@ schema.methods.getDisplayName = function() {
   }
 };
 
-schema.hasProvider = function(provider) {
+schema.methods.hasProvider = function(provider) {
   return this.connectedAccounts && this.connectedAccounts[provider];
 };
 
@@ -257,16 +276,27 @@ schema.methods.hasInboundRules = function(provider) {
 /*
  * Third-party account methods
  */
-schema.methods.connect = function(provider, token, secret, profile, callback) {
-  this.connectedAccounts[provider] = this.connectedAccounts[provider] || {};
-  this.connectedAccounts[provider].token = token;
-  this.connectedAccounts[provider].secret = secret;
-  this.connectedAccounts[provider].accountId = profile.id;
-  if (callback) this.save(callback);
+schema.methods.disconnect = function(provider, callback) {
+  if (this.hidden.secrets) {
+    this.hidden.secrets[provider] = null;
+  }
+  if (this.hidden.tokens) {
+    this.hidden.tokens[provider] = null;
+  }
+  if (this.connectedAccounts[provider]) {
+    this.connectedAccounts[provider].accountId = null;
+  }
+  callback && this.save(callback);
 };
 
-schema.methods.isConnected = function(provider) {
-  return !!this.connectedAccounts[provider];
+schema.methods.connect = function(provider, token, secret, profile, callback) {
+  this.connectedAccounts[provider] = this.connectedAccounts[provider] || {};
+  this.connectedAccounts[provider].accountId = profile.id;
+  this.hidden.secrets = this.hidden.secrets || {};
+  this.hidden.tokens = this.hidden.tokens || {};
+  this.hidden.secrets[provider] = secret;
+  this.hidden.tokens[provider] = token;
+  if (callback) this.save(callback);
 };
 
 function matchesHashtagRule(postHashtags, rule) {
@@ -296,7 +326,7 @@ function getBucketsToPostTo(postContent, rules) {
     var ruleHasHashtags = rule.constraints.hashtags && rule.constraints.hashtags.length > 0;
 
     if (ruleHasBuckets && (!ruleHasHashtags || (ruleHasHashtags && postHashtags.length > 0 && matchesHashtagRule(postHashtags, rule)))) {
-      bucketIds = bucketIds.concat(rule.constraints.buckets.all);
+      bucketIds = _.union(bucketIds, rule.constraints.buckets.all);
     }
   });
   return bucketIds;
@@ -328,7 +358,8 @@ schema.methods.importPosts = function(callback) {
   var theProviders = [ 'facebook', 'twitter', 'google' ];
   async.every(theProviders, function(aProvider, done) {
     var providerInfo = self.connectedAccounts[aProvider];
-    if (!providerInfo || !providerInfo.token || !self.hasInboundRules(aProvider)) {
+    var token = self.hidden.tokens[aProvider];
+    if (!providerInfo || !token || !self.hasInboundRules(aProvider)) {
       return done(true);
     }
     var timeSinceLastImport = new Date().getTime() - providerInfo.lastImportEpoch;
@@ -443,7 +474,7 @@ schema.statics.getByUsername = function(username, callback) {
 
 if (process.env.hideBucketStreams) {
   schema.pre('save', function(next) {
-    if (!this._doc.profilePicture) {
+    if (!this.profilePicture) {
       var gender = (Math.random()<.5 ? 'men' : 'women');
       var max = 60;
       if (gender === 'men') {

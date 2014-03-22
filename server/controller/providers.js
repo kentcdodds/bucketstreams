@@ -9,7 +9,7 @@ module.exports = {
   facebook: {
     getPosts: function(user, callback) {
       var accountId = user.connectedAccounts.facebook.accountId;
-      var token = user.connectedAccounts.facebook.token;
+      var token = user.hidden.tokens.facebook;
       var lastImportEpoch = user.connectedAccounts.facebook.lastImportEpoch;
       var queryParams = '?access_token=' + token;
       if (lastImportEpoch) {
@@ -100,7 +100,7 @@ module.exports = {
     },
     getFeed: function(user, callback) {
       var accountId = user.connectedAccounts.facebook.accountId;
-      var token = user.connectedAccounts.facebook.token;
+      var token = user.hidden.tokens.facebook;
       var queryParams = '?access_token=' + token;
       facebook.get(accountId + '/home' + queryParams, callback);
     }
@@ -111,8 +111,8 @@ module.exports = {
       var twit = new twitter({
         consumer_key: process.env.TWITTER_CONSUMER_KEY,
         consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-        access_token_key: userTwitterInfo.token,
-        access_token_secret: userTwitterInfo.secret
+        access_token_key: user.hidden.tokens.twitter,
+        access_token_secret: user.hidden.secrets.twitter
       });
       var params = {};
       params['user_id'] = userTwitterInfo.accountId;
@@ -142,15 +142,14 @@ module.exports = {
       });
     },
     getFeed: function(user, callback) {
-      var userTwitterInfo = user.connectedAccounts.twitter;
       var twit = new twitter({
         consumer_key: process.env.TWITTER_CONSUMER_KEY,
         consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-        access_token_key: userTwitterInfo.token,
-        access_token_secret: userTwitterInfo.secret
+        access_token_key: user.hidden.tokens.twitter,
+        access_token_secret: user.hidden.secrets.twitter
       });
       var params = {};
-      params['user_id'] = userTwitterInfo.accountId;
+      params['user_id'] = user.connectedAccounts.twitter.accountId;
 
       twit.get('/statuses/home_timeline.json', params, function(data) {
         callback(null, data);

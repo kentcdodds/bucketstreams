@@ -55,16 +55,16 @@ angular.module('bs.models').factory('User', function($resource, $http, $q, _, Ut
   };
 
   User.prototype.isDontRemind = function(fieldDisplayName) {
-    return this.dontRemind && _.contains(this.dontRemind, fieldDisplayName);
+    return this.extraInfo.dontRemind && _.contains(this.extraInfo.dontRemind, fieldDisplayName);
   };
 
   User.prototype.addDontRemind = function(fieldDisplayName) {
-    this.dontRemind = this.dontRemind || [];
-    this.dontRemind.push(fieldDisplayName);
+    this.extraInfo.dontRemind = this.extraInfo.dontRemind || [];
+    this.extraInfo.dontRemind.push(fieldDisplayName);
   };
 
   User.prototype.removeDontRemind = function(fieldDisplayName) {
-    _.remove(this.dontRemind, function(item) {
+    _.remove(this.extraInfo.dontRemind, function(item) {
       return item === fieldDisplayName;
     });
   };
@@ -110,9 +110,7 @@ angular.module('bs.models').factory('User', function($resource, $http, $q, _, Ut
   };
 
   User.prototype.disconnectFrom = function(provider) {
-    this.connectedAccounts[provider].accountId = null;
-    this.connectedAccounts[provider].secret = null;
-    return this.$save();
+    return $http.get('/api/v1/auth/disconnect/' + provider);
   };
 
   function getRuleIndex(user, provider, type, rule) {
@@ -142,7 +140,7 @@ angular.module('bs.models').factory('User', function($resource, $http, $q, _, Ut
   };
   
   User.prototype.isConfirmed = function() {
-    return this.emailConfirmation && this.emailConfirmation.confirmed;
+    return this.emailConfirmed;
   };
 
   User.prototype.getFieldsToFill = function() {

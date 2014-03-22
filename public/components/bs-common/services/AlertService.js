@@ -7,16 +7,16 @@ angular.module('bs.services').factory('AlertService', function(toastr, _) {
   }
   var AlertService = {
     warning: function(string) {
-      toastr.warning(string);
+      toastr.warning(string || 'Warning! Not sure why...');
     },
     success: function(string) {
-      toastr.success(string);
+      toastr.success(string || 'Success!');
     },
     info: function(string) {
-      toastr.info(string);
+      toastr.info(string || 'Heads up!');
     },
     error: function(string) {
-      toastr.error(string);
+      toastr.error(string || 'Something went wrong...');
     },
     clear: function() {
       toastr.clear();

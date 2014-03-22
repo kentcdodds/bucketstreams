@@ -27,71 +27,36 @@ module.exports = function(app) {
     urlPrefix : prefixes.rest + '/'
   });
 
-  var hiddenUserFields = (function() {
-    var fields = [ 'hash', 'salt' ];
-    var providerFields = [ 'token', 'secret' ];
-    _.each(['facebook', 'google', 'twitter'], function(provider) {
-      var p = 'connectedAccounts.' + provider + '.';
-      _.each(providerFields, function(field) {
-        fields.push(p + field);
-      });
-    });
-    return fields;
-  })();
+  var commonReadOnly = [ '_id', 'modified', 'created' ];
 
   angularBridge.addResource('users', dataModels.user, {
-    hide: hiddenUserFields,
-    readOnly: [ '_id', 'modified', 'lastLoginDate' ],
+    hide: [ 'hash', 'salt', 'secrets', 'tokens', 'extraInfo' ],
+    readOnly: _.union(commonReadOnly, ['lastLoginDate']),
     query: 'req.query'
   });
 
   angularBridge.addResource('posts', dataModels.post, {
-    hide: [
-      ''
-    ],
-    readOnly: [
-      '_id'
-    ],
+    readOnly: commonReadOnly,
     query: 'req.query'
   });
 
   angularBridge.addResource('shares', dataModels.share, {
-    hide: [
-      ''
-    ],
-    readOnly: [
-      '_id'
-    ],
+    readOnly: commonReadOnly,
     query: 'req.query'
   });
 
   angularBridge.addResource('buckets', dataModels.bucket, {
-    hide: [
-      ''
-    ],
-    readOnly: [
-      '_id'
-    ],
+    readOnly: commonReadOnly,
     query: 'req.query'
   });
   
   angularBridge.addResource('streams', dataModels.stream, {
-    hide: [
-      ''
-    ],
-    readOnly: [
-      '_id'
-    ],
+    readOnly: commonReadOnly,
     query: 'req.query'
   });
 
   angularBridge.addResource('comments', dataModels.comment, {
-    hide: [
-      ''
-    ],
-    readOnly: [
-      '_id'
-    ],
+    readOnly: commonReadOnly,
     query: 'req.query'
   });
 

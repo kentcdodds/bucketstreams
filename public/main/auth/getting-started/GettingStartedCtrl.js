@@ -14,7 +14,7 @@ angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $time
 
   $scope.fieldsToFill = $scope.currentUser.getFieldsToFill();
   $scope.dismiss = function() {
-    $scope.currentUser.setupReminderDate = new Date();
+    $scope.currentUser.extraInfo.setupReminderDate = new Date();
     $scope.currentUser.$save();
     $scope.$close();
   };
