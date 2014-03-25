@@ -13,6 +13,7 @@ module.exports = function(app) {
     app.set('ip', process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
     app.use(express.cookieParser('Rock Run Slime George'));
     app.use(express.session({
+      key: 'bsSessionId',
       secret: 'Emily X-men Team Elephant Water',
       store: new MongoStore({
         url: process.env.MONGO_CONNECTION_STRING
@@ -27,11 +28,12 @@ module.exports = function(app) {
     app.set('ip', process.env.IP || '127.0.0.1');
     app.use(express.errorHandler());
     app.use(express.cookieParser('Toy Lion Story King'));
-    app.use(express.session({secret: 'medusa red podium'}));
+    app.use(express.session({secret: 'medusa red podium', key: 'bsSessionId'}));
     app.use(express.logger('dev'));
     app.locals.pretty = true;
   }
 
+  app.disable('x-powered-by');
   app.set('view engine', 'jade');
   app.engine('jade', require('jade').__express);
   app.set('views', path.resolve('./server/views'));
