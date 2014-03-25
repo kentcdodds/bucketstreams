@@ -13,9 +13,10 @@ var ObjectId = Schema.Types.ObjectId;
  */
 var schema = new Schema({
   author: {type: ObjectId, ref: ref.user, required: true},
-  content: {type: String, required: true},
   owningPost: {type: ObjectId, ref: ref.post, required: true}
 });
+
+Util.addContentField(schema);
 
 Util.addTimestamps(schema);
 

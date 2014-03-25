@@ -5,6 +5,7 @@ var Post = require('../model/Post').model;
 var async = require('async');
 var logger = require('winston');
 var _ = require('lodash-node');
+var moment = require('moment');
 
 module.exports = {
   facebook: {
@@ -12,18 +13,16 @@ module.exports = {
       var accountId = user.connectedAccounts.facebook.accountId;
       var token = user.hidden.tokens.facebook;
       var lastImportEpoch = user.connectedAccounts.facebook.lastImportEpoch;
-      var queryParams = '?access_token=' + token;
-      if (lastImportEpoch) {
-        queryParams += '&since=' + lastImportEpoch;
-      }
+      var params = {
+        'access_token': token,
+        since: moment(lastImportEpoch).unix(),
+        fields: 'id,from,message,status_type,type,created_time,picture,caption,description,link'
+      };
 
       var statusTypesToNotInclude = ['approved_friend'];
 
       function makePost(contentTextString, data) {
-        if (!contentTextString) {
-          return;
-        }
-        return new Post({
+        var post = new Post({
           author: user.id,
           content: {
             textString: contentTextString
@@ -34,70 +33,26 @@ module.exports = {
             sourceId: data.id
           }
         });
-      }
-
-      function getFeedPosts(done) {
-        facebook.get(accountId + '/feed' + queryParams, function(err, feeds) {
-          var posts = [];
-          _.each(feeds.data, function(feed) {
-            if (!_.contains(statusTypesToNotInclude, feed['status_type']) && feed.message) {
-              var post = makePost(feed.message, feed);
-              if (post) {
-                posts.push(post);
-              }
-            }
-          });
-          done(null, posts);
-        });
-      }
-
-      function getLinkPosts(done) {
-        var posts = [];
-        facebook.get(accountId + '/links' + queryParams, function(err, links) {
-          _.each(links.data, function(link) {
-            var message = link.message;
-            if (message) {
-              message = !link.link || message.indexOf(link.link) > 0 ? message : message + ' ' + link.link;
-            } else {
-              message = link.link;
-            }
-            var post = makePost(message, link);
-            if (post) {
-              posts.push(post);
-            }
-          });
-          done(null, posts);
-        });
-      }
-
-      function getPostPosts(done) {
-        var posts = [];
-        facebook.get(accountId + '/posts' + queryParams, function(err, facebookPosts) {
-          _.each(facebookPosts.data, function(facebookPost) {
-            if (!_.contains(statusTypesToNotInclude, facebookPost['status_type']) && facebookPost.message) {
-              var post = makePost(facebookPost.message, facebookPost);
-              if (post) {
-                posts.push(post);
-              }
-            }
-          });
-          done(null, posts);
-        });
-      }
-
-      async.parallel([getFeedPosts, getLinkPosts, getPostPosts], function(err, results) {
-        if (!err) {
-          var posts = [].concat(results[0]).concat(results[1]).concat(results[2]);
-          posts = _.uniq(posts, function(post) {
-            return post.sourceData.sourceId.replace(/\d+_/, '');
-          });
-          posts = _.sortBy(posts, function(post) {
-            return post.created;
-          });
+        if (data.type === 'photo') {
+          post.content.multimedia = {
+            images: [{ url: data.picture }]
+          };
         }
-        callback(err, posts);
-      });
+        post.parse();
+        return post;
+      }
 
+      var posts = [];
+      facebook.get(accountId + '/posts', params, function(err, facebookPosts) {
+        if (err) return callback(err);
+        _.each(facebookPosts.data, function(facebookPost) {
+          if (!_.contains(statusTypesToNotInclude, facebookPost['status_type']) && facebookPost.message) {
+            var post = makePost(facebookPost.message, facebookPost);
+            posts.push(post);
+          }
+        });
+        callback(null, posts);
+      });
     },
     getFeed: function(user, callback) {
       var accountId = user.connectedAccounts.facebook.accountId;
@@ -121,23 +76,30 @@ module.exports = {
         params['since_id'] = userTwitterInfo.lastImportedTweetId;
       }
 
+      function makePost(data) {
+        var post = new Post({
+          author: user.id,
+          content: {
+            textString: data.text
+          },
+          created: data['created_at'],
+          sourceData: {
+            source: 'twitter',
+            sourceId: data['id_str']
+          }
+        });
+        post.parse();
+        return post;
+      }
+
       twit.get('/statuses/user_timeline.json', params, function(data) {
         var posts = [];
         _.each(data, function(data) {
           if (!data.text) {
             return;
           }
-          posts.push(new Post({
-            author: user.id,
-            content: {
-              textString: data.text
-            },
-            created: data['created_at'],
-            sourceData: {
-              source: 'twitter',
-              sourceId: data['id_str']
-            }
-          }));
+          var post = makePost(data);
+          posts.push(post);
         });
         callback(null, posts);
       });
@@ -159,6 +121,8 @@ module.exports = {
   },
   google: {
     getPosts: function(user, callback) {
+      logger.warn('google not fully supported yet!');
+      return;
       var query = {
         key: process.env.GOOGLE_CLIENT_SECRET
       };

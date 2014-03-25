@@ -27,12 +27,12 @@ angular.module('bs.directives').directive('bsComment', function(CurrentUserInfoS
       };
       
       scope.edit = function() {
-        scope.newCommentContent = scope.comment.content;
+        scope.newCommentContent = scope.comment.content.textString;
         scope.editing = true;
       };
       
       scope.updateComment = function(newContent) {
-        scope.comment.content = newContent;
+        scope.comment.content.textString = newContent;
         scope.editing = false;
         scope.comment.$save();
       }

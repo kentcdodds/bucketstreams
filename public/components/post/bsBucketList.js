@@ -11,7 +11,7 @@ angular.module('bs.directives').directive('bsBucketList', function(UtilFunctions
       scope.bucketPageParams = [];
       var totalChars = 0;
       if (!_.isEmpty(scope.maxChars)) {
-        scope.$watch(scope.buckets, function() {
+        scope.$watch('buckets', function() {
           var mainlessBuckets = _.filter(scope.buckets, function(item) {
             return !item.isMain;
           });

@@ -122,7 +122,9 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
           $scope.share = new Share({
             sourcePost: post._id,
             author: $scope.currentUser._id,
-            comment: '',
+            content: {
+              textString: ''
+            },
             buckets: []
           });
           $scope.onShare = function() {
@@ -149,7 +151,17 @@ angular.module('bs.app').factory('CommonModalService', function($modal, CurrentU
           post: function() {
             return post;
           },
-          buckets: CurrentUserInfoService.getBuckets
+          buckets: function () {
+            var subBuckets = [];
+            _.each(CurrentUserInfoService.getBuckets(), function (bucket) {
+              subBuckets.push(new Bucket({
+                name: bucket.name,
+                _id: bucket._id,
+                isMain: bucket.isMain
+              }));
+            });
+            return subBuckets;
+          }
         }
       });
     },

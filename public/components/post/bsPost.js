@@ -26,7 +26,7 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoServ
         if (scope.isShare) {
           scope.shareAuthor = scope.share.getAuthor();
           scope.shareBucketList = scope.share.getBuckets();
-          scope.mainContent = scope.share.comments;
+          scope.mainContent = scope.share.content.textString;
         }
         var step1Promises = UtilFunctions.getResourcePromises([scope.author, scope.comments, scope.postBucketList, scope.shareAuthor, scope.shareBucketList]);
         $q.all(step1Promises).then(initializeStep2);
@@ -34,10 +34,10 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoServ
 
       function initializeStep2() {
         scope.scrollComments = true;
-        scope.isOwner = scope.currentUser._id === scope.author._id;
+        scope.isOwner = scope.currentUser && scope.currentUser._id === scope.author._id;
         scope.authorDisplayName = scope.author.getDisplayName();
         if (scope.isShare) {
-          scope.isOwner = scope.currentUser._id === scope.shareAuthor._id;
+          scope.isOwner = scope.currentUser && scope.currentUser._id === scope.shareAuthor._id;
           scope.shareAuthorDisplayName = scope.shareAuthor.getDisplayName();
         }
       }
@@ -49,7 +49,7 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoServ
 
       scope.updatePostContent = function(newContent) {
         if (scope.isShare) {
-          scope.share.comments = newContent;
+          scope.share.content.textString = newContent;
           scope.share.$save();
         } else {
           scope.post.content.textString = newContent;
@@ -94,10 +94,12 @@ angular.module('bs.directives').directive('bsPost', function(CurrentUserInfoServ
 
       scope.commentToAdd = '';
       scope.addComment = function(event) {
-        if (event.keyCode != 13) return;
+        if (event.keyCode != 13 || !scope.currentUser) return;
         var comment = new Comment({
           author: scope.currentUser._id,
-          content: scope.commentToAdd,
+          content: {
+            textString: scope.commentToAdd
+          },
           modified: new Date(),
           owningPost: scope.post._id
         });

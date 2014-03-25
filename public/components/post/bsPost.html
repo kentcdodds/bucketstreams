@@ -27,6 +27,9 @@
         <small class="display-block">
           <a ng-href="/post/{{post._id}}">{{post.created | date:'short'}}</a>
         </small>
+        <span class="margin-right-xxsmall" ng-show="post.sourceData.source">
+          <i class="fa fa-{{post.sourceData.source}} color-{{post.sourceData.source}}" tooltip="Posted on {{post.sourceData.source}}"></i>
+        </span>
         <small bs-bucket-list="postBucketList" max-chars="40"></small>
       </div>
     </div>
@@ -60,7 +63,7 @@
       <button class="btn btn-primary btn-xs pull-right" ng-click="updatePostContent(newContent)">Save</button>
     </div>
   </div>
-  <div class="comments-container" ng-show="currentUser || comments.length">
+  <div class="comments-container" ng-show="(currentUser || comments.length) && !postOnly">
     <div class="add-comment auth-only">
       <div class="add-comment-field">
         <bs-profile-picture user="currentUser" class="add-comment-photo" size="32"></bs-profile-picture>

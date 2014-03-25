@@ -312,29 +312,48 @@ function matchesHashtagRule(postHashtags, rule) {
   var ruleTags = rule.constraints.hashtags;
   var containsAny = !ruleTags.any || ruleTags.any.length === 0; // true if this is empty
 
-  for (var i = 0; i < postHashtags.length; i++) {
-    var hashtag = postHashtags[i].substring(1);
-    if (ruleTags.none.length && _.contains(ruleTags.none, hashtag)) {
-      return false;
-    }
-    if (ruleTags.any.length && _.contains(ruleTags.any, hashtag)) {
-      containsAny = true;
-    }
-    if (ruleTags.all.length && !_.contains(ruleTags.all, hashtag)) {
-      return false;
+  if (!containsAny || (ruleTags.none && ruleTags.none.length > 0)) {
+    for (var i = 0; i < postHashtags.length; i++) {
+      if (ruleTags.none.length && _.contains(ruleTags.none, postHashtags[i])) {
+        return false;
+      }
+      if (ruleTags.any.length && _.contains(ruleTags.any, postHashtags[i])) {
+        containsAny = true;
+      }
     }
   }
-  return containsAny;
+
+  if (!containsAny) {
+    return false;
+  }
+
+  var containsAll = !ruleTags.any || ruleTags.all.length === 0; //true if this is empty
+  _.each(ruleTags.all, function(tag) {
+    containsAll = _.contains(postHashtags, tag);
+    return containsAll;
+  });
+  return containsAll;
 }
 
-function getBucketsToPostTo(postContent, rules) {
+function getBucketsToPostTo(postHashtags, rules) {
   var bucketIds = [];
   _.each(rules, function(rule) {
     var ruleHasBuckets = rule.constraints.buckets.all && rule.constraints.buckets.all.length > 0;
-    var postHashtags = postContent.match(/\S*#(?:\[[^\]]+\]|\S+)/gi) || [];
-    var ruleHasHashtags = rule.constraints.hashtags && rule.constraints.hashtags.length > 0;
+    if (!ruleHasBuckets) {
+      return;
+    }
 
-    if (ruleHasBuckets && (!ruleHasHashtags || (ruleHasHashtags && postHashtags.length > 0 && matchesHashtagRule(postHashtags, rule)))) {
+    var postHasHashtags = postHashtags.length > 0;
+    var ruleHasHashtags = false;
+    var ht = rule.constraints.hashtags;
+    if (ht) {
+      var all = ht.all && ht.all.length > 0;
+      var any = ht.any && ht.any.length > 0;
+      var none = ht.none && ht.none.length > 0;
+      ruleHasHashtags = all || any || none;
+    }
+
+    if (!ruleHasHashtags || (ruleHasHashtags && postHasHashtags && matchesHashtagRule(postHashtags, rule))) {
       bucketIds = _.union(bucketIds, rule.constraints.buckets.all);
     }
   });
@@ -346,9 +365,9 @@ var updateUser = {
     accountInfo.lastImportEpoch = new Date().getTime();
   },
   twitter: function(accountInfo, posts) {
-    var largestId = accountInfo.lastImportedTweetId;
+    var largestId = accountInfo.lastImportedTweetId || 0;
     _.each(posts, function(post) {
-      var numId = parseInt(post.sourceData.id, 10);
+      var numId = parseInt(post.sourceData.sourceId, 10);
       if (largestId < numId) {
         largestId = numId;
       }
@@ -381,8 +400,8 @@ schema.methods.importPosts = function(callback) {
       if (!err) {
         updateUser[aProvider](providerInfo, posts);
         _.each(posts, function(post) {
-          var postContent = post.content.textString;
-          var bucketsToPostTo = getBucketsToPostTo(postContent, providerInfo.rules.inbound);
+          var postHashtag = post.content.linkables.hashtags;
+          var bucketsToPostTo = getBucketsToPostTo(postHashtag, providerInfo.rules.inbound);
 
           if (bucketsToPostTo.length) {
             post.buckets = (post.buckets || []).concat(bucketsToPostTo);

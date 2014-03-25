@@ -10,7 +10,7 @@
       <i ng-show="canEdit()" class="fa fa-edit cursor-pointer edit-comment hover-only-7" ng-click="edit()"></i>
       <i ng-show="canEdit()" class="fa fa-trash-o color-red cursor-pointer delete-comment hover-only-7" ng-click="deleteComment()"></i>
     </div>
-    <div class="comment-content" ng-hide="editing">{{comment.content}}</div>
+    <div class="comment-content" ng-hide="editing">{{comment.content.textString}}</div>
     <div ng-show="editing">
       <input type="text" ng-model="newCommentContent" class="form-control input-sm margin-bottom-xxsmall">
       <button class="btn btn-primary btn-xs pull-right" ng-click="updateComment(newCommentContent)">Save</button>
