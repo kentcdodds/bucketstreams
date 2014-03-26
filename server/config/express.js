@@ -31,6 +31,16 @@ module.exports = function(app) {
     app.use(express.session({secret: 'medusa red podium', key: 'bsSessionId'}));
     app.use(express.logger('dev'));
     app.locals.pretty = true;
+
+    //CORS middleware for development
+    app.use(function(req, res, next) {
+      res.header('Access-Control-Allow-Origin', 'http://localhost:8080');
+      res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+      res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+      next();
+    });
+
   }
 
   app.disable('x-powered-by');

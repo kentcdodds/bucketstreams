@@ -30,7 +30,7 @@ module.exports = function(app) {
   var commonReadOnly = [ '_id', 'modified', 'created' ];
 
   angularBridge.addResource('users', dataModels.user, {
-    hide: [ 'hash', 'salt', 'secrets', 'tokens', 'extraInfo' ],
+    hide: [ 'hash', 'salt', 'hidden', 'extraInfo' ],
     readOnly: _.union(commonReadOnly, ['lastLoginDate']),
     query: 'req.query'
   });
