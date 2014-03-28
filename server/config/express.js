@@ -1,8 +1,18 @@
 var passport = require('passport');
-var express = require('express');
 var path = require('path');
-var MongoStore = require('connect-mongo')(express);
 var logger = require('winston');
+
+var express = require('express');
+var connectMongo = require('connect-mongo');
+var cookieParser = require('cookie-parser');
+var errorhandler = require('errorhandler');
+var bodyParser = require('body-parser');
+var expressSession = require('express-session');
+var methodOverride = require('method-override');
+var serveStatic = require('serve-static');
+var staticFavicon = require('static-favicon');
+var compression = require('compression');
+var morgan = require('morgan');
 
 module.exports = function(app) {
 
@@ -11,8 +21,9 @@ module.exports = function(app) {
     logger.info('Setting express up with production-level stuff');
     app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 9000);
     app.set('ip', process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
-    app.use(express.cookieParser('Rock Run Slime George'));
-    app.use(express.session({
+    app.use(cookieParser('Rock Run Slime George'));
+    var MongoStore = connectMongo(express);
+    app.use(expressSession({
       key: 'bsSessionId',
       secret: 'Emily X-men Team Elephant Water',
       store: new MongoStore({
@@ -21,15 +32,18 @@ module.exports = function(app) {
         logger.log('MongoStore setup');
       })
     }));
-    app.use(express.compress());
+    app.use(compression());
   } else {
     logger.info('Setting express up with development-level stuff');
     app.set('port', process.env.PORT || 9000);
     app.set('ip', process.env.IP || '127.0.0.1');
-    app.use(express.errorHandler());
-    app.use(express.cookieParser('Toy Lion Story King'));
-    app.use(express.session({secret: 'medusa red podium', key: 'bsSessionId'}));
-    app.use(express.logger('dev'));
+    app.use(errorhandler());
+    app.use(cookieParser('Toy Lion Story King'));
+    app.use(expressSession({
+      secret: 'medusa red podium',
+      key: 'bsSessionId'
+    }));
+    app.use(morgan('dev'));
     app.locals.pretty = true;
 
     //CORS middleware for development
@@ -48,16 +62,14 @@ module.exports = function(app) {
   app.engine('jade', require('jade').__express);
   app.set('views', path.resolve('./server/views'));
 
-  app.use(express.favicon(path.resolve('./public/images/favicon.png')));
-  app.use(express.urlencoded());
-  app.use(express.json());
-  app.use(express.methodOverride());
+  app.use(staticFavicon(path.resolve('./public/images/favicon.png')));
+  app.use(bodyParser());
+  app.use(methodOverride());
 
-  app.use(express.static(path.resolve('./public')));
+  app.use(serveStatic(path.resolve('./public')));
 
   app.use(passport.initialize());
   app.use(passport.session());
-  app.use(app.router);
 
   if (process.env.hideBucketStreams === 'true') {
     app.all('*', function (req, res, next) {
