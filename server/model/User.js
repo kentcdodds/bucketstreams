@@ -200,10 +200,11 @@ schema.statics.getUserByUsernameOrEmail = function(username, callback) {
 };
 
 schema.statics.getEmailFromUsername = function(username, callback) {
+  username = username || '';
   if (username.indexOf('@') > -1) {
     return callback(null, username);
   }
-  this.model(ref.user).findOne({username: username}, 'email', function(err, user) {
+  this.model(ref.user).findOne({username: username.toLowerCase()}, 'email', function(err, user) {
     callback(err, (user ? user.email : null));
   });
 };

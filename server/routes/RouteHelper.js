@@ -47,8 +47,13 @@ module.exports = {
   addConversionRoute: function(app, prefix, simpleName, getReplacement) {
     var regexRoute = new RegExp('^(' + prefix.replace(/\//g, '\\/') + '\\/)(' + simpleName + ')(.*)');
     app.all(regexRoute, function(req, res, next) {
-      req.url = req.url.replace(regexRoute, '$1' + getReplacement(req) + '$3');
-      next();
+      var replacement = getReplacement(req);
+      if (!replacement) {
+        res.json(404);
+      } else {
+        req.url = req.url.replace(regexRoute, '$1' + replacement + '$3');
+        next();
+      }
     });
   }
 

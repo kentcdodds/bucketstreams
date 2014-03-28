@@ -8,17 +8,17 @@ module.exports = function(app) {
 
   RouteHelper.addConversionRoute(app, restPrefix + '/users', 'me', function(req) {
     // /api/v1/rest/users/me
-    return req.user ? req.user.id : 'undefined';
+    return req.user ? req.user.id : null;
   });
 
   RouteHelper.addConversionRoute(app, restPrefix + '/buckets', 'main', function(req) {
     // /api/v1/rest/buckets/main
-    return req.user ? req.user.mainBucket : 'undefined';
+    return req.user ? req.user.mainBucket : null;
   });
 
   RouteHelper.addConversionRoute(app, restPrefix + '/streams', 'main', function(req) {
     // /api/v1/rest/streams/main
-    return req.user ? req.user.mainStream : 'undefined';
+    return req.user ? req.user.mainStream : null;
   });
 
   app.get(restPrefix + '/:resource', function(req, res, next) {

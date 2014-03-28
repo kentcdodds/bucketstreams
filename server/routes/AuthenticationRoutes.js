@@ -179,7 +179,9 @@ module.exports = function(app) {
         req.logIn(user, function(err) {
           if (err) return next(err);
           req.user.updateLastLoginTime(function() {
-            return res.json(200, req.user);
+            return res.json(200, {
+              success: true
+            });
           });
         });
       })(req, res, next);
