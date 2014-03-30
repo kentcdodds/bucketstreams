@@ -55,7 +55,6 @@ module.exports = (function() {
 
   var frontPageScripts = getAppSection('front-page');
   var mainScripts = getAppSection('main');
-  var componentWrapperScripts = getAppSection('componentWrapper');
   var componentScripts = getAppSection('components');
   var modelScripts = getAppSection('models');
 
@@ -76,14 +75,6 @@ module.exports = (function() {
       topScripts: commonConfig.topScripts,
       appName: 'bs.app',
       scripts: _.union(commonConfig.scripts, mainScripts, componentScripts, modelScripts),
-      isDev: isDev
-    },
-    components: {
-      name: 'components',
-      stylesheets: commonConfig.stylesheets,
-      topScripts: commonConfig.topScripts,
-      appName: 'bs.componentWrapper',
-      scripts: _.union(commonConfig.scripts, componentWrapperScripts, componentScripts, modelScripts),
       isDev: isDev
     }
   };

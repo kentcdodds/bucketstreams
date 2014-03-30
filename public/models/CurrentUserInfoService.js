@@ -1,16 +1,5 @@
 angular.module('bs.models').factory('CurrentUserInfoService', function($rootScope, $q, $http, _, User, Stream, Bucket) {
   var things = {
-    authenticated: {
-      val: null,
-      event: 'authenticatedUpdated',
-      refresher: function() {
-        var deferred = $q.defer();
-        $http.get('/api/v1/auth/isAuthenticated').then(function(response) {
-          deferred.resolve(response.data.isAuthenticated);
-        }, deferred.reject);
-        return deferred.promise;
-      }
-    },
     user: {
       val: null,
       event: 'userUpdated',
@@ -54,8 +43,5 @@ angular.module('bs.models').factory('CurrentUserInfoService', function($rootScop
     service.events[thingName] = things[thingName].event;
   });
   
-  service.refreshAuthenticated();
-  
-
   return service;
 });

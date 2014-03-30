@@ -1,4 +1,4 @@
-angular.module('bs.app').controller('RulesCtrl', function($scope, $window, $location, $http, AlertService, CommonModalService) {
+angular.module('bs.app').controller('RulesCtrl', function($scope, $window, $location, $http, AlertService, _, CommonModalService) {
   $scope.connectedAccounts = $scope.currentUser.connectedAccounts;
   $scope.outboundRules = $scope.currentUser.rules;
   var openProvider = $location.search().provider || 'facebook';
@@ -85,10 +85,29 @@ angular.module('bs.app').controller('RulesCtrl', function($scope, $window, $loca
   };
 
   $scope.runRulesManually = function() {
+    $scope.runningRules = true;
     $http.get('/api/v1/util/run-manual-import').then(function(response) {
-      console.log(arguments);
-    }, function(err) {
-      console.log(arguments);
+      // All of this mess is just to build a user-friendly alert message...
+      var posts = response.data.posts;
+      var totalTwitter = (posts.twitter || []).length;
+      var totalFacebook = (posts.facebook || []).length;
+      var tweets = '';
+      if (totalTwitter) {
+        tweets = '<i class="fa fa-twitter"> ' + totalTwitter + ' tweet' + (totalTwitter > 1 ? 's' : '') + '<br />';
+      }
+      var facebookPosts = '';
+      if (totalFacebook) {
+        facebookPosts= '<i class="fa fa-facebook"> ' + totalFacebook + ' post' + (totalFacebook > 1 ? 's' : '') + '<br />';
+      }
+      var message = 'Done! No posts or tweets to import!';
+      var totalPosts = totalTwitter + totalFacebook;
+      if (totalPosts) {
+        message = 'Done! ' + totalPosts + ' post' + (totalPosts > 1 ? 's' : '') + ' imported!<br />' +
+          tweets + facebookPosts;
+      }
+      AlertService.success(message);
+    }, AlertService.handleResponse.error).finally(function(data) {
+      $scope.runningRules = false;
     });
   }
 });

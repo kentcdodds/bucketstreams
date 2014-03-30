@@ -1,4 +1,7 @@
 angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, $http, mainStreamData, Stream, Bucket, Post, User, Cacher, CurrentUserInfoService, CommonModalService, AlertService, CurrentContext, PostBroadcaster, ShareBroadcaster) {
+  if (!$scope.isAuthenticated) {
+    return;
+  }
   $scope.mainStreamData = mainStreamData;
   $scope.postsAndShares = {
     posts: mainStreamData.posts || [],

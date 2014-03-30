@@ -1,4 +1,4 @@
-angular.module('bs.directives').directive('bsBucketList', function(UtilFunctions) {
+angular.module('bs.directives').directive('bsBucketList', function($q, UtilFunctions) {
   return {
     restrict: 'A',
     templateUrl: '/components/post/bsBucketList.html',
@@ -10,18 +10,22 @@ angular.module('bs.directives').directive('bsBucketList', function(UtilFunctions
       scope.visibleBuckets = [];
       scope.bucketPageParams = [];
       var totalChars = 0;
+      function loadVisibleBuckets() {
+        var mainlessBuckets = _.filter(scope.buckets, function(item) {
+          return !item.isMain;
+        });
+        _.each(mainlessBuckets, function(bucket, index) {
+          scope.bucketPageParams[index] = bucket.getPageParams();
+          totalChars += bucket.name.length + 2; // + 2 for the comma and space
+          if (totalChars <= scope.maxChars) {
+            scope.visibleBuckets.push(bucket);
+          }
+        });
+      }
       if (!_.isEmpty(scope.maxChars)) {
-        scope.$watch('buckets', function() {
-          var mainlessBuckets = _.filter(scope.buckets, function(item) {
-            return !item.isMain;
-          });
-          _.each(mainlessBuckets, function(bucket, index) {
-            scope.bucketPageParams[index] = bucket.getPageParams();
-            totalChars += bucket.name.length + 2; // + 2 for the comma and space
-            if (totalChars <= scope.maxChars) {
-              scope.visibleBuckets.push(bucket);
-            }
-          });
+        scope.$watch('buckets', function(buckets) {
+          var initialPromises = UtilFunctions.getResourcePromises(buckets);
+          $q.all(initialPromises).then(loadVisibleBuckets);
         });
         scope.showElipsis = totalChars > scope.maxChars;
       } else {

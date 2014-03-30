@@ -155,6 +155,25 @@ schema.path('email').validate(function (value) {
   return /^[a-zA-Z0-9._-]+(\+[a-zA-Z0-9._-]+)?@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value);
 }, 'email invalid');
 
+
+/*
+ * Token stuff
+ */
+schema.methods.getTokenObject = function() {
+  var fields = /^(id|email|mainBucket|mainStream)$/;
+  return _.pick(this, function(value, key) {
+    return fields.test(key);
+  });
+};
+
+schema.methods.deTokenize = function(callback) {
+  if (this.isNew) {
+    this.model(ref.user).findOne({_id: this._id}, callback);
+  } else {
+    callback(null, this);
+  }
+};
+
 /*
  * Password reset methods
  */
@@ -381,7 +400,7 @@ var updateUser = {
   }
 };
 
-schema.methods.importPosts = function(callback) {
+schema.methods.importPosts = function(callback, force) {
   var allPosts = [];
   var self = this;
   var theProviders = [ 'facebook', 'twitter', 'google' ];
@@ -392,7 +411,7 @@ schema.methods.importPosts = function(callback) {
       return done(true);
     }
     var timeSinceLastImport = new Date().getTime() - providerInfo.lastImportEpoch;
-    var readyForImport = timeSinceLastImport > providerInfo.timeBetweenImports || !providerInfo.lastImportEpoch;
+    var readyForImport = force || timeSinceLastImport > providerInfo.timeBetweenImports || !providerInfo.lastImportEpoch;
 
     if (!readyForImport) {
       return done(true);
@@ -426,7 +445,7 @@ schema.methods.importPosts = function(callback) {
           self.save(function(err, user) {
             if (err) callback(err);
 
-            callback(null, user, allPosts, allPosts.length);
+            callback(null, allPosts);
           });
         } else {
           callback(new Error('Problem saving posts.' + JSON.stringify(errors)));

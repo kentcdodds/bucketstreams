@@ -91,8 +91,6 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
       if (!scope.noThingSelectedText) {
         if (scope.listType === 'stream') {
           scope.noThingSelectedText = 'Subscribe this ' + scope.subscriptionType + ' to some streams...';
-        } else {
-          scope.noThingSelectedText = 'Choose buckets to put this post in...';
         }
       }
 

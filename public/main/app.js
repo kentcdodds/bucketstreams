@@ -42,23 +42,13 @@
         controller: 'SuperCtrl',
         url: '/',
         resolve: {
-          isAuthenticated: function(CurrentUserInfoService) {
-            return CurrentUserInfoService.refreshAuthenticated();
+          isAuthenticated: function() {
+            return !!localStorage.getItem('user-token');
           },
           currentUser: resolveCurrentUserInfo.resolveUser,
           userBuckets: resolveCurrentUserInfo.resolveBuckets,
           userStreams: resolveCurrentUserInfo.resolveStreams
         }
-      }).
-      state('root.anon', {
-        url: '',
-        templateUrl: '/main/anon/anon.html',
-        controller: 'FrontPageCtrl'
-      }).
-      state('root.anon.trouble', {
-        url: 'login-trouble',
-        templateUrl: '/main/anon/login-trouble.html',
-        controller: 'LoginTroubleCtrl'
       }).
       state('root.auth', {
         abstract: true,
@@ -71,7 +61,7 @@
         controller: 'MainCtrl',
         resolve: {
           mainStreamData: function(UtilService, currentUser) {
-            if (currentUser.hasUsername) {
+            if (currentUser && currentUser.hasUsername) {
               return UtilService.loadData('stream', currentUser.username, 'Main Stream');
             } else {
               return {};
@@ -79,7 +69,7 @@
           }
         },
         onEnter: function() {
-          console.log('root.auth.home');
+          console.log('on-enter root.auth.home');
         },
         context: ''
       }).
@@ -92,7 +82,7 @@
           icon: 'cog'
         },
         onEnter: function() {
-          console.log('root.settings');
+          console.log('on-enter root.settings');
         }
       }).
       state('root.auth.thirdParties', {
@@ -103,8 +93,18 @@
           name: 'Rules'
         },
         onEnter: function() {
-          console.log('root.auth.thirdParties');
+          console.log('on-enter root.auth.thirdParties');
         }
+      }).
+      state('root.anon', {
+        url: '',
+        templateUrl: '/main/anon/anon.html',
+        controller: 'FrontPageCtrl'
+      }).
+      state('root.anon.trouble', {
+        url: 'login-trouble',
+        templateUrl: '/main/anon/login-trouble.html',
+        controller: 'LoginTroubleCtrl'
       }).
       state('root.userPage', {
         url: usernameUrl,
@@ -226,18 +226,24 @@
         $state.go('root.anon');
       }
     });
-    $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams){
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
       console.log(toState.name);
-      var authenticated = CurrentUserInfoService.getAuthenticated();
+      var authenticated = !!localStorage.getItem('user-token');
       if (/root\.auth/.test(toState.name)) {
         if (!authenticated) {
+          event.preventDefault();
           $state.go('root.anon');
         }
       } else if ('root.anon' === toState.name) {
         if (authenticated) {
+          event.preventDefault();
           $state.go('root.auth.home');
         }
       }
+    });
+    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
+      console.error('$stateChangeError');
+      console.error(event);
     });
   });
 })();

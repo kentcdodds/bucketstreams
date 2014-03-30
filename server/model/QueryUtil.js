@@ -18,7 +18,7 @@ module.exports = {
           ]
         }
       }
-      Post.find(query).sort('-created').exec(function(err, posts) {
+      Post.find(query).sort('-created').limit(30).exec(function(err, posts) {
         if (err) return callback(err);
         callback(null, {
           posts: posts,

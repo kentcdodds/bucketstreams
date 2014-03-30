@@ -43,6 +43,18 @@ Util.addContentField(schema);
 
 Util.addTimestamps(schema);
 
+function isProviderPost(provider) {
+  return this.sourceData.source === provider;
+}
+
+schema.methods.isFacebook = function() {
+  return isProviderPost('facebook');
+};
+
+schema.methods.isTwitter = function() {
+  return isProviderPost('twitter');
+};
+
 /**
  * Hijack the parse method so we can remove the linkables.mentions if
  * this came from an outside third party.

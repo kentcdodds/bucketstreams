@@ -1,7 +1,7 @@
 <div class="bucket-rules">
   <h1>Bucket Rules</h1>
   <span class="cursor-pointer" ng-click="runRulesManually()">
-    <i class="fa fa-refresh"></i> Run rules manually now
+    <i class="fa fa-refresh" ng-class="{'fa-spin': runningRules}"></i> Run rules manually now
   </span>
   <div class="provider-accordion-wrapper">
     <accordion>

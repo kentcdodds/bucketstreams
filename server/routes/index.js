@@ -14,7 +14,7 @@ module.exports = function(app) {
   var config = require('../views/config');
 
   app.get('*', function(req, res) {
-    logger.info('catch all: ' + req.params);
+    logger.info('catch all: ' + JSON.stringify(req.params, null, 2));
     logger.info('sending main');
     res.render('main', config.main);
   });

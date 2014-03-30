@@ -81,7 +81,7 @@ module.exports = {
     })(req, res, next);
   },
   checkAuthenticated: function(req, res, next) {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
       next();
     } else {
       ErrorController.sendErrorJson(res, 401);

@@ -7,6 +7,7 @@ var async = require('async');
 var moment = require('moment');
 var uuid = require('node-uuid');
 var passport = require('passport');
+var jwt = require('jsonwebtoken');
 var prefix = require('./prefixes');
 var config = require('../views/config');
 
@@ -79,8 +80,10 @@ module.exports = function(app) {
 
       async.series([runParallel, saveUser, sendConfirmationEmail], function(err, results) {
         if (err) return sendError(err);
+        var user = results[2];
 
-        return res.json(200, results[2]);
+        var token = jwt.sign(user.getTokenObject(), 'h$|24X5.1g44P05#6Z8>');
+        return res.json({ success: true, token: token });
       });
     });
   });
@@ -92,7 +95,7 @@ module.exports = function(app) {
   });
 
   app.post(prefix.auth + '/confirm-email/resend', function(req, res) {
-    if (req.isAuthenticated) {
+    if (req.isAuthenticated()) {
       sendEmail(req.user);
     } else if (req.body.email) {
       User.getUserByUsernameOrEmail(req.body.email, function(err, user) {
@@ -166,7 +169,7 @@ module.exports = function(app) {
 
 
   app.post(prefix.auth + '/login', function(req, res, next) {
-    User.getEmailFromUsername(req.body.username, function(err, email) {
+    User.getEmailFromUsername(req.body.email, function(err, email) {
       if (err) return ErrorController.sendErrorJson(res, 500, err.message);
       req.body.email = email;
       passport.authenticate('local', function(err, user, info) {
@@ -178,21 +181,15 @@ module.exports = function(app) {
 
         req.logIn(user, function(err) {
           if (err) return next(err);
-          req.user.updateLastLoginTime(function() {
-            return res.json(200, {
-              success: true
-            });
+          user.updateLastLoginTime(function() {
+            var token = jwt.sign(user.getTokenObject(), 'h$|24X5.1g44P05#6Z8>');
+            return res.json({ success: true, token: token });
           });
         });
       })(req, res, next);
     });
   });
 
-  app.get(prefix.auth + '/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
-  });
-  
   app.post(prefix.auth + '/reset-password', function(req, res) {
     User.getUserByUsernameOrEmail(req.body.username, function(err, user) {
       if (err) return ErrorController.sendErrorJson(res, 500, err.message);
@@ -301,11 +298,15 @@ module.exports = function(app) {
    * Disconnects a user from the given provider
    */
   app.get(prefix.auth + '/disconnect/:provider', AuthenticationController.checkAuthenticated, function(req, res, next) {
-    req.user.disconnect(req.params.provider, function(err, user) {
-      if (err) return ErrorController.sendErrorJson(res, 500, err.message);
-      res.json({
-        disconnected: true,
-        provider: req.params.provider
+    req.user.deTokenize(function(err, user) {
+      if (err) return next(err);
+
+      user.disconnect(req.params.provider, function(err, user) {
+        if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+        res.json({
+          disconnected: true,
+          provider: req.params.provider
+        });
       });
     });
   });

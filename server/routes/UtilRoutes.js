@@ -240,8 +240,19 @@ module.exports = function(app) {
    * Runs the import process for the currently logged in user
    */
   app.get(prefixes.util + '/run-manual-import', AuthenticationController.checkAuthenticated, function(req, res, next) {
-    req.user.importPosts(function(err, user, allPosts, totalPosts) {
-      res.json(arguments);
+    req.user.deTokenize(function(err, user) {
+      if (err) return next(err);
+      user.importPosts(function(err, allPosts) {
+        if (err) return next(err);
+        var groupedPosts = {};
+        _.each(allPosts, function(post) {
+          groupedPosts[post.sourceData.source] = groupedPosts[post.sourceData.source] || [];
+          groupedPosts[post.sourceData.source].push(post);
+        });
+        res.json({
+          posts: groupedPosts
+        });
+      }, true);
     });
   });
 

@@ -48,13 +48,11 @@ angular.module('bs.app').controller('FrontPageCtrl', function ($scope, $http, $w
     $scope.going = true;
     var promise = User[action](input, password);
 
-    promise.success(function() {
+    promise.then(function() {
       $state.go('root.auth.home', null, {
         reload: true, inherit: false, notify: true
       });
-    });
-
-    promise.error(function(err) {
+    }, function(err) {
       $scope.going = false;
       AlertService.error(err.message);
     });

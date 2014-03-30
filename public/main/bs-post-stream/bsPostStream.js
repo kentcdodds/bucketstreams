@@ -1,4 +1,4 @@
-angular.module('bs.app').directive('bsPostStream', function($window, $filter) {
+angular.module('bs.app').directive('bsPostStream', function() {
   return {
     restrict: 'A',
     templateUrl: '/main/bs-post-stream/bsPostStream.html',
@@ -6,6 +6,9 @@ angular.module('bs.app').directive('bsPostStream', function($window, $filter) {
       postsAndShares: '=bsPostStream'
     },
     link: function(scope, el, attrs) {
+      if (!scope.postsAndShares) {
+        return;
+      }
       scope.posts = scope.postsAndShares.posts;
       _.each(scope.posts, function(post) {
         post.sortDate = post.created;
