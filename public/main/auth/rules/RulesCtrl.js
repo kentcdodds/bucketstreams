@@ -1,4 +1,4 @@
-angular.module('bs.app').controller('RulesCtrl', function($scope, $window, $location, $http, AlertService, _, CommonModalService) {
+angular.module('bs.web.app').controller('RulesCtrl', function($scope, $window, $location, $http, AlertService, _, CommonModalService) {
   $scope.connectedAccounts = $scope.currentUser.connectedAccounts;
   $scope.outboundRules = $scope.currentUser.rules;
   var openProvider = $location.search().provider || 'facebook';

@@ -1,4 +1,4 @@
-angular.module('bs.app').factory('bsMenuService', function() {
+angular.module('bs.web.app').factory('bsMenuService', function() {
   
   var menuItems = [];
   

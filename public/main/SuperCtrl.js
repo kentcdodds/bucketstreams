@@ -1,4 +1,4 @@
-angular.module('bs.app').controller('SuperCtrl', function($scope, _, $state, $window, $modal, $http, isAuthenticated, currentUser, userBuckets, userStreams, CurrentUserInfoService, CurrentContext, bsMenuService, CommonModalService, UtilService, genie, bsGenie) {
+angular.module('bs.web.app').controller('SuperCtrl', function($scope, _, $state, $window, $modal, $http, isAuthenticated, currentUser, userBuckets, userStreams, CurrentUserInfoService, CurrentContext, bsMenuService, CommonModalService, UtilService, genie, bsGenie) {
   $scope.isAuthenticated = isAuthenticated;
   $scope.currentUser = currentUser;
   $scope.userBuckets = userBuckets;

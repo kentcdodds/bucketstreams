@@ -1,3 +1,3 @@
-angular.module('bs.app').controller('SettingsCtrl', function($scope) {
+angular.module('bs.web.app').controller('SettingsCtrl', function($scope) {
 
 });

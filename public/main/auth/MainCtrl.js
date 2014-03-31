@@ -1,4 +1,4 @@
-angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, $http, mainStreamData, Stream, Bucket, Post, User, Cacher, CurrentUserInfoService, CommonModalService, AlertService, CurrentContext, PostBroadcaster, ShareBroadcaster) {
+angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, $http, mainStreamData, Stream, Bucket, Post, User, Cacher, CurrentUserInfoService, CommonModalService, AlertService, CurrentContext, PostBroadcaster, ShareBroadcaster) {
   if (!$scope.isAuthenticated) {
     return;
   }

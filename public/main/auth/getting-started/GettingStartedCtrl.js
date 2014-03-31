@@ -1,4 +1,4 @@
-angular.module('bs.app').controller('GettingStartedCtrl', function($scope, $timeout, _, $upload, UtilService, CurrentUserInfoService, AlertService) {
+angular.module('bs.web.app').controller('GettingStartedCtrl', function($scope, $timeout, _, $upload, UtilService, CurrentUserInfoService, AlertService) {
 
   $scope.currentUser = CurrentUserInfoService.getUser();
   $scope.$on(CurrentUserInfoService.events.user, function(event, updatedUser) {

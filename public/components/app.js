@@ -1,5 +1,4 @@
 (function() {
-  angular.module('bs.directives', ['bs.constants', 'Scope.safeApply']);
-  angular.module('bs.filters', ['bs.constants', 'Scope.safeApply']);
-  angular.module('bs.services', ['bs.constants', 'Scope.safeApply']);
+  angular.module('bs.web.directives', ['bs.common.constants', 'bs.common.models']);
+  angular.module('bs.web.services', ['bs.web.constants', 'bs.common.constants']);
 })();

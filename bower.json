@@ -22,7 +22,8 @@
     "genie": "~0.3.0",
     "ux-genie": "~0.3.1",
     "firebase": "~1.0.10",
-    "angularfire": "~0.7.0"
+    "angularfire": "~0.7.0",
+    "bs-js-common": "git@bitbucket.org:kentcdodds/bs-js-common.git"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.7",

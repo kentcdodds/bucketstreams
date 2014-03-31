@@ -19,6 +19,26 @@ module.exports = (function() {
     '/bower_components/toastr/toastr.min.css'
   ];
 
+  function getSection(root, name) {
+    var appJs = getFilesInPath(root + name + '/app.js', root);
+    var otherJsFiles = getFilesInPath(root + name + '/**/*.js', root);
+    return _.union(appJs, otherJsFiles);
+  }
+
+  function getBSJSCommon() {
+    var root = './public';
+    var path = '/bower_components/bs-js-common/bs.common.';
+    var models = getSection(root, path + 'models');
+    var services = getSection(root, path + 'services');
+    var filters = getSection(root, path + 'filters');
+    var directives = getSection(root, path + 'directives');
+    return _.union(['/bower_components/bs-js-common/app.js'], models, services, filters, directives);
+  }
+
+  function getAppSection(name) {
+    return getSection('./public', '/' + name);
+  }
+
   var commonConfig = {
     stylesheets: _.union(thirdPartyStyles, customStyles),
     topScripts: [
@@ -38,25 +58,15 @@ module.exports = (function() {
       '/bower_components/angular-resource/angular-resource.js',
       '/bower_components/angular-cookies/angular-cookies.js',
       '/bower_components/angular-sanitize/angular-sanitize.js',
-//      '/bower_components/angular-bindonce/bindonce.js',
-      '/non_bower_components/Scope.SafeApply.js',
       '/bower_components/genie/genie.js',
       '/bower_components/ux-genie/uxGenie.js',
       '/bower_components/firebase/firebase.js',
       '/bower_components/angularfire/angularfire.js'
-    ], getAppSection('constants'))
+    ], getBSJSCommon(), getAppSection('constants'), getAppSection('components'))
   };
-
-  function getAppSection(name) {
-    var appJs = getFilesInPath('./public/' + name + '/app.js', './public');
-    var otherJsFiles = getFilesInPath('./public/' + name + '/**/*.js', './public');
-    return _.union(appJs, otherJsFiles);
-  }
 
   var frontPageScripts = getAppSection('front-page');
   var mainScripts = getAppSection('main');
-  var componentScripts = getAppSection('components');
-  var modelScripts = getAppSection('models');
 
   var isDev = /development|local/.test(process.env.NODE_ENV);
 
@@ -66,15 +76,15 @@ module.exports = (function() {
       stylesheets: commonConfig.stylesheets,
       topScripts: commonConfig.topScripts,
       appName: 'bs.frontPage',
-      scripts: _.union(commonConfig.scripts, frontPageScripts, componentScripts, modelScripts),
+      scripts: _.union(commonConfig.scripts, frontPageScripts),
       isDev: isDev
     },
     main: {
       name: 'main',
       stylesheets: commonConfig.stylesheets,
       topScripts: commonConfig.topScripts,
-      appName: 'bs.app',
-      scripts: _.union(commonConfig.scripts, mainScripts, componentScripts, modelScripts),
+      appName: 'bs.web.app',
+      scripts: _.union(commonConfig.scripts, mainScripts),
       isDev: isDev
     }
   };

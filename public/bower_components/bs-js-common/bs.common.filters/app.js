@@ -1,0 +1,1 @@
+angular.module('bs.common.filters', ['bs.common.constants']);

@@ -1,4 +1,4 @@
-angular.module('bs.app').controller('FrontPageCtrl', function ($scope, $http, $window, $state, User, AlertService, _, CurrentUserInfoService) {
+angular.module('bs.web.app').controller('FrontPageCtrl', function ($scope, $http, $window, $state, User, AlertService, _, CurrentUserInfoService) {
 
   $scope.password = '';
   $scope.email = '';

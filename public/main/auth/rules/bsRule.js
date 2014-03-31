@@ -1,4 +1,4 @@
-angular.module('bs.app').directive('bsRule', function(Cacher) {
+angular.module('bs.web.app').directive('bsRule', function(Cacher) {
   return {
     restrict: 'A',
     templateUrl: '/main/auth/rules/bsRule.html',

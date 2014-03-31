@@ -1,8 +1,9 @@
 (function() {
-  var thirdParties = ['ui.router', 'ui.bootstrap', 'angularFileUpload', 'uxGenie', 'Scope.safeApply'];
+  var thirdParties = ['ui.router', 'ui.bootstrap', 'angularFileUpload', 'uxGenie'];
   var angularMods = ['ngAnimate'];
-  var internalMods = ['bs.constants', 'bs.directives', 'bs.models', 'bs.services', 'bs.filters'];
-  var app = angular.module('bs.app', thirdParties.concat(angularMods.concat(internalMods)));
+  var commonMods = ['bs.common'];
+  var internalMods = ['bs.web.constants', 'bs.web.directives', 'bs.web.services'];
+  var app = angular.module('bs.web.app', thirdParties.concat(angularMods.concat(commonMods)).concat(internalMods));
 
   app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, _) {
     $locationProvider.html5Mode(true);

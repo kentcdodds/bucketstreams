@@ -1,4 +1,4 @@
-angular.module('bs.app').controller('PostStreamPageCtrl', function($scope, $state, _, data, $modal, Cacher, AlertService, CommonModalService, CurrentUserInfoService, PostBroadcaster, ShareBroadcaster) {
+angular.module('bs.web.app').controller('PostStreamPageCtrl', function($scope, $state, _, data, $modal, Cacher, AlertService, CommonModalService, CurrentUserInfoService, PostBroadcaster, ShareBroadcaster) {
   $scope.thing = data.thing;
   $scope.postsAndShares = {
     posts: data.posts || [],

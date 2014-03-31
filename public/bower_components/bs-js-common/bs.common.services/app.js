@@ -1,0 +1,1 @@
+angular.module('bs.common.services', ['bs.common.constants', 'bs.common.models']);

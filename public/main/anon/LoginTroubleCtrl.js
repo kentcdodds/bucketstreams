@@ -1,4 +1,4 @@
-angular.module('bs.app').controller('LoginTroubleCtrl', function($scope, $http, AlertService, UtilService) {
+angular.module('bs.web.app').controller('LoginTroubleCtrl', function($scope, $http, AlertService, UtilService) {
   $scope.loading = false;
   $scope.onSubmit = function(username) {
     $scope.loading = true;

@@ -1,4 +1,4 @@
-angular.module('bs.app').factory('bsGenie', function(genie, $state, User, AlertService) {
+angular.module('bs.web.app').factory('bsGenie', function(genie, $state, User, AlertService) {
   var appContext = 'bs';
   genie.context(appContext);
 

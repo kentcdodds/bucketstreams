@@ -1,4 +1,4 @@
-angular.module('bs.app').controller('ResetPasswordCtrl', function($scope, data, code, $http, $state, AlertService, UtilService) {
+angular.module('bs.web.app').controller('ResetPasswordCtrl', function($scope, data, code, $http, $state, AlertService, UtilService) {
   $scope.user = data.user;
   $scope.result = data.result;
   $scope.code = code;

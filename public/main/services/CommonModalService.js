@@ -1,4 +1,4 @@
-angular.module('bs.app').factory('CommonModalService', function($modal, CurrentUserInfoService, Bucket, Stream, AlertService, Cacher, ShareBroadcaster) {
+angular.module('bs.web.app').factory('CommonModalService', function($modal, CurrentUserInfoService, Bucket, Stream, AlertService, Cacher, ShareBroadcaster) {
 
 
 
