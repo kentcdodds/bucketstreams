@@ -1,7 +1,10 @@
-angular.module('bs.app').controller('EmailConfirmationCtrl', function($scope, result, code, $http, AlertService) {
+angular.module('bs.app').controller('EmailConfirmationCtrl', function($scope, result, code, $http, AlertService, CurrentUserInfoService) {
   $scope.result = result;
   $scope.code = code;
   $scope.showSendAgainLink = result.type !== 'success' && result.type !== 'already-confirmed' && (result.type !== 'invalid-link' && !$scope.currentUser);
+  if (result.type === 'success') {
+    CurrentUserInfoService.refreshUser();
+  }
   $scope.sendNewConfirmationEmail = function() {
     var data;
     if ($scope.currentUser) {

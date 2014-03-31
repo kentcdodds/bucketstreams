@@ -8,40 +8,50 @@ angular.module('bs.app').controller('MainCtrl', function($scope, _, $state, $win
     shares: mainStreamData.shares || []
   };
   
-  if (!$scope.currentUser.hasUsername()) {
-    CurrentContext.context('Getting Started');
-    $modal.open({
-      templateUrl: '/main/auth/getting-started/getting-started.html',
-      controller: 'GettingStartedCtrl',
-      backdrop: 'static',
-      keyboard: false
-    }).result.then(function() {
-        $window.location.href = '/';
+  function maybeOpenGettingStartedModal() {
+    if (!$scope.currentUser.hasUsername()) {
+      CurrentContext.context('Getting Started');
+      $modal.open({
+        templateUrl: '/main/auth/getting-started/getting-started.html',
+        controller: 'GettingStartedCtrl',
+        backdrop: 'static',
+        keyboard: false
+      }).result.then(function() {
+          maybeOpenEmailConfirmationModal();
+        });
+      return true;
+    }
+  }
+
+  function maybeOpenEmailConfirmationModal() {
+    if (!$scope.currentUser.isConfirmed() && $state.current.name !== 'root.emailConfirmation') {
+      CurrentContext.context('Email Confirmation');
+      var currentUser = $scope.currentUser;
+      $modal.open({
+        controller: function($scope, $http) {
+          $scope.currentUser = currentUser;
+          $scope.sendNewConfirmationEmail = function() {
+            $http.post('/api/v1/auth/confirm-email/resend').then(function(response) {
+              if (response.data.sent) {
+                AlertService.success('Email sent to ' + currentUser.email);
+              } else {
+                AlertService.info(response.data.reason);
+              }
+            }, AlertService.handleResponse.error);
+          }
+        },
+        templateUrl: '/main/auth/email-confirmation/need-confirmation.html',
+        backdrop: 'static',
+        keyboard: false
       });
-    return;
+      return true;
+    }
   }
-  
-  if (!$scope.currentUser.isConfirmed() && $state.current.name !== 'root.emailConfirmation') {
-    CurrentContext.context('Email Confirmation');
-    var currentUser = $scope.currentUser;
-    $modal.open({
-      controller: function($scope, $http) {
-        $scope.currentUser = currentUser;
-        $scope.sendNewConfirmationEmail = function() {
-          $http.post('/api/v1/auth/confirm-email/resend').then(function(response) {
-            if (response.data.sent) {
-              AlertService.success('Email sent to ' + currentUser.email);
-            } else {
-              AlertService.info(response.data.reason);
-            }
-          }, AlertService.handleResponse.error);
-        }
-      },
-      templateUrl: '/main/auth/email-confirmation/need-confirmation.html',
-      backdrop: 'static',
-      keyboard: false
-    });
+
+  if (!maybeOpenGettingStartedModal()) {
+    maybeOpenEmailConfirmationModal();
   }
+
 
   $scope.$on(PostBroadcaster.removedPostEvent, function(event, post) {
     _.remove($scope.postsAndShares.posts, {_id: post._id});

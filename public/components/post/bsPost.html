@@ -35,8 +35,8 @@
     </div>
   </div>
   <div class="post-content panel-body">
-    <div class="post-content-shared" ng-if="isShare && !postOnly">
-      <bs-profile-picture user="shareAuthor" class="post-author-photo" size="36"></bs-profile-picture>
+    <div class="post-content-shared font-size-xsmall" ng-if="isShare && !postOnly">
+      <bs-profile-picture user="shareAuthor" class="post-author-photo" size="24"></bs-profile-picture>
       <small class="share-info">
         <span class="text-muted">
           <a ng-href="/{{shareAuthor.username}}">{{shareAuthorDisplayName}}</a> shared this
@@ -44,12 +44,12 @@
         <span class="display-block" bs-bucket-list="shareBucketList" max-chars="40"></span>
       </small>
     </div>
-    <div ng-hide="editing">{{mainContent}}</div>
+    <div ng-hide="editing" ng-class="{'font-size-xsmall': isShare}">{{mainContent}}</div>
     <div ng-show="editing">
       <textarea ng-model="newContent" class="form-control"></textarea>
     </div>
     <div ng-if="isShare">
-      <hr />
+      <hr class="margin-top-xxsmall margin-bottom-xxsmall" />
       <div>{{post.content.textString}}</div>
     </div>
   </div>

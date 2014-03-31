@@ -19,9 +19,22 @@ var User = require('../model/User').model;
 module.exports = function(app) {
 
   // Setup express
-  var skip = [];
-  var tokenMiddleware = expressJwt({secret: 'h$|24X5.1g44P05#6Z8>', skip: skip});
-  app.get('/api/**', tokenMiddleware, function(req, res, next) {
+  var anonymousUrls = [
+    /\/api\/v1\/auth\/confirm-email\/(\w)*/,
+    /\/api\/v1\/auth\/reset-password\/(\w)*/,
+    /\/api\/v1\/auth\/login/,
+    /\/api\/v1\/auth\/register/
+  ];
+  var validateJwt = expressJwt({secret: 'h$|24X5.1g44P05#6Z8>'});
+  app.use('/api', function (req, res, next) {
+    var isAnonymousUrl = anonymousUrls.some(function (regex) {
+      return req.originalUrl.match(regex);
+    });
+    if (isAnonymousUrl) return next();
+    validateJwt(req, res, next);
+  });
+
+  app.use('/api', function(req, res, next) {
     if (req.user) {
       var id = req.user.id;
       req.user = new User(req.user);
@@ -69,17 +82,14 @@ module.exports = function(app) {
 
   app.use(passport.initialize());
 
-  if (process.env.hideBucketStreams === 'true') {
-    app.all('*', function (req, res, next) {
-      function askForAuth(res) {
-        res.statusCode = 401;
-        res.setHeader('WWW-Authenticate', 'Basic realm="Please authenticate"');
-        res.end('Unauthorized');
-      }
+  if (process.env.hideBucketStreams === 'true' && !/production/.test(process.env.NODE_ENV)) {
+    function askForAuth(res, message) {
+      res.statusCode = 401;
+      res.setHeader('WWW-Authenticate', 'Basic realm="' + message + '"');
+      res.end('Unauthorized');
+    }
 
-      var authorization = req.headers.authorization;
-      if (!authorization) return askForAuth(res);
-
+    function checkBasicAuth(authorization, next) {
       var token = authorization.split(/\s+/).pop() || '';
       var auth = new Buffer(token, 'base64').toString();
       var parts = auth.split(/:/);
@@ -88,8 +98,18 @@ module.exports = function(app) {
       if (username === process.env.hideBSUsername && password === process.env.hideBSPassword) {
         next();
       } else {
-        askForAuth(res);
+        askForAuth(res, 'Username or password incorrect');
       }
+    }
+
+    app.use('*', function (req, res, next) {
+      var authorization = req.headers.authorization;
+      if (!authorization) return askForAuth(res, 'Please authenticate');
+
+      validateJwt(req, res, function(err) {
+        if (err) return checkBasicAuth(authorization, next);
+        next();
+      });
     });
   }
 };

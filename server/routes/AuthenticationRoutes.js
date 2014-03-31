@@ -18,6 +18,11 @@ var Stream = models[ref.stream];
 var Bucket = models[ref.bucket];
 
 module.exports = function(app) {
+
+  function sendToken(res, user) {
+    var token = jwt.sign(user.getTokenObject(), 'h$|24X5.1g44P05#6Z8>');
+    return res.json({ token: token });
+  }
   
   app.post(prefix.auth + '/register', function(req, res) {
     function sendError(err) {
@@ -58,10 +63,14 @@ module.exports = function(app) {
           });
       }
 
-      function login(done) {
-        req.login(user, done);
+      function runParallel(done) {
+        async.parallel([createMainStream, createMainBucket], done);
       }
-      
+
+      function saveUser(done) {
+        user.save(done);
+      }
+
       function sendConfirmationEmail(done) {
         EmailController.sendEmailConfirmationEmail(user, function(err, result) {
           if (err) return sendError(err);
@@ -69,28 +78,11 @@ module.exports = function(app) {
           user.save(done);
         });
       }
-
-      function runParallel(done) {
-        async.parallel([createMainStream, createMainBucket, login], done);
-      }
-
-      function saveUser(done) {
-        user.save(done);
-      }
-
       async.series([runParallel, saveUser, sendConfirmationEmail], function(err, results) {
         if (err) return sendError(err);
-        var user = results[2];
-
-        var token = jwt.sign(user.getTokenObject(), 'h$|24X5.1g44P05#6Z8>');
-        return res.json({ success: true, token: token });
+        var user = results[2][0];
+        return sendToken(res, user);
       });
-    });
-  });
-  
-  app.get(prefix.auth + '/isAuthenticated', function(req, res) {
-    res.json({
-      isAuthenticated: req.isAuthenticated()
     });
   });
 
@@ -143,25 +135,22 @@ module.exports = function(app) {
       } else if (user.isConfirmed()) {
         return res.json({
           success: false,
-          user: user,
+          userToken: user.getTokenObject(),
           type: 'already-confirmed'
         });
       } else if (user.emailConfirmationExpired()) {
         return res.json({
           success: false,
-          user: user,
+          userToken: user.getTokenObject(),
           type: 'expired-link'
         });
       }
       user.confirm(function(err, user) {
         if (maybeSendError(err)) return;
-        req.login(user, function(err) {
-          if (maybeSendError(err)) return;
-          res.json({
-            success: true,
-            user: user,
-            type: 'success'
-          });
+        res.json({
+          success: true,
+          userToken: user.getTokenObject(),
+          type: 'success'
         });
       });
     });
@@ -179,12 +168,8 @@ module.exports = function(app) {
           return ErrorController.sendErrorJson(res, 403, 'Username or Password incorrect.');
         }
 
-        req.logIn(user, function(err) {
-          if (err) return next(err);
-          user.updateLastLoginTime(function() {
-            var token = jwt.sign(user.getTokenObject(), 'h$|24X5.1g44P05#6Z8>');
-            return res.json({ success: true, token: token });
-          });
+        user.updateLastLoginTime(function() {
+          return sendToken(res, user);
         });
       })(req, res, next);
     });
@@ -231,7 +216,7 @@ module.exports = function(app) {
         });
       } else if (user.passwordResetUsed()) {
         return res.json({
-          user: user,
+          userToken: user.getTokenObject(),
           result: {
             success: false,
             type: 'already-confirmed'
@@ -239,7 +224,7 @@ module.exports = function(app) {
         });
       } else if (user.passwordResetExpired()) {
         return res.json({
-          user: user,
+          userToken: user.getTokenObject(),
           result: {
             success: false,
             type: 'expired-link'
@@ -255,7 +240,7 @@ module.exports = function(app) {
   app.get(prefix.auth + '/reset-password/:secret', function(req, res) {
     handlePasswordResetSecret(req, res, function(user) {
       res.json({
-        user: user,
+        userToken: user.getTokenObject(),
         result: {
           success: true,
           type: 'success'
@@ -270,7 +255,7 @@ module.exports = function(app) {
     handlePasswordResetSecret(req, res, function(user) {
       function sendInternalError() {
         return res.json({
-          user: user,
+          userToken: user.getTokenObject(),
           result: {
             success: false,
             type: 'internal-error',
@@ -281,7 +266,7 @@ module.exports = function(app) {
       user.sendResetPasswordEmail(req.body.newPassword, function(err, user) {
         if (err) return sendInternalError();
         res.json({
-          user: user,
+          userToken: user.getTokenObject(),
           result: {
             success: true,
             type: 'success'

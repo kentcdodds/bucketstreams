@@ -188,7 +188,7 @@ schema.methods.setupPasswordReset = function(callback) {
 function findBySecret(model, field, secret, extraInfoField, callback) {
   var query = {};
   query[field] = secret;
-  model.findOne(query, '_id name username email extraInfo.' + extraInfoField, callback);
+  model.findOne(query, '_id name username email emailConfirmed extraInfo.' + extraInfoField, callback);
 }
 
 schema.methods.setupEmailConfirmationResend = function(callback) {
@@ -328,31 +328,27 @@ schema.methods.connect = function(options, callback) {
   if (callback) this.save(callback);
 };
 
-function matchesHashtagRule(postHashtags, rule) {
-  var ruleTags = rule.constraints.hashtags;
-  var containsAny = !ruleTags.any || ruleTags.any.length === 0; // true if this is empty
+function matchesHashtagRule(postHashtags, ruleTags) {
+  var any = true;
+  var none = true;
 
-  if (!containsAny || (ruleTags.none && ruleTags.none.length > 0)) {
-    for (var i = 0; i < postHashtags.length; i++) {
-      if (ruleTags.none.length && _.contains(ruleTags.none, postHashtags[i])) {
-        return false;
-      }
-      if (ruleTags.any.length && _.contains(ruleTags.any, postHashtags[i])) {
-        containsAny = true;
-      }
-    }
+  if (!_.isEmpty(ruleTags.any)) {
+    any = _.any(postHashtags, function(tag) {
+      return _.contains(ruleTags.any, tag);
+    });
   }
 
-  if (!containsAny) {
-    return false;
+  if (!_.isEmpty(ruleTags.none)) {
+    none = !_.any(postHashtags, function(tag) {
+      return _.contains(ruleTags.none, tag);
+    });
   }
 
-  var containsAll = !ruleTags.any || ruleTags.all.length === 0; //true if this is empty
-  _.each(ruleTags.all, function(tag) {
-    containsAll = _.contains(postHashtags, tag);
-    return containsAll;
+  var all = _.all(ruleTags.all, function(tag) {
+    return _.contains(postHashtags, tag);
   });
-  return containsAll;
+
+  return any && all && none;
 }
 
 function getBucketsToPostTo(postHashtags, rules) {
@@ -373,7 +369,7 @@ function getBucketsToPostTo(postHashtags, rules) {
       ruleHasHashtags = all || any || none;
     }
 
-    if (!ruleHasHashtags || (ruleHasHashtags && postHasHashtags && matchesHashtagRule(postHashtags, rule))) {
+    if (!ruleHasHashtags || (ruleHasHashtags && postHasHashtags && matchesHashtagRule(postHashtags, rule.constraints.hashtags))) {
       bucketIds = _.union(bucketIds, rule.constraints.buckets.all);
     }
   });

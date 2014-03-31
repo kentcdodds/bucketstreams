@@ -8,7 +8,7 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
       streams: '=?',
       bucket: '=?',
       stream: '=?',
-      noThingSelectedText: '@'
+      noThingSelectedText: '=?'
     },
     link: function(scope, el, attrs) {
       var opening = null;
@@ -91,23 +91,28 @@ angular.module('bs.directives').directive('bsBucketStreamChooser', function($tim
       if (!scope.noThingSelectedText) {
         if (scope.listType === 'stream') {
           scope.noThingSelectedText = 'Subscribe this ' + scope.subscriptionType + ' to some streams...';
+        } else {
+          scope.noThingSelectedText = 'Choose buckets to put this post in...';
         }
       }
 
       scope.toggleFirstThing = function($event, search) {
         switch ($event.keyCode) {
           case 13:
-            var things = _.filter(scope.listItems, function(thing) { return !thing.isMain });
+            var things = _.reject(scope.listItems, function(thing) { return thing.isMain });
             things = $filter('filter')(things, search);
             if (things && things.length) {
               scope.toggleThing(things[0]);
               scope.search = '';
             }
+            $event.preventDefault();
             $event.stopPropagation();
             break;
           case 27:
             cancelTimeouts();
             scope.menuOpen = false;
+            $event.preventDefault();
+            $event.stopPropagation();
             break;
           case 38:
             // TODO arrow down in the list

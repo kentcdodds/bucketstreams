@@ -1,7 +1,7 @@
 <div class="bs-bucket-stream-chooser dropdown">
   <i class="fa fa-{{icon}} cursor-pointer bs-bucket-stream-chooser-icon" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()"></i>
   <div class="selected-things">
-    <span ng-hide="thingsSelected" class="cursor-pointer text-muted" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()">{{noThingSelectedText || 'Choose buckets to put this post in...'}}</span>
+    <span ng-hide="thingsSelected" class="cursor-pointer text-muted" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()">{{noThingSelectedText}}</span>
     <div class="display-inline" ng-repeat="thing in listItems | filter:{isSelected: true}" ng-mouseenter="onMouseEnter()" ng-mouseleave="onMouseLeave()" ng-click="onClick()">
       <span class="label label-{{labelTypes[$index % labelTypes.length]}} cursor-pointer"
             ng-click="toggleThing(thing)">{{thing.name}} &times;</span>

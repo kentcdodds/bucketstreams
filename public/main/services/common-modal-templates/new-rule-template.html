@@ -19,7 +19,7 @@
         <div ng-repeat="(key, bucketGroup) in buckets" ng-hide="!options.advanced && bucketGroup.advanced" class="margin-top-xsmall">
           <strong ng-show="options.advanced">{{bucketGroup.displayType}}</strong>
           <span class="text-muted">{{bucketGroup.description}}</span>
-          <bs-bucket-stream-chooser buckets="bucketGroup.list" no-thing-selected-text="Choose buckets"></bs-bucket-stream-chooser>
+          <bs-bucket-stream-chooser buckets="bucketGroup.list" no-thing-selected-text="'Choose buckets'" no-bubbles></bs-bucket-stream-chooser>
         </div>
       </div>
       <div>
