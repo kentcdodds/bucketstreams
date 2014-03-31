@@ -1,5 +1,5 @@
-angular.module('bs.common.models').factory('Stream', function($resource, _, Cacher) {
-  var Stream = $resource('/api/v1/rest/streams/:id', { id: '@_id' }, {
+angular.module('bs.common.models').factory('Stream', function($resource, BaseUrl, _, Cacher) {
+  var Stream = $resource(BaseUrl + '/api/v1/rest/streams/:id', { id: '@_id' }, {
     save: {
       method: 'POST',
       transformRequest: function(resource) {

@@ -2,11 +2,14 @@ doctype html
 html(lang="en")
 
   head
+    script.
+      window.BS = {};
+      window.BS.BASE_URL = '#{BASE_URL}';
+      window.BS.onDev = #{isDev};
     if isDev
       script.
         console.log('on development');
-        window.BS = {};
-  
+
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible", content="IE=edge,chrome=1")
     title= "Bucket Streams"

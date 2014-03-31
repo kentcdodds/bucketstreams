@@ -77,7 +77,8 @@ module.exports = (function() {
       topScripts: commonConfig.topScripts,
       appName: 'bs.frontPage',
       scripts: _.union(commonConfig.scripts, frontPageScripts),
-      isDev: isDev
+      isDev: isDev,
+      BASE_URL: process.env.BASE_URL
     },
     main: {
       name: 'main',
@@ -85,7 +86,8 @@ module.exports = (function() {
       topScripts: commonConfig.topScripts,
       appName: 'bs.web.app',
       scripts: _.union(commonConfig.scripts, mainScripts),
-      isDev: isDev
+      isDev: isDev,
+      BASE_URL: process.env.BASE_URL
     }
   };
 })();

@@ -57,7 +57,9 @@ module.exports = function(app) {
     app.use(cookieParser('oi%j**A^&d)N;!-{6"|'));
     app.use(morgan('dev'));
     app.locals.pretty = true;
+  }
 
+  if (/alpha|development/.test(process.env.NODE_ENV)) {
     //CORS middleware for development
     app.use(function(req, res, next) {
       res.header('Access-Control-Allow-Origin', '*');
@@ -66,7 +68,6 @@ module.exports = function(app) {
 
       next();
     });
-
   }
 
   app.disable('x-powered-by');

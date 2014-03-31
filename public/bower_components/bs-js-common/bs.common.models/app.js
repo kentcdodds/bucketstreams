@@ -1,6 +1,13 @@
 (function() {
   var app = angular.module('bs.common.models', ['ngResource']);
 
+  var baseUrl = '/';
+  if (window.BS && window.BS.BASE_URL) {
+    baseUrl = window.BS.BASE_URL;
+  }
+
+  app.constant('BaseUrl', baseUrl);
+
   app.config(function ($httpProvider) {
     $httpProvider.interceptors.push('AuthInterceptor');
   });
@@ -16,8 +23,8 @@
     ];
     Cacher.initialize(cacheables);
 
-    // If we're on dev, then we'll have the BS object so add a few thing to the global BS object for debugging.
-    if ($window.BS) {
+    // If we're on dev, then add a few things to the global BS object for debugging.
+    if ($window.BS && $window.BS.onDev) {
       $window.BS.Cacher = Cacher;
       $window.BS.model = {
         Bucket: Bucket,
