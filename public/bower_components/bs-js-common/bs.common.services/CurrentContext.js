@@ -1,4 +1,4 @@
-angular.module('bs.web.app').factory('CurrentContext', function($rootScope, _, $state) {
+angular.module('bs.common.services').factory('CurrentContext', function($rootScope, _, $state) {
   var context = contextGetterSetter($state.current.context);
   var contextChangeEvent = 'contextStateChange';
 

@@ -25,8 +25,12 @@ angular.module('bs.common.models').factory('CurrentUserInfoService', function($r
 
   // The service will have methods called getUser and refreshUser (as well as streams and buckets)
   var service = {
-    events: {}
+    events: {},
+    isAuthenticated: function() {
+      return !!localStorage.getItem('user-token');
+    }
   };
+  service.resolveAuthenticated = service.isAuthenticated;
   _.each(things, function(thing, thingName) {
     var capThingName = thingName.substring(0, 1).toUpperCase() + thingName.substring(1, thingName.length);
 
@@ -42,6 +46,24 @@ angular.module('bs.common.models').factory('CurrentUserInfoService', function($r
 
     service['refresh' + capThingName] = function() {
       return service['set' + capThingName](things[thingName].refresher());
+    };
+
+    service['resolve' + capThingName] = function() {
+      if (!service.isAuthenticated()) return null;
+
+      var thingVal = service['get' + capThingName]();
+      if (_.isEmpty(thingVal)) {
+        thingVal = service['refresh' + capThingName]();
+      }
+      if (thingVal.hasOwnProperty('$resolved')) {
+        if (thingVal.$resolved) {
+          return thingVal;
+        } else {
+          return thingVal.$promise;
+        }
+      } else {
+        return thingVal;
+      }
     };
 
     service.events[thingName] = things[thingName].event;

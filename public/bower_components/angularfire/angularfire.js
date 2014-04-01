@@ -5,7 +5,7 @@
 // as normal, except that the changes are also sent to all other clients
 // instead of just a server.
 //
-//      AngularFire 0.7.0
+//      AngularFire 0.7.1
 //      http://angularfire.com
 //      License: MIT
 
@@ -106,11 +106,19 @@
   // The `AngularFire` object that implements synchronization.
   AngularFire = function($q, $parse, $timeout, ref) {
     this._q = $q;
-    this._bound = false;
-    this._loaded = false;
     this._parse = $parse;
     this._timeout = $timeout;
 
+    // set to true when $bind is called, this tells us whether we need
+    // to synchronize a $scope variable during data change events
+    // and also whether we will need to $watch the variable for changes
+    // we can only $bind to a single instance at a time
+    this._bound = false;
+
+    // true after the initial loading event completes, see _getInitialValue()
+    this._loaded = false;
+
+    // stores the list of keys if our data is an object, see $getIndex()
     this._index = [];
 
     // An object storing handlers used for different events.
@@ -297,6 +305,8 @@
             }
           },
         applyLocally);
+        
+        return deferred.promise;
       };
 
       // Remove this object from the remote data. Calling this is the
@@ -351,14 +361,13 @@
       //              data has been loaded. 'object' will be an empty
       //              object ({}) until this function is called.
       object.$on = function(type, callback) {
-        // One exception if made for the 'loaded' event. If we already loaded
-        // data (perhaps because it was synced), simply fire the callback.
-        if (type == "loaded" && self._loaded) {
-          self._timeout(function() {
-            callback();
-          });
-        } else if (self._on.hasOwnProperty(type)) {
-          self._on[type].push(callback);
+        if( self._on.hasOwnProperty(type) ) {
+          self._sendInitEvent(type, callback);
+          // One exception if made for the 'loaded' event. If we already loaded
+          // data (perhaps because it was synced), simply fire the callback.
+          if (type !== "loaded" || !this._loaded) {
+            self._on[type].push(callback);
+          }
         } else {
           throw new Error("Invalid event type " + type + " specified");
         }
@@ -422,71 +431,11 @@
     },
 
     // This function is responsible for fetching the initial data for the
-    // given reference. If the data returned from the server is an object or
-    // array, we'll attach appropriate child event handlers. If the value is
-    // a primitive, we'll continue to watch for value changes.
+    // given reference and attaching appropriate child event handlers.
     _getInitialValue: function() {
       var self = this;
-      var gotInitialValue = function(snapshot) {
-        var value = snapshot.val();
-        if (value === null) {
-          // NULLs are handled specially. If there's a 3-way data binding
-          // on a local primitive, then update that, otherwise switch to object
-          // binding using child events.
-          if (self._bound) {
-            var local = self._parseObject(self._parse(self._name)(self._scope));
-            switch (typeof local) {
-            // Primitive defaults.
-            case "string":
-            case "undefined":
-              value = "";
-              break;
-            case "number":
-              value = 0;
-              break;
-            case "boolean":
-              value = false;
-              break;
-            }
-          }
-        }
 
-        // Call handlers for the "loaded" event.
-        if (self._loaded !== true) {
-          self._loaded = true;
-          self._broadcastEvent("loaded", value);
-        }
-
-        switch (typeof value) {
-        // For primitive values, simply update the object returned.
-        case "string":
-        case "number":
-        case "boolean":
-          self._updatePrimitive(value);
-          break;
-        // For arrays and objects, switch to child methods.
-        case "object":
-          self._fRef.off("value", gotInitialValue);
-          // Before switching to child methods, save priority for top node.
-          if (snapshot.getPriority() !== null) {
-            self._updateModel("$priority", snapshot.getPriority());
-          }
-          self._getChildValues();
-          break;
-        default:
-          throw new Error("Unexpected type from remote data " + typeof value);
-        }
-      };
-
-      self._fRef.on("value", gotInitialValue);
-    },
-
-    // This function attaches child events for object and array types.
-    _getChildValues: function() {
-      var self = this;
-      // Store the priority of the current property as "$priority". Changing
-      // the value of this property will also update the priority of the
-      // object (see _parseObject).
+      // store changes to children and update the index of keys appropriately
       function _processSnapshot(snapshot, prevChild) {
         var key = snapshot.name();
         var val = snapshot.val();
@@ -505,8 +454,10 @@
           self._index.unshift(key);
         }
 
-        // Update local model with priority field, if needed.
-        if (snapshot.getPriority() !== null) {
+        // Store the priority of the current property as "$priority". Changing
+        // the value of this property will also update the priority of the
+        // object (see _parseObject).
+        if (!_isPrimitive(val) && snapshot.getPriority() !== null) {
           val.$priority = snapshot.getPriority();
         }
         self._updateModel(key, val);
@@ -516,13 +467,7 @@
       function _handleAndBroadcastEvent(type, handler) {
         return function(snapshot, prevChild) {
           handler(snapshot, prevChild);
-          self._broadcastEvent(type, {
-            snapshot: {
-              name: snapshot.name(),
-              value: snapshot.val()
-            },
-            prevChild: prevChild
-          });
+          self._broadcastEvent(type, self._makeEventSnapshot(snapshot.name(), snapshot.val(), prevChild));
         };
       }
 
@@ -541,35 +486,110 @@
         // Remove from local model.
         self._updateModel(key, null);
       });
+
+      function _isPrimitive(v) {
+        return v === null || typeof(v) !== 'object';
+      }
+
+      function _initialLoad(value) {
+        // Call handlers for the "loaded" event.
+        self._loaded = true;
+        self._broadcastEvent("loaded", value);
+      }
+
+      function handleNullValues(value) {
+        // NULLs are handled specially. If there's a 3-way data binding
+        // on a local primitive, then update that, otherwise switch to object
+        // binding using child events.
+        if (self._bound && value === null) {
+          var local = self._parseObject(self._parse(self._name)(self._scope));
+          switch (typeof local) {
+          // Primitive defaults.
+          case "string":
+          case "undefined":
+            value = "";
+            break;
+          case "number":
+            value = 0;
+            break;
+          case "boolean":
+            value = false;
+            break;
+          }
+        }
+
+        return value;
+      }
+
+      // We handle primitives and objects here together. There is no harm in having
+      // child_* listeners attached; if the data suddenly changes between an object
+      // and a primitive, the child_added/removed events will fire, and our data here
+      // will get updated accordingly so we should be able to transition without issue
+      self._fRef.on('value', function(snap) {
+        // primitive handling
+        var value = snap.val();
+        if( _isPrimitive(value) ) {
+          value = handleNullValues(value);
+          self._updatePrimitive(value);
+        }
+        else {
+          delete self._object.$value;
+        }
+
+        // broadcast the value event
+        self._broadcastEvent('value', self._makeEventSnapshot(snap.name(), value));
+
+        // broadcast initial loaded event once data and indices are set up appropriately
+        if( !self._loaded ) {
+          _initialLoad(value);
+        }
+      });
     },
 
     // Called whenever there is a remote change. Applies them to the local
     // model for both explicit and implicit sync modes.
     _updateModel: function(key, value) {
-      var self = this;
-      self._timeout(function() {
-        if (value == null) {
-          delete self._object[key];
-        } else {
-          self._object[key] = value;
-        }
+      if (value == null) {
+        delete this._object[key];
+      } else {
+        this._object[key] = value;
+      }
 
-        // Call change handlers.
-        self._broadcastEvent("change", key);
+      // Call change handlers.
+      this._broadcastEvent("change", key);
 
-        // If there is an implicit binding, also update the local model.
-        if (!self._bound) {
-          return;
-        }
+      // update Angular by forcing a compile event
+      this._triggerModelUpdate();
+    },
 
-        var current = self._object;
-        var local = self._parse(self._name)(self._scope);
-        // If remote value matches local value, don't do anything, otherwise
-        // apply the change.
-        if (!angular.equals(current, local)) {
-          self._parse(self._name).assign(self._scope, angular.copy(current));
-        }
-      });
+    // this method triggers a self._timeout event, which forces Angular to run $apply()
+    // and compile the DOM content
+    _triggerModelUpdate: function() {
+      // since the timeout runs asynchronously, multiple updates could invoke this method
+      // before it is actually executed (this occurs when Firebase sends it's initial deluge of data
+      // back to our _getInitialValue() method, or when there are locally cached changes)
+      // We don't want to trigger it multiple times if we can help, creating multiple dirty checks
+      // and $apply operations, which are costly, so if one is already queued, we just wait for
+      // it to do its work.
+      if( !this._runningTimer ) {
+        var self = this;
+        this._runningTimer = self._timeout(function() {
+          self._runningTimer = null;
+
+          // If there is an implicit binding, also update the local model.
+          if (!self._bound) {
+            return;
+          }
+
+          var current = self._object;
+          var local = self._parse(self._name)(self._scope);
+          // If remote value matches local value, don't do anything, otherwise
+          // apply the change.
+          if (!angular.equals(current, local)) {
+            self._parse(self._name).assign(self._scope, angular.copy(current));
+          }
+        });
+      }
     },
 
     // Called whenever there is a remote change for a primitive value.
@@ -600,6 +620,9 @@
     // If event handlers for a specified event were attached, call them.
     _broadcastEvent: function(evt, param) {
       var cbs = this._on[evt] || [];
+      if( evt === 'loaded' ) {
+        this._on[evt] = []; // release memory
+      }
       var self = this;
 
       function _wrapTimeout(cb, param) {
@@ -615,6 +638,58 @@
           }
         }
       }
+    },
+
+    // triggers an initial event for loaded, value, and child_added events (which get immediate feedback)
+    _sendInitEvent: function(evt, callback) {
+      var self = this;
+      if( self._loaded && ['child_added', 'loaded', 'value'].indexOf(evt) > -1 ) {
+        self._timeout(function() {
+          var parsedValue = angular.isObject(self._object)? self._parseObject(self._object) : self._object;
+          switch(evt) {
+          case 'loaded':
+            callback(parsedValue);
+            break;
+          case 'value':
+            callback(self._makeEventSnapshot(self._fRef.name(), parsedValue, null));
+            break;
+          case 'child_added':
+            self._iterateChildren(parsedValue, function(name, val, prev) {
+              callback(self._makeEventSnapshot(name, val, prev));
+            });
+            break;
+          default: // not reachable
+          }
+        });
+      }
+    },
+
+    // assuming data is an object, this method will iterate all
+    // child keys and invoke callback with (key, value, prevChild)
+    _iterateChildren: function(data, callback) {
+      if( this._loaded && angular.isObject(data) ) {
+        var prev = null;
+        for(var key in data) {
+          if( data.hasOwnProperty(key) ) {
+            callback(key, data[key], prev);
+            prev = key;
+          }
+        }
+      }
+    },
+
+    // creates a snapshot object compatible with _broadcastEvent notifications
+    _makeEventSnapshot: function(key, value, prevChild) {
+      if( angular.isUndefined(prevChild) ) {
+        prevChild = null;
+      }
+      return {
+        snapshot: {
+          name: key,
+          value: value
+        },
+        prevChild: prevChild
+      };
     },
 
     // This function creates a 3-way binding between the provided scope model

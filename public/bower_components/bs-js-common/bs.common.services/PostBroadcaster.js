@@ -1,4 +1,4 @@
-angular.module('bs.web.app').factory('PostBroadcaster', function($rootScope) {
+angular.module('bs.common.services').factory('PostBroadcaster', function($rootScope) {
   var newPost = 'createdNewPost';
   var removedPost = 'removedPost';
   

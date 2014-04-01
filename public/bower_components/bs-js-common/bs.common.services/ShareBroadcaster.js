@@ -1,4 +1,4 @@
-angular.module('bs.web.app').factory('ShareBroadcaster', function($rootScope) {
+angular.module('bs.common.services').factory('ShareBroadcaster', function($rootScope) {
   var newShare = 'createdNewShare';
   var removedShare = 'removedShare';
   

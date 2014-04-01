@@ -88,11 +88,15 @@ module.exports = function(app) {
 
   app.post(prefix.auth + '/confirm-email/resend', function(req, res) {
     if (req.isAuthenticated()) {
-      sendEmail(req.user);
+      req.user.deTokenize(function(err, user) {
+        sendEmail(user);
+      });
     } else if (req.body.email) {
       User.getUserByUsernameOrEmail(req.body.email, function(err, user) {
         if (err) return ErrorController.sendErrorJson(res, 500, err.message);
-        sendEmail(user);
+        user.deTokenize(function(err, user) {
+          sendEmail(user);
+        });
       });
     }
     
