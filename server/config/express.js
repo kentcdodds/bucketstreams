@@ -90,7 +90,7 @@ module.exports = function(app) {
       res.end('Unauthorized');
     }
 
-    function checkBasicAuth(authorization, next) {
+    function checkBasicAuth(authorization, res, next) {
       var token = authorization.split(/\s+/).pop() || '';
       var auth = new Buffer(token, 'base64').toString();
       var parts = auth.split(/:/);
@@ -111,7 +111,7 @@ module.exports = function(app) {
       if (!authorization) return askForAuth(res, 'Please authenticate');
 
       validateJwt(req, res, function(err) {
-        if (err) return checkBasicAuth(authorization, next);
+        if (err) return checkBasicAuth(authorization, res, next);
         next();
       });
     });
