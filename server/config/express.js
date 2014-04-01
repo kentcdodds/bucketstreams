@@ -20,16 +20,25 @@ module.exports = function(app) {
 
   // Setup express
   var anonymousUrls = [
+    /\/api\/v1\/util\/data\/(\w)*/,
     /\/api\/v1\/auth\/confirm-email\/(\w)*/,
     /\/api\/v1\/auth\/reset-password\/(\w)*/,
     /\/api\/v1\/auth\/login/,
     /\/api\/v1\/auth\/register/
   ];
+  var anonymousGets = [
+    /\/api\/v1\/rest\/(\w)*/
+  ];
   var validateJwt = expressJwt({secret: 'h$|24X5.1g44P05#6Z8>'});
   app.use('/api', function (req, res, next) {
-    var isAnonymousUrl = anonymousUrls.some(function (regex) {
+    var allowed = anonymousUrls;
+    if (req.method === 'GET') {
+     allowed = anonymousGets.concat(allowed);
+    }
+    var isAnonymousUrl = allowed.some(function (regex) {
       return req.originalUrl.match(regex);
     });
+
     if (isAnonymousUrl) return next();
     validateJwt(req, res, next);
   });
@@ -93,6 +102,8 @@ module.exports = function(app) {
     function checkBasicAuth(authorization, res, next) {
       var token = authorization.split(/\s+/).pop() || '';
       var auth = new Buffer(token, 'base64').toString();
+      if (!auth) return askForAuth(res, 'Please authenticate');
+
       var parts = auth.split(/:/);
       var username = parts[0];
       var password = parts[1];
@@ -104,9 +115,8 @@ module.exports = function(app) {
     }
 
     app.use(function (req, res, next) {
-      if (/options/i.test(req.method)) {
-        next();
-      }
+      if (/options/i.test(req.method)) return next();
+
       var authorization = req.headers.authorization;
       if (!authorization) return askForAuth(res, 'Please authenticate');
 

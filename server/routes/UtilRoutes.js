@@ -46,20 +46,6 @@ module.exports = function(app) {
   });
 
   /**
-   * Gets the posts in the stream with the given id
-   * @param id - route - The id of the stream to get posts for
-   * @param offset - query - The offset of posts to start at - NOT YET IMPLEMENTED
-   * @param limit - query - The number of posts to return - NOT YET IMPLEMENTED
-   */
-  app.get(prefixes.util + '/streams/:id/posts', function(req, res, next) {
-    StreamSchema.getPostsAndSharesById(req.params.id, function(err, posts) {
-      if (err) return ErrorController.sendErrorJson(res, 500, 'Problem getting stream posts: ' + err.message);
-      res.json(200, posts);
-    });
-  });
-
-
-  /**
    * Helper function for loading a stream or bucket page.
    * @param streamName - query - The name of the stream/bucket
    * @param username - query - The name of the user who owns the stream/bucket

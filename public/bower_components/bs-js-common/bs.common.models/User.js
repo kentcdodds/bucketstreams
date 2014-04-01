@@ -38,7 +38,6 @@ angular.module('bs.common.models').factory('User', function($resource, $http, $q
 
   User.logout = function() {
     $window.localStorage.removeItem('user-token');
-    $window.location.href = '/';
   };
 
   User.prototype.logout = function() {

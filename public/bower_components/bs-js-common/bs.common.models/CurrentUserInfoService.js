@@ -34,14 +34,18 @@ angular.module('bs.common.models').factory('CurrentUserInfoService', function($r
       return things[thingName].val;
     };
 
-    service['refresh' + capThingName] = function() {
-      things[thingName].val = things[thingName].refresher();
+    service['set' + capThingName] = function(newVal) {
+      things[thingName].val = newVal;
       $rootScope.$broadcast(things[thingName].event, things[thingName].val);
       return things[thingName].val;
     };
 
+    service['refresh' + capThingName] = function() {
+      return service['set' + capThingName](things[thingName].refresher());
+    };
+
     service.events[thingName] = things[thingName].event;
   });
-  
+
   return service;
 });
