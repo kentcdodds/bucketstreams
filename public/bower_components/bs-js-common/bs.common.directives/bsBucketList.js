@@ -1,7 +1,7 @@
-angular.module('bs.web.directives').directive('bsBucketList', function($q, UtilFunctions) {
+angular.module('bs.common.directives').directive('bsBucketList', function($q, UtilFunctions) {
   return {
     restrict: 'A',
-    templateUrl: '/components/directives/post/bsBucketList.html',
+    templateUrl: 'templates/bsBucketList.html',
     scope: {
       buckets: '=bsBucketList',
       maxChars: '@'

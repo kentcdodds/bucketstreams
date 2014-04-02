@@ -1,7 +1,7 @@
-angular.module('bs.web.app').directive('bsPostStream', function() {
+angular.module('bs.common.app').directive('bsPostStream', function() {
   return {
     restrict: 'A',
-    templateUrl: '/main/bs-post-stream/bsPostStream.html',
+    templateUrl: 'templates/bsPostStream.html',
     scope: {
       postsAndShares: '=bsPostStream'
     },

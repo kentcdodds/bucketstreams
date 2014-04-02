@@ -16,6 +16,8 @@ module.exports = function(app) {
   app.get('*', function(req, res) {
     logger.info('catch all: ' + JSON.stringify(req.params, null, 2));
     logger.info('sending main');
-    res.render('main', config.main);
+    config.getMain(function(main) {
+      res.render('main', main);
+    });
   });
 };

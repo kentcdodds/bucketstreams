@@ -1,7 +1,7 @@
 angular.module('bs.web.directives').directive('bsBucketStreamChooser', function($timeout, $filter, _, CommonModalService, AlertService) {
   return {
     restrict: 'E',
-    templateUrl: '/components/directives/bs-bucket-stream-chooser/bsBucketStreamChooser.html',
+    templateUrl: 'templates/bsBucketStreamChooser.html',
     replace: true,
     scope: {
       buckets: '=?',

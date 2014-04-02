@@ -1,4 +1,4 @@
-angular.module('bs.web.directives').directive('bsNewPost', function(Post, _, AlertService, $document, PostBroadcaster) {
+angular.module('bs.common.directives').directive('bsNewPost', function(Post, _, $document) {
   var placeholders = [
     'What are you thinking?',
     'Anything cool happen today?',
@@ -10,7 +10,7 @@ angular.module('bs.web.directives').directive('bsNewPost', function(Post, _, Ale
 
   return {
     restrict: 'E',
-    templateUrl: '/components/directives/post/bsNewPost.html',
+    templateUrl: 'templates/bsNewPost.html',
     replace: true,
     scope: {
       user: '=',
@@ -30,17 +30,16 @@ angular.module('bs.web.directives').directive('bsNewPost', function(Post, _, Ale
             return bucket.isMain || bucket.selected()
           }), '_id')
         });
-        PostBroadcaster.broadcastNewPost(post);
+        scope.$emit('post.created.start', post);
         post.$save(function(){
+          scope.$emit('post.created.success', post);
           scope.onSave && scope.onSave({post: post});
           resetState();
-          AlertService.success('Post saved');
           if ($document[0].activeElement === postButton[0]) {
             textarea[0].focus();
           }
         }, function(err) {
-          PostBroadcaster.broadcastRemovedPost(post);
-          AlertService.error(err.message);
+          scope.$emit('post.created.error', post, err);
         });
       };
 

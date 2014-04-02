@@ -1,7 +1,7 @@
 angular.module('bs.web.directives').directive('bsProfilePictureUpload', function(CurrentUserInfoService, $timeout, $upload, AlertService, $state) {
   return {
     restrict: 'E',
-    templateUrl: '/components/directives/bs-profile-picture-upload/bsProfilePictureUpload.html',
+    templateUrl: 'templates/bsProfilePictureUpload.html',
     scope: {},
     link: function(scope, el, attrs) {
       scope.currentUser = CurrentUserInfoService.getUser();

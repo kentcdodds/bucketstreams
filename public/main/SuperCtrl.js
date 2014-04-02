@@ -149,6 +149,9 @@ angular.module('bs.web.app').controller('SuperCtrl', function($scope, _, $state,
     CommonModalService.createOrEditPost($scope.currentUser, $scope.userBuckets);
   };
 
+  $scope.$on('share.new', function(event, post) {
+    CommonModalService.sharePost(post);
+  });
 
   // initialize lamp
   $scope.lamp = {

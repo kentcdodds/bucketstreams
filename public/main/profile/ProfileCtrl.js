@@ -7,5 +7,4 @@ angular.module('bs.web.app').controller('ProfileCtrl', function($scope, profileU
     posts: mainBucketData.posts || [],
     shares: mainBucketData.shares || []
   };
-  $scope.onShare = CommonModalService.sharePost;
 });

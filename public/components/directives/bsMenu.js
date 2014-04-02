@@ -13,7 +13,7 @@ angular.module('bs.web.directives').directive('bsMenu', function($document, $tim
 
   return {
     restrict: 'A',
-    templateUrl: '/components/directives/menu/bsMenu.html',
+    templateUrl: 'templates/bsMenu.html',
     scope: {
       bsMenu: '=bsMenu'
     },

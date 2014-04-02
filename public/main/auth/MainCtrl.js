@@ -1,4 +1,4 @@
-angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, $http, mainStreamData, Stream, Bucket, Post, User, Cacher, CurrentUserInfoService, CommonModalService, AlertService, CurrentContext, PostBroadcaster, ShareBroadcaster) {
+angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, $http, mainStreamData, Stream, Bucket, Post, User, Cacher, CurrentUserInfoService, CommonModalService, AlertService, CurrentContext) {
   if (!$scope.isAuthenticated) {
     return;
   }
@@ -52,24 +52,21 @@ angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, 
     maybeOpenEmailConfirmationModal();
   }
 
-
-  $scope.$on(PostBroadcaster.removedPostEvent, function(event, post) {
+  $scope.$on('post.remove.success', function(event, post) {
     _.remove($scope.postsAndShares.posts, {_id: post._id});
   });
 
-  $scope.$on(PostBroadcaster.newPostEvent, function(event, post) {
+  $scope.$on('post.created.success', function(event, post) {
     $scope.postsAndShares.posts.unshift(post);
   });
 
-  $scope.$on(ShareBroadcaster.removedShareEvent, function(event, share) {
+  $scope.$on('post.remove.success', function(event, share) {
     _.remove($scope.postsAndShares.shares, {_id: share._id});
   });
 
-  $scope.$on(ShareBroadcaster.newShareEvent, function(event, share) {
+  $scope.$on('share.created.success', function(event, share) {
     $scope.postsAndShares.shares.unshift(share);
   });
-  
-  $scope.people = User.dicsoverUsers();
 
-  $scope.onShare = CommonModalService.sharePost;
+  $scope.people = User.dicsoverUsers();
 });

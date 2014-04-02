@@ -1,6 +1,4 @@
-angular.module('bs.web.app').factory('CommonModalService', function($modal, CurrentUserInfoService, Bucket, Stream, AlertService, Cacher, ShareBroadcaster) {
-
-
+angular.module('bs.web.app').factory('CommonModalService', function($rootScope, $modal, CurrentUserInfoService, Bucket, Stream, AlertService, Cacher) {
 
   var CommonModalService = {
     createOrEditBucketStream: function(type, model) {
@@ -127,21 +125,21 @@ angular.module('bs.web.app').factory('CommonModalService', function($modal, Curr
             },
             buckets: []
           });
-          $scope.onShare = function() {
+          $scope.onSubmit = function() {
             $scope.share.buckets = _.pluck(_.filter($scope.buckets, function(bucket) {
               var ret = bucket.isMain || bucket.selected();
               bucket.selected(false);
               return ret;
             }), '_id');
             Cacher.shareCache.putById($scope.share);
-            ShareBroadcaster.broadcastNewShare($scope.share);
+            $rootScope.$broadcast('share.created.start', $scope.share);
             $scope.share.$save(function() {
+              $rootScope.$broadcast('share.created.success', $scope.share);
               $scope.post.shares++;
               $scope.post.$save();
-              AlertService.success('Post shared :)');
               $scope.$close($scope.share);
-            }, function() {
-              ShareBroadcaster.broadcastRemovedShare($scope.share);
+            }, function(err) {
+              $rootScope.$broadcast('share.created.error', $scope.share, err);
               Cacher.shareCache.removeById($scope.share);
             });
           }

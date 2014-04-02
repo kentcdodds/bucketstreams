@@ -1,7 +1,17 @@
-angular.module('bs.web.directives').directive('bsPost', function(CurrentUserInfoService, _, $q, Cacher, User, Comment, Share, PostBroadcaster, ShareBroadcaster, AlertService, CommonModalService, UtilFunctions) {
+/*
+ * This directive emits the following events:
+ *  - share.remove.start
+ *  - share.remove.success
+ *  - share.remove.error
+ *  - post.remove.start
+ *  - post.remove.success
+ *  - post.remove.error
+ *  - share.new
+ */
+angular.module('bs.common.directives').directive('bsPost', function(CurrentUserInfoService, _, $q, Cacher, User, Comment, Share, UtilFunctions) {
   return {
     restrict: 'A',
-    templateUrl: '/components/directives/post/bsPost.html',
+    templateUrl: 'templates/bsPost.html',
     replace: true,
     scope: {
       post: '=bsPost',
@@ -65,26 +75,24 @@ angular.module('bs.web.directives').directive('bsPost', function(CurrentUserInfo
 
       scope.removePost = function() {
         if (scope.isShare) {
-          ShareBroadcaster.broadcastRemovedShare(scope.share);
+          scope.$emit('share.remove.start', scope.share);
           scope.share.$remove(function() {
-            AlertService.info('Post removed');
+            scope.$emit('share.remove.success', scope.share);
           }, function(err) {
-            ShareBroadcaster.broadcastNewShare(scope.share);
-            AlertService.error(err.message);
+            scope.$emit('share.remove.error', scope.share, err);
           });
         } else {
-          PostBroadcaster.broadcastRemovedPost(scope.post);
+          scope.$emit('post.remove.start', scope.post);
           scope.post.$remove(function() {
-            AlertService.info('Post removed');
+            scope.$emit('post.remove.success', scope.post);
           }, function(err) {
-            PostBroadcaster.broadcastNewPost(scope.post);
-            AlertService.error(err.message);
+            scope.$emit('post.remove.error', scope.post, err);
           });
         }
       };
 
-      scope.sharePost = function() {
-        CommonModalService.sharePost(scope.post);
+      scope.sharePost = function(post) {
+        scope.$emit('share.new', post);
       };
 
       scope.toggleFavorite = function() {
@@ -113,7 +121,6 @@ angular.module('bs.web.directives').directive('bsPost', function(CurrentUserInfo
         scope.scrollComments = true;
         scope.commentToAdd = '';
       };
-
 
       scope.showOrHideComment = function(comment) {
         comment.showDelete = comment.author.username === scope.currentUser.username;

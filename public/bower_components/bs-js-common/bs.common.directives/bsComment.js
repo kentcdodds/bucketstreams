@@ -1,7 +1,7 @@
-angular.module('bs.web.directives').directive('bsComment', function(CurrentUserInfoService) {
+angular.module('bs.common.directives').directive('bsComment', function(CurrentUserInfoService) {
   return {
     restrict: 'A',
-    templateUrl: '/components/directives/post/bsComment.html',
+    templateUrl: 'templates/bsComment.html',
     replace: true,
     scope: {
       comment: '=bsComment',

@@ -1,14 +1,21 @@
 var fs = require('fs');
 var _ = require('lodash-node');
 var glob = require('glob');
+var jade = require('jade');
+var async = require('async');
 
-module.exports = (function() {
+var main = null;
+var frontPage = null;
+
+function setupConfig(configDone) {
 
   function getFilesInPath(pattern, removePrefix) {
     var files = glob.sync(pattern);
-    _.each(files, function(file, num) {
-      files[num] = file.substring(removePrefix.length);
-    });
+    if (removePrefix) {
+      _.each(files, function(file, num) {
+        files[num] = file.substring(removePrefix.length);
+      });
+    }
     return files;
   }
 
@@ -70,24 +77,79 @@ module.exports = (function() {
 
   var isDev = /development|local/.test(process.env.NODE_ENV);
 
-  return {
-    frontPage: {
-      name: 'front-page',
-      stylesheets: commonConfig.stylesheets,
-      topScripts: commonConfig.topScripts,
-      appName: 'bs.frontPage',
-      scripts: _.union(commonConfig.scripts, frontPageScripts),
-      isDev: isDev,
-      BASE_URL: process.env.BASE_URL
-    },
-    main: {
-      name: 'main',
-      stylesheets: commonConfig.stylesheets,
-      topScripts: commonConfig.topScripts,
-      appName: 'bs.web.app',
-      scripts: _.union(commonConfig.scripts, mainScripts),
-      isDev: isDev,
-      BASE_URL: process.env.BASE_URL
-    }
+  var frontPageStuff = {
+    name: 'front-page',
+    stylesheets: commonConfig.stylesheets,
+    topScripts: commonConfig.topScripts,
+    appName: 'bs.frontPage',
+    scripts: _.union(commonConfig.scripts, frontPageScripts),
+    templates: [],
+    isDev: isDev,
+    BASE_URL: process.env.BASE_URL
   };
-})();
+  var mainStuff = {
+    name: 'main',
+    stylesheets: commonConfig.stylesheets,
+    topScripts: commonConfig.topScripts,
+    appName: 'bs.web.app',
+    scripts: _.union(commonConfig.scripts, mainScripts),
+    templates: [],
+    isDev: isDev,
+    BASE_URL: process.env.BASE_URL
+  };
+
+
+  function addTemplates(pattern, fn, done) {
+    var templatesPrefix = './server/views/';
+    var templateFiles = getFilesInPath(templatesPrefix + 'templates/' + pattern);
+    async.map(templateFiles, fn, function(err, templateHtmls) {
+      var templates = [];
+      _.each(templateHtmls, function(templateHtml, index) {
+        var id = templateFiles[index].substring(templatesPrefix.length);
+        id = id.substring(0, id.length - 4); // get rid of jade
+        id += 'html';
+        templates.push({
+          html: templateHtml,
+          id: id
+        });
+      });
+      mainStuff.templates = _.union(mainStuff.templates, templates);
+      frontPageStuff.templates = _.union(frontPageStuff.templates = templates);
+      done();
+    });
+  }
+
+  async.parallel(
+    [
+      function(done) {
+        addTemplates('*.jade', jade.renderFile, done);
+      },
+      function(done) {
+        addTemplates('*.html', fs.readFile, done);
+      }
+    ], function() {
+      main = mainStuff;
+      frontPage = frontPageStuff;
+      configDone();
+    });
+}
+module.exports = {
+  getMain: function(callback) {
+    if (!main) {
+      setupConfig(function() {
+        callback(main);
+      });
+    } else {
+      callback(main);
+    }
+  },
+  getFrontPage: function(callback) {
+    if (!frontPage) {
+      setupConfig(function() {
+        callback(frontPage);
+      });
+    } else {
+      callback(frontPage);
+    }
+  }
+};
