@@ -88,16 +88,18 @@ module.exports = function(app) {
       var deferred = Q.defer();
       responseBuilder.thing.getPostsAndShares(function(err, postsAndShares) {
         if (err) return deferred.reject(err);
-        
+        var allPosts = _.union(postsAndShares.posts, postsAndShares.sharePosts);
+        var shares = postsAndShares.shares;
+
         responseBuilder.posts = postsAndShares.posts;
-        responseBuilder.postIds = _.pluck(postsAndShares.posts, '_id');
-        responseBuilder.userIds = uniqueIds(responseBuilder.userIds, _.pluck(postsAndShares.posts, 'author'));
-        responseBuilder.bucketIds = uniqueIds(responseBuilder.bucketIds, _.flatten(_.pluck(postsAndShares.posts, 'buckets')));
-        
-        responseBuilder.shares = postsAndShares.shares;
-        responseBuilder.shareIds = _.pluck(postsAndShares.shares, '_id');
-        responseBuilder.userIds = uniqueIds(responseBuilder.userIds, _.pluck(postsAndShares.shares, 'author'));
-        responseBuilder.bucketIds = uniqueIds(responseBuilder.bucketIds, _.flatten(_.pluck(postsAndShares.shares, 'buckets')));
+        responseBuilder.postIds = _.pluck(allPosts, '_id');
+        responseBuilder.userIds = uniqueIds(responseBuilder.userIds, _.pluck(allPosts, 'author'));
+        responseBuilder.bucketIds = uniqueIds(responseBuilder.bucketIds, _.flatten(_.pluck(allPosts, 'buckets')));
+
+        responseBuilder.shares = shares;
+        responseBuilder.shareIds = _.pluck(shares, '_id');
+        responseBuilder.userIds = uniqueIds(responseBuilder.userIds, _.pluck(shares, 'author'));
+        responseBuilder.bucketIds = uniqueIds(responseBuilder.bucketIds, _.flatten(_.pluck(shares, 'buckets')));
         
         deferred.resolve(responseBuilder);
       });
@@ -170,16 +172,17 @@ module.exports = function(app) {
     }
 
     // return result object
-    function returnResult(responseBuilder) {
+    function returnResult(rb) {
       res.json({
-        type: responseBuilder.type,
-        thing: responseBuilder.thing,
-        users: responseBuilder.users,
-        buckets: responseBuilder.buckets,
-        streams: responseBuilder.streams,
-        posts: responseBuilder.posts,
-        shares: responseBuilder.shares,
-        comments: responseBuilder.comments
+        type: rb.type,
+        thing: rb.thing,
+        users: rb.users,
+        buckets: rb.buckets,
+        streams: rb.streams,
+        posts: rb.posts,
+        shares: rb.shares,
+        comments: rb.comments,
+        sharePosts: rb.sharePosts
       });
     }
     

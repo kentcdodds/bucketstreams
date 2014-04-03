@@ -1,4 +1,4 @@
-angular.module('bs.web.app').controller('ProfileCtrl', function($scope, profileUser, buckets, streams, mainBucketData, CommonModalService) {
+angular.module('bs.web.app').controller('ProfileCtrl', function($scope, profileUser, buckets, streams, mainBucketData) {
   $scope.profileUser = profileUser;
   $scope.buckets = buckets;
   $scope.streams = streams;

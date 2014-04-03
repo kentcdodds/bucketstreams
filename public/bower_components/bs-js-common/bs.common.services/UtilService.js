@@ -28,7 +28,8 @@ angular.module('bs.common.services').factory('UtilService', function(_, Cacher, 
           { propName: 'stream', model: Stream },
           { propName: 'post', model: Post },
           { propName: 'share', model: Share },
-          { propName: 'comment', model: Comment }
+          { propName: 'comment', model: Comment },
+          { propName: 'sharePosts', model: Post }
         ];
         _.each(modelGroups, function(group) {
           var cache = Cacher[group.propName + 'Cache'];

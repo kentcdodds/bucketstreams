@@ -44,7 +44,8 @@ schema.methods.getPostsAndShares = function(callback) {
     if (err) return callback(err);
     callback(null, {
       posts: result.posts,
-      shares: result.shares
+      shares: result.shares,
+      sharePosts: result.sharePosts
     });
   });
 };

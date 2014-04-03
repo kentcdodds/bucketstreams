@@ -116,6 +116,7 @@ schema.methods.getPostsAndShares = function(callback) {
       if (err) return deferred.reject(err);
       responseBuilder.posts = uniqueById(responseBuilder.posts, result.posts);
       responseBuilder.shares = uniqueById(responseBuilder.shares, result.shares);
+      responseBuilder.sharePosts = uniqueById(responseBuilder.sharePosts, result.sharePosts);
       deferred.resolve(responseBuilder);
     });
     return deferred.promise;
@@ -136,7 +137,8 @@ schema.methods.getPostsAndShares = function(callback) {
   function returnResult(responseBuilder) {
     callback(null, {
       posts: responseBuilder.posts,
-      shares: responseBuilder.shares
+      shares: responseBuilder.shares,
+      sharePosts: responseBuilder.sharePosts
     });
   }
   
@@ -161,6 +163,7 @@ schema.methods.getPostsAndShares = function(callback) {
         if (err) return deferred.reject(err);
         responseBuilder.posts = uniqueById(responseBuilder.posts, result.posts);
         responseBuilder.shares = uniqueById(responseBuilder.shares, result.shares);
+        responseBuilder.sharePosts = uniqueById(responseBuilder.sharePosts, result.sharePosts);
         deferred.resolve(responseBuilder);
       });
       return deferred.promise;

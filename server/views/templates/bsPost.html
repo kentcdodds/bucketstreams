@@ -1,18 +1,20 @@
-<div class="post panel panel-default hover-parent-5">
+<div class="post panel panel-default">
   <div class="post-meta panel-heading">
     <bs-profile-picture user="author" class="post-author-photo" size="60"></bs-profile-picture>
     <div class="post-info">
-      <div class="post-options auth-only hover-only-5" ng-if="!postOnly">
-        <div class="dropdown">
+      <div class="post-options auth-only" ng-if="!postOnly">
+        <a ng-click="sharePost(post)" fa-icon="share"> {{post.shares.length || ''}}</a>
+        <a ng-click="toggleFavorite()" fa-icon="star" ng-class="{'is-favorite': currentUserHasFavorited}"> {{post.favorites.length || ''}}</a>
+        <span class="dropdown">
           <a class="dropdown-toggle">
-            <i class="fa fa-chevron-down"></i>
+            <i class="fa fa-cog"></i>
           </a>
           <ul class="dropdown-menu pull-right">
             <li><a ng-if="isOwner" fa-icon="edit" ng-click="edit()"> Edit</a></li>
             <li><a ng-if="isOwner" fa-icon="trash-o color-red" ng-click="removePost()"> Delete</a></li>
             <li><a ng-if="!isOwner">There aren't any options here for you... Yet...</a></li>
           </ul>
-        </div>
+        </span>
       </div>
       <div>
         <a ng-href="/{{author.username}}">
@@ -41,20 +43,14 @@
     <div ng-hide="editing" ng-class="{'font-size-xsmall': isShare}">{{mainContent}}</div>
     <div ng-show="editing">
       <textarea ng-model="newContent" class="form-control"></textarea>
+      <div class="edit-buttons">
+        <button class="btn btn-default btn-xs pull-left" ng-click="editing=false">Cancel</button>
+        <button class="btn btn-primary btn-xs pull-right" ng-click="updatePostContent(newContent)">Save</button>
+      </div>
     </div>
     <div ng-if="isShare">
       <hr class="margin-top-xxsmall margin-bottom-xxsmall" />
       <div>{{post.content.textString}}</div>
-    </div>
-  </div>
-  <div class="panel-footer auth-only" ng-hide="postOnly">
-    <div class="share-post" ng-hide="editing">
-      <a ng-click="sharePost(post)" fa-icon="share"> {{post.shares.length || ''}}</a>
-      <a ng-click="toggleFavorite()" fa-icon="star" ng-class="{'is-favorite': currentUserHasFavorited}"> {{post.favorites.length || ''}}</a>
-    </div>
-    <div class="edit-buttons" ng-show="editing">
-      <button class="btn btn-default btn-xs pull-left" ng-click="editing=false">Cancel</button>
-      <button class="btn btn-primary btn-xs pull-right" ng-click="updatePostContent(newContent)">Save</button>
     </div>
   </div>
   <div class="comments-container" ng-show="(currentUser || comments.length) && !postOnly">
