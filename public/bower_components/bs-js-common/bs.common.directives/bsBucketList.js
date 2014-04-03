@@ -11,9 +11,9 @@ angular.module('bs.common.directives').directive('bsBucketList', function($q, Ut
       scope.bucketPageParams = [];
       var totalChars = 0;
       function loadVisibleBuckets() {
-        var mainlessBuckets = _.filter(scope.buckets, function(item) {
-          return !item.isMain;
-        });
+        if (!scope.buckets) return;
+
+        var mainlessBuckets = _.reject(scope.buckets, 'isMain');
         _.each(mainlessBuckets, function(bucket, index) {
           scope.bucketPageParams[index] = bucket.getPageParams();
           totalChars += bucket.name.length + 2; // + 2 for the comma and space
@@ -21,6 +21,13 @@ angular.module('bs.common.directives').directive('bsBucketList', function($q, Ut
             scope.visibleBuckets.push(bucket);
           }
         });
+        var mainBucket = _.find(scope.buckets, function(item) {
+          return item.isMain;
+        });
+        if (mainBucket) {
+          scope.visibleBuckets.unshift(mainBucket);
+          scope.bucketPageParams.unshift(mainBucket.getPageParams());
+        }
       }
       if (!_.isEmpty(scope.maxChars)) {
         scope.$watch('buckets', function(buckets) {

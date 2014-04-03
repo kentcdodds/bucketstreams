@@ -1,6 +1,5 @@
 
 var models = require('../model').models;
-var schemas = require('../model').schemas;
 var ref = require('../model/ref');
 var _ = require('lodash-node');
 var async = require('async');
@@ -13,7 +12,6 @@ var Post = models[ref.post];
 var Share = models[ref.share];
 var Comment = models[ref.comment];
 
-var StreamSchema = schemas[ref.stream];
 var prefixes = require('./prefixes');
 var RouteHelper = require('./RouteHelper');
 

@@ -8,15 +8,9 @@
             <i class="fa fa-chevron-down"></i>
           </a>
           <ul class="dropdown-menu pull-right">
-            <li>
-              <a ng-if="isOwner" fa-icon="edit" ng-click="edit()"> Edit</a>
-            </li>
-            <li>
-              <a ng-if="isOwner" fa-icon="trash-o color-red" ng-click="removePost()"> Delete</a>
-            </li>
-            <li>
-              <a ng-if="!isOwner">There aren't any options here for you... Yet...</a>
-            </li>
+            <li><a ng-if="isOwner" fa-icon="edit" ng-click="edit()"> Edit</a></li>
+            <li><a ng-if="isOwner" fa-icon="trash-o color-red" ng-click="removePost()"> Delete</a></li>
+            <li><a ng-if="!isOwner">There aren't any options here for you... Yet...</a></li>
           </ul>
         </div>
       </div>
@@ -39,7 +33,7 @@
       <bs-profile-picture user="shareAuthor" class="post-author-photo" size="24"></bs-profile-picture>
       <small class="share-info">
         <span class="text-muted">
-          <a ng-href="/{{shareAuthor.username}}">{{shareAuthorDisplayName}}</a> shared this
+          <a ng-href="/{{shareAuthor.username}}">{{shareAuthorDisplayName}}</a> - {{share.created | date:'short'}}
         </span>
         <span class="display-block" bs-bucket-list="shareBucketList" max-chars="40"></span>
       </small>

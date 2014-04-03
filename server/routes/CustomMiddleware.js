@@ -51,7 +51,7 @@ module.exports = function(app) {
     } else {
       exclude['username'] = {$ne: req.query.username};
     }
-    User.find(exclude).limit(20).sort('-modified').select('_id name username profilePicture').exec(function(err, users) {
+    User.find(exclude).limit(20).sort('-modified').select('_id name username tagline profilePicture').exec(function(err, users) {
       if (err) return ErrorController.sendErrorJson(res, err.code, err.error.message);
       res.json(users);
     });

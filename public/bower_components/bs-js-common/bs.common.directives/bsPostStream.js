@@ -6,20 +6,25 @@ angular.module('bs.common.directives').directive('bsPostStream', function(_) {
       postsAndShares: '=bsPostStream'
     },
     link: function(scope) {
-      if (_.isEmpty(scope.postsAndShares)) {
-        return;
-      }
-      scope.posts = scope.postsAndShares.posts;
-      _.each(scope.posts, function(post) {
-        post.sortDate = post.created;
-      });
-      _.each(scope.postsAndShares.shares, function(share) {
-        var post = share.getPost();
-        post.sortDate = share.created;
-        post.share = share;
-        if (!_.contains(scope.posts, post)) {
-          scope.posts.push(post);
+      scope.$watch('postsAndShares.posts.length + postsAndShares.shares.length', function() {
+        if (_.isEmpty(scope.postsAndShares)) {
+          return;
         }
+        scope.bsPosts = [];
+        _.each(scope.postsAndShares.posts, function(post) {
+          scope.bsPosts.push({
+            post: post,
+            sortDate: post.created
+          });
+        });
+        _.each(scope.postsAndShares.shares, function(share) {
+          var post = share.getPost();
+          scope.bsPosts.push({
+            post: post,
+            share: share,
+            sortDate: share.created
+          });
+        });
       });
     }
   };

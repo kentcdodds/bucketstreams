@@ -111,7 +111,9 @@ angular.module('bs.web.app').factory('CommonModalService', function($rootScope, 
       return $modal.open({
         templateUrl: '/main/services/common-modal-templates/share-post.html',
         controller: function($scope, currentUser, post, buckets, Share) {
-          $scope.post = post;
+          $scope.bsPost = {
+            post: post
+          };
           $scope.buckets = buckets;
           _.each($scope.buckets, function(bucket) {
             bucket.selected(false);
@@ -135,8 +137,8 @@ angular.module('bs.web.app').factory('CommonModalService', function($rootScope, 
             $rootScope.$broadcast('share.created.start', $scope.share);
             $scope.share.$save(function() {
               $rootScope.$broadcast('share.created.success', $scope.share);
-              $scope.post.shares++;
-              $scope.post.$save();
+              post.shares++;
+              post.$save();
               $scope.$close($scope.share);
             }, function(err) {
               $rootScope.$broadcast('share.created.error', $scope.share, err);

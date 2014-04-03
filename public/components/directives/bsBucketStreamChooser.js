@@ -67,16 +67,11 @@ angular.module('bs.web.directives').directive('bsBucketStreamChooser', function(
         $event.stopPropagation();
       };
       
-      function updateThingsSelected() {
-        scope.thingsSelected = !!_.find(scope.listItems, {isSelected: true});
-      }
-      updateThingsSelected();
-
       scope.toggleThing = function(thing) {
         thing.toggleSelected();
         if (scope.streams) {
           var addMessage = 'Subscribed your ' + thing.name + ' stream to ' + scope.subscriptionSubject.name + '! :-D';
-          var removeMessage = 'Unsubscribed your ' + thing.name + ' stream from ' + scope.subscriptionSubject.name + '...';
+          var removeMessage = 'unsubscription of your ' + thing.name + ' stream from ' + scope.subscriptionSubject.name + ' was successful...';
           thing.toggleSubscription(scope.subscriptionSubject, scope.subscriptionType + 's').then(function() {
             if (thing.isSelected) {
               AlertEventBroadcaster.broadcast({
@@ -91,14 +86,13 @@ angular.module('bs.web.directives').directive('bsBucketStreamChooser', function(
             }
           }, AlertEventBroadcaster.getResponseHandler('error'));
         }
-        updateThingsSelected();
       };
 
       if (!scope.noThingSelectedText) {
         if (scope.listType === 'stream') {
           scope.noThingSelectedText = 'Subscribe this ' + scope.subscriptionType + ' to some streams...';
         } else {
-          scope.noThingSelectedText = 'Choose buckets to put this post in...';
+          scope.noThingSelectedText = 'Choose buckets to post to...';
         }
       }
 
@@ -154,6 +148,13 @@ angular.module('bs.web.directives').directive('bsBucketStreamChooser', function(
         'primary',
         'warning'
       ];
+
+      scope.$watch(function() {
+        return _.filter(scope.listItems, {isSelected: true}).length;
+      }, function(totalSelected) {
+        scope.showMain = scope.listType === 'bucket' || (scope.listType === 'stream' && totalSelected > 0);
+        scope.thingsSelected = totalSelected > 0;
+      });
 
     }
   }

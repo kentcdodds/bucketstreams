@@ -14,12 +14,13 @@ angular.module('bs.common.directives').directive('bsPost', function(CurrentUserI
     templateUrl: 'templates/bsPost.html',
     replace: true,
     scope: {
-      post: '=bsPost',
-      share: '=?',
-      postOnly: '@'
+      bsPost: '='
     },
-    link: function(scope, el) {
+    link: function(scope, el, attrs) {
+      scope.post = scope.bsPost.post;
+      scope.share = scope.bsPost.share;
       scope.isShare = !!scope.share;
+      scope.postOnly = attrs.hasOwnProperty('postOnly');
       scope.currentUser = CurrentUserInfoService.getUser();
       scope.$on(CurrentUserInfoService.events.user, function(event, user) {
         scope.currentUser = user;

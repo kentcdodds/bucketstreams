@@ -50,6 +50,7 @@ var connectedAccount = {
  */
 var schema = new Schema({
   username: {type: String, required: false},
+  tagline: String,
   phone: String,
   email: {type: String, unique: true, required: true},
   name: {
@@ -421,6 +422,7 @@ schema.methods.importPosts = function(callback, force) {
 
           if (bucketsToPostTo.length) {
             post.buckets = (post.buckets || []).concat(bucketsToPostTo);
+            post.buckets.push(self.mainBucket);
             allPosts.push(post);
           }
         });

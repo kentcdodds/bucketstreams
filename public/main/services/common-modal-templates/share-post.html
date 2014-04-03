@@ -4,11 +4,11 @@
     <h4 class="modal-title" fa-icon="share"> Share Post</h4>
   </div>
   <div class="modal-body">
-    <div bs-post="post" post-only="{{true}}"></div>
+    <div bs-post="bsPost" post-only></div>
     <form name="form" id="share-post-form" role="form" ng-submit="onSubmit()">
       <div class="form-group">
         <label for="comment-field">Comment</label>
-        <input type="text" class="form-control" ng-model="share.content.textString" id="comment-field" placeholder="Add a comment...">
+        <input type="text" class="form-control" ng-model="share.content.textString" id="comment-field" placeholder="Add a comment..." bs-new-post-textarea buckets="buckets">
       </div>
       <div class="form-group">
         <bs-bucket-stream-chooser buckets="buckets"></bs-bucket-stream-chooser>

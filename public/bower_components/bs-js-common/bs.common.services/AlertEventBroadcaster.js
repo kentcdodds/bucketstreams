@@ -22,7 +22,7 @@ angular.module('bs.common.services').factory('AlertEventBroadcaster', function($
     error.message = error.message || '';
     var randomWords = RandomWords[alertEvent.type]();
     var message = [randomWords, alertEvent.message, error.message].join(' ');
-    $rootScope.$broadcast('alert.' + type, message);
+    $rootScope.$broadcast('alert.' + alertEvent.type, message);
   }
 
   // It's important that we write out the whole event name
