@@ -1,4 +1,4 @@
-angular.module('bs.web.directives').directive('bsProfilePicture', function() {
+angular.module('bs.common.directives').directive('bsProfilePicture', function() {
   return {
     restrict: 'E',
     template: function(el, attrs) {
