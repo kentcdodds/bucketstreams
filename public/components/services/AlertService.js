@@ -1,10 +1,5 @@
-angular.module('bs.web.services').factory('AlertService', function(toastr, _) {
+angular.module('bs.web.services').factory('AlertService', function($rootScope, toastr, _) {
   toastr.options.closeButton = true;
-  function getResponseHandler(type) {
-    return function handleResponse(response) {
-      AlertService[type](response.data.message);
-    }
-  }
   var AlertService = {
     warning: function(string) {
       toastr.warning(string || 'Warning! Not sure why...');
@@ -23,10 +18,14 @@ angular.module('bs.web.services').factory('AlertService', function(toastr, _) {
     },
     handleResponse: {}
   };
-  _.each(['warning', 'success', 'info', 'error'], function(type) {
-    AlertService.handleResponse[type] = function handleResponse(response) {
+  var alertTypes = ['warning', 'success', 'info', 'error'];
+  _.each(alertTypes, function(type) {
+    AlertService.handleResponse[type] = function(response) {
       AlertService[type](response.data.message);
-    }
+    };
+    $rootScope.$on('alert.' + type, function(event, message) {
+      AlertService[type](message);
+    });
   });
   return AlertService;
 });

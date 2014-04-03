@@ -52,7 +52,7 @@ angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, 
     maybeOpenEmailConfirmationModal();
   }
 
-  $scope.$on('post.remove.success', function(event, post) {
+  $scope.$on('post.removed.success', function(event, post) {
     _.remove($scope.postsAndShares.posts, {_id: post._id});
   });
 
@@ -60,7 +60,7 @@ angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, 
     $scope.postsAndShares.posts.unshift(post);
   });
 
-  $scope.$on('post.remove.success', function(event, share) {
+  $scope.$on('share.removed.success', function(event, share) {
     _.remove($scope.postsAndShares.shares, {_id: share._id});
   });
 

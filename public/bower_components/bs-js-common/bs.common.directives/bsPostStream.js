@@ -1,12 +1,12 @@
-angular.module('bs.common.app').directive('bsPostStream', function() {
+angular.module('bs.common.directives').directive('bsPostStream', function(_) {
   return {
     restrict: 'A',
     templateUrl: 'templates/bsPostStream.html',
     scope: {
       postsAndShares: '=bsPostStream'
     },
-    link: function(scope, el, attrs) {
-      if (!scope.postsAndShares) {
+    link: function(scope) {
+      if (_.isEmpty(scope.postsAndShares)) {
         return;
       }
       scope.posts = scope.postsAndShares.posts;

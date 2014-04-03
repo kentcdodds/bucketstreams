@@ -35,11 +35,12 @@ function setupConfig(configDone) {
   function getBSJSCommon() {
     var root = './public';
     var path = '/bower_components/bs-js-common/bs.common.';
+    var constants = getSection(root, path + 'constants');
     var models = getSection(root, path + 'models');
     var services = getSection(root, path + 'services');
     var filters = getSection(root, path + 'filters');
     var directives = getSection(root, path + 'directives');
-    return _.union(['/bower_components/bs-js-common/app.js'], models, services, filters, directives);
+    return _.union(['/bower_components/bs-js-common/app.js'], constants, models, services, filters, directives);
   }
 
   function getAppSection(name) {

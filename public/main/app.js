@@ -221,7 +221,11 @@
     
   });
   
-  app.run(function($rootScope, $state, CurrentUserInfoService) {
+  app.run(function($rootScope, $state, CurrentUserInfoService, EventResponder) {
+    var alertEvents = [
+      { name: '$stateChangeError', type: 'error', message: 'Something weird happened. Try refreshing...' }
+    ];
+    EventResponder.initialize(alertEvents);
     $rootScope.$on(CurrentUserInfoService.events.user, function(event, user) {
       if (!user && /root\.auth/.test($state.current.name)) {
         $state.go('root.anon');

@@ -1,11 +1,11 @@
 /*
  * This directive emits the following events:
- *  - share.remove.start
- *  - share.remove.success
- *  - share.remove.error
- *  - post.remove.start
- *  - post.remove.success
- *  - post.remove.error
+ *  - share.removed.start
+ *  - share.removed.success
+ *  - share.removed.error
+ *  - post.removed.start
+ *  - post.removed.success
+ *  - post.removed.error
  *  - share.new
  */
 angular.module('bs.common.directives').directive('bsPost', function(CurrentUserInfoService, _, $q, Cacher, User, Comment, Share, UtilFunctions) {
@@ -75,18 +75,18 @@ angular.module('bs.common.directives').directive('bsPost', function(CurrentUserI
 
       scope.removePost = function() {
         if (scope.isShare) {
-          scope.$emit('share.remove.start', scope.share);
+          scope.$emit('share.removed.start', scope.share);
           scope.share.$remove(function() {
-            scope.$emit('share.remove.success', scope.share);
+            scope.$emit('share.removed.success', scope.share);
           }, function(err) {
-            scope.$emit('share.remove.error', scope.share, err);
+            scope.$emit('share.removed.error', scope.share, err);
           });
         } else {
-          scope.$emit('post.remove.start', scope.post);
+          scope.$emit('post.removed.start', scope.post);
           scope.post.$remove(function() {
-            scope.$emit('post.remove.success', scope.post);
+            scope.$emit('post.removed.success', scope.post);
           }, function(err) {
-            scope.$emit('post.remove.error', scope.post, err);
+            scope.$emit('post.removed.error', scope.post, err);
           });
         }
       };

@@ -1,4 +1,4 @@
-angular.module('bs.web.directives').directive('bsBucketStreamChooser', function($timeout, $filter, _, CommonModalService, AlertService) {
+angular.module('bs.web.directives').directive('bsBucketStreamChooser', function($timeout, $filter, _, CommonModalService, AlertEventBroadcaster) {
   return {
     restrict: 'E',
     templateUrl: 'templates/bsBucketStreamChooser.html',
@@ -79,11 +79,17 @@ angular.module('bs.web.directives').directive('bsBucketStreamChooser', function(
           var removeMessage = 'Unsubscribed your ' + thing.name + ' stream from ' + scope.subscriptionSubject.name + '...';
           thing.toggleSubscription(scope.subscriptionSubject, scope.subscriptionType + 's').then(function() {
             if (thing.isSelected) {
-              AlertService.success(addMessage);
+              AlertEventBroadcaster.broadcast({
+                message: addMessage,
+                type: 'success'
+              });
             } else {
-              AlertService.info(removeMessage);
+              AlertEventBroadcaster.broadcast({
+                message: removeMessage,
+                type: 'info'
+              });
             }
-          }, AlertService.handleResponse.error);
+          }, AlertEventBroadcaster.getResponseHandler('error'));
         }
         updateThingsSelected();
       };

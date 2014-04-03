@@ -1,4 +1,4 @@
-angular.module('bs.web.app').controller('EmailConfirmationCtrl', function($scope, result, code, $http, AlertService, CurrentUserInfoService) {
+angular.module('bs.web.app').controller('EmailConfirmationCtrl', function($scope, result, code, $http, AlertEventBroadcaster, CurrentUserInfoService) {
   $scope.result = result;
   $scope.code = code;
   $scope.showSendAgainLink = result.type !== 'success' && result.type !== 'already-confirmed' && (result.type !== 'invalid-link' && !$scope.currentUser);
@@ -16,10 +16,16 @@ angular.module('bs.web.app').controller('EmailConfirmationCtrl', function($scope
       data: data
     }).then(function(response) {
       if (response.data.sent) {
-        AlertService.success('Email sent to ' + $scope.currentUser.email);
+        AlertEventBroadcaster.broadcast({
+          type: 'success',
+          message: 'Email sent to ' + $scope.currentUser.email
+        });
       } else {
-        AlertService.info(response.data.reason);
+        AlertEventBroadcaster.broadcast({
+          type: 'info',
+          message: response.data.reason
+        });
       }
-    }, AlertService.handleResponse.error);
+    }, AlertEventBroadcaster.getResponseHandler('error'));
   };
 });
