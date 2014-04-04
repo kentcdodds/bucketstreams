@@ -1,6 +1,6 @@
 <div class="post panel panel-default">
   <div class="post-meta panel-heading">
-    <bs-profile-picture user="author" class="post-author-photo" size="60"></bs-profile-picture>
+    <bs-profile-picture user="author" class="post-author-photo" size="50"></bs-profile-picture>
     <div class="post-info">
       <div class="post-options auth-only" ng-if="!postOnly">
         <a ng-click="sharePost(post)" fa-icon="share"> {{post.shares.length || ''}}</a>
@@ -20,19 +20,18 @@
         <a ng-href="/{{author.username}}">
           <strong class="post-author-name">{{authorDisplayName}}</strong>
         </a>
-        <small class="display-block">
-          <a ng-href="/post/{{post._id}}">{{post.created | date:'short'}}</a>
-        </small>
-        <span class="margin-right-xxsmall" ng-show="post.sourceData.source">
-          <i class="fa fa-{{post.sourceData.source}} color-{{post.sourceData.source}}" tooltip="Posted on {{post.sourceData.source}}"></i>
-        </span>
-        <small bs-bucket-list="postBucketList" max-chars="40"></small>
+        <div>
+          <small>
+            <a ng-href="/post/{{post._id}}">{{post.created | date:'short'}}</a>
+            <span class="margin-left-xxsmall" bs-bucket-list="postBucketList" max-chars="40"></span>
+          </small>
+        </div>
       </div>
     </div>
   </div>
   <div class="post-content panel-body">
-    <div class="post-content-shared font-size-xsmall" ng-if="isShare && !postOnly">
-      <bs-profile-picture user="shareAuthor" class="post-author-photo" size="24"></bs-profile-picture>
+    <div class="post-content-shared" ng-if="isShare && !postOnly">
+      <bs-profile-picture user="shareAuthor" class="post-author-photo" size="30"></bs-profile-picture>
       <small class="share-info">
         <span class="text-muted">
           <a ng-href="/{{shareAuthor.username}}">{{shareAuthorDisplayName}}</a> - {{share.created | date:'short'}}
@@ -40,7 +39,10 @@
         <span class="display-block" bs-bucket-list="shareBucketList" max-chars="40"></span>
       </small>
     </div>
-    <div ng-hide="editing" ng-class="{'font-size-xsmall': isShare}">{{mainContent}}</div>
+    <div ng-hide="editing" ng-class="{'font-size-xsmall': isShare}">
+      <i ng-show="post.sourceData.source && !isShare" class="source-icon fa fa-{{post.sourceData.source}} color-{{post.sourceData.source}}" tooltip="Posted on {{post.sourceData.source}}"></i>
+      {{mainContent}}
+    </div>
     <div ng-show="editing">
       <textarea ng-model="newContent" class="form-control"></textarea>
       <div class="edit-buttons">
@@ -48,9 +50,11 @@
         <button class="btn btn-primary btn-xs pull-right" ng-click="updatePostContent(newContent)">Save</button>
       </div>
     </div>
-    <div ng-if="isShare">
-      <hr class="margin-top-xxsmall margin-bottom-xxsmall" />
-      <div>{{post.content.textString}}</div>
+    <div ng-if="isShare" class="original-post">
+      <div>
+        <i ng-show="post.sourceData.source" class="source-icon fa fa-{{post.sourceData.source}} color-{{post.sourceData.source}}" tooltip="Posted on {{post.sourceData.source}}"></i>
+        {{post.content.textString}}
+      </div>
     </div>
   </div>
   <div class="comments-container" ng-show="(currentUser || comments.length) && !postOnly">
