@@ -227,7 +227,7 @@ module.exports = function(app) {
    * Runs the import process for the currently logged in user
    */
   app.get(prefixes.util + '/run-manual-import', AuthenticationController.checkAuthenticated, function(req, res, next) {
-    req.user.deTokenize(function(err, user) {
+    User.deTokenize(req.user, function(err, user) {
       if (err) return next(err);
       user.importPosts(function(err, allPosts) {
         if (err) return next(err);

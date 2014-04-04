@@ -43,15 +43,6 @@ module.exports = function(app) {
     validateJwt(req, res, next);
   });
 
-  app.use('/api', function(req, res, next) {
-    if (req.user) {
-      var id = req.user.id;
-      req.user = new User(req.user);
-      req.user._id = id;
-    }
-    next();
-  });
-
   if (/production|alpha/.test(process.env.NODE_ENV)) {
     logger.info('Setting express up with production-level stuff');
     app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 9000);

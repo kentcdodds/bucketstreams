@@ -88,13 +88,13 @@ module.exports = function(app) {
 
   app.post(prefix.auth + '/confirm-email/resend', function(req, res) {
     if (req.isAuthenticated()) {
-      req.user.deTokenize(function(err, user) {
+      User.deTokenize(req.user, function(err, user) {
         sendEmail(user);
       });
     } else if (req.body.email) {
       User.getUserByUsernameOrEmail(req.body.email, function(err, user) {
         if (err) return ErrorController.sendErrorJson(res, 500, err.message);
-        user.deTokenize(function(err, user) {
+        User.deTokenize(user, function(err, user) {
           sendEmail(user);
         });
       });
@@ -287,7 +287,7 @@ module.exports = function(app) {
    * Disconnects a user from the given provider
    */
   app.get(prefix.auth + '/disconnect/:provider', AuthenticationController.checkAuthenticated, function(req, res, next) {
-    req.user.deTokenize(function(err, user) {
+    User.deTokenize(req.user, function(err, user) {
       if (err) return next(err);
 
       user.disconnect(req.params.provider, function(err, user) {

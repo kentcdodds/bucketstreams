@@ -167,12 +167,8 @@ schema.methods.getTokenObject = function() {
   });
 };
 
-schema.methods.deTokenize = function(callback) {
-  if (this.isNew) {
-    this.model(ref.user).findOne({_id: this._id}, callback);
-  } else {
-    callback(null, this);
-  }
+schema.statics.deTokenize = function(user, callback) {
+  this.model(ref.user).findOne({_id: user.id}, callback);
 };
 
 /*
