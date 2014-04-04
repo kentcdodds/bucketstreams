@@ -3,8 +3,10 @@
     <bs-profile-picture user="author" class="post-author-photo" size="50"></bs-profile-picture>
     <div class="post-info">
       <div class="post-options auth-only" ng-if="!postOnly">
-        <a ng-click="sharePost(post)" fa-icon="share"> {{post.shares.length || ''}}</a>
-        <a ng-click="toggleFavorite()" fa-icon="star" ng-class="{'is-favorite': currentUserHasFavorited}"> {{post.favorites.length || ''}}</a>
+        <span ng-if="!noPost">
+          <a ng-click="sharePost(post)" fa-icon="share"> {{post.shares.length || ''}}</a>
+          <a ng-click="toggleFavorite()" fa-icon="star" ng-class="{'is-favorite': currentUserHasFavorited}"> {{post.favorites.length || ''}}</a>
+        </span>
         <span class="dropdown">
           <a class="dropdown-toggle">
             <i class="fa fa-cog"></i>
@@ -20,10 +22,12 @@
         <a ng-href="/{{author.username}}">
           <strong class="post-author-name">{{authorDisplayName}}</strong>
         </a>
+        <small>
+          <a ng-href="/post/{{post._id}}">{{post.created | date:'short'}}</a>
+        </small>
         <div>
           <small>
-            <a ng-href="/post/{{post._id}}">{{post.created | date:'short'}}</a>
-            <span class="margin-left-xxsmall" bs-bucket-list="postBucketList" max-chars="40"></span>
+            <span bs-bucket-list="postBucketList" max-chars="40"></span>
           </small>
         </div>
       </div>
@@ -45,13 +49,13 @@
     </div>
     <div ng-show="editing">
       <textarea ng-model="newContent" class="form-control"></textarea>
-      <div class="edit-buttons">
-        <button class="btn btn-default btn-xs pull-left" ng-click="editing=false">Cancel</button>
+      <div class="edit-buttons clearfix">
         <button class="btn btn-primary btn-xs pull-right" ng-click="updatePostContent(newContent)">Save</button>
+        <button class="btn btn-default btn-xs pull-left" ng-click="editing=false">Cancel</button>
       </div>
     </div>
     <div ng-if="isShare" class="original-post">
-      <div>
+      <div ng-class="{'text-muted': noPost}">
         <i ng-show="post.sourceData.source" class="source-icon fa fa-{{post.sourceData.source}} color-{{post.sourceData.source}}" tooltip="Posted on {{post.sourceData.source}}"></i>
         {{post.content.textString}}
       </div>

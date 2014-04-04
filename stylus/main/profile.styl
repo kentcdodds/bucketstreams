@@ -1,19 +1,27 @@
 profilePictureSize = 160px
 .profile-content
-  .drag-drop-area
-    border dotted #666 2px
-    margin 6px
-    padding 60px 0px
-    text-align center
-    font-size 30px
-    background-color #E0E0E0
-    color #666
+  .center-content
+    margin-bottom 74px
+    .user-profile-photo
+      width profilePictureSize
+      height profilePictureSize
+    .drag-drop-area
+      border dotted #666 2px
+      margin 6px
+      padding 60px 0px
+      text-align center
+      font-size 30px
+      background-color #E0E0E0
+      color #666
 
-    &.file-hovering
-      background-color #eeeeee
-      color #2b2b2b
-      .choose-file-button
-        visibility hidden
+      &.file-hovering
+        background-color #eeeeee
+        color #2b2b2b
+        .choose-file-button
+          visibility hidden
+    .tagline
+      margin-top 20px
+      text-align center
 
 
   .btn-file

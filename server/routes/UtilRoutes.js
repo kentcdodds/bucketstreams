@@ -92,12 +92,17 @@ module.exports = function(app) {
         var shares = postsAndShares.shares;
 
         responseBuilder.posts = postsAndShares.posts;
-        responseBuilder.postIds = _.pluck(allPosts, '_id');
+        responseBuilder.sharePosts = _.reject(postsAndShares.sharePosts, function(post) {
+          return _.find(postsAndShares.posts, {id: post.id});
+        });
+        responseBuilder.postIds = uniqueIds(_.pluck(allPosts, '_id'));
         responseBuilder.userIds = uniqueIds(responseBuilder.userIds, _.pluck(allPosts, 'author'));
         responseBuilder.bucketIds = uniqueIds(responseBuilder.bucketIds, _.flatten(_.pluck(allPosts, 'buckets')));
 
+
+
         responseBuilder.shares = shares;
-        responseBuilder.shareIds = _.pluck(shares, '_id');
+        responseBuilder.shareIds = uniqueIds(_.pluck(shares, '_id'));
         responseBuilder.userIds = uniqueIds(responseBuilder.userIds, _.pluck(shares, 'author'));
         responseBuilder.bucketIds = uniqueIds(responseBuilder.bucketIds, _.flatten(_.pluck(shares, 'buckets')));
         

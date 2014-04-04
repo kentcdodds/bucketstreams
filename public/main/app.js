@@ -112,21 +112,36 @@
         controller: 'ProfileCtrl',
         templateUrl: '/main/profile/profile.html',
         resolve: {
-          profileUser: function($q, $stateParams, User) {
+          username: resolveParameter('username'),
+          profileUser: function($q, username, User) {
             var deferred = $q.defer();
-            User.query({username: $stateParams.username}).$promise.then(function(data) {
-              deferred.resolve(data[0]);
-            }, deferred.reject);
+            if (username === 'unknown_user') {
+              deferred.resolve(new User({
+                username: username,
+                name: {
+                  first: 'Unknown',
+                  last: 'User'
+                },
+                tagline: 'I am a system user. I\'m not real. Move along :-)'
+              }));
+            } else {
+              User.query({username: username}).$promise.then(function(data) {
+                deferred.resolve(data[0]);
+              }, deferred.reject);
+            }
             return deferred.promise;
           },
-          buckets: function(Bucket, $stateParams) {
-            return Bucket.query({username: $stateParams.username});
+          buckets: function(Bucket, username) {
+            if (username === 'unknown_user') return [];
+            return Bucket.query({username: username});
           },
-          streams: function(Stream, $stateParams) {
-            return Stream.query({username: $stateParams.username});
+          streams: function(Stream, username) {
+            if (username === 'unknown_user') return [];
+            return Stream.query({username: username});
           },
-          mainBucketData: function(UtilService, $stateParams) {
-            return UtilService.loadData('bucket', $stateParams.username, 'Main Bucket');
+          mainBucketData: function(UtilService, username) {
+            if (username === 'unknown_user') return {};
+            return UtilService.loadData('bucket', username, 'Main Bucket');
           }
         },
         onEnter: function(CurrentContext, profileUser) {

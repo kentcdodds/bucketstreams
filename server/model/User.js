@@ -125,6 +125,7 @@ var reservedUsernames = [
 ];
 
 var appRouteUsernames = [
+  'unknown_user',
   'settings',
   'rules',
   'tos',

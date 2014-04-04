@@ -12,7 +12,7 @@ angular.module('bs.common.directives').directive('bsPostStream', function(_) {
         }
         scope.bsPosts = [];
         _.each(scope.postsAndShares.posts, function(post) {
-          if (!attrs.authorToShow || attrs.authorToShow === post.owner) {
+          if (!attrs.authorToShow || attrs.authorToShow === post.author) {
             scope.bsPosts.push({
               post: post,
               sortDate: post.created
@@ -21,7 +21,7 @@ angular.module('bs.common.directives').directive('bsPostStream', function(_) {
         });
         _.each(scope.postsAndShares.shares, function(share) {
           var post = share.getPost();
-          if (!attrs.authorToShow || attrs.authorToShow === post.owner) {
+          if (!attrs.authorToShow || attrs.authorToShow === share.author) {
             scope.bsPosts.push({
               post: post,
               share: share,

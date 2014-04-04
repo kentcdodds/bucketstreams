@@ -1,6 +1,6 @@
 <div class="profile-content">
   <div class="column-wrapper">
-    <div class="col-xs-4 text-left">
+    <div class="col-xs-3 text-left">
       <h2>Buckets</h2>
       <div ng-repeat="bucket in buckets">
         <a ui-sref="root.postStreamPage({username: profileUser.username, type: 'bucket', itemName: bucket.name})">
@@ -8,15 +8,20 @@
         </a>
       </div>
     </div>
-    <div class="col-xs-4 text-center">
+    <div class="col-xs-6 center-content">
       <div class="profile-picture">
         <bs-profile-picture-upload ng-if="profileUser._id === currentUser._id"></bs-profile-picture-upload>
-        <div ng-if="profileUser._id !== currentUser._id" class="center-block">
+        <div ng-if="profileUser._id !== currentUser._id" class="center-block user-profile-photo">
           <bs-profile-picture user="profileUser" class="user-photo" size="160" hide-hover="true"></bs-profile-picture>
         </div>
+        <div class="tagline" ng-if="profileUser.tagline">
+          <strong>Tagline:</strong> {{profileUser.tagline}}
+        </div>
       </div>
+      <h1 class="text-align-center">Main Bucket</h1>
+      <div bs-post-stream="postsAndShares" author-to-show="{{profileUser._id}}"></div>
     </div>
-    <div class="col-xs-4 text-right">
+    <div class="col-xs-3 text-right">
       <h2>Streams</h2>
       <div ng-repeat="stream in streams">
         <a ui-sref="root.postStreamPage({username: profileUser.username, type: 'stream', itemName: stream.name})">
@@ -25,7 +30,4 @@
       </div>
     </div>
   </div>
-  <div class="clearfix margin-medium"></div>
-  <h1 class="text-align-center">Main Bucket</h1>
-  <div bs-post-stream="postsAndShares" author-to-show="{{profileUser._id}}"></div>
 </div>

@@ -8,7 +8,7 @@
  *  - post.removed.error
  *  - share.new
  */
-angular.module('bs.common.directives').directive('bsPost', function(CurrentUserInfoService, _, $q, Cacher, User, Comment, Share, UtilFunctions) {
+angular.module('bs.common.directives').directive('bsPost', function(CurrentUserInfoService, _, $q, Cacher, User, Comment, UtilFunctions) {
   return {
     restrict: 'A',
     templateUrl: 'templates/bsPost.html',
@@ -29,11 +29,22 @@ angular.module('bs.common.directives').directive('bsPost', function(CurrentUserI
       $q.all(initialPromises).then(initializeStep1);
 
       function initializeStep1() {
+        scope.noPost = scope.post.success === false;
+        if (!scope.noPost) {
+          scope.author = scope.post.getAuthor();
+          scope.comments = scope.post.getComments();
+          scope.postBucketList = scope.post.getBuckets();
+          scope.currentUserHasFavorited = scope.post.hasFavorited(scope.currentUser);
+        } else {
+          scope.post.content = {};
+          if (scope.post.err === 'Record not found') {
+            scope.post.content.textString = 'This post has been removed! Sorry about that...';
+          } else {
+            scope.post.content.textString = 'There was a problem loading this post... Sorry :-(';
+          }
+          scope.author = new User({ username: 'unknown_user', name: { first: 'Unknown', last: 'User' } });
+        }
         scope.mainContent = scope.post.content.textString;
-        scope.author = scope.post.getAuthor();
-        scope.comments = scope.post.getComments();
-        scope.postBucketList = scope.post.getBuckets();
-        scope.currentUserHasFavorited = scope.post.hasFavorited(scope.currentUser);
         if (scope.isShare) {
           scope.shareAuthor = scope.share.getAuthor();
           scope.shareBucketList = scope.share.getBuckets();

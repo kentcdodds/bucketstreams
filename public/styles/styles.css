@@ -841,23 +841,25 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 .post .post-content .source-icon{margin-right:4px}
 /* line 56 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
 .post .post-content .original-post{margin-left:8px}
-/* line 59 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+/* line 58 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+.post .post-content .edit-buttons{margin-top:12px;margin-bottom:12px}
+/* line 62 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
 .post .comments-container{padding:10px;}
-/* line 61 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+/* line 64 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
 .post .comments-container .add-comment{position:relative;}
-/* line 63 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+/* line 66 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
 .post .comments-container .add-comment .add-comment-photo{display:inline;position:absolute;margin-top:1px}
-/* line 67 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
-.post .comments-container .add-comment .add-comment-field{display:inline-block;width:100%;}
 /* line 70 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
-.post .comments-container .add-comment .add-comment-field input{-webkit-border-radius:32px 8px 8px 32px;border-radius:32px 8px 8px 32px;padding-left:36px}
+.post .comments-container .add-comment .add-comment-field{display:inline-block;width:100%;}
 /* line 73 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+.post .comments-container .add-comment .add-comment-field input{-webkit-border-radius:32px 8px 8px 32px;border-radius:32px 8px 8px 32px;padding-left:36px}
+/* line 76 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
 .post .comments-container .comment-container{max-height:180px;overflow-y:scroll;margin-top:10px;}
-/* line 77 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+/* line 80 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
 .post .comments-container .comment-container .comment{margin-top:14px;}
-/* line 79 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
+/* line 82 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/post/bsPost.styl */
 .post .comments-container .comment-container .commentfirst-child{margin-top:0}
-/* line 81 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/signup.styl */
+/* line 84 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/signup.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/signup.styl */
 
@@ -984,12 +986,18 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/profile.styl */
 
 /* line 3 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/profile.styl */
-.profile-content .drag-drop-area{border:dotted #666 2px;margin:6px;padding:60px 0;text-align:center;font-size:30px;background-color:#e0e0e0;color:#666;}
-/* line 12 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/profile.styl */
-.profile-content .drag-drop-area.file-hovering{background-color:#eee;color:#2b2b2b;}
-/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/profile.styl */
-.profile-content .drag-drop-area.file-hovering .choose-file-button{visibility:hidden}
-/* line 19 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/profile.styl */
+.profile-content .center-content{margin-bottom:74px;}
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/profile.styl */
+.profile-content .center-content .user-profile-photo{width:160px;height:160px}
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/profile.styl */
+.profile-content .center-content .drag-drop-area{border:dotted #666 2px;margin:6px;padding:60px 0;text-align:center;font-size:30px;background-color:#e0e0e0;color:#666;}
+/* line 17 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/profile.styl */
+.profile-content .center-content .drag-drop-area.file-hovering{background-color:#eee;color:#2b2b2b;}
+/* line 20 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/profile.styl */
+.profile-content .center-content .drag-drop-area.file-hovering .choose-file-button{visibility:hidden}
+/* line 22 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/profile.styl */
+.profile-content .center-content .tagline{margin-top:20px;text-align:center}
+/* line 27 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/profile.styl */
 .profile-content .btn-file{position:relative;overflow:hidden}
-/* line 23 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/profile.styl */
+/* line 31 : /Users/kentcdodds/Developer/bucketstreams/stylus/main/profile.styl */
 .profile-content .btn-file input[type=file]{position:absolute;top:0;right:0;min-width:100%;min-height:100%;font-size:999px;text-align:right;opacity:0;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";filter:alpha(opacity=0);outline:none;background:#fff;cursor:inherit;display:block}
