@@ -7,6 +7,7 @@ var uuid = require('node-uuid');
 var _ = require('lodash-node');
 
 var ErrorController = require('../controller/ErrorController');
+var User = require('../model/User').model;
 
 var photoClient = knox.createClient({
   secure: false,
@@ -69,13 +70,17 @@ module.exports = {
         if (err) return ErrorController.sendErrorJson(res, 500, err.message);
         logger.info('photo uploaded, setting as profile picture');
         var imageUrl = imageUrlPrefix + destPath;
-        req.user.addProfilePicture(imageUrl, function(err, user) {
+        User.deTokenize(req.user, function(err, user) {
           if (err) return ErrorController.sendErrorJson(res, 500, err.message);
-          res.statusCode = s3Response.statusCode;
-          return res.json({
-            imageUrl: imageUrl
+
+          user.addProfilePicture(imageUrl, function(err, user) {
+            if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+            res.statusCode = s3Response.statusCode;
+            return res.json({
+              imageUrl: imageUrl
+            });
           });
-        });
+        })
       });
     });
 

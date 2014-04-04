@@ -3,8 +3,11 @@ module.exports = function() {
   var passport = require('passport');
   var User = require('../model/User').model;
 
-  function handleAuthenticatedUser(options, done) {
-    req.user.connect(options, done);
+  function connectUser(tokenizedUser, options, done) {
+    User.deTokenize(tokenizedUser, function(err, user) {
+      if (err) return done(err);
+      user.connect(options, done);
+    })
   }
 
   var configure = {
@@ -17,7 +20,7 @@ module.exports = function() {
           passReqToCallback: true
         },
         function(req, accessToken, refreshToken, profile, done) {
-          req.user.connect({
+          connectUser(req.user, {
             provider: 'facebook',
             token: accessToken,
             refreshToken: refreshToken,
@@ -34,7 +37,7 @@ module.exports = function() {
           passReqToCallback: true
         },
         function(req, accessToken, secret, profile, done) {
-          req.user.connect({
+          connectUser(req.user, {
             provider: 'twitter',
             token: accessToken,
             secret: secret,
@@ -51,7 +54,7 @@ module.exports = function() {
           passReqToCallback: true
         },
         function(req, accessToken, refreshToken, profile, done) {
-          req.user.connect({
+          connectUser(req.user, {
             provider: 'google',
             token: accessToken,
             refreshToken: refreshToken,
