@@ -1,4 +1,4 @@
-angular.module('bs.web.app').controller('SuperCtrl', function($scope, _, $state, $window, $modal, $http, isAuthenticated, currentUser, userBuckets, userStreams, CurrentUserInfoService, CurrentContext, bsMenuService, CommonModalService, UtilService, genie, bsGenie) {
+angular.module('bs.web.app').controller('SuperCtrl', function($scope, _, $state, $window, $modal, $http, isAuthenticated, currentUser, userBuckets, userStreams, CurrentUserInfoService, AlertService, CurrentContext, bsMenuService, CommonModalService, UtilService, genie, bsGenie) {
   $scope.isAuthenticated = isAuthenticated;
   $scope.currentUser = currentUser;
   $scope.userBuckets = userBuckets;
@@ -23,6 +23,14 @@ angular.module('bs.web.app').controller('SuperCtrl', function($scope, _, $state,
       }
     }
   });
+
+  $scope.logout = function() {
+    $scope.currentUser.logout();
+    $scope.currentUser = null;
+    $scope.isAuthenticated = false;
+    $state.go('root.anon', { reload: true, notify: true });
+    AlertService.info('Thank you, come again!');
+  };
 
   var setupMenuItemsFor = function(){};
 
