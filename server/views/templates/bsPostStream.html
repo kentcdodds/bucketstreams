@@ -5,7 +5,7 @@
   <div ng-show="bsPosts.length" class="column-wrapper">
     <div class="post-column">
       <div class="stream-posts">
-        <div ng-repeat="bsPost in bsPosts | orderBy:'sortDate':true" bs-post="bsPost"></div>
+        <div class="animate-repeat" ng-repeat="bsPost in bsPosts | orderBy:'sortDate':true" bs-post="bsPost"></div>
       </div>
     </div>
   </div>

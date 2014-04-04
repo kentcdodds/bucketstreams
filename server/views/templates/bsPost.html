@@ -3,7 +3,7 @@
     <bs-profile-picture user="author" class="post-author-photo" size="50"></bs-profile-picture>
     <div class="post-info">
       <div class="post-options auth-only" ng-if="!postOnly">
-        <span ng-if="!noPost">
+        <span class="interaction" ng-if="!noPost">
           <a ng-click="sharePost(post)" fa-icon="share"> {{post.shares.length || ''}}</a>
           <a ng-click="toggleFavorite()" fa-icon="star" ng-class="{'is-favorite': currentUserHasFavorited}"> {{post.favorites.length || ''}}</a>
         </span>
