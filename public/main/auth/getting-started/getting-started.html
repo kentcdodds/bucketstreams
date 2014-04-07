@@ -5,11 +5,11 @@
   <div>
     <div class="modal-body">
       <div>Just need to know a few things to be awesome for you</div>
-      <form name="form" id="info-form" role="form" ng-submit="onSaveClicked(form.username.$valid, tempUsername, firstName, lastName)">
-        <div class="form-group margin-top-small" ng-class="{'has-warning': !!tempUsername && form.username.$error.unique, 'has-error': !!tempUsername && (form.username.$error.valid || form.username.$error.length)}">
-          <label for="username-field">Username</label>
+      <form name="form" id="info-form" role="form" ng-submit="onSaveClicked(form)">
+        <div class="form-group margin-top-small" ng-class="{'has-warning': !!username.$modelValue && form.username.$error.unique, 'has-error': !!username.$modelValue && (form.username.$error.valid || form.username.$error.length)}">
+          <label for="username-field">Username *</label>
           <span class="label-container">
-            <span ng-show="tempUsername && form.username.$valid" class="label label-success">Username available! :-)</span>
+            <span ng-show="tempUserInfo.username && form.username.$valid" class="label label-success">Username available! :-)</span>
             <span ng-show="form.username.$error.taken" class="label label-warning">Username taken! :-(</span>
             <span ng-show="form.username.$error.reserved" class="label label-warning">Username reserved! :-(</span>
             <span ng-show="form.username.$error.unavailable" class="label label-warning">Username unavailable! :-(</span>
@@ -17,20 +17,25 @@
             <span ng-show="form.username.$error.tooLong" class="label label-danger">Must be shorter than 16 characters</span>
             <span ng-show="form.username.$error.tooShort" class="label label-danger">Must be longer than 3 characters</span>
           </span>
-          <input id="username-field" name="username" class="form-control" bs-valid-input="username" validation-model="user" validation-params="validationParams" bs-autofocus="true" placeholder="awesome_username" ng-model="tempUsername" required>
+          <input type="text" class="form-control" ng-model="tempUserInfo.username" id="username-field" name="username" bs-valid-input="username" validation-model="user" validation-params="validationParams" bs-autofocus="true" placeholder="awesome_username" required>
         </div>
         <div class="form-group">
-          <label for="first-name-field">First Name</label>
-          <input type="text" ng-model="firstName" name="first-name" class="form-control" id="first-name-field" placeholder="Joe" ng-maxlength="24" ng-minlength="2" required>
+          <label for="first-name-field">First Name *</label>
+          <input type="text" class="form-control" ng-model="tempUserInfo.name.first" id="first-name-field" name="firstName" placeholder="Joe" ng-maxlength="24" ng-minlength="1" required>
         </div>
         <div class="form-group">
-          <label for="last-name-field">Last Name</label>
-          <input type="text" class="form-control" ng-model="lastName" id="last-name-field" placeholder="Anderson"  ng-maxlength="24" ng-minlength="2" required>
+          <label for="last-name-field">Last Name *</label>
+          <input type="text" class="form-control" ng-model="tempUserInfo.name.last" id="last-name-field" name="lastName" placeholder="Anderson" ng-maxlength="24" ng-minlength="1" required>
+        </div>
+        <div class="form-group">
+          <label for="tagline-field">Tagline</label>
+          <input type="text" class="form-control" ng-model="tempUserInfo.tagline" id="tagline-field" name="tagline" placeholder="Maker of all things awesome">
         </div>
       </form>
       <div class="clearfix"></div>
+      <small class="text-muted">* means required</small>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" form="info-form" >Save</button>
+        <button type="submit" class="btn btn-primary" form="info-form" ng-disabled="form.$invalid">Save</button>
         <button type="button" class="pull-left btn btn-default" ng-click="currentUser.logout()">Logout</button>
       </div>
     </div>

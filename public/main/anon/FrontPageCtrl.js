@@ -54,7 +54,7 @@ angular.module('bs.web.app').controller('FrontPageCtrl', function ($scope, $http
       });
     }, function(err) {
       $scope.going = false;
-      AlertService.error(err.message);
+      AlertService.handleResponse.error(err);
     });
   }
 

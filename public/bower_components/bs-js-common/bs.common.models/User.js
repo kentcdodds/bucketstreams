@@ -30,9 +30,10 @@ angular.module('bs.common.models').factory('User', function($resource, $http, $q
     }).then(function(response) {
       var token = response.data.token;
       $window.localStorage.setItem('user-token', token);
+      return response;
     }, function(err) {
       $window.localStorage.removeItem('user-token');
-      throw Error(err.message);
+      throw err;
     });
   }
 

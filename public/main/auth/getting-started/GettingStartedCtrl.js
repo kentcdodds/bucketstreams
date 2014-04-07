@@ -8,9 +8,11 @@ angular.module('bs.web.app').controller('GettingStartedCtrl', function($scope, $
     email: $scope.currentUser.email
   };
   $scope.currentUser.name = $scope.currentUser.name || {};
-  $scope.firstName = $scope.currentUser.name.first;
-  $scope.lastName = $scope.currentUser.name.last;
-  $scope.tempUsername = $scope.currentUser.username;
+  $scope.tempUserInfo = { name: {} };
+  $scope.tempUserInfo.username = $scope.currentUser.username;
+  $scope.tempUserInfo.name.first = $scope.currentUser.name.first;
+  $scope.tempUserInfo.name.last = $scope.currentUser.name.last;
+  $scope.tempUserInfo.tagline = $scope.currentUser.tagline;
 
   $scope.fieldsToFill = $scope.currentUser.getFieldsToFill();
   $scope.dismiss = function() {
@@ -28,21 +30,13 @@ angular.module('bs.web.app').controller('GettingStartedCtrl', function($scope, $
     $event.cancelBubble = true;
   };
 
-  $scope.form = null;
-
-  $scope.onSaveClicked = function(validUsername, username, firstName, lastName) {
-    var valid = validUsername && firstName && lastName;
-    if (!valid) return;
-
-    $scope.currentUser.username = username;
-    $scope.currentUser.name = $scope.currentUser.name || {};
-    $scope.currentUser.name.first = firstName;
-    $scope.currentUser.name.last = lastName;
+  $scope.onSaveClicked = function() {
+    _.extend($scope.currentUser, $scope.tempUserInfo);
     $scope.currentUser.$save(function() {
       AlertService.success('Saved');
       $scope.$close();
     }, function(err) {
-      AlertService.error('Error Saving: ' + err.message);
+      AlertService.error(err.message);
     });
   };
 

@@ -176,6 +176,22 @@ angular.module('bs.web.app').factory('CommonModalService', function($rootScope, 
         }
       });
     },
+    pickThings: function(options) {
+      return $modal.open({
+        templateUrl: '/main/services/common-modal-templates/pick-buckets-or-streams.html',
+        controller: function($scope) {
+          $scope.question = options.question || 'Pick things...';
+          $scope.sections = options.sections;
+          $scope.onSave = function() {
+            var selected = [];
+            _.each($scope.sections, function(section) {
+              selected = selected.concat(_.filter(section.things, 'selected'));
+            });
+            $scope.$close(selected);
+          }
+        }
+      });
+    },
     createOrEditRule: function(rule, provider, type, buckets) {
       return $modal.open({
         templateUrl: '/main/services/common-modal-templates/new-rule-template.html',

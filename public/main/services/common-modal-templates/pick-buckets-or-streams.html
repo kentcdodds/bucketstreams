@@ -1,0 +1,13 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close" ng-click="$dismiss()">&times;</button>
+    <h3>{{question}}</h3>
+  </div>
+  <div class="modal-body">
+    <div bs-pick-things="sections"></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary pull-right" ng-click="onSave()">Save</button>
+    <button class="btn btn-default pull-left" ng-click="$dismiss()">Cancel</button>
+  </div>
+</div>

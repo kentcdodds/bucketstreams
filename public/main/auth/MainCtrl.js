@@ -1,4 +1,4 @@
-angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, $http, mainStreamData, Stream, Bucket, Post, User, Cacher, CurrentUserInfoService, CommonModalService, AlertService, CurrentContext) {
+angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, $http, mainStreamData, Stream, Bucket, Post, User, Cacher, CurrentUserInfoService, CommonModalService, AlertService, CurrentContext, Recommendations) {
   if (!$scope.isAuthenticated) {
     return;
   }
@@ -16,9 +16,7 @@ angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, 
         controller: 'GettingStartedCtrl',
         backdrop: 'static',
         keyboard: false
-      }).result.then(function() {
-          maybeOpenEmailConfirmationModal();
-        });
+      }).result.then(maybeOpenAModal);
       return true;
     }
   }
@@ -43,14 +41,48 @@ angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, 
         templateUrl: '/main/auth/email-confirmation/need-confirmation.html',
         backdrop: 'static',
         keyboard: false
-      });
+      }).result.then(maybeOpenAModal);
       return true;
     }
   }
 
-  if (!maybeOpenGettingStartedModal()) {
-    maybeOpenEmailConfirmationModal();
+  function maybeOpenPicker(type) {
+    if ($scope['user' + type + 's'].length < 2) {
+      var question = 'What do you like to see';
+      var sections = Recommendations.streams;
+      var model = Stream;
+      if (type === 'Bucket') {
+        question = 'What do you like to share?';
+        sections = Recommendations.buckets;
+        model = Bucket;
+      }
+      CommonModalService.pickThings({
+        question: question,
+        sections: sections
+      }).result.then(function(pickedThings) {
+          _.each(pickedThings, function(thing) {
+            model.save({
+              owner: $scope.currentUser._id,
+              name: thing.name
+            });
+          });
+
+        });
+      return true;
+    }
   }
+
+  function maybeOpenAModal() {
+    if (!maybeOpenGettingStartedModal()) {
+      if (!maybeOpenEmailConfirmationModal()) {
+        if (!maybeOpenPicker('Bucket')) {
+          maybeOpenPicker('Stream');
+        }
+      }
+    }
+  }
+
+  maybeOpenAModal();
 
   $scope.$on('post.removed.success', function(event, post) {
     _.remove($scope.postsAndShares.posts, {_id: post._id});
