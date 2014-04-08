@@ -741,7 +741,13 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 .bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options.bs-sub-menu .menu-options .sub-menu-context .selected-icon{padding-right:6px}
 /* line 124 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsMenu.styl */
 .bs-menu-wrapper .bs-menu-options-wrapper .bs-menu-scroll-hider-wrapper .bs-menu-scroll-hider .bs-menu-options.bs-sub-menu .menu-options .sub-menu-context .back-icon{color:#999}
-/* line 33 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/common-page.styl */
+/* line 33 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsPickThings.styl */
+
+/* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsPickThings.styl */
+
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsPickThings.styl */
+.pick-things .thing-to-pick{font-weight:normal;cursor:pointer;font-size:.9em}
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/common-page.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/common-page.styl */
 .top-bar{width:100%;border-bottom:solid 4px #6e3700;background-color:#03426a}

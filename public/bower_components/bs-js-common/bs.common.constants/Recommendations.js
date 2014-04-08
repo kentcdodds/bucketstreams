@@ -1,62 +1,30 @@
 angular.module('bs.common.constants').constant('Recommendations', (function() {
 
-  function makeThings(arry) {
+  function makeThings(arry, selected) {
     return arry.map(function(a) {
-      return { name: a, selected: false };
+      return { name: a, selected: !!selected };
     });
   }
 
-  function getBucketSections() {
-    return [
-      { name: 'Popular', things: makeThings([
-        'Friends',
-        'Family',
-        'Fun',
-        'thing1',
-        'thing2',
-        'thing3',
-        'thing1',
-        'thing2',
-        'thing3',
-        'thing1',
-        'thing2',
-        'thing3',
-        'thing1',
-        'thing2',
-        'thing3'
-      ])},
-      { name: 'Other', things: makeThings([
-        'thing1',
-        'thing2',
-        'thing3',
-        'thing1',
-        'thing2',
-        'thing3',
-        'thing1',
-        'thing2',
-        'thing3',
-        'thing1',
-        'thing2',
-        'thing3',
-        'thing1',
-        'thing2',
-        'thing3'
-      ])}
-    ];
-  }
-
-  function getStreamSections() {
-    return [
-      { name: 'Popular', things: makeThings([
-        'thing1',
-        'thing2',
-        'thing3'
-      ])}
-    ];
-  }
+  var sections = [
+    { name: 'Popular', things: makeThings([
+      'Sports', 'Music', 'Religion', 'Events'
+    ])},
+    { name: 'Health & Food', things: makeThings([
+      'Healthy Foods', 'Running', 'Yoga', 'Recipes'
+    ])},
+    { name: 'Tech & Nerd', things: makeThings([
+      'Techie stuff', 'Apple', 'Android', 'Microsoft',
+      'Treky stuff'
+    ])}
+  ];
+  // add selected items to popular
+  sections[0].things = makeThings([
+    'Family', 'Friends', 'Current Events'
+  ], true).concat(sections[0].things);
 
   return {
-    buckets: getBucketSections(),
-    streams: getStreamSections()
+    buckets: sections,
+    streams: sections
   }
 })());

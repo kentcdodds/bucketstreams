@@ -3,7 +3,7 @@
     <accordion-group class="things-section" heading="{{section.name}}" ng-repeat="section in sections" is-open="section.isOpen">
       <div class="row" ng-repeat="row in section.rows">
         <div class="col-md-3" ng-repeat="thing in row">
-          <label style="font-weight:normal;cursor:pointer">
+          <label class="thing-to-pick">
             <input type="checkbox" ng-model="thing.selected"> {{thing.name}}
           </label>
         </div>
