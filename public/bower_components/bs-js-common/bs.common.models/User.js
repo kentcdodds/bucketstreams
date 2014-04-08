@@ -1,4 +1,4 @@
-angular.module('bs.common.models').factory('User', function($resource, $http, $q, BaseUrl, _, UtilFunctions, $window) {
+angular.module('bs.common.models').factory('User', function($resource, $http, $q, BaseUrl, _, UtilFunctions, $window, moment) {
   var User = $resource(BaseUrl + '/api/v1/rest/users/:id', { id: '@_id' }, {
     dicsoverUsers: {
       method: 'GET',
@@ -59,27 +59,44 @@ angular.module('bs.common.models').factory('User', function($resource, $http, $q
     return this.profilePicture || '/images/guest-photo.png';
   };
 
-  User.prototype.isDontRemind = function(fieldDisplayName) {
-    return this.extraInfo.dontRemind && _.contains(this.extraInfo.dontRemind, fieldDisplayName);
+  User.prototype.isTimeToRemind = function(key) {
+    return !this.shouldNeverRemind(key) &&
+      (_.isEmpty(this.extraInfo.reminders) ||
+      _.isEmpty(this.extraInfo.reminders[key]) ||
+      moment().diff(this.extraInfo.reminders[key]) > 0);
   };
 
-  User.prototype.addDontRemind = function(fieldDisplayName) {
-    this.extraInfo.dontRemind = this.extraInfo.dontRemind || [];
-    this.extraInfo.dontRemind.push(fieldDisplayName);
+  User.prototype.addReminderTime = function(key, time) {
+    this.extraInfo.reminders = this.extraInfo.reminders || {};
+    this.extraInfo.reminders[key] = time;
   };
 
-  User.prototype.removeDontRemind = function(fieldDisplayName) {
-    _.remove(this.extraInfo.dontRemind, function(item) {
-      return item === fieldDisplayName;
-    });
+  User.prototype.addReminderTimeInDays = function(key, days) {
+    var then = moment().add(days, 'days');
+    var dateInFuture = moment({y: then.year(), M: then.month(), d: then.date()}).toJSON();
+    this.addReminderTime(key, dateInFuture);
   };
 
-  User.prototype.toggleDontRemind = function(fieldDisplayName) {
-    if (this.isDontRemind(fieldDisplayName)) {
-      this.removeDontRemind(fieldDisplayName);
-    } else {
-      this.addDontRemind(fieldDisplayName);
+  User.prototype.removeReminder = function(key) {
+    if (!_.isEmpty(this.extraInfo.reminders)) {
+      delete this.extraInfo.reminders[key];
     }
+  };
+
+  User.prototype.neverRemind = function(key) {
+    this.removeReminder(key);
+    this.extraInfo.neverRemind = this.extraInfo.neverRemind || [];
+    if (!this.shouldNeverRemind(key)) {
+      this.extraInfo.neverRemind.push(key);
+    }
+  };
+
+  User.prototype.shouldNeverRemind = function(key) {
+    return _.contains(this.extraInfo.neverRemind, key);
+  };
+
+  User.prototype.hasReminder = function(key) {
+    return this.extraInfo.reminders && !!this.extraInfo.reminders[key];
   };
 
   User.prototype.hasUsername = function() {
@@ -87,7 +104,7 @@ angular.module('bs.common.models').factory('User', function($resource, $http, $q
   };
 
   User.prototype.hasProfilePicture = function() {
-    return UtilFunctions.testHasPosterity(this.profilePicture, '0.url');
+    return !_.isEmpty(this.profilePicture);
   };
 
   User.prototype.hasFullName = function() {
@@ -146,30 +163,6 @@ angular.module('bs.common.models').factory('User', function($resource, $http, $q
   
   User.prototype.isConfirmed = function() {
     return this.emailConfirmed;
-  };
-
-  User.prototype.getFieldsToFill = function() {
-    var fields = [];
-    function assignField(displayName, filledInFn, filledInFnArg) {
-      fields.push({
-        filledInFn: filledInFn,
-        filledInFnArg: filledInFnArg,
-        displayName: displayName,
-        formName: displayName.replace(/ /g, '-').toLowerCase()
-      });
-    }
-
-    assignField('Profile Picture', 'hasProfilePicture');
-    assignField('Full Name', 'hasFullName');
-    assignField('Phone Number', 'hasPhone');
-    /* TODO: Make these fields rock.
-    assignField('Inbound Rules', 'hasOutboundRules');
-    _.each(['Facebook', 'Twitter', 'Google'], function(provider) {
-      assignField(provider + ' Connection', 'isConnectedTo', provider.toLowerCase());
-      assignField('Inbound ' + provider + ' Rules', 'hasInboundRules', provider.toLowerCase());
-    });
-    */
-    return fields;
   };
 
   return User;

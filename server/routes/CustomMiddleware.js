@@ -1,6 +1,7 @@
 var User = require('../model/User').model;
 var RouteHelper = require('./RouteHelper');
 var ErrorController = require('../controller/ErrorController');
+var _ = require('lodash-node');
 
 module.exports = function(app) {
 

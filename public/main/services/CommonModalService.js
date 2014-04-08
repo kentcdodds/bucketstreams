@@ -182,12 +182,18 @@ angular.module('bs.web.app').factory('CommonModalService', function($rootScope, 
         controller: function($scope) {
           $scope.question = options.question || 'Pick things...';
           $scope.sections = options.sections;
-          $scope.onSave = function() {
+          $scope.save = function() {
             var selected = [];
             _.each($scope.sections, function(section) {
               selected = selected.concat(_.filter(section.things, 'selected'));
             });
             $scope.$close(selected);
+          };
+          $scope.remindLater = function() {
+            $scope.$close(false); // didn't choose stuff
+          };
+          $scope.skip = function() {
+            $scope.$close(true); // chose everything user wanted to...
           }
         }
       });

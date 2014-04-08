@@ -75,13 +75,13 @@ var schema = new Schema({
     }
   },
   extraInfo: {
-    setupReminderDate: {type: Date, required: false},
-    dontRemind: [{type: String, required: false}],
+    reminders: {}, // reminderKey: reminderDate
+    neverRemind: [ String ], // reminderKey
+    emailConfirmationSent: Date,
     passwordReset: {
       emailSent: {type: Date, required: false},
       used: {type: Boolean, required: false}
-    },
-    emailConfirmationSent: Date
+    }
   },
   emailConfirmed: {type: Boolean, default: false},
   connectedAccounts: {

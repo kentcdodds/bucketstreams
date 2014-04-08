@@ -21,15 +21,6 @@ angular.module('bs.web.app').controller('GettingStartedCtrl', function($scope, $
     $scope.$close();
   };
 
-  $scope.toggleDontRemind = function($event, fieldDisplayName) {
-    $scope.currentUser.toggleDontRemind(fieldDisplayName);
-    $scope.currentUser.$save();
-
-    if ($event.stopPropagation) $event.stopPropagation();
-    if ($event.preventDefault) $event.preventDefault();
-    $event.cancelBubble = true;
-  };
-
   $scope.onSaveClicked = function() {
     _.extend($scope.currentUser, $scope.tempUserInfo);
     $scope.currentUser.$save(function() {

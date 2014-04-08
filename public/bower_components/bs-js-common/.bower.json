@@ -1,10 +1,10 @@
 {
   "name": "bs-js-common",
-  "_release": "0414fc3d32",
+  "_release": "d12cd3245b",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "0414fc3d328282cd80d46290ced16067ceaad9da"
+    "commit": "d12cd3245b368d903140cee9683da60b2303a545"
   },
   "_source": "git@bitbucket.org:kentcdodds/bs-js-common.git",
   "_target": "*",

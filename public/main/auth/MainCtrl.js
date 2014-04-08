@@ -47,7 +47,12 @@ angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, 
   }
 
   function maybeOpenPicker(type) {
-    if ($scope['user' + type + 's'].length < 2) {
+    var reminderKey = 'pick' + type;
+    if ($scope['user' + type + 's'].length > 1) {
+      $scope.currentUser.removeReminder(reminderKey);
+      return false;
+    }
+    if ($scope.currentUser.isTimeToRemind(reminderKey)) {
       var question = 'What do you like to see';
       var sections = Recommendations.streams;
       var model = Stream;
@@ -60,13 +65,19 @@ angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, 
         question: question,
         sections: sections
       }).result.then(function(pickedThings) {
-          _.each(pickedThings, function(thing) {
-            model.save({
-              owner: $scope.currentUser._id,
-              name: thing.name
+          if (!pickedThings) {
+            $scope.currentUser.addReminderTimeInDays(reminderKey, 3);
+          } else {
+            _.each(pickedThings, function(thing) {
+              model.save({
+                owner: $scope.currentUser._id,
+                name: thing.name
+              });
             });
-          });
-
+            $scope.currentUser.neverRemind(reminderKey);
+          }
+          $scope.currentUser.$save();
+          maybeOpenAModal();
         });
       return true;
     }
