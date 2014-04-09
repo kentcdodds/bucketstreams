@@ -65,20 +65,20 @@ angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, 
         question: question,
         sections: sections
       }).result.then(function(pickedThings) {
-          if (!pickedThings) {
-            $scope.currentUser.addReminderTimeInDays(reminderKey, 3);
-          } else {
-            _.each(pickedThings, function(thing) {
-              model.save({
-                owner: $scope.currentUser._id,
-                name: thing.name
-              });
+        if (!pickedThings) {
+          $scope.currentUser.addReminderTimeInDays(reminderKey, 3);
+        } else {
+          _.each(pickedThings, function(thing) {
+            model.save({
+              owner: $scope.currentUser._id,
+              name: thing.name
             });
-            $scope.currentUser.neverRemind(reminderKey);
-          }
-          $scope.currentUser.$save();
-          maybeOpenAModal();
-        });
+          });
+          $scope.currentUser.neverRemind(reminderKey);
+        }
+        $scope.currentUser.$save();
+        maybeOpenAModal();
+      });
       return true;
     }
   }
