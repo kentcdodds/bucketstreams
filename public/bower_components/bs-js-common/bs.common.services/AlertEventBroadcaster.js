@@ -46,7 +46,7 @@ angular.module('bs.common.services').factory('AlertEventBroadcaster', function($
     getAlertEvent('post.created.error', 'error', 'There was a problem sharing post.'),
 
     getAlertEvent('post.removed.start'),
-    getAlertEvent('post.removed.success', 'info', 'Share removed!'),
+    getAlertEvent('post.removed.success', 'info', 'Post removed!'),
     getAlertEvent('post.removed.error', 'error', 'There was a problem removing the post.')
   ];
 
