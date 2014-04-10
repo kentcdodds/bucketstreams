@@ -190,14 +190,10 @@
       state('root.postPage', {
         controller: 'PostPageCtrl',
         templateUrl: '/main/post-page/post-page.html',
-        url: usernameUrl + '/post/:postId',
+        url: 'post/:postId',
         resolve: {
-          post: function($q, UtilService, $stateParams) {
-            var deferred = $q.defer();
-            UtilService.loadPost($stateParams.postId).then(function(response) {
-              deferred.resolve(response.data);
-            }, deferred.reject);
-            return deferred.promise;
+          post: function(UtilService, $stateParams) {
+            return UtilService.loadPost($stateParams.postId);
           }
         },
         context: 'Bucket Streams Post'
@@ -306,11 +302,11 @@
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       console.error('$stateChangeError');
       console.error(event);
-      debugger;
       $window.BS.stateChangeErrors = $window.BS.stateChangeErrors || 1;
       $window.BS.stateChangeErrors++;
       if ($window.BS.stateChangeErrors > 10) {
         $state.go('error');
+        $window.localStorage.removeItem('user-token');
       } else {
         $state.go('root.anon');
       }

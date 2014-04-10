@@ -43,7 +43,24 @@ angular.module('bs.common.services').factory('UtilService', function(_, Cacher, 
       return deferred.promise;
     },
     loadPost: function (postId) {
-      return $http.get(utilPrefix + 'data/post/' + postId);
+      return $http.get(utilPrefix + 'data/post/' + postId).then(function(response) {
+        var data = response.data;
+        data.post = Cacher.postCache.putById(data.post);
+        var modelGroups = [
+          { propName: 'user', model: User },
+          { propName: 'comment', model: Comment }
+        ];
+        _.each(modelGroups, function(group) {
+          var cache = Cacher[group.propName + 'Cache'];
+          _.each(data[group.propName + 's'], function(item, index) {
+            // add to cache and reset the value to the resource version.
+            data[group.propName + 's'][index] = cache.putById(data[group.propName + 's'][index]);
+          });
+        });
+        return data.post;
+      }, function(err) {
+        throw err;
+      });
     },
     sendResetPasswordEmail: function(username) {
       return $http({

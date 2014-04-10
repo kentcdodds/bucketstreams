@@ -43,6 +43,19 @@ module.exports = function(app) {
     });
   });
 
+
+
+  /*
+   * Helper function
+   */
+  function uniqueIds(allIds, objIds) {
+    var union = _.union(allIds, objIds);
+    return _.unique(union, function(objId) {
+      return objId.id;
+    });
+  }
+
+
   /**
    * Helper function for loading a stream or bucket page.
    * @param streamName - query - The name of the stream/bucket
@@ -76,13 +89,6 @@ module.exports = function(app) {
       return deferred.promise;
     }
 
-    function uniqueIds(allIds, objIds) {
-      var union = _.union(allIds, objIds);
-      return _.unique(union, function(objId) {
-        return objId.id;
-      });
-    }
-    
     // get posts
     function getPosts(responseBuilder) {
       var deferred = Q.defer();
@@ -217,12 +223,18 @@ module.exports = function(app) {
     Post.findOne({_id: req.params.id }, function(err, post) {
       if (err) return ErrorController.sendErrorJson(res, 500, err.message);
       if (!post) return ErrorController.sendErrorJson(res, 404, 'No post with the id ' + req.query.id);
-
+      var allIds = [post.author];
       Comment.find({owningPost: req.params.id}, function(err, comments) {
         if (err) return ErrorController.sendErrorJson(res, 500, err.message);
-        res.json({
-          post: post,
-          comments: comments
+        allIds = uniqueIds(allIds, _.pluck(comments, 'author'));
+        User.find({_id: { $in: allIds } }, '_id username name profilePicture', function(err, users) {
+          if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+
+          res.json({
+            post: post,
+            comments: comments,
+            users: users
+          });
         });
       });
     });
