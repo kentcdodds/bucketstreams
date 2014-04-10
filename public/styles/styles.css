@@ -778,14 +778,20 @@ a.text-decoration-none,a.text-decoration-none:hover{text-decoration:none}
 /* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-#anon-page{width:400px;margin-top:40px;}
-/* line 4 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-#anon-page #front-page-forms{width:350px}
-/* line 7 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-#anon-page .logo-container{width:800px;}
-/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
-#anon-page .logo-container > img{width:800px}
-/* line 11 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
+
+/* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+#anon-page .content-wrapper{width:480px;margin-top:40px;}
+/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+#anon-page .content-wrapper #front-page-forms{width:350px}
+/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+#anon-page .content-wrapper .logo-container{width:480px;}
+/* line 10 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+#anon-page .content-wrapper .logo-container > img{width:400px;display:inline}
+/* line 13 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+#anon-page .content-wrapper .logo-container > small{vertical-align:top}
+/* line 15 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/front-page.styl */
+#anon-page .youtube-video-container{margin-top:50px;width:640px}
+/* line 18 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/main.styl */
 

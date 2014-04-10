@@ -52,7 +52,8 @@ function setupConfig(configDone) {
     topScripts: [
       '/bower_components/ng-file-upload/angular-file-upload-shim.js',
       '/bower_components/angular/angular.js',
-      '/scripts/facebook-fix.js'
+      '/scripts/facebook-fix.js',
+      '/scripts/analytics.js'
     ],
     scripts: _.union([
       '/bower_components/jquery/dist/jquery.js',
@@ -69,6 +70,7 @@ function setupConfig(configDone) {
       '/bower_components/genie/genie.js',
       '/bower_components/ux-genie/uxGenie.js',
       '/bower_components/ngInfiniteScroll/ng-infinite-scroll.js',
+      '/bower_components/angular-google-analytics/src/angular-google-analytics.js',
       '/bower_components/firebase/firebase.js',
       '/bower_components/angularfire/angularfire.js'
     ], getBSJSCommon(), getAppSection('constants'), getAppSection('components'))

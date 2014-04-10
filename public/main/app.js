@@ -1,11 +1,24 @@
 (function() {
-  var thirdParties = ['ui.router', 'ui.bootstrap', 'angularFileUpload', 'uxGenie', 'infinite-scroll'];
+  var thirdParties = ['ui.router', 'ui.bootstrap', 'angularFileUpload', 'uxGenie', 'infinite-scroll', 'angular-google-analytics'];
   var angularMods = ['ngAnimate'];
   var commonMods = ['bs.common'];
   var internalMods = ['bs.web.constants', 'bs.web.directives', 'bs.web.services'];
   var app = angular.module('bs.web.app', thirdParties.concat(angularMods.concat(commonMods)).concat(internalMods));
 
-  app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, _) {
+  app.config(function ($stateProvider, $urlRouterProvider, $locationProvider, _, AnalyticsProvider) {
+    // Analytics setup
+    // initial configuration
+    AnalyticsProvider.setAccount('UA-46959103-2');
+
+    // track all routes (or not)
+    AnalyticsProvider.trackPages(true);
+
+    //Optional set domain (Use 'none' for testing on localhost)
+    AnalyticsProvider.setDomainName(window.BS.BASE_URL);
+
+    // change page event name
+    AnalyticsProvider.setPageEvent('$stateChangeSuccess');
+
     $locationProvider.html5Mode(true);
 
     var resolveCurrentUserInfo = {};
@@ -283,7 +296,7 @@
     
   });
   
-  app.run(function($rootScope, $state, CurrentUserInfoService, AlertEventBroadcaster, $location, $window, UtilService) {
+  app.run(function($rootScope, $state, CurrentUserInfoService, AlertEventBroadcaster, $location, $window, UtilService, Analytics) {
     var alertEvents = [
       { name: '$stateChangeError', type: 'error', message: 'Something weird happened. Try refreshing...' }
     ];
