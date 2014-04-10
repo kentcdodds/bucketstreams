@@ -1,16 +1,13 @@
 <div class="user-profile-picture-upload center-block">
-  <div ng-mouseenter="showChangePhoto=true" ng-mouseleave="showChangePhoto=false">
+  <div class="hover-parent-1">
     <img class="user-photo img-circle" ng-src="{{currentUser.getProfilePicture()}}">
-    <div class="change-photo" ng-class="{visible: showChangePhoto}"
+    <div class="change-photo hover-only-1"
          ng-file-drop-available="dropSupported=true"
          ng-file-drop="onFileSelect($files)"
          ng-file-drage-over-class="file-hovering">
       <i class="fa fa-camera btn-file">
         <input type="file" name="upload" ng-file-select="onFileSelect($files)">
       </i>
-    </div>
-    <div class="bs-new-photo-wrapper">
-      <img src="" class="bs-new-photo img-circle">
     </div>
   </div>
 </div>

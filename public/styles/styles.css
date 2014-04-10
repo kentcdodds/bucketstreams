@@ -484,18 +484,14 @@ ul.dropdown-menu li,accordion .panel-group .panel .panel-heading{cursor:pointer}
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bs-common/bsProfilePictureUpload.styl */
 
 /* line 2 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bs-common/bsProfilePictureUpload.styl */
-.user-profile-picture-upload{width:160px;height:160px;}
-/* line 5 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bs-common/bsProfilePictureUpload.styl */
+.user-profile-picture-upload{width:160px;height:160px;position:relative;}
+/* line 6 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bs-common/bsProfilePictureUpload.styl */
 .user-profile-picture-upload img{width:160px;height:160px}
-/* line 8 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bs-common/bsProfilePictureUpload.styl */
-.user-profile-picture-upload .change-photo{cursor:pointer;position:absolute;font-size:2.2em;top:50%;left:50%;margin-top:-38px;margin-left:-38px;color:#fff;background-color:rgba(0,0,0,0.5);padding:16px;border-radius:50%;width:76px;height:76px;opacity:0;transition:opacity .2s linear;}
-/* line 24 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bs-common/bsProfilePictureUpload.styl */
-.user-profile-picture-upload .change-photo.visible{opacity:1}
-/* line 26 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bs-common/bsProfilePictureUpload.styl */
+/* line 9 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bs-common/bsProfilePictureUpload.styl */
+.user-profile-picture-upload .change-photo{text-align:center;cursor:pointer;position:absolute;font-size:2.2em;top:50%;left:50%;margin-top:-38px;margin-left:-38px;color:#fff;background-color:rgba(0,0,0,0.5);padding:16px;border-radius:50%;width:76px;height:76px;transition:opacity .4s .1s;}
+/* line 25 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bs-common/bsProfilePictureUpload.styl */
 .user-profile-picture-upload .change-photo i{padding-top:8px}
-/* line 29 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bs-common/bsProfilePictureUpload.styl */
-.user-profile-picture-upload .bs-new-photo-wrapper{position:absolute;border-radius:50%;top:0;left:50%;z-index:-1;opacity:0;height:100%}
-/* line 37 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketStreamChooser.styl */
+/* line 27 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketStreamChooser.styl */
 
 /* line 1 : /Users/kentcdodds/Developer/bucketstreams/stylus/components/bsBucketStreamChooser.styl */
 

@@ -48,7 +48,9 @@
     "compression": "~1.0.1",
     "morgan": "~1.0.0",
     "express-jwt": "~0.2.0",
-    "jsonwebtoken": "~0.2.0"
+    "jsonwebtoken": "~0.2.0",
+    "easyimage": "~0.1.6",
+    "s3": "~0.3.1"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

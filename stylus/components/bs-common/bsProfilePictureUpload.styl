@@ -2,10 +2,12 @@ profilePictureSize = 160px
 .user-profile-picture-upload
   width profilePictureSize
   height profilePictureSize
+  position relative
   img
     width profilePictureSize
     height profilePictureSize
   .change-photo
+    text-align center
     cursor pointer
     position absolute
     font-size 2.2em
@@ -19,18 +21,6 @@ profilePictureSize = 160px
     border-radius 50%
     width 76px
     height 76px
-    opacity 0
-    transition opacity 0.2s linear
-    &.visible
-      opacity 1
+    transition opacity 0.4s 0.1s
     i
       padding-top 8px
-
-  .bs-new-photo-wrapper
-    position absolute
-    border-radius 50%
-    top 0
-    left 50%
-    z-index -1
-    opacity 0
-    height 100%
