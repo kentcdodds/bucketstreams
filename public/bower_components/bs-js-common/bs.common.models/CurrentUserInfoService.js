@@ -1,24 +1,36 @@
-angular.module('bs.common.models').factory('CurrentUserInfoService', function($rootScope, $q, $http, _, User, Stream, Bucket) {
+angular.module('bs.common.models').factory('CurrentUserInfoService', function($rootScope, $q, $http, _, User, Stream, Bucket, Cacher) {
   var things = {
     user: {
       val: null,
       event: 'userUpdated',
       refresher: function() {
-        return User.get({id: 'me'});
+        var user = User.get({id: 'me'});
+        user.$promise.then(function() {
+          Cacher.userCache.putById(user);
+        });
+        return user;
       }
     },
     buckets: {
       val: [],
       event: 'bucketsUpdated',
       refresher: function() {
-        return Bucket.query({owner: 'me'});
+        var buckets = Bucket.query({owner: 'me'});
+        buckets.$promise.then(function() {
+          Cacher.bucketCache.putAllById(buckets);
+        });
+        return buckets;
       }
     },
     streams: {
       val: [],
       event: 'streamsUpdated',
       refresher: function() {
-        return Stream.query({owner: 'me'});
+        var streams = Stream.query({owner: 'me'});
+        streams.$promise.then(function() {
+          Cacher.streamCache.putAllById(streams);
+        });
+        return streams;
       }
     }
   };

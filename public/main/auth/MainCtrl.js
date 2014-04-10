@@ -24,8 +24,10 @@ angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, 
   function maybeOpenProfilePictureModal() {
     var reminderKey = 'addProfilePicture';
     if ($scope.currentUser.hasProfilePicture()) {
-      $scope.currentUser.removeReminder(reminderKey);
-      $scope.currentUser.$save();
+      if ($scope.currentUser.hasReminder(reminderKey)) {
+        $scope.currentUser.removeReminder(reminderKey);
+        $scope.currentUser.$save();
+      }
       return false;
     }
     // Hack... Waiting for backend to respond...
@@ -73,8 +75,10 @@ angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, 
   function maybeOpenPicker(type) {
     var reminderKey = 'pick' + type;
     if ($scope['user' + type + 's'].length > 1) {
-      $scope.currentUser.removeReminder(reminderKey);
-      $scope.currentUser.$save();
+      if ($scope.currentUser.hasReminder(reminderKey)) {
+        $scope.currentUser.removeReminder(reminderKey);
+        $scope.currentUser.$save();
+      }
       return false;
     }
     if ($scope.currentUser.isTimeToRemind(reminderKey)) {
