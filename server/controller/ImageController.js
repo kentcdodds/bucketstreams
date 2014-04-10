@@ -1,5 +1,6 @@
 var easyimg = require('easyimage');
 var os = require('os');
+var uuid = require('node-uuid');
 
 function makeImageSquare(filePath, callback) {
   return callback(null, filePath);

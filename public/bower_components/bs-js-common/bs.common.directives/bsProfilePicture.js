@@ -3,13 +3,8 @@ angular.module('bs.common.directives').directive('bsProfilePicture', function() 
     restrict: 'E',
     template: function(el, attrs) {
       var temp = ['<div class="bs-profile-picture-wrapper">'];
-      if (attrs.watchUser) {
-        temp.push('<a ng-href="/{{user.username}}">');
-        temp.push('<img ng-src="{{user.getProfilePicture()}}" class="img-circle">');
-      } else {
-        temp.push('<a ng-href="/{{user.username}}">');
-        temp.push('<img ng-src="{{user.getProfilePicture()}}" class="img-circle">');
-      }
+      temp.push('<a ng-href="/{{user.username}}">');
+      temp.push('<img ng-src="{{user.getProfilePicture()}}" class="img-circle">');
       temp.push('</a></div>');
       return temp.join('');
     },

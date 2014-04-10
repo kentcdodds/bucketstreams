@@ -1,0 +1,13 @@
+for provider in facebook twitter google
+  .button-{provider}:hover
+    @extend .color-{provider}
+  .button-{provider}
+    @extend .background-color-{provider}
+    &:not(:hover)
+      color white
+
+.provider-button
+  cursor pointer
+  &:hover
+    background-color #FFF
+    border-color #CCC

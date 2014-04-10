@@ -1,4 +1,4 @@
-angular.module('bs.common.services').factory('UtilService', function(_, Cacher, $http, $q, BaseUrl, Post, Share, Comment, User, Stream, Bucket) {
+angular.module('bs.common.services').factory('UtilService', function(_, Cacher, $http, $q, BaseUrl, Post, Share, Comment, User, Stream, Bucket, CurrentUserInfoService, AlertEventBroadcaster) {
   var utilPrefix = BaseUrl + '/api/v1/util/';
   var authPrefix = BaseUrl + '/api/v1/auth/';
   //noinspection UnnecessaryLocalVariableJS
@@ -53,6 +53,29 @@ angular.module('bs.common.services').factory('UtilService', function(_, Cacher, 
           username: username
         }
       });
+    },
+    importProfilePhoto: function(provider) {
+      return $http.get(authPrefix + 'get-profile-photo/' + provider).then(function(response) {
+        CurrentUserInfoService.refreshUser();
+        AlertEventBroadcaster.broadcast({
+          message: 'Profile picture updated!',
+          type: 'success'
+        });
+        return response;
+      }, function(err) {
+        AlertEventBroadcaster.broadcast({
+          message: err.message || err,
+          type: 'error'
+        });
+        throw err;
+      });
+    },
+    callbackProvider: function(provider, query) {
+      var params = [];
+      _.each(query, function(value, key) {
+        params.push(key + '=' + encodeURIComponent(value));
+      });
+      return $http.get('/third-party/' + provider + '/callback?' + params.join('&'));
     }
   };
   return util;

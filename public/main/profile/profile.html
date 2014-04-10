@@ -9,16 +9,19 @@
       </div>
     </div>
     <div class="col-xs-6 center-content">
+      <div class="user-info">
+        <h1>{{displayName}}</h1>
+        <div class="tagline" ng-if="profileUser.tagline">
+          <strong>Tagline:</strong> {{profileUser.tagline}}
+        </div>
+      </div>
       <div class="profile-picture">
         <bs-profile-picture-upload ng-if="profileUser._id === currentUser._id"></bs-profile-picture-upload>
         <div ng-if="profileUser._id !== currentUser._id" class="center-block user-profile-photo">
           <bs-profile-picture user="profileUser" class="user-photo" size="160" hide-hover="true"></bs-profile-picture>
         </div>
-        <div class="tagline" ng-if="profileUser.tagline">
-          <strong>Tagline:</strong> {{profileUser.tagline}}
-        </div>
       </div>
-      <h1 class="text-align-center">Main Bucket</h1>
+      <h2 class="bucket-label">Main Bucket</h2>
       <div bs-post-stream="postsAndShares" author-to-show="{{profileUser._id}}"></div>
     </div>
     <div class="col-xs-3 text-right">

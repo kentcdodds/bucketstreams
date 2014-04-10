@@ -53,7 +53,8 @@ angular.module('bs.web.app').controller('RulesCtrl', function($scope, $window, $
 
 
   $scope.connect = function(provider) {
-    $window.location.href = '/third-party/' + provider.name + '?destination=' + encodeURIComponent($location.path() + '?provider=' + provider.name);
+    $window.sessionStorage.setItem('destination', $location.path() + '?provider=' + provider.name);
+    $window.location.href = '/third-party/' + provider.name;
   };
 
   function createOrEditRule(rule, provider, type) {

@@ -6,6 +6,7 @@ var expressJwt = require('express-jwt');
 
 var express = require('express');
 var cookieParser = require('cookie-parser');
+var expressSession = require('express-session');
 var errorhandler = require('errorhandler');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
@@ -48,6 +49,7 @@ module.exports = function(app) {
     app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 9000);
     app.set('ip', process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
     app.use(cookieParser('ki7%"6j-":8198h<7=]P'));
+    app.use(expressSession('NAhpAxPrpuGmr3YC'));
     app.use(compression());
   } else {
     logger.info('Setting express up with development-level stuff');
@@ -55,6 +57,7 @@ module.exports = function(app) {
     app.set('ip', process.env.IP || '127.0.0.1');
     app.use(errorhandler());
     app.use(cookieParser('oi%j**A^&d)N;!-{6"|'));
+    app.use(expressSession('DgsVPKeQv2PzG8PH'));
     app.use(morgan('dev'));
     app.locals.pretty = true;
   }

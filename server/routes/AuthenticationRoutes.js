@@ -281,7 +281,9 @@ module.exports = function(app) {
   });
 
   app.get('/third-party/:provider', AuthenticationController.authenticate);
-  app.get('/third-party/:provider/callback', AuthenticationController.callback);
+  app.get('/third-party/:provider/callback', function(req, res, next) {
+    next();
+  }, AuthenticationController.callback);
 
   /**
    * Disconnects a user from the given provider
@@ -295,6 +297,21 @@ module.exports = function(app) {
         res.json({
           disconnected: true,
           provider: req.params.provider
+        });
+      });
+    });
+  });
+
+  app.get(prefix.auth + '/get-profile-photo/:provider', AuthenticationController.checkAuthenticated, function(req, res) {
+    User.deTokenize(req.user, function(err, user) {
+      if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+
+      user.setProfilePictureFromProvider(req.params.provider, function(err, user) {
+        if (err) return ErrorController.sendErrorJson(res, 500, err.message);
+        res.json({
+          pictureSet: true,
+          provider: req.params.provider,
+          profilePicture: user.profilePicture
         });
       });
     });

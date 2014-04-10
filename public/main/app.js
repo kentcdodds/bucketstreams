@@ -230,13 +230,44 @@
           },
           code: resolveParameter('secret')
         }
+      }).
+      state('root.providerCallback', {
+        url: 'third-party/:provider/confirm',
+        resolve: {
+          code: function($state, $stateParams, $window, $location, UtilService, AlertEventBroadcaster) {
+            var query = $location.search();
+            if (query.code || query['oauth_token']) {
+              UtilService.callbackProvider($stateParams.provider, query).then(function() {
+                AlertEventBroadcaster.broadcast({
+                  message: 'Connected with ' + $stateParams.provider + ' successfully',
+                  type: 'success'
+                });
+                var destination = sessionStorage.getItem('destination');
+                if (destination) {
+                  sessionStorage.removeItem('destination');
+                  $window.location.href = destination;
+                } else {
+                  $state.go('root.anon');
+                }
+              }, function(err) {
+                AlertEventBroadcaster.broadcast({
+                  message: err.message || err,
+                  type: 'error'
+                });
+                $state.go('root.anon');
+              });
+            } else {
+              $state.go('root.anon');
+            }
+          }
+        }
       });
 
     $urlRouterProvider.otherwise('/');
     
   });
   
-  app.run(function($rootScope, $state, CurrentUserInfoService, AlertEventBroadcaster) {
+  app.run(function($rootScope, $state, CurrentUserInfoService, AlertEventBroadcaster, $location, UtilService) {
     var alertEvents = [
       { name: '$stateChangeError', type: 'error', message: 'Something weird happened. Try refreshing...' }
     ];
@@ -264,6 +295,13 @@
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       console.error('$stateChangeError');
       console.error(event);
+    });
+
+    $rootScope.$on('$stateChangeSuccess', function(event, toState) {
+      var provider = $location.search()['import-profile-photo'];
+      if (provider) {
+        UtilService.importProfilePhoto(provider);
+      }
     });
   });
 })();

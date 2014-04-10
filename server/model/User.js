@@ -452,6 +452,12 @@ schema.methods.importPosts = function(callback, force) {
   });
 };
 
+schema.methods.setProfilePictureFromProvider = function(provider, callback) {
+  providers[provider].getProfilePicture(this, function(err) {
+    callback(err, this);
+  });
+};
+
 schema.methods.updateLastLoginTime = function(callback) {
   this.lastLoginDate = new Date();
   this.save(callback);

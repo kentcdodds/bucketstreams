@@ -1,4 +1,4 @@
-angular.module('bs.web.app').factory('CommonModalService', function($rootScope, $modal, CurrentUserInfoService, Bucket, Stream, AlertService, Cacher) {
+angular.module('bs.web.app').factory('CommonModalService', function($rootScope, $window, $location, $modal, CurrentUserInfoService, Bucket, Stream, AlertService, Cacher, $upload, UtilService) {
 
   var CommonModalService = {
     createOrEditBucketStream: function(type, model) {
@@ -331,6 +331,60 @@ angular.module('bs.web.app').factory('CommonModalService', function($rootScope, 
             });
             return subBuckets;
           }
+        }
+      });
+    },
+    openPhotoChooser: function(currentUser) {
+      return $modal.open({
+        templateUrl: '/main/services/common-modal-templates/profile-photo-chooser.html',
+        controller: function($scope) {
+          $scope.useProviderPhoto = function(provider) {
+            if (currentUser.isConnectedTo(provider)) {
+              $scope.uploadInProgress = true;
+              UtilService.importProfilePhoto(provider).then(function(response) {
+                $scope.$close(true);
+              }, function() {
+                $scope.uploadInProgress = false;
+              });
+            } else {
+              $window.sessionStorage.setItem('destination', $location.path() + '?import-profile-photo=' + provider);
+              $window.location.href = '/third-party/' + provider;
+            }
+          };
+
+          $scope.uploadInProgress = false;
+          $scope.onFileSelect = function(image) {
+            $scope.uploadInProgress = true;
+            $scope.uploadProgress = 0;
+            $scope.fileBeingUploaded = image;
+            $scope.error = null;
+
+            if (angular.isArray(image)) {
+              image = image[0];
+            }
+
+            $scope.upload = $upload.upload({
+              url: '/api/v1/upload/image',
+              method: 'POST',
+              data: {
+                type: 'profile'
+              },
+              file: image
+            }).progress(function(event) {
+              $scope.uploadProgress = Math.floor(event.loaded / event.total);
+              console.log('progress', $scope.uploadProgress);
+              $scope.$apply();
+            }).success(function(data, status, headers, config) {
+              CurrentUserInfoService.refreshUser();
+              AlertService.success('Photo uploaded!');
+              $scope.$close(true);
+            }).error(function(err) {
+              $scope.uploadInProgress = false;
+              $scope.error = err;
+              AlertService.error('Error uploading file: ' + err.message || err);
+              $scope.$close(false);
+            });
+          };
         }
       });
     }

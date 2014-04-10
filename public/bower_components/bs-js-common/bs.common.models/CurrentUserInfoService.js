@@ -23,12 +23,16 @@ angular.module('bs.common.models').factory('CurrentUserInfoService', function($r
     }
   };
 
-  // The service will have methods called getUser and refreshUser (as well as streams and buckets)
   var service = {
-    events: {},
+    events: {
+      user: null, buckets: null, streams: null
+    },
     isAuthenticated: function() {
       return !!localStorage.getItem('user-token');
-    }
+    },
+    getBuckets: null, setBuckets: null, refreshBuckets: null, resolveBuckets: null,
+    getStreams: null, setStreams: null, refreshStreams: null, resolveStreams: null,
+    getUser: null, setUser: null, refreshUser: null, resolveUser: null
   };
   service.resolveAuthenticated = service.isAuthenticated;
   _.each(things, function(thing, thingName) {

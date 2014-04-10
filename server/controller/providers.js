@@ -6,9 +6,26 @@ var async = require('async');
 var logger = require('winston');
 var _ = require('lodash-node');
 var moment = require('moment');
+var ProfilePhotoController = require('./ProfilePhotoController');
 
 module.exports = {
   facebook: {
+    getProfilePicture: function(user, callback) {
+      var accountId = user.connectedAccounts.facebook.accountId;
+      var params = {
+        height: 512,
+        width: 512,
+        redirect: false
+      };
+      facebook.get(accountId + '/picture', params, function(err, response) {
+        if (err || !response || !response.data || !response.data.url) return callback(err || {message: 'No picture!'});
+
+        ProfilePhotoController.uploadProfilePhoto({
+          url: response.data.url,
+          user: user
+        }, callback);
+      });
+    },
     getPosts: function(user, callback) {
       var accountId = user.connectedAccounts.facebook.accountId;
       var token = user.hidden.tokens.facebook;
@@ -62,6 +79,26 @@ module.exports = {
     }
   },
   twitter: {
+    getProfilePicture: function(user, callback) {
+      var userTwitterInfo = user.connectedAccounts.twitter;
+      var twit = new twitter({
+        consumer_key: process.env.TWITTER_CONSUMER_KEY,
+        consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+        access_token_key: user.hidden.tokens.twitter,
+        access_token_secret: user.hidden.secrets.twitter
+      });
+      var params = {};
+      params['user_id'] = userTwitterInfo.accountId;
+      twit.get('/users/show.json', params, function(data) {
+        var url = data['profile_image_url'];
+        if (!url) return callback({ message: 'No Image data!' });
+
+        ProfilePhotoController.uploadProfilePhoto({
+          url: url.replace('_normal', ''),
+          user: user
+        }, callback);
+      });
+    },
     getPosts: function(user, callback) {
       var userTwitterInfo = user.connectedAccounts.twitter;
       var twit = new twitter({
