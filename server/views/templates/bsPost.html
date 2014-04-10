@@ -45,7 +45,7 @@
     </div>
     <div ng-hide="editing" ng-class="{'font-size-xsmall': isShare}">
       <i ng-show="post.sourceData.source && !isShare" class="source-icon fa fa-{{post.sourceData.source}} color-{{post.sourceData.source}}" tooltip="Posted on {{post.sourceData.source}}"></i>
-      {{mainContent}}
+      <span ng-bind-html="mainContent"></span>
     </div>
     <div ng-show="editing">
       <textarea ng-model="newContent" class="form-control"></textarea>

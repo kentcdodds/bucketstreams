@@ -113,7 +113,7 @@
         templateUrl: '/main/profile/profile.html',
         resolve: {
           username: resolveParameter('username'),
-          profileUser: function($q, username, User) {
+          profileUser: function($q, username, User, _) {
             var deferred = $q.defer();
             if (username === 'unknown_user') {
               deferred.resolve(new User({
@@ -126,7 +126,11 @@
               }));
             } else {
               User.query({username: username}).$promise.then(function(data) {
-                deferred.resolve(data[0]);
+                if (_.isEmpty(data)) {
+                  deferred.reject('No user with the username ' + username);
+                } else {
+                  deferred.resolve(data[0]);
+                }
               }, deferred.reject);
             }
             return deferred.promise;
@@ -295,6 +299,7 @@
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       console.error('$stateChangeError');
       console.error(event);
+      $state.go('root.anon');
     });
 
     $rootScope.$on('$stateChangeSuccess', function(event, toState) {
