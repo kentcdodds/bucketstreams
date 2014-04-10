@@ -67,6 +67,10 @@ module.exports = function(app) {
     var type = req.params.type;
     var model = models[type];
     var isStream = type === 'stream';
+    var postAndShareQueryOptions = {
+      limit: req.query.limit || 8,
+      skip: req.query.skip || (req.query.page ? req.query.page * 8 : 0)
+    };
 
     function deferredCallback(deferred) {
       return function(err, obj) {
@@ -85,14 +89,17 @@ module.exports = function(app) {
     // get a stream/bucket
     function getThing() {
       var deferred = Q.defer();
-      model.findOne(req.query, deferredCallback(deferred));
+      model.findOne({
+        name: req.query.name,
+        owner: req.query.owner
+      }, deferredCallback(deferred));
       return deferred.promise;
     }
 
     // get posts
     function getPosts(responseBuilder) {
       var deferred = Q.defer();
-      responseBuilder.thing.getPostsAndShares(function(err, postsAndShares) {
+      responseBuilder.thing.getPostsAndShares(postAndShareQueryOptions, function(err, postsAndShares) {
         if (err) return deferred.reject(err);
         var allPosts = _.union(postsAndShares.posts, postsAndShares.sharePosts);
         var shares = postsAndShares.shares;

@@ -4,9 +4,10 @@
   </div>
   <div ng-show="bsPosts.length" class="column-wrapper">
     <div class="post-column">
-      <div class="stream-posts">
-        <div class="animate-repeat" ng-repeat="bsPost in bsPosts | orderBy:'sortDate':true" bs-post="bsPost"></div>
+      <div class="stream-posts" infinite-scroll="loadMorePosts()" infinite-scroll-distance="1" infinite-scroll-immediate-check="false" infinite-scroll-disabled="loadingPosts || noMorePosts">
+        <div ng-repeat="bsPost in bsPosts | orderBy:'sortDate':true" bs-post="bsPost"></div>
       </div>
+      <div bs-spinner="loadingPosts" size="medium"></div>
     </div>
   </div>
 </div>

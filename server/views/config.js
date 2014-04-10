@@ -68,6 +68,7 @@ function setupConfig(configDone) {
       '/bower_components/angular-sanitize/angular-sanitize.js',
       '/bower_components/genie/genie.js',
       '/bower_components/ux-genie/uxGenie.js',
+      '/bower_components/ngInfiniteScroll/ng-infinite-scroll.js',
       '/bower_components/firebase/firebase.js',
       '/bower_components/angularfire/angularfire.js'
     ], getBSJSCommon(), getAppSection('constants'), getAppSection('components'))

@@ -10,14 +10,18 @@ angular.module('bs.common.services').factory('UtilService', function(_, Cacher, 
         params: params
       });
     },
-    loadData: function (type, username, typeName) {
+    loadData: function (type, username, typeName, options) {
       var deferred = $q.defer();
+      options = options || {};
       $http({
         method: 'GET',
         url: utilPrefix + 'data/' + type,
         params: {
           username: username,
-          name: typeName
+          name: typeName,
+          limit: options.limit,
+          page: options.page,
+          skip: options.skip
         }
       }).then(function (response) {
         var data = response.data;

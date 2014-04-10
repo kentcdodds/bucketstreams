@@ -1,5 +1,5 @@
 (function() {
-  var thirdParties = ['ui.router', 'ui.bootstrap', 'angularFileUpload', 'uxGenie'];
+  var thirdParties = ['ui.router', 'ui.bootstrap', 'angularFileUpload', 'uxGenie', 'infinite-scroll'];
   var angularMods = ['ngAnimate'];
   var commonMods = ['bs.common'];
   var internalMods = ['bs.web.constants', 'bs.web.directives', 'bs.web.services'];
@@ -63,7 +63,10 @@
         resolve: {
           mainStreamData: function(UtilService, currentUser) {
             if (currentUser && currentUser.hasUsername) {
-              return UtilService.loadData('stream', currentUser.username, 'Main Stream');
+              return UtilService.loadData('stream', currentUser.username, 'Main Stream', {
+                skip: 0,
+                limit: 14
+              });
             } else {
               return {};
             }
@@ -145,7 +148,10 @@
           },
           mainBucketData: function(UtilService, username) {
             if (username === 'unknown_user') return {};
-            return UtilService.loadData('bucket', username, 'Main Bucket');
+            return UtilService.loadData('bucket', username, 'Main Bucket', {
+              skip: 0,
+              limit: 14
+            });
           }
         },
         onEnter: function(CurrentContext, profileUser) {
@@ -164,7 +170,10 @@
           data: function loadStreamOrBucketPageData($q, $state, $stateParams, UtilService) {
             var deferred = $q.defer();
             var type = $stateParams.type;
-            UtilService.loadData(type, $stateParams.username, $stateParams.itemName).then(function(data) {
+            UtilService.loadData(type, $stateParams.username, $stateParams.itemName, {
+              skip: 0,
+              limit: 14
+            }).then(function(data) {
               if (data) {
                 data.type = type;
                 deferred.resolve(data);

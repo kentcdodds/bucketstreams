@@ -94,7 +94,14 @@ schema.static.getPostsAndSharesById = function(id, callback) {
   });
 };
 
-schema.methods.getPostsAndShares = function(callback) {
+schema.methods.getPostsAndShares = function(options, callback) {
+  if (!callback) {
+    callback = options;
+    options = {
+      limit: 20,
+      skip: 0
+    }
+  }
   var self = this;
   var Stream = this.model(this.constructor.modelName);
 
@@ -112,7 +119,7 @@ schema.methods.getPostsAndShares = function(callback) {
     }
     var deferred = Q.defer();
     var query = {buckets: { $in: responseBuilder.bucketIds }};
-    require('./QueryUtil').getPostsAndShares(query, function(err, result) {
+    require('./QueryUtil').getPostsAndShares(query, options, function(err, result) {
       if (err) return deferred.reject(err);
       responseBuilder.posts = uniqueById(responseBuilder.posts, result.posts);
       responseBuilder.shares = uniqueById(responseBuilder.shares, result.shares);
@@ -159,7 +166,7 @@ schema.methods.getPostsAndShares = function(callback) {
     function getUserPostsAndShares(responseBuilder) {
       var deferred = Q.defer();
       var query = { author: self.owner };
-      require('./QueryUtil').getPostsAndShares(query, function(err, result) {
+      require('./QueryUtil').getPostsAndShares(query, options, function(err, result) {
         if (err) return deferred.reject(err);
         responseBuilder.posts = uniqueById(responseBuilder.posts, result.posts);
         responseBuilder.shares = uniqueById(responseBuilder.shares, result.shares);

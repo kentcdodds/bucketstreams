@@ -33,14 +33,21 @@ schema.methods.addPost = function(post, callback) {
   if (callback) post.save(callback);
 };
 
-schema.methods.getPostsAndShares = function(callback) {
+schema.methods.getPostsAndShares = function(options, callback) {
+  if (!callback) {
+    callback = options;
+    options = {
+      limit: 20,
+      skip: 0
+    }
+  }
   var query = {buckets: this._id };
   if (this.isMain) {
     query = {
       author: this.owner
     }
   }
-  require('./QueryUtil').getPostsAndShares(query, function(err, result) {
+  require('./QueryUtil').getPostsAndShares(query, options, function(err, result) {
     if (err) return callback(err);
     callback(null, {
       posts: result.posts,
