@@ -1,4 +1,4 @@
-angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, $window, $location, $modal, $http, mainStreamData, Stream, Bucket, Post, User, Cacher, CurrentUserInfoService, CommonModalService, AlertService, CurrentContext, Recommendations) {
+angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, $window, $location, $modal, $http, $q, mainStreamData, Stream, Bucket, Post, User, Cacher, CurrentUserInfoService, CommonModalService, AlertService, CurrentContext, Recommendations) {
   if (!$scope.isAuthenticated) {
     return;
   }
@@ -93,13 +93,17 @@ angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, 
         if (!pickedThings) {
           $scope.currentUser.addReminderTimeInDays(reminderKey, 3);
         } else {
+          var promises = [];
           _.each(pickedThings, function(thing) {
-            model.save({
+            promises.push(model.save({
               owner: $scope.currentUser._id,
               name: thing.name
-            });
+            }).$promise);
           });
           $scope.currentUser.neverRemind(reminderKey);
+          $q.all(promises).then(function() {
+            CurrentUserInfoService['refresh' + type + 's']();
+          });
         }
         $scope.currentUser.$save();
         maybeOpenAModal();

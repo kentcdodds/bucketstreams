@@ -1,4 +1,4 @@
-angular.module('bs.web.directives').directive('bsBucketStreamChooser', function($timeout, $filter, _, CommonModalService, AlertEventBroadcaster) {
+angular.module('bs.web.directives').directive('bsBucketStreamChooser', function($timeout, $filter, _, CommonModalService, AlertEventBroadcaster, CurrentUserInfoService) {
   return {
     restrict: 'E',
     templateUrl: 'templates/bsBucketStreamChooser.html',
@@ -32,6 +32,10 @@ angular.module('bs.web.directives').directive('bsBucketStreamChooser', function(
         scope.icon = 'smile-o';
       }
       scope.listItems = scope.streams || scope.buckets;
+
+      scope.$on(CurrentUserInfoService.events[scope.listType + 's'], function(event, things) {
+        scope.listItems = things;
+      });
 
       if (scope.streams && scope.subscriptionSubject) {
         _.each(scope.streams, function(stream) {
@@ -130,12 +134,7 @@ angular.module('bs.web.directives').directive('bsBucketStreamChooser', function(
       };
 
       scope.createThing = function() {
-        CommonModalService.createOrEditBucketStream(scope.listType).result.then(function(newThing) {
-          if (newThing) {
-            newThing.selected(true);
-            scope.listItems.unshift(newThing);
-          }
-        });
+        CommonModalService.createOrEditBucketStream(scope.listType);
       };
 
       scope.labelTypes = [
