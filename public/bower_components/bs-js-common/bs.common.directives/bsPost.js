@@ -24,6 +24,14 @@ angular.module('bs.common.directives').directive('bsPost', function(CurrentUserI
       scope.currentUser = CurrentUserInfoService.getUser();
       scope.$on(CurrentUserInfoService.events.user, function(event, user) {
         scope.currentUser = user;
+        $q.all(UtilFunctions.getResourcePromises(user)).then(function() {
+          if (scope.author && scope.author._id === user._id) {
+            scope.author = user;
+          }
+          if (scope.shareAuthor && scope.shareAuthor._id === user._id) {
+            scope.shareAuthor = user;
+          }
+        })
       });
       var initialPromises = UtilFunctions.getResourcePromises([scope.post, scope.share, scope.currentUser]);
       $q.all(initialPromises).then(initializeStep1);

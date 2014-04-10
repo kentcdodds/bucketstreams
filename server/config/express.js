@@ -30,7 +30,7 @@ module.exports = function(app) {
   var anonymousGets = [
     /\/api\/v1\/rest\/(\w)*/
   ];
-  var validateJwt = expressJwt({secret: 'h$|24X5.1g44P05#6Z8>'});
+  var validateJwt = expressJwt({secret: process.env.EXPRESS_JWT_CODE});
   app.use('/api', function (req, res, next) {
     var allowed = anonymousUrls;
     if (req.method === 'GET') {
@@ -40,16 +40,26 @@ module.exports = function(app) {
       return req.originalUrl.match(regex);
     });
 
-    if (isAnonymousUrl) return next();
-    validateJwt(req, res, next);
+    if (isAnonymousUrl) {
+      if (req.headers.authorization) {
+        // If they do have an authorization header, try to set req.user.
+        validateJwt(req, res, function() {
+          next();
+        });
+      } else {
+        return next();
+      }
+    } else {
+      validateJwt(req, res, next);
+    }
   });
 
   if (/production|alpha/.test(process.env.NODE_ENV)) {
     logger.info('Setting express up with production-level stuff');
     app.set('port', process.env.OPENSHIFT_NODEJS_PORT || 9000);
     app.set('ip', process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1');
-    app.use(cookieParser('ki7%"6j-":8198h<7=]P'));
-    app.use(expressSession('NAhpAxPrpuGmr3YC'));
+    app.use(cookieParser(process.env.COOKIE_PARSER_CODE));
+    app.use(expressSession(process.env.EXPRESS_SESSION_CODE));
     app.use(compression());
   } else {
     logger.info('Setting express up with development-level stuff');

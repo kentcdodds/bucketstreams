@@ -521,20 +521,6 @@ schema.statics.getByUsername = function(username, callback) {
   this.model(ref.user).find({username: new RegExp('^' + username + '$', 'i')}, callback);
 };
 
-if (process.env.hideBucketStreams) {
-  schema.pre('save', function(next) {
-    if (!this.profilePicture) {
-      var gender = (Math.random()<.5 ? 'men' : 'women');
-      var max = 60;
-      if (gender === 'men') {
-        max = 100;
-      }
-      this.profilePicture = 'http://api.randomuser.me/0.3.2/portraits/' + gender + '/' + Math.floor(Math.random()*max) + '.jpg';
-    }
-    next();
-  });
-}
-
 module.exports = {
   schema: schema,
   model: mongoose.model(ref.user, schema)

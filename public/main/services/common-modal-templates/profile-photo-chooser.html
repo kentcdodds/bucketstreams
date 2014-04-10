@@ -1,6 +1,6 @@
 <div class="profile-photo-chooser">
   <div class="modal-header">
-    <button type="button" class="close" ng-click="$dismiss()">&times;</button>
+    <button type="button" class="close" ng-click="$dismiss()" ng-hide="isStatic">&times;</button>
     <h3>Where should we get your photo?</h3>
   </div>
   <div class="modal-body text-align-center">
@@ -20,5 +20,8 @@
     <div ng-show="uploadInProgress">
       <div bs-spinner size="medium" text-position="bottom" spinner-text="Uploading..."></div>
     </div>
+  </div>
+  <div class="modal-footer" ng-show="isStatic">
+    <button class="btn btn-default" ng-click="$close(false)">Skip for now...</button>
   </div>
 </div>

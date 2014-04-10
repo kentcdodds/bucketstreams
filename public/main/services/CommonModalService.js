@@ -334,10 +334,11 @@ angular.module('bs.web.app').factory('CommonModalService', function($rootScope, 
         }
       });
     },
-    openPhotoChooser: function(currentUser) {
+    openPhotoChooser: function(currentUser, isStatic) {
       return $modal.open({
         templateUrl: '/main/services/common-modal-templates/profile-photo-chooser.html',
         controller: function($scope) {
+          $scope.isStatic = isStatic;
           $scope.useProviderPhoto = function(provider) {
             if (currentUser.isConnectedTo(provider)) {
               $scope.uploadInProgress = true;
@@ -385,7 +386,9 @@ angular.module('bs.web.app').factory('CommonModalService', function($rootScope, 
               $scope.$close(false);
             });
           };
-        }
+        },
+        backdrop: isStatic ? 'static' : true,
+        keyboard: !isStatic
       });
     }
   };

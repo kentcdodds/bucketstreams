@@ -1,4 +1,4 @@
-angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, $window, $modal, $http, mainStreamData, Stream, Bucket, Post, User, Cacher, CurrentUserInfoService, CommonModalService, AlertService, CurrentContext, Recommendations) {
+angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, $window, $location, $modal, $http, mainStreamData, Stream, Bucket, Post, User, Cacher, CurrentUserInfoService, CommonModalService, AlertService, CurrentContext, Recommendations) {
   if (!$scope.isAuthenticated) {
     return;
   }
@@ -17,6 +17,30 @@ angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, 
         backdrop: 'static',
         keyboard: false
       }).result.then(maybeOpenAModal);
+      return true;
+    }
+  }
+
+  function maybeOpenProfilePictureModal() {
+    var reminderKey = 'addProfilePicture';
+    if ($scope.currentUser.hasProfilePicture()) {
+      $scope.currentUser.removeReminder(reminderKey);
+      $scope.currentUser.$save();
+      return false;
+    }
+    // Hack... Waiting for backend to respond...
+    if ($location.search().hasOwnProperty('import-profile-photo')) {
+      return false;
+    }
+    if ($scope.currentUser.isTimeToRemind(reminderKey)) {
+      CommonModalService.openPhotoChooser($scope.currentUser, true).result.then(function(result) {
+        if (_.isBoolean(result) && !result) {
+          $scope.currentUser.addReminderTimeInDays(reminderKey, 1);
+        } else {
+          $scope.currentUser.removeReminder(reminderKey);
+        }
+        $scope.currentUser.$save();
+      });
       return true;
     }
   }
@@ -50,6 +74,7 @@ angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, 
     var reminderKey = 'pick' + type;
     if ($scope['user' + type + 's'].length > 1) {
       $scope.currentUser.removeReminder(reminderKey);
+      $scope.currentUser.$save();
       return false;
     }
     if ($scope.currentUser.isTimeToRemind(reminderKey)) {
@@ -83,11 +108,14 @@ angular.module('bs.web.app').controller('MainCtrl', function($scope, _, $state, 
     }
   }
 
-  function maybeOpenAModal() {
+  function maybeOpenAModal(opts) {
+    opts = opts || {};
     if (!maybeOpenGettingStartedModal()) {
-      if (!maybeOpenEmailConfirmationModal()) {
-        if (!maybeOpenPicker('Bucket')) {
-          maybeOpenPicker('Stream');
+      if (opts.skipPicture || !maybeOpenProfilePictureModal()) {
+        if (!maybeOpenEmailConfirmationModal()) {
+          if (!maybeOpenPicker('Bucket')) {
+            maybeOpenPicker('Stream');
+          }
         }
       }
     }

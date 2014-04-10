@@ -8,6 +8,7 @@ var moment = require('moment');
 var uuid = require('node-uuid');
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
+var expressJwt = require('express-jwt');
 var prefix = require('./prefixes');
 var config = require('../views/config');
 
@@ -20,7 +21,7 @@ var Bucket = models[ref.bucket];
 module.exports = function(app) {
 
   function sendToken(res, user) {
-    var token = jwt.sign(user.getTokenObject(), 'h$|24X5.1g44P05#6Z8>');
+    var token = jwt.sign(user.getTokenObject(), process.env.EXPRESS_JWT_CODE);
     return res.json({ token: token });
   }
   
@@ -280,10 +281,12 @@ module.exports = function(app) {
     });
   });
 
+  function decodeToken(req, res, next) {
+    var validateJwt = expressJwt({secret: process.env.EXPRESS_JWT_CODE});
+    validateJwt(req, res, next);
+  }
   app.get('/third-party/:provider', AuthenticationController.authenticate);
-  app.get('/third-party/:provider/callback', function(req, res, next) {
-    next();
-  }, AuthenticationController.callback);
+  app.get('/third-party/:provider/callback', decodeToken, AuthenticationController.checkAuthenticated, AuthenticationController.callback);
 
   /**
    * Disconnects a user from the given provider

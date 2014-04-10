@@ -10,9 +10,7 @@ angular.module('bs.web.directives').directive('bsProfilePictureUpload', function
       });
 
       scope.openPhotoChooser = function() {
-        CommonModalService.openPhotoChooser(scope.currentUser).result.then(function(result) {
-
-        });
+        CommonModalService.openPhotoChooser(scope.currentUser);
       };
     }
   }

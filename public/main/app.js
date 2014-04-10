@@ -265,13 +265,20 @@
             }
           }
         }
+      })
+      .state('error', {
+        url: '/error',
+        template: '<div class="text-align-center margin-xxlarge">' +
+          '<h1>Whoops!</h1>' +
+          '<div>Something weird happened... It is alpha, after all...</div>' +
+          '</div>'
       });
 
     $urlRouterProvider.otherwise('/');
     
   });
   
-  app.run(function($rootScope, $state, CurrentUserInfoService, AlertEventBroadcaster, $location, UtilService) {
+  app.run(function($rootScope, $state, CurrentUserInfoService, AlertEventBroadcaster, $location, $window, UtilService) {
     var alertEvents = [
       { name: '$stateChangeError', type: 'error', message: 'Something weird happened. Try refreshing...' }
     ];
@@ -299,10 +306,18 @@
     $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
       console.error('$stateChangeError');
       console.error(event);
-      $state.go('root.anon');
+      debugger;
+      $window.BS.stateChangeErrors = $window.BS.stateChangeErrors || 1;
+      $window.BS.stateChangeErrors++;
+      if ($window.BS.stateChangeErrors > 10) {
+        $state.go('error');
+      } else {
+        $state.go('root.anon');
+      }
     });
 
     $rootScope.$on('$stateChangeSuccess', function(event, toState) {
+      $window.BS.stateChangeErrors = 0;
       var provider = $location.search()['import-profile-photo'];
       if (provider) {
         UtilService.importProfilePhoto(provider);

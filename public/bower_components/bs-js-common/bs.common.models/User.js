@@ -78,7 +78,7 @@ angular.module('bs.common.models').factory('User', function($resource, $http, $q
   };
 
   User.prototype.removeReminder = function(key) {
-    if (!_.isEmpty(this.extraInfo.reminders)) {
+    if (!_.isEmpty(this.extraInfo) && !_.isEmpty(this.extraInfo.reminders)) {
       delete this.extraInfo.reminders[key];
     }
   };

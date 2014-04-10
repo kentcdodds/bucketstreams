@@ -13,7 +13,7 @@ angular.module('bs.common.directives').directive('bsValidInput', function(UtilSe
 
       var checkUnique = _.debounce(function(model, params, field, value) {
         requestIndex++;
-        params = params || {};
+        params = _.clone(params) || {};
         params[field] = value;
         params.requestIndex = requestIndex;
         UtilService.validateModel(model, params).then(function(result) {
